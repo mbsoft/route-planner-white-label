@@ -26,46 +26,48 @@ export default function MapOptionsControls({
       top: 10, 
       right: 10, 
       zIndex: 1000,
-      backgroundColor: 'rgba(255, 255, 255, 0.9)',
+      backgroundColor: '#23272f',
       borderRadius: '8px',
-      padding: '8px',
+      padding: '6px 10px',
       backdropFilter: 'blur(4px)',
-      border: '1px solid rgba(0, 0, 0, 0.1)',
+      border: '1px solid rgba(0, 0, 0, 0.3)',
       transition: 'all 0.3s ease',
-      minWidth: isExpanded ? '200px' : 'auto'
+      minWidth: isExpanded ? '150px' : 'auto',
+      color: 'white',
+      boxShadow: '0 2px 8px rgba(0,0,0,0.15)'
     }}>
-      <Stack spacing={1}>
+      <Stack spacing={0.5}>
         {/* Header with expand/collapse button */}
         <Box sx={{ 
           display: 'flex', 
           alignItems: 'center', 
           justifyContent: 'space-between',
-          cursor: 'pointer'
+          cursor: 'pointer',
+          minHeight: '28px',
         }} onClick={() => setIsExpanded(!isExpanded)}>
-          <Typography variant="caption" sx={{ fontWeight: 'bold', color: '#666', px: 1 }}>
+          <Typography variant="caption" sx={{ fontWeight: 'bold', color: 'white', px: 0 }}>
             Map Options
           </Typography>
           <IconButton 
             size="small" 
             sx={{ 
               padding: '2px',
-              color: '#666',
-              '&:hover': { backgroundColor: 'rgba(0, 0, 0, 0.04)' }
+              color: 'white',
+              '&:hover': { backgroundColor: 'rgba(255,255,255,0.08)' }
             }}
           >
             {isExpanded ? <ExpandLessIcon fontSize="small" /> : <ExpandMoreIcon fontSize="small" />}
           </IconButton>
         </Box>
-        
         {/* Collapsible content */}
         <Box sx={{ 
           overflow: 'hidden',
           transition: 'all 0.3s ease',
-          maxHeight: isExpanded ? '200px' : '0px',
-          opacity: isExpanded ? 1 : 0
+          maxHeight: isExpanded ? '100px' : '0px',
+          opacity: isExpanded ? 1 : 0,
         }}>
-          <Stack spacing={1}>
-            <Card sx={{ boxShadow: 'none', backgroundColor: 'transparent' }}>
+          <Stack spacing={0.5}>
+            <Card sx={{ boxShadow: 'none', backgroundColor: 'transparent', m: 0, p: 0 }}>
               <FormControlLabel
                 control={
                   <Switch
@@ -76,14 +78,15 @@ export default function MapOptionsControls({
                     }}
                   />
                 }
-                label="Jobs/Shipments"
+                label={<span style={{ fontSize: '12px', color: 'white' }}>Jobs/Shipments</span>}
                 sx={{ 
                   fontSize: '12px',
-                  '& .MuiFormControlLabel-label': { fontSize: '12px' }
+                  m: 0,
+                  '& .MuiFormControlLabel-label': { fontSize: '12px', color: 'white' }
                 }}
               />
             </Card>
-            <Card sx={{ boxShadow: 'none', backgroundColor: 'transparent' }}>
+            <Card sx={{ boxShadow: 'none', backgroundColor: 'transparent', m: 0, p: 0 }}>
               <FormControlLabel
                 control={
                   <Switch
@@ -94,10 +97,11 @@ export default function MapOptionsControls({
                     }}
                   />
                 }
-                label="Vehicles"
+                label={<span style={{ fontSize: '12px', color: 'white' }}>Vehicles</span>}
                 sx={{ 
                   fontSize: '12px',
-                  '& .MuiFormControlLabel-label': { fontSize: '12px' }
+                  m: 0,
+                  '& .MuiFormControlLabel-label': { fontSize: '12px', color: 'white' }
                 }}
               />
             </Card>
