@@ -282,7 +282,7 @@ export default function HomePage() {
                     }} 
                   />
                   <Typography variant="body2" sx={{ color: '#666' }}>
-                    © 2025 DELIVERY. All rights reserved.
+                    © 2025 COMPANY NAME. All rights reserved.
                   </Typography>
                 </Box>
                 
