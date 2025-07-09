@@ -1,11 +1,14 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
+route-planner-v2
+
 # dependencies
 /node_modules
 /.pnp
 .pnp.js
 .yarn/install-state.gz
 
+.vscode
 # testing
 /coverage
 

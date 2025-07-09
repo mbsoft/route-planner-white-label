@@ -1,11 +1,11 @@
-import {env} from '@ncc/common/server'
 import {WhiteLabelLayout} from './white-label-layout'
 
 export const metadata = {
-  title: 'Route Planner | NextBillion.ai',
+  title: 'Route Planner White Label',
+  description: 'White-label route planning application for logistics optimization',
   robots: {
-    index: env.PROD,
-    follow: env.PROD,
+    index: true,
+    follow: true,
   },
 }
 

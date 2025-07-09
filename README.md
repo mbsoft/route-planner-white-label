@@ -1,12 +1,12 @@
 # Route Planner White Label
 
-A white-label route planning application for logistics optimization, built with Next.js, React, and DeckGL for advanced map visualization.
+A white-label route planning application for logistics, field service optimization, built with Next.js, React, and powered by NextBillion.ai Route Optimization with advanced map visualization and monitoring.
 
 ## Features
 
 - **Data Import**: Drag-and-drop CSV file upload for jobs, shipments, and vehicles
 - **Interactive Mapping**: Visual data mapping interface with column mapping
-- **Advanced Map Visualization**: DeckGL-powered map with markers, tooltips, and hover effects
+- **Advanced Map Visualization**: NextBillion.ai and DeckGL-powered map with markers, tooltips, and hover effects
 - **Step-by-Step Workflow**: Guided import process with stepper navigation
 - **Responsive Design**: Modern UI built with Material-UI components
 - **White-Label Ready**: Easily customizable for different brands and use cases
@@ -152,5 +152,5 @@ For support and questions:
 
 - Built with [Next.js](https://nextjs.org/)
 - UI components from [Material-UI](https://mui.com/)
-- Map visualization powered by [DeckGL](https://deck.gl/)
-- Map tiles provided by [NextBillion.ai](https://nextbillion.ai/) 
+- Map visualization powered by [DeckGL](https://deck.gl/) and [NextBillion.ai](https://nextbillion.ai/)
+- Route Optimization, Routing and Map tiles provided by [NextBillion.ai](https://nextbillion.ai/) 
