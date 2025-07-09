@@ -17,6 +17,7 @@ export interface MapMarker {
   longitude: number
   id?: string
   description?: string
+  type?: 'job' | 'vehicle'
 }
 
 export const InputMap = ({ markers }: { markers?: MapMarker[] }) => {
@@ -33,14 +34,16 @@ export const InputMap = ({ markers }: { markers?: MapMarker[] }) => {
     console.log('InputMap received markers:', markers)
     if (!markers || markers.length === 0) return []
     
-    return markers.map((marker, index) => 
-      point([marker.longitude, marker.latitude], {
+    return markers.map((marker, index) => {
+      const isVehicle = marker.type === 'vehicle'
+      return point([marker.longitude, marker.latitude], {
         id: marker.id || `marker-${index}`,
         description: marker.description || `Location ${index + 1}`,
-        color: [25, 118, 210, 255], // Blue color matching your current markers
-        text: (index + 1).toString(),
+        color: isVehicle ? [76, 175, 80, 255] : [25, 118, 210, 255], // Green for vehicles, Blue for jobs
+        text: isVehicle ? '🚗' : (index + 1).toString(), // Vehicle icon for vehicles, number for jobs
+        type: marker.type || 'job',
       })
-    )
+    })
   }, [markers])
 
   // Create GeoJsonLayer for markers
@@ -57,8 +60,8 @@ export const InputMap = ({ markers }: { markers?: MapMarker[] }) => {
       getFillColor: (f: any) => f?.properties?.color ?? [25, 118, 210, 255],
       getText: (f: any) => f?.properties?.text ?? '',
       getTextColor: [255, 255, 255, 255],
-      getTextSize: 10,
-      getPointRadius: 9,
+      getTextSize: (f: any) => f?.properties?.type === 'vehicle' ? 16 : 10, // Larger text for vehicle icons
+      getPointRadius: (f: any) => f?.properties?.type === 'vehicle' ? 12 : 9, // Larger radius for vehicles
       pointRadiusUnits: 'pixels',
       onHover: (info: PickingInfo) => {
         if (info.object) {

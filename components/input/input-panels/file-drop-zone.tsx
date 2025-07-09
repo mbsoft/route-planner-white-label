@@ -18,6 +18,57 @@ function isIncludeHeader(firstRow: string[]) {
   return !isAnyNumLike
 }
 
+// Function to parse CSV with proper quoted field handling
+function parseCSV(csvText: string): string[][] {
+  const rows: string[][] = []
+  const lines = csvText.split('\n')
+  
+  for (const line of lines) {
+    if (line.trim() === '') continue
+    
+    const fields: string[] = []
+    let currentField = ''
+    let insideQuotes = false
+    let i = 0
+    
+    while (i < line.length) {
+      const char = line[i]
+      
+      if (char === '"') {
+        if (insideQuotes) {
+          // Check for escaped quote (double quote)
+          if (i + 1 < line.length && line[i + 1] === '"') {
+            currentField += '"'
+            i += 2 // Skip both quotes
+            continue
+          } else {
+            // End of quoted field
+            insideQuotes = false
+          }
+        } else {
+          // Start of quoted field
+          insideQuotes = true
+        }
+      } else if (char === ',' && !insideQuotes) {
+        // End of field
+        fields.push(currentField.trim())
+        currentField = ''
+      } else {
+        // Regular character
+        currentField += char
+      }
+      
+      i++
+    }
+    
+    // Add the last field
+    fields.push(currentField.trim())
+    rows.push(fields)
+  }
+  
+  return rows
+}
+
 export const FileDropZone = (props: FileDropZoneProps) => {
   const {onDataUpload, sampleLink} = props
   const [isDragOver, setIsDragOver] = useState(false)
@@ -42,7 +93,7 @@ export const FileDropZone = (props: FileDropZoneProps) => {
       reader.onload = (e) => {
         try {
           const text = e.target?.result as string
-          const rows = text.split('\n').map(row => row.split(',').map(cell => cell.trim()))
+          const rows = parseCSV(text)
           
           if (isIncludeHeader(rows[0])) {
             const header = rows[0]
@@ -141,14 +192,7 @@ export const FileDropZone = (props: FileDropZoneProps) => {
         </span>
       </div>
       
-      <div style={{
-        marginTop: '20px',
-        fontSize: '15px',
-        color: '#5A5A5A'
-      }}>
-        File format: <strong>CSV, XLS or XLSX</strong> | File Size: Up to{' '}
-        <strong>100 mb</strong>
-      </div>
+
 
       {error && (
         <div style={{
@@ -160,35 +204,7 @@ export const FileDropZone = (props: FileDropZoneProps) => {
         </div>
       )}
 
-      {sampleLink && (
-        <>
-          <div style={{
-            marginTop: '20px',
-            fontSize: '13px',
-            color: '#5A5A5A'
-          }}>
-            Not sure about the format?
-          </div>
-          <div style={{
-            fontSize: '13px',
-            color: '#5A5A5A',
-            lineHeight: '13px'
-          }}>
-            <a
-              href={sampleLink}
-              target="_blank"
-              rel="noreferrer"
-              style={{
-                color: '#1976d2',
-                textDecoration: 'none'
-              }}
-            >
-              Download template
-            </a>{' '}
-            to get started easily!
-          </div>
-        </>
-      )}
+
     </div>
   )
 } 

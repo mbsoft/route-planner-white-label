@@ -1,7 +1,7 @@
 'use client'
 
 import React from 'react'
-import { Box, Button } from '@mui/material'
+import { Box, Button, Typography } from '@mui/material'
 import { InputOrderPanel } from './input-panels/input-order'
 import { InputVehiclePanel } from './input-panels/input-vehicle'
 import { InputImportStepper } from './input-import-stepper'
@@ -12,6 +12,7 @@ const steps = [
   'Preferences',
   'Orders/Shipments',
   'Vehicles',
+  'Review',
 ]
 
 interface InputImportPageProps {
@@ -44,6 +45,23 @@ export const InputImportPage = ({ currentStep, onStepChange }: InputImportPagePr
         return <InputOrderPanel />
       case 2:
         return <InputVehiclePanel />
+      case 3:
+        return (
+          <Box sx={{ p: 2 }}>
+            <h3 style={{ color: '#585656', fontSize: '16px', fontWeight: 500 }}>Review & Optimize</h3>
+            <p style={{ color: '#666', fontSize: '14px' }}>
+              All data has been imported and mapped. You can now review the data and proceed with route optimization.
+            </p>
+            <Box sx={{ mt: 2, p: 2, backgroundColor: '#f9f9f9', borderRadius: '4px' }}>
+              <Typography variant="body2" sx={{ color: '#666' }}>
+                <strong>Jobs/Shipments:</strong> {job.rawData.rows.length + shipment.rawData.rows.length} records
+              </Typography>
+              <Typography variant="body2" sx={{ color: '#666' }}>
+                <strong>Vehicles:</strong> {vehicle.rawData.rows.length} records
+              </Typography>
+            </Box>
+          </Box>
+        )
       default:
         return null
     }
@@ -118,7 +136,7 @@ export const InputImportPage = ({ currentStep, onStepChange }: InputImportPagePr
             disabled={currentStep === steps.length - 1}
             onClick={() => onStepChange(Math.min(steps.length - 1, currentStep + 1))}
           >
-            Next
+            {currentStep === steps.length - 1 ? 'Finish' : 'Next'}
           </Button>
         </Box>
       </Box>
