@@ -3,8 +3,6 @@ const nextConfig = {
   experimental: {
     appDir: true,
   },
-  output: 'export',
-  trailingSlash: true,
   images: {
     unoptimized: true,
   },
@@ -14,12 +12,16 @@ const nextConfig = {
       ...config.resolve.fallback,
       fs: false,
     }
+    // Alias mapbox-gl to @nbai/nbmap-gl for NextBillion compatibility
+    config.resolve.alias = {
+      ...config.resolve.alias,
+      'mapbox-gl': '@nbai/nbmap-gl',
+    }
     return config
   },
   env: {
     NEXTBILLION_API_KEY: process.env.NEXTBILLION_API_KEY,
   },
-  // Disable server-side features for static export
   typescript: {
     ignoreBuildErrors: true,
   },
