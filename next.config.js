@@ -5,6 +5,9 @@ const nextConfig = {
   },
   output: 'export',
   trailingSlash: true,
+  images: {
+    unoptimized: true,
+  },
   transpilePackages: ['@mui/material', '@mui/icons-material'],
   webpack: (config) => {
     config.resolve.fallback = {

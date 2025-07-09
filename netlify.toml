@@ -3,8 +3,7 @@
   publish = "out"
 
 [build.environment]
-  NODE_VERSION = "18"
-  NPM_VERSION = "9"
+  NODE_VERSION = "18.20.8"
 
 [[redirects]]
   from = "/*"
