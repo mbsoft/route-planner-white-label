@@ -5,11 +5,21 @@ import { Box, Container, Typography } from '@mui/material'
 import { WhiteLabelLayout } from './white-label-layout'
 import { InputImportPage } from '../components/input/input-import-page'
 import { InputMap, MapMarker } from '../components/input/input-panels/input-map'
+import { PreferencesPage, PreferencesInput } from '../components/input/input-panels/preferences-page'
 import { useInputStore } from '../models/input/store'
 
 export default function HomePage() {
   const [markers, setMarkers] = useState<MapMarker[]>([])
   const [currentStep, setCurrentStep] = useState(0)
+  const [preferences, setPreferences] = useState<PreferencesInput>({
+    routing: {
+      mode: 'car',
+    },
+    constraints: {},
+    objective: {
+      travel_cost: 'none',
+    },
+  })
   const store = useInputStore()
   const { job, vehicle } = store.inputCore
 
@@ -200,7 +210,7 @@ export default function HomePage() {
       console.log('Job data:', job)
       setMarkers(extractedMarkers)
     }
-    // If advancing from Vehicles to next step, add vehicle markers
+    // If advancing from Vehicles to Preferences, add vehicle markers
     if (currentStep === 2 && nextStep === 3) {
       console.log('Vehicle data:', vehicle)
       console.log('Vehicle raw data:', vehicle.rawData)
@@ -248,11 +258,13 @@ export default function HomePage() {
             <InputMap markers={markers} />
           </Box>
 
-          {/* Only the main import page/stepper below */}
+          {/* Main content area */}
           <Box sx={{ flex: 1 }}>
             <InputImportPage
               currentStep={currentStep}
               onStepChange={handleNextStep}
+              preferences={preferences}
+              onPreferencesChange={setPreferences}
             />
           </Box>
 

@@ -5,6 +5,7 @@ import { Box, Button, Typography } from '@mui/material'
 import { InputOrderPanel } from './input-panels/input-order'
 import { InputVehiclePanel } from './input-panels/input-vehicle'
 import { InputImportStepper } from './input-import-stepper'
+import { PreferencesPage, PreferencesInput } from './input-panels/preferences-page'
 import { useInputStore } from '../../models/input/store'
 import { DataMapper } from './data-mapper/data-mapper'
 
@@ -18,9 +19,11 @@ const steps = [
 interface InputImportPageProps {
   currentStep: number
   onStepChange: (nextStep: number) => void
+  preferences?: PreferencesInput
+  onPreferencesChange?: (preferences: PreferencesInput) => void
 }
 
-export const InputImportPage = ({ currentStep, onStepChange }: InputImportPageProps) => {
+export const InputImportPage = ({ currentStep, onStepChange, preferences, onPreferencesChange }: InputImportPageProps) => {
   const store = useInputStore()
   const { job, vehicle, shipment } = store.inputCore
 
@@ -35,7 +38,12 @@ export const InputImportPage = ({ currentStep, onStepChange }: InputImportPagePr
   const renderStepContent = () => {
     switch (currentStep) {
       case 0:
-        return (
+        return preferences && onPreferencesChange ? (
+          <PreferencesPage
+            preferences={preferences}
+            onPreferencesChange={onPreferencesChange}
+          />
+        ) : (
           <Box sx={{ p: 2 }}>
             <h3 style={{ color: '#585656', fontSize: '16px', fontWeight: 500 }}>Preferences</h3>
             <p style={{ color: '#666', fontSize: '14px' }}>Preferences step coming soon.</p>

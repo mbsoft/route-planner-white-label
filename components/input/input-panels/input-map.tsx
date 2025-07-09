@@ -39,9 +39,9 @@ export const InputMap = ({ markers }: { markers?: MapMarker[] }) => {
   const [showJobMarkers, setShowJobMarkers] = useState(true)
   const [showVehicleMarkers, setShowVehicleMarkers] = useState(true)
   const [viewState, setViewState] = useState({
-    longitude: -98.5795,
-    latitude: 39.8283,
-    zoom: 2.5,
+    longitude: -74.0060, // New York City longitude
+    latitude: 40.7128,   // New York City latitude
+    zoom: 10,            // Regional zoom level for NYC area
     bearing: 0,
   })
   const [isMapReady, setIsMapReady] = useState(false)
@@ -50,7 +50,7 @@ export const InputMap = ({ markers }: { markers?: MapMarker[] }) => {
 
   const apiKey = process.env.NEXTBILLION_API_KEY
   const mapStyleUrl = apiKey
-    ? `https://api.nextbillion.io/maps/streets/style.json?key=${apiKey}`
+    ? `https://api.nextbillion.io/tt/style/1/style/22.2.1-9?map=2/basic_street-dark&key=${apiKey}`
     : ''
 
 
@@ -221,6 +221,7 @@ export const InputMap = ({ markers }: { markers?: MapMarker[] }) => {
             style={{ width: '100%', height: '100%' }}
             mapStyle={mapStyleUrl}
             projection={{ name: 'globe' }}
+            attributionControl={false}
             ref={mapRef}
             onLoad={() => {
               console.log('DEBUG: Map loaded, setting isMapReady to true')
@@ -247,6 +248,11 @@ export const InputMap = ({ markers }: { markers?: MapMarker[] }) => {
             onShowJobMarkersChange={setShowJobMarkers}
             onShowVehicleMarkersChange={setShowVehicleMarkers}
           />
+        </div>
+        <div className={styles.attributionContainer}>
+          <div className={styles.attribution}>
+            © 2025 COMPANY NAME. All rights reserved.
+          </div>
         </div>
       </div>
     </div>

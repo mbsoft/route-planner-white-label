@@ -108,6 +108,8 @@ export function MapSelector({ index, inputType, headerName }: MapSelectorProps) 
         onClose={handleClose}
         dataOptionMenuList={dataOptionMenuList || []}
         onSelectDataMapOption={onSelectDataMapMenuInfo}
+        currentMappings={mapConfig.dataMappings}
+        currentColumnIndex={index}
       />
     </>
   )

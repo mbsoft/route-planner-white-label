@@ -3,6 +3,8 @@ const nextConfig = {
   experimental: {
     appDir: true,
   },
+  output: 'export',
+  trailingSlash: true,
   transpilePackages: ['@mui/material', '@mui/icons-material'],
   webpack: (config) => {
     config.resolve.fallback = {
