@@ -1,6 +1,9 @@
 'use client'
 
 import {useState, useEffect} from 'react'
+
+// Force dynamic rendering to prevent prerendering issues
+export const dynamic = 'force-dynamic'
 import {useWhiteLabelContext} from '../white-label-layout'
 import {InputOption, InputPage} from '../../models/input/input-phrase'
 import InputToolbar from '../../components/input/input-toolbar'

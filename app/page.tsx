@@ -8,6 +8,9 @@ import { InputMap, MapMarker } from '../components/input/input-panels/input-map'
 import { PreferencesPage, PreferencesInput } from '../components/input/input-panels/preferences-page'
 import { useInputStore } from '../models/input/store'
 
+// Force dynamic rendering to prevent prerendering issues
+export const dynamic = 'force-dynamic'
+
 export default function HomePage() {
   const [markers, setMarkers] = useState<MapMarker[]>([])
   const [currentStep, setCurrentStep] = useState(0)
