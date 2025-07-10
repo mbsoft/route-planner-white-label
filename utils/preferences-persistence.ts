@@ -3,10 +3,10 @@ import { PreferencesInput } from '../components/input/input-panels/preferences-p
 const PREFERENCES_STORAGE_KEY = 'route-planner-preferences'
 
 export class PreferencesPersistence {
-  private storage: Storage
+  private storage: Storage | null
 
-  constructor(storage: Storage = localStorage) {
-    this.storage = storage
+  constructor(storage?: Storage) {
+    this.storage = storage || (typeof window !== 'undefined' ? localStorage : null)
   }
 
   /**
@@ -14,6 +14,10 @@ export class PreferencesPersistence {
    */
   async savePreferences(preferences: PreferencesInput): Promise<void> {
     try {
+      if (!this.storage) {
+        console.warn('Storage not available (server-side rendering)')
+        return
+      }
       const serialized = JSON.stringify(preferences)
       this.storage.setItem(PREFERENCES_STORAGE_KEY, serialized)
     } catch (error) {
@@ -27,6 +31,10 @@ export class PreferencesPersistence {
    */
   async loadPreferences(): Promise<PreferencesInput | null> {
     try {
+      if (!this.storage) {
+        console.warn('Storage not available (server-side rendering)')
+        return null
+      }
       const serialized = this.storage.getItem(PREFERENCES_STORAGE_KEY)
       if (!serialized) {
         return null
@@ -43,6 +51,10 @@ export class PreferencesPersistence {
    */
   async clearPreferences(): Promise<void> {
     try {
+      if (!this.storage) {
+        console.warn('Storage not available (server-side rendering)')
+        return
+      }
       this.storage.removeItem(PREFERENCES_STORAGE_KEY)
     } catch (error) {
       console.error('Failed to clear preferences:', error)
@@ -55,6 +67,10 @@ export class PreferencesPersistence {
    */
   async hasPreferences(): Promise<boolean> {
     try {
+      if (!this.storage) {
+        console.warn('Storage not available (server-side rendering)')
+        return false
+      }
       return this.storage.getItem(PREFERENCES_STORAGE_KEY) !== null
     } catch (error) {
       console.error('Failed to check preferences existence:', error)
@@ -67,6 +83,10 @@ export class PreferencesPersistence {
    */
   async getPreferencesAge(): Promise<number | null> {
     try {
+      if (!this.storage) {
+        console.warn('Storage not available (server-side rendering)')
+        return null
+      }
       const serialized = this.storage.getItem(PREFERENCES_STORAGE_KEY)
       if (!serialized) {
         return null

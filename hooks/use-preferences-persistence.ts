@@ -107,9 +107,11 @@ export function usePreferencesPersistence() {
     }
   }, [])
 
-  // Check status on mount
+  // Check status on mount (only on client side)
   useEffect(() => {
-    checkPreferencesStatus()
+    if (typeof window !== 'undefined') {
+      checkPreferencesStatus()
+    }
   }, [checkPreferencesStatus])
 
   return {

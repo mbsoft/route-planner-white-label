@@ -46,13 +46,17 @@ export const MappingManagement: React.FC = () => {
   }
 
   useEffect(() => {
-    refreshMappingStatus()
+    if (typeof window !== 'undefined') {
+      refreshMappingStatus()
+    }
   }, [hasMapping])
 
   // Refresh both mapping and preferences status when preferences status changes
   useEffect(() => {
-    refreshMappingStatus()
-    refreshPreferencesStatus()
+    if (typeof window !== 'undefined') {
+      refreshMappingStatus()
+      refreshPreferencesStatus()
+    }
   }, [preferencesStatus.hasPreferences])
 
   const getStatusColor = (has: boolean, loading: boolean) => {

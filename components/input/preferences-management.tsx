@@ -18,9 +18,11 @@ export const PreferencesManagement: React.FC = () => {
   const [clearDialogOpen, setClearDialogOpen] = useState(false)
   const { hasPreferences, loading } = status
 
-  // Refresh preferences status on mount and after clearing
+  // Refresh preferences status on mount and after clearing (only on client side)
   useEffect(() => {
-    checkPreferencesStatus()
+    if (typeof window !== 'undefined') {
+      checkPreferencesStatus()
+    }
   }, [checkPreferencesStatus])
 
   const handleClearPreferences = async () => {
