@@ -5,7 +5,7 @@ import {
   TextField,
   InputAdornment,
 } from '@mui/material'
-import TimerOutlinedIcon from '@mui/icons-material/TimerOutlined'
+import GavelIcon from '@mui/icons-material/Gavel'
 import {PreferencesPanel} from './preferences-panel'
 
 export interface ConstraintsPreferences {
@@ -56,9 +56,9 @@ export function ConstraintsPanel({ preferences, onPreferencesChange }: Constrain
 
   return (
     <PreferencesPanel
-      icon={<TimerOutlinedIcon />}
+      icon={<GavelIcon />}
       title="Specify Constraints"
-      description="Defines rules for overtime, delays, and wait times to optimize routing efficiency."
+      description=""
     >
       <Box>
         <Grid container spacing={2}>

@@ -6,14 +6,15 @@ import {
   FormControlLabel,
   Checkbox,
 } from '@mui/material'
-import GolfCourseOutlined from '@mui/icons-material/GolfCourseOutlined'
+import FlagIcon from '@mui/icons-material/Flag'
+import TrackChangesIcon from '@mui/icons-material/TrackChanges'
 import {PreferencesPanel} from './preferences-panel'
 
 const TRAVEL_COST_OPTIONS = [
-  {label: 'None', value: 'none'},
   {label: 'Duration', value: 'duration'},
   {label: 'Distance', value: 'distance'},
   {label: 'Air Distance', value: 'air_distance'},
+  {label: 'Customized', value: 'customized'},
 ]
 
 const CUSTOM_TYPE_OPTIONS = [
@@ -110,21 +111,17 @@ export function ObjectivePanel({ preferences, onPreferencesChange }: ObjectivePa
 
   return (
     <PreferencesPanel
-      icon={<GolfCourseOutlined />}
+      icon={<FlagIcon sx={{ mr: 1, color: '#1976d2' }} />}
       title="Set Your Objective"
-      description="Optimize based on duration, distance, or a custom objective"
+      description=""
     >
       <Box>
         <Box sx={{display: 'flex', gap: 2, mt: 2}}>
           <TextField
             label="Travel Cost"
-            value={objective.travel_cost || 'none'}
+            value={objective.travel_cost || 'duration'}
             onChange={(e) => {
-              if (e.target.value === 'none') {
-                setTravelCost('')
-              } else {
-                setTravelCost(e.target.value)
-              }
+              setTravelCost(e.target.value)
             }}
             variant="outlined"
             select

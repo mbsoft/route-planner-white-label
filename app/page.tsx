@@ -1,13 +1,32 @@
 'use client'
 
-import React, { useState } from 'react'
-import { Box, Container, Typography } from '@mui/material'
+import React, { useState, useEffect } from 'react'
+import { Container, Box, Typography } from '@mui/material'
 import { WhiteLabelLayout } from './white-label-layout'
 import { InputImportPage } from '../components/input/input-import-page'
-import { CollapsibleMap, MapMarker, RouteData } from '../components/input/input-panels/input-map'
-import { PreferencesPage, PreferencesInput } from '../components/input/input-panels/preferences-page'
+import { CollapsibleMap } from '../components/input/input-panels/input-map'
 import { MappingManagement } from '../components/input/mapping-management'
+import { PreferencesManagement } from '../components/input/preferences-management'
 import { useInputStore } from '../models/input/store'
+import { PreferencesInput } from '../components/input/input-panels/preferences-page'
+import { usePreferencesPersistence } from '../hooks/use-preferences-persistence'
+
+export interface MapMarker {
+  id: string
+  latitude: number
+  longitude: number
+  description: string
+  type: 'job' | 'vehicle'
+}
+
+export interface RouteData {
+  vehicle: string
+  geometry: string
+  cost: number
+  distance: number
+  duration: number
+  steps: any[]
+}
 
 // Force dynamic rendering to prevent prerendering issues
 export const dynamic = 'force-dynamic'
@@ -22,11 +41,13 @@ export default function HomePage() {
     },
     constraints: {},
     objective: {
-      travel_cost: 'none',
+      travel_cost: 'duration',
     },
   })
+  
   const store = useInputStore()
   const { job, vehicle } = store.inputCore
+  const { status: preferencesStatus, savePreferences, loadPreferences } = usePreferencesPersistence()
 
   // Initialize store and load persisted mappings on mount
   React.useEffect(() => {
@@ -47,6 +68,41 @@ export default function HomePage() {
       initializeApp()
     }
   }, []) // Empty dependency array - only run once on mount
+
+  // Load persisted preferences on mount
+  useEffect(() => {
+    const loadPersistedPreferences = async () => {
+      try {
+        const persistedPreferences = await loadPreferences()
+        if (persistedPreferences) {
+          // Remove the timestamp from the loaded preferences
+          const { _timestamp, ...cleanPreferences } = persistedPreferences as PreferencesInput & { _timestamp?: string }
+          setPreferences(cleanPreferences)
+          console.log('Loaded persisted preferences')
+        }
+      } catch (error) {
+        console.error('Failed to load persisted preferences:', error)
+      }
+    }
+
+    loadPersistedPreferences()
+  }, [loadPreferences])
+
+  // Auto-save preferences when they change
+  useEffect(() => {
+    const savePreferencesToStorage = async () => {
+      try {
+        await savePreferences(preferences)
+      } catch (error) {
+        console.error('Failed to auto-save preferences:', error)
+      }
+    }
+
+    // Don't save on initial load (when preferences are being loaded from storage)
+    if (preferencesStatus.hasPreferences) {
+      savePreferencesToStorage()
+    }
+  }, [preferences, savePreferences, preferencesStatus.hasPreferences])
 
   // Helper to extract lat/lng from mapped jobs data, only for selected rows
   function extractJobMarkers() {
@@ -238,9 +294,12 @@ export default function HomePage() {
     setMarkers([...jobMarkers, ...vehicleMarkers])
   }, [job.rawData, job.selection, vehicle.rawData, vehicle.selection])
 
-  // Handler for Next button in InputImportPage
-  function handleNextStep(nextStep: number) {
-    setCurrentStep(nextStep)
+  const handleNextStep = (step: number) => {
+    setCurrentStep(step)
+  }
+
+  const handlePreferencesChange = (newPreferences: PreferencesInput) => {
+    setPreferences(newPreferences)
   }
 
   return (
@@ -278,11 +337,12 @@ export default function HomePage() {
           {/* Main content area */}
           <Box sx={{ flex: 1 }}>
             <MappingManagement />
+            <PreferencesManagement />
             <InputImportPage
               currentStep={currentStep}
               onStepChange={handleNextStep}
               preferences={preferences}
-              onPreferencesChange={setPreferences}
+              onPreferencesChange={handlePreferencesChange}
               onRouteResultsChange={setRoutes}
             />
           </Box>

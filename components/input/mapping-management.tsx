@@ -1,222 +1,93 @@
 'use client'
 
-import React, { useState, useEffect } from 'react'
-import {
-  Box,
-  Typography,
-  Button,
-  Chip,
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogContentText,
-  DialogActions,
-  Alert,
-  CircularProgress,
-} from '@mui/material'
+import React, { useEffect, useState } from 'react'
+import { Box, Chip } from '@mui/material'
 import { useMappingPersistence } from '../../hooks/input/use-mapping-persistence'
+import { usePreferencesPersistence } from '../../hooks/use-preferences-persistence'
 import { InputType } from '../../models/input/input-core'
 
-interface MappingStatus {
-  hasMapping: boolean
-  age: number | null
-  loading: boolean
-}
-
 export const MappingManagement: React.FC = () => {
-  const { hasMapping, getMappingAge, clearAllMappings, loadAllMappings } = useMappingPersistence()
-  const [mappingStatus, setMappingStatus] = useState<Record<InputType, MappingStatus>>({
-    job: { hasMapping: false, age: null, loading: true },
-    vehicle: { hasMapping: false, age: null, loading: true },
-    shipment: { hasMapping: false, age: null, loading: true },
+  const { hasMapping } = useMappingPersistence()
+  const { status: preferencesStatus, checkPreferencesStatus } = usePreferencesPersistence()
+
+  // State for mapping status
+  const [mappingStatus, setMappingStatus] = useState({
+    job: { hasMapping: false, loading: true },
+    vehicle: { hasMapping: false, loading: true },
+    shipment: { hasMapping: false, loading: true },
   })
-  const [clearDialogOpen, setClearDialogOpen] = useState(false)
-  const [isLoading, setIsLoading] = useState(false)
 
-  // Load mapping status on mount
+  // Refresh mapping status
+  const refreshMappingStatus = async () => {
+    const inputTypes: InputType[] = ['job', 'vehicle', 'shipment']
+    for (const inputType of inputTypes) {
+      setMappingStatus(prev => ({
+        ...prev,
+        [inputType]: { ...prev[inputType], loading: true },
+      }))
+      try {
+        const exists = await hasMapping(inputType)
+        setMappingStatus(prev => ({
+          ...prev,
+          [inputType]: { hasMapping: exists, loading: false },
+        }))
+      } catch {
+        setMappingStatus(prev => ({
+          ...prev,
+          [inputType]: { hasMapping: false, loading: false },
+        }))
+      }
+    }
+  }
+
+  // Refresh preferences status
+  const refreshPreferencesStatus = async () => {
+    await checkPreferencesStatus()
+  }
+
   useEffect(() => {
-    const loadStatus = async () => {
-      const inputTypes: InputType[] = ['job', 'vehicle', 'shipment']
-      
-      for (const inputType of inputTypes) {
-        try {
-          const [hasMappingResult, age] = await Promise.all([
-            hasMapping(inputType),
-            getMappingAge(inputType),
-          ])
-          
-          setMappingStatus(prev => ({
-            ...prev,
-            [inputType]: {
-              hasMapping: hasMappingResult,
-              age,
-              loading: false,
-            },
-          }))
-        } catch (error) {
-          console.error(`Failed to load status for ${inputType}:`, error)
-          setMappingStatus(prev => ({
-            ...prev,
-            [inputType]: {
-              hasMapping: false,
-              age: null,
-              loading: false,
-            },
-          }))
-        }
-      }
-    }
+    refreshMappingStatus()
+  }, [hasMapping])
 
-    loadStatus()
-  }, [hasMapping, getMappingAge])
+  // Refresh both mapping and preferences status when preferences status changes
+  useEffect(() => {
+    refreshMappingStatus()
+    refreshPreferencesStatus()
+  }, [preferencesStatus.hasPreferences])
 
-  const handleClearAllMappings = async () => {
-    setIsLoading(true)
-    try {
-      await clearAllMappings()
-      // Reload status after clearing
-      const inputTypes: InputType[] = ['job', 'vehicle', 'shipment']
-      for (const inputType of inputTypes) {
-        setMappingStatus(prev => ({
-          ...prev,
-          [inputType]: {
-            hasMapping: false,
-            age: null,
-            loading: false,
-          },
-        }))
-      }
-      setClearDialogOpen(false)
-    } catch (error) {
-      console.error('Failed to clear mappings:', error)
-    } finally {
-      setIsLoading(false)
-    }
+  const getStatusColor = (has: boolean, loading: boolean) => {
+    if (loading) return 'default'
+    return has ? 'success' : 'default'
   }
-
-  const handleReloadMappings = async () => {
-    setIsLoading(true)
-    try {
-      await loadAllMappings()
-      // Reload status after loading
-      const inputTypes: InputType[] = ['job', 'vehicle', 'shipment']
-      for (const inputType of inputTypes) {
-        const [hasMappingResult, age] = await Promise.all([
-          hasMapping(inputType),
-          getMappingAge(inputType),
-        ])
-        
-        setMappingStatus(prev => ({
-          ...prev,
-          [inputType]: {
-            hasMapping: hasMappingResult,
-            age,
-            loading: false,
-          },
-        }))
-      }
-    } catch (error) {
-      console.error('Failed to reload mappings:', error)
-    } finally {
-      setIsLoading(false)
-    }
+  const getStatusText = (has: boolean, loading: boolean, label: string) => {
+    if (loading) return 'Loading...'
+    if (!has) return label
+    return label + ' ✓'
   }
-
-  const getStatusColor = (inputType: InputType) => {
-    const status = mappingStatus[inputType]
-    if (status.loading) return 'default'
-    return status.hasMapping ? 'success' : 'default'
-  }
-
-  const getStatusText = (inputType: InputType) => {
-    const status = mappingStatus[inputType]
-    if (status.loading) return 'Loading...'
-    if (!status.hasMapping) return 'No mapping'
-    if (status.age === null) return 'Saved'
-    return `${status.age} day${status.age !== 1 ? 's' : ''} old`
-  }
-
-  const hasAnyMappings = Object.values(mappingStatus).some(status => status.hasMapping)
+  const preferences = preferencesStatus || { hasPreferences: false, loading: true }
 
   return (
-    <Box sx={{ p: 2, backgroundColor: '#f8f9fa', borderRadius: '8px', mb: 2 }}>
-      <Typography variant="h6" sx={{ mb: 2, color: '#333' }}>
-        Column Mapping Persistence
-      </Typography>
-      
-      <Box sx={{ display: 'flex', gap: 1, mb: 2, flexWrap: 'wrap' }}>
-        <Chip
-          label={`Jobs: ${getStatusText('job')}`}
-          color={getStatusColor('job')}
-          size="small"
-        />
-        <Chip
-          label={`Vehicles: ${getStatusText('vehicle')}`}
-          color={getStatusColor('vehicle')}
-          size="small"
-        />
-        <Chip
-          label={`Shipments: ${getStatusText('shipment')}`}
-          color={getStatusColor('shipment')}
-          size="small"
-        />
-      </Box>
-
-      <Alert severity="info" sx={{ mb: 2 }}>
-        Column mappings are automatically saved to your browser's local storage and will be restored when you return to the application.
-      </Alert>
-
-      <Box sx={{ display: 'flex', gap: 1 }}>
-        <Button
-          variant="outlined"
-          size="small"
-          onClick={handleReloadMappings}
-          disabled={isLoading}
-          startIcon={isLoading ? <CircularProgress size={16} /> : null}
-        >
-          Reload Mappings
-        </Button>
-        
-        {hasAnyMappings && (
-          <Button
-            variant="outlined"
-            color="error"
-            size="small"
-            onClick={() => setClearDialogOpen(true)}
-            disabled={isLoading}
-          >
-            Clear All Mappings
-          </Button>
-        )}
-      </Box>
-
-      {/* Clear All Mappings Dialog */}
-      <Dialog open={clearDialogOpen} onClose={() => setClearDialogOpen(false)}>
-        <DialogTitle>Clear All Mappings</DialogTitle>
-        <DialogContent>
-          <DialogContentText>
-            <Typography variant="h6" sx={{ mb: 2, color: '#d32f2f' }}>
-              Are you sure?
-            </Typography>
-            This will permanently delete all saved column mappings from your browser's local storage. 
-            This action cannot be undone.
-          </DialogContentText>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={() => setClearDialogOpen(false)} disabled={isLoading}>
-            Cancel
-          </Button>
-          <Button 
-            onClick={handleClearAllMappings} 
-            color="error" 
-            variant="contained"
-            disabled={isLoading}
-            startIcon={isLoading ? <CircularProgress size={16} /> : null}
-          >
-            Clear All
-          </Button>
-        </DialogActions>
-      </Dialog>
+    <Box sx={{ display: 'flex', gap: 1, mb: 2, flexWrap: 'wrap', alignItems: 'center' }}>
+      <Chip
+        label={getStatusText(mappingStatus.job.hasMapping, mappingStatus.job.loading, 'Jobs Map')}
+        color={getStatusColor(mappingStatus.job.hasMapping, mappingStatus.job.loading)}
+        size="small"
+      />
+      <Chip
+        label={getStatusText(mappingStatus.vehicle.hasMapping, mappingStatus.vehicle.loading, 'Vehicles Map')}
+        color={getStatusColor(mappingStatus.vehicle.hasMapping, mappingStatus.vehicle.loading)}
+        size="small"
+      />
+      <Chip
+        label={getStatusText(mappingStatus.shipment.hasMapping, mappingStatus.shipment.loading, 'Shipment Map')}
+        color={getStatusColor(mappingStatus.shipment.hasMapping, mappingStatus.shipment.loading)}
+        size="small"
+      />
+      <Chip
+        label={getStatusText(preferences.hasPreferences, preferences.loading, 'Preferences')}
+        color={getStatusColor(preferences.hasPreferences, preferences.loading)}
+        size="small"
+      />
     </Box>
   )
 } 

@@ -7,7 +7,7 @@ import {
   ToggleButton,
   InputAdornment,
 } from '@mui/material'
-import RouteOutlined from '@mui/icons-material/RouteOutlined'
+import DirectionsIcon from '@mui/icons-material/Directions'
 import {PreferencesPanel} from './preferences-panel'
 
 const ROUTING_MODE_OPTIONS = [
@@ -25,7 +25,7 @@ const validateTruckSize = (value: string) => {
 export interface RoutingPreferences {
   routing: {
     mode?: string
-    traffic_timestamps?: number
+    traffic_timestamps?: string // Changed from number to string for datetime-local input
     truck_size?: string
     truck_weight?: number
   }
@@ -63,7 +63,7 @@ export function RoutingPanel({ preferences, onPreferencesChange }: RoutingPanelP
     }
   }
 
-  const setTrafficTimestamps = (value: number) => {
+  const setTrafficTimestamps = (value: string) => {
     onPreferencesChange({
       ...preferences,
       routing: {
@@ -97,9 +97,9 @@ export function RoutingPanel({ preferences, onPreferencesChange }: RoutingPanelP
 
   return (
     <PreferencesPanel
-      icon={<RouteOutlined />}
+      icon={<DirectionsIcon />}
       title="Routing Configuration"
-      description="Defines travel mode and traffic considerations, ensuring accurate ETAs and efficient routing."
+      description=""
     >
       <Box>
         <ToggleButtonGroup
@@ -136,13 +136,16 @@ export function RoutingPanel({ preferences, onPreferencesChange }: RoutingPanelP
         <Grid container spacing={2}>
           <Grid item xs={4}>
             <TextField
-              label="Traffic timestamp (Unix timestamp)"
-              type="number"
+              label="Traffic timestamp"
+              type="datetime-local"
               value={routing.traffic_timestamps || ''}
-              onChange={(e) => setTrafficTimestamps(Number(e.target.value))}
+              onChange={(e) => setTrafficTimestamps(e.target.value)}
               size="small"
               fullWidth
-              placeholder="e.g., 1640995200"
+              InputLabelProps={{
+                shrink: true,
+              }}
+              helperText="When traffic conditions should be considered"
             />
           </Grid>
           {routing.mode === 'truck' && (

@@ -7,7 +7,7 @@ import { ObjectivePanel, ObjectivePreferences } from './objective-panel'
 export interface PreferencesInput {
   routing: {
     mode?: string
-    traffic_timestamps?: number
+    traffic_timestamps?: string // Changed from number to string for datetime-local input
     truck_size?: string
     truck_weight?: number
   }
