@@ -567,7 +567,7 @@ export const InputImportPage = ({ currentStep, onStepChange, preferences, onPref
                 setPollInterval(null)
                 setIsPolling(false)
                 setRouteResults(resultData)
-                setPollingMessage(`Optimization completed! Found ${resultData.routes?.length || 0} routes.`)
+                setPollingMessage(`Optimization completed! Found ${resultData.result?.routes?.length || 0} routes.`)
               } else if (resultData.message === "Still processing") {
                 // Continue polling - optimization still in progress
                 console.log('Optimization still processing...')
@@ -747,9 +747,9 @@ export const InputImportPage = ({ currentStep, onStepChange, preferences, onPref
                 <Typography variant="body2" sx={{ color: '#2e7d32' }}>
                   {pollingMessage}
                 </Typography>
-                {routeResults.routes && (
+                {routeResults.result?.routes && (
                   <Typography variant="body2" sx={{ color: '#2e7d32', mt: 1 }}>
-                    Total routes: {routeResults.routes.length}
+                    Total routes: {routeResults.result.routes.length}
                   </Typography>
                 )}
               </Box>
