@@ -9,6 +9,7 @@ import { PreferencesPage, PreferencesInput } from './input-panels/preferences-pa
 import { useInputStore } from '../../models/input/store'
 import { DataMapper } from './data-mapper/data-mapper'
 import { useUseCase } from '../../utils/use-case'
+import { ApiClient } from '../../utils/api-client'
 import ReplayIcon from '@mui/icons-material/Replay';
 import AddIcon from '@mui/icons-material/Add';
 import EditIcon from '@mui/icons-material/Edit';
@@ -20,6 +21,254 @@ import DialogTitle from '@mui/material/DialogTitle';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogActions from '@mui/material/DialogActions';
+
+// Types for optimization API
+interface OptimizationMvrpOrderJobV2 {
+  id: number
+  location_index: number
+  service?: number
+  delivery?: number[]
+  pickup?: number[]
+  time_windows?: number[][]
+  skills?: number[]
+  description?: string
+  priority?: number
+  setup?: number
+}
+
+interface OptimizationMvrpOrderVehicleV2 {
+  id: number
+  start_index: number
+  end_index?: number
+  capacity?: number[]
+  skills?: number[]
+  time_window?: [number, number]
+  costs?: {
+    fixed?: number
+  }
+  max_tasks?: number
+  max_travel_cost?: number
+  description?: string
+  depot?: number
+  break?: {
+    id: number
+    service?: number
+    time_windows: number[][]
+    description?: string
+  }
+}
+
+interface OptimizationMvrpOrderShipmentV2 {
+  id?: number | string
+  amount?: number[]
+  delivery: {
+    id: number
+    location_index: number
+    service?: number
+    setup?: number
+    time_windows?: [number, number][]
+    description: string
+  }
+  pickup: {
+    id: number
+    location_index: number
+    service?: number
+    setup?: number
+    time_windows?: [number, number][]
+    description?: string
+  }
+  priority?: number
+  skills?: number[]
+}
+
+interface OptimizationMvrpOrderLocationV2 {
+  id: number
+  location: string[]
+  approaches?: string[]
+}
+
+interface OptimizationMvrpOrderRequestV2 {
+  jobs?: OptimizationMvrpOrderJobV2[]
+  vehicles: OptimizationMvrpOrderVehicleV2[]
+  shipments?: OptimizationMvrpOrderShipmentV2[]
+  locations: OptimizationMvrpOrderLocationV2[]
+}
+
+// Normalization functions
+function normalizeJobs(jobData: any, mapConfig: any): OptimizationMvrpOrderJobV2[] {
+  if (!jobData.rows || jobData.rows.length === 0) return []
+  
+  return jobData.rows.map((row: string[], index: number) => {
+    const job: OptimizationMvrpOrderJobV2 = {
+      id: index + 1,
+      location_index: index + 1,
+    }
+    
+    // Map each column based on the mapping configuration
+    mapConfig.dataMappings.forEach((mapping: any) => {
+      const value = row[mapping.index]
+      if (!value) return
+      
+      switch (mapping.value) {
+        case 'id':
+          job.id = parseInt(value) || index + 1
+          break
+        case 'description':
+          job.description = value
+          break
+        case 'service':
+          job.service = parseInt(value)
+          break
+        case 'priority':
+          job.priority = parseInt(value)
+          break
+        case 'setup':
+          job.setup = parseInt(value)
+          break
+        case 'skills':
+          job.skills = value.split(',').map(s => parseInt(s.trim())).filter(n => !isNaN(n))
+          break
+        case 'start_time':
+        case 'end_time':
+          // Handle time windows - this is simplified, you may need more complex logic
+          if (!job.time_windows) job.time_windows = []
+          // Convert time to minutes since midnight
+          const timeInMinutes = convertTimeToMinutes(value)
+          if (mapping.value === 'start_time') {
+            job.time_windows.push([timeInMinutes, timeInMinutes + 60]) // Default 1 hour window
+          }
+          break
+        case 'pickup_capacity_1':
+        case 'pickup_capacity_2':
+        case 'pickup_capacity_3':
+          if (!job.pickup) job.pickup = []
+          const pickupIndex = parseInt(mapping.value.split('_').pop()) - 1
+          job.pickup[pickupIndex] = parseInt(value)
+          break
+        case 'delivery_capacity_1':
+        case 'delivery_capacity_2':
+        case 'delivery_capacity_3':
+          if (!job.delivery) job.delivery = []
+          const deliveryIndex = parseInt(mapping.value.split('_').pop()) - 1
+          job.delivery[deliveryIndex] = parseInt(value)
+          break
+      }
+    })
+    
+    return job
+  })
+}
+
+function normalizeVehicles(vehicleData: any, mapConfig: any): OptimizationMvrpOrderVehicleV2[] {
+  if (!vehicleData.rows || vehicleData.rows.length === 0) return []
+  
+  return vehicleData.rows.map((row: string[], index: number) => {
+    const vehicle: OptimizationMvrpOrderVehicleV2 = {
+      id: index + 1,
+      start_index: index + 1,
+    }
+    
+    // Map each column based on the mapping configuration
+    mapConfig.dataMappings.forEach((mapping: any) => {
+      const value = row[mapping.index]
+      if (!value) return
+      
+      switch (mapping.value) {
+        case 'id':
+          vehicle.id = parseInt(value) || index + 1
+          break
+        case 'description':
+          vehicle.description = value
+          break
+        case 'capacity_1':
+        case 'capacity_2':
+        case 'capacity_3':
+          if (!vehicle.capacity) vehicle.capacity = []
+          const capacityIndex = parseInt(mapping.value.split('_').pop()) - 1
+          vehicle.capacity[capacityIndex] = parseInt(value)
+          break
+        case 'skills':
+          vehicle.skills = value.split(',').map(s => parseInt(s.trim())).filter(n => !isNaN(n))
+          break
+        case 'max_tasks':
+          vehicle.max_tasks = parseInt(value)
+          break
+        case 'fixed_cost':
+          if (!vehicle.costs) vehicle.costs = {}
+          vehicle.costs.fixed = parseInt(value)
+          break
+        case 'start_time':
+        case 'end_time':
+          if (!vehicle.time_window) vehicle.time_window = [0, 1440] // Default full day
+          const timeInMinutes = convertTimeToMinutes(value)
+          if (mapping.value === 'start_time') {
+            vehicle.time_window[0] = timeInMinutes
+          } else {
+            vehicle.time_window[1] = timeInMinutes
+          }
+          break
+      }
+    })
+    
+    return vehicle
+  })
+}
+
+function normalizeLocations(jobData: any, vehicleData: any, mapConfig: any): OptimizationMvrpOrderLocationV2[] {
+  const locations: OptimizationMvrpOrderLocationV2[] = []
+  let locationIndex = 1
+  
+  // Add job locations
+  if (jobData.rows) {
+    jobData.rows.forEach((row: string[], index: number) => {
+      const locationMapping = mapConfig.dataMappings.find((m: any) => 
+        m.value === 'location' || m.value === 'location_lat_lng' || m.value === 'location_lng_lat'
+      )
+      
+      if (locationMapping) {
+        const locationValue = row[locationMapping.index]
+        if (locationValue) {
+          locations.push({
+            id: locationIndex,
+            location: [locationValue], // This should be parsed as lat,lng
+          })
+          locationIndex++
+        }
+      }
+    })
+  }
+  
+  // Add vehicle start/end locations
+  if (vehicleData.rows) {
+    vehicleData.rows.forEach((row: string[], index: number) => {
+      const startLocationMapping = mapConfig.dataMappings.find((m: any) => 
+        m.value === 'start_location' || m.value === 'start_location_lat_lng'
+      )
+      
+      if (startLocationMapping) {
+        const locationValue = row[startLocationMapping.index]
+        if (locationValue) {
+          locations.push({
+            id: locationIndex,
+            location: [locationValue],
+          })
+          locationIndex++
+        }
+      }
+    })
+  }
+  
+  return locations
+}
+
+function convertTimeToMinutes(timeStr: string): number {
+  // Simple time conversion - you may need more robust parsing
+  const time = timeStr.split(':')
+  if (time.length === 2) {
+    return parseInt(time[0]) * 60 + parseInt(time[1])
+  }
+  return 0
+}
 
 const steps = [
   'Preferences',
@@ -47,6 +296,7 @@ export const InputImportPage = ({ currentStep, onStepChange, preferences, onPref
   const [editRows, setEditRows] = React.useState<string[][]>([])
   const [editAttachedRows, setEditAttachedRows] = React.useState<string[][]>([])
   const [deleteDialogOpen, setDeleteDialogOpen] = React.useState(false);
+  const [isOptimizing, setIsOptimizing] = React.useState(false);
 
   // Handlers for editing
   const handleEdit = () => {
@@ -93,6 +343,47 @@ export const InputImportPage = ({ currentStep, onStepChange, preferences, onPref
     setDeleteDialogOpen(false);
   };
   const handleDeleteCancel = () => setDeleteDialogOpen(false);
+
+  // Handler for optimization request
+  const handleOptimizationRequest = async () => {
+    try {
+      setIsOptimizing(true)
+      
+      const apiKey = process.env.NEXTBILLION_API_KEY
+      if (!apiKey) {
+        throw new Error('NEXTBILLION_API_KEY environment variable is required')
+      }
+      
+      const apiClient = new ApiClient(apiKey)
+      
+      // Normalize the data
+      const normalizedJobs = normalizeJobs(job.rawData, job.mapConfig)
+      const normalizedVehicles = normalizeVehicles(vehicle.rawData, vehicle.mapConfig)
+      const normalizedLocations = normalizeLocations(job.rawData, vehicle.rawData, job.mapConfig)
+      
+      // Build the optimization request
+      const optimizationRequest: OptimizationMvrpOrderRequestV2 = {
+        jobs: normalizedJobs,
+        vehicles: normalizedVehicles,
+        locations: normalizedLocations,
+      }
+      
+      // Send the optimization request
+      const response = await apiClient.createOptimizationRequest(optimizationRequest)
+      
+      console.log('Optimization request successful:', response)
+      
+      // You can handle the response here - redirect to results page, show success message, etc.
+      const responseData = response.data as any
+      alert('Optimization request submitted successfully! Request ID: ' + responseData.id)
+      
+    } catch (error) {
+      console.error('Optimization request failed:', error)
+      alert('Optimization request failed: ' + (error as Error).message)
+    } finally {
+      setIsOptimizing(false)
+    }
+  }
 
   // Only show mapping table in the relevant step
   const showMapping = (step: number) => {
@@ -226,9 +517,16 @@ export const InputImportPage = ({ currentStep, onStepChange, preferences, onPref
           <Button
             variant="contained"
             disabled={currentStep === steps.length - 1}
-            onClick={() => onStepChange(Math.min(steps.length - 1, currentStep + 1))}
+            onClick={() => {
+              if (currentStep === steps.length - 1) {
+                // This is the Finish button - trigger optimization
+                handleOptimizationRequest()
+              } else {
+                onStepChange(Math.min(steps.length - 1, currentStep + 1))
+              }
+            }}
           >
-            {currentStep === steps.length - 1 ? 'Finish' : 'Next'}
+            {currentStep === steps.length - 1 ? (isOptimizing ? 'Optimizing...' : 'Finish') : 'Next'}
           </Button>
         </Box>
       </Box>
