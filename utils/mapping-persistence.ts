@@ -19,7 +19,7 @@ const CURRENT_VERSION = '1.0.0'
 
 /**
  * Mapping persistence service
- * Currently uses localStorage, can be extended to use Vercel Edge Storage
+ * Now uses Vercel Edge Storage via API routes
  */
 export class MappingPersistence {
   private static instance: MappingPersistence
@@ -34,7 +34,7 @@ export class MappingPersistence {
   }
 
   /**
-   * Save mapping configuration to storage
+   * Save mapping configuration to Vercel Edge Storage
    */
   async saveMapping(inputType: InputType, mapConfig: MapConfig): Promise<void> {
     try {
@@ -44,17 +44,12 @@ export class MappingPersistence {
         timestamp: Date.now(),
         version: CURRENT_VERSION,
       }
-
-      if (typeof window !== 'undefined') {
-        // Browser environment - use localStorage
-        localStorage.setItem(storageKey, JSON.stringify(storedData))
-        console.log(`Saved ${inputType} mapping to localStorage`)
-      } else {
-        // Server environment - could use Vercel Edge Storage here
-        console.log(`Server environment - would save ${inputType} mapping to Vercel Edge Storage`)
-        // TODO: Implement Vercel Edge Storage persistence
-        // await this.saveToVercelStorage(storageKey, storedData)
-      }
+      await fetch(`/api/map/${inputType}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(storedData),
+      })
+      console.log(`Saved ${inputType} mapping to Vercel Edge Storage`)
     } catch (error) {
       console.error(`Failed to save ${inputType} mapping:`, error)
       throw error
@@ -62,38 +57,25 @@ export class MappingPersistence {
   }
 
   /**
-   * Load mapping configuration from storage
+   * Load mapping configuration from Vercel Edge Storage
    */
   async loadMapping(inputType: InputType): Promise<MapConfig | null> {
     try {
-      const storageKey = this.getStorageKey(inputType)
-
-      if (typeof window !== 'undefined') {
-        // Browser environment - use localStorage
-        const stored = localStorage.getItem(storageKey)
-        if (!stored) {
-          console.log(`No stored mapping found for ${inputType}`)
-          return null
-        }
-
-        const parsedData: StoredMapping = JSON.parse(stored)
-        
-        // Validate the stored data
-        if (!this.isValidStoredMapping(parsedData)) {
-          console.warn(`Invalid stored mapping for ${inputType}, clearing...`)
-          this.clearMapping(inputType)
-          return null
-        }
-
-        console.log(`Loaded ${inputType} mapping from localStorage`)
-        return parsedData.mapConfig
-      } else {
-        // Server environment - could use Vercel Edge Storage here
-        console.log(`Server environment - would load ${inputType} mapping from Vercel Edge Storage`)
-        // TODO: Implement Vercel Edge Storage loading
-        // return await this.loadFromVercelStorage(storageKey)
+      const res = await fetch(`/api/map/${inputType}`)
+      if (!res.ok) {
+        console.log(`No stored mapping found for ${inputType}`)
         return null
       }
+      const data = await res.json()
+      if (!data.value) return null
+      const parsedData: StoredMapping = data.value
+      if (!this.isValidStoredMapping(parsedData)) {
+        console.warn(`Invalid stored mapping for ${inputType}, clearing...`)
+        await this.clearMapping(inputType)
+        return null
+      }
+      console.log(`Loaded ${inputType} mapping from Vercel Edge Storage`)
+      return parsedData.mapConfig
     } catch (error) {
       console.error(`Failed to load ${inputType} mapping:`, error)
       return null
@@ -101,22 +83,17 @@ export class MappingPersistence {
   }
 
   /**
-   * Clear mapping configuration from storage
+   * Clear mapping configuration from Vercel Edge Storage
    */
   async clearMapping(inputType: InputType): Promise<void> {
     try {
-      const storageKey = this.getStorageKey(inputType)
-
-      if (typeof window !== 'undefined') {
-        // Browser environment - use localStorage
-        localStorage.removeItem(storageKey)
-        console.log(`Cleared ${inputType} mapping from localStorage`)
-      } else {
-        // Server environment - could use Vercel Edge Storage here
-        console.log(`Server environment - would clear ${inputType} mapping from Vercel Edge Storage`)
-        // TODO: Implement Vercel Edge Storage clearing
-        // await this.clearFromVercelStorage(storageKey)
-      }
+      // Set to null (or you could implement a DELETE endpoint)
+      await fetch(`/api/map/${inputType}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(null),
+      })
+      console.log(`Cleared ${inputType} mapping from Vercel Edge Storage`)
     } catch (error) {
       console.error(`Failed to clear ${inputType} mapping:`, error)
       throw error
@@ -124,22 +101,14 @@ export class MappingPersistence {
   }
 
   /**
-   * Check if mapping exists in storage
+   * Check if mapping exists in Vercel Edge Storage
    */
   async hasMapping(inputType: InputType): Promise<boolean> {
     try {
-      const storageKey = this.getStorageKey(inputType)
-
-      if (typeof window !== 'undefined') {
-        // Browser environment - use localStorage
-        return localStorage.getItem(storageKey) !== null
-      } else {
-        // Server environment - could use Vercel Edge Storage here
-        console.log(`Server environment - would check ${inputType} mapping in Vercel Edge Storage`)
-        // TODO: Implement Vercel Edge Storage check
-        // return await this.hasInVercelStorage(storageKey)
-        return false
-      }
+      const res = await fetch(`/api/map/${inputType}`)
+      if (!res.ok) return false
+      const data = await res.json()
+      return !!data.value
     } catch (error) {
       console.error(`Failed to check ${inputType} mapping existence:`, error)
       return false
@@ -147,16 +116,16 @@ export class MappingPersistence {
   }
 
   /**
-   * Get storage key for input type
+   * Get storage key for input type (for API route)
    */
   private getStorageKey(inputType: InputType): string {
     switch (inputType) {
       case 'job':
-        return STORAGE_KEYS.JOB_MAPPING
+        return 'jobs'
       case 'vehicle':
-        return STORAGE_KEYS.VEHICLE_MAPPING
+        return 'vehicles'
       case 'shipment':
-        return STORAGE_KEYS.SHIPMENT_MAPPING
+        return 'shipments'
       default:
         throw new Error(`Unknown input type: ${inputType}`)
     }
@@ -182,41 +151,18 @@ export class MappingPersistence {
    */
   async getMappingAge(inputType: InputType): Promise<number | null> {
     try {
-      const storageKey = this.getStorageKey(inputType)
-
-      if (typeof window !== 'undefined') {
-        const stored = localStorage.getItem(storageKey)
-        if (!stored) return null
-
-        const parsedData: StoredMapping = JSON.parse(stored)
-        const ageInMs = Date.now() - parsedData.timestamp
-        return Math.floor(ageInMs / (1000 * 60 * 60 * 24)) // Convert to days
-      }
-      return null
+      const res = await fetch(`/api/map/${inputType}`)
+      if (!res.ok) return null
+      const data = await res.json()
+      if (!data.value) return null
+      const parsedData: StoredMapping = data.value
+      const ageInMs = Date.now() - parsedData.timestamp
+      return Math.floor(ageInMs / (1000 * 60 * 60 * 24))
     } catch (error) {
       console.error(`Failed to get mapping age for ${inputType}:`, error)
       return null
     }
   }
-
-  // TODO: Future Vercel Edge Storage methods
-  /*
-  private async saveToVercelStorage(key: string, data: StoredMapping): Promise<void> {
-    // Implementation for Vercel Edge Storage
-  }
-
-  private async loadFromVercelStorage(key: string): Promise<MapConfig | null> {
-    // Implementation for Vercel Edge Storage
-  }
-
-  private async clearFromVercelStorage(key: string): Promise<void> {
-    // Implementation for Vercel Edge Storage
-  }
-
-  private async hasInVercelStorage(key: string): Promise<boolean> {
-    // Implementation for Vercel Edge Storage
-  }
-  */
 }
 
 // Export singleton instance

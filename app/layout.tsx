@@ -19,7 +19,7 @@ export default function RootLayout({
       <head>
         <link href="https://maps-gl.nextbillion.io/maps/v2/api/css" rel="stylesheet"/>
       </head>
-      <body>
+      <body style={{ background: '#E5EEFA' }}>
         <WhiteLabelLayout>{children}</WhiteLabelLayout>
       </body>
     </html>
