@@ -415,6 +415,16 @@ export const InputImportPage = ({ currentStep, onStepChange, preferences, onPref
   const [isPolling, setIsPolling] = React.useState(false);
   const [pollingMessage, setPollingMessage] = React.useState('');
   const [routeResults, setRouteResults] = React.useState<any>(null);
+  const [pollInterval, setPollInterval] = React.useState<NodeJS.Timeout | null>(null);
+
+  // Cleanup polling interval on unmount
+  React.useEffect(() => {
+    return () => {
+      if (pollInterval) {
+        clearInterval(pollInterval);
+      }
+    };
+  }, [pollInterval]);
 
   // Handlers for editing
   const handleEdit = () => {
@@ -461,6 +471,16 @@ export const InputImportPage = ({ currentStep, onStepChange, preferences, onPref
     setDeleteDialogOpen(false);
   };
   const handleDeleteCancel = () => setDeleteDialogOpen(false);
+
+  // Handler for canceling polling
+  const handleCancelPolling = () => {
+    if (pollInterval) {
+      clearInterval(pollInterval);
+      setPollInterval(null);
+    }
+    setIsPolling(false);
+    setPollingMessage('Polling cancelled by user.');
+  };
 
   // Handler for optimization request
   const handleOptimizationRequest = async () => {
@@ -534,14 +554,15 @@ export const InputImportPage = ({ currentStep, onStepChange, preferences, onPref
         setPollingMessage('Optimization request submitted successfully! Polling for results...')
         
         // Poll every 5 seconds
-        const pollInterval = setInterval(async () => {
+        const interval = setInterval(async () => {
           try {
             const resultResponse = await apiClient.getOptimizationResult(requestId)
             const resultData = resultResponse.data as any
             
             if (resultData && resultData.routes) {
               // Optimization completed
-              clearInterval(pollInterval)
+              clearInterval(interval)
+              setPollInterval(null)
               setIsPolling(false)
               setRouteResults(resultData)
               setPollingMessage(`Optimization completed! Found ${resultData.routes.length} routes.`)
@@ -552,9 +573,12 @@ export const InputImportPage = ({ currentStep, onStepChange, preferences, onPref
           }
         }, 5000)
         
+        setPollInterval(interval)
+        
         // Stop polling after 10 minutes (120 polls)
         setTimeout(() => {
-          clearInterval(pollInterval)
+          clearInterval(interval)
+          setPollInterval(null)
           if (isPolling) {
             setIsPolling(false)
             setPollingMessage('Polling timeout - optimization may still be in progress.')
@@ -682,9 +706,26 @@ export const InputImportPage = ({ currentStep, onStepChange, preferences, onPref
             {/* Polling Status */}
             {isPolling && (
               <Box sx={{ mt: 3, p: 2, backgroundColor: '#e3f2fd', borderRadius: '4px' }}>
-                <Typography variant="body2" sx={{ color: '#1976d2', mb: 1 }}>
-                  {pollingMessage}
-                </Typography>
+                <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 1 }}>
+                  <Typography variant="body2" sx={{ color: '#1976d2' }}>
+                    {pollingMessage}
+                  </Typography>
+                  <Button
+                    variant="outlined"
+                    size="small"
+                    onClick={handleCancelPolling}
+                    sx={{ 
+                      color: '#d32f2f', 
+                      borderColor: '#d32f2f',
+                      '&:hover': {
+                        borderColor: '#b71c1c',
+                        backgroundColor: 'rgba(211, 47, 47, 0.04)'
+                      }
+                    }}
+                  >
+                    Cancel
+                  </Button>
+                </Box>
                 <LinearProgress sx={{ height: 8, borderRadius: 4 }} />
               </Box>
             )}
