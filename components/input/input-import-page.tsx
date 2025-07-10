@@ -533,7 +533,11 @@ export const InputImportPage = ({ currentStep, onStepChange, preferences, onPref
       });
       
       // Normalize the data
-      const normalizedJobs = normalizeJobs(job.rawData, job.mapConfig, locMap)
+      const normalizedJobs = normalizeJobs(
+        { ...job.rawData, selection: job.selection },
+        job.mapConfig,
+        locMap
+      )
       const normalizedVehicles = normalizeVehicles(
         { ...store.inputCore.vehicle.rawData, selection: store.inputCore.vehicle.selection },
         store.inputCore.vehicle.mapConfig,
@@ -668,9 +672,6 @@ export const InputImportPage = ({ currentStep, onStepChange, preferences, onPref
                 {store.inputCore[inputType].rawData.rows.length} records loaded
               </Typography>
             </Box>
-            <Typography variant="body2" sx={{ color: '#666', mb: 2 }}>
-              Your {orderTypeLabel.toLowerCase()} data has been successfully imported. You can now proceed to the mapping step or click the delete icon above to remove the data and upload a different file.
-            </Typography>
             {/* Icon toolbar and mapping table are rendered here */}
             <Box sx={{ mt: 2, mb: 2, display: 'flex', gap: 2, alignItems: 'center', justifyContent: 'flex-end' }}>
               <IconButton onClick={() => store.inputCore.resetMapping(inputType)} color="primary" title="Reset Mapping">
