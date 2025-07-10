@@ -138,10 +138,6 @@ export const InputVehicleUpload = () => {
               {vehicle.rawData.rows.length} records loaded
             </Typography>
           </Box>
-          <Typography variant="body2" sx={{ color: '#666' }}>
-            Your vehicle fleet data has been successfully imported. 
-            You can now proceed to the mapping step or click the delete icon above to remove the data and upload a different file.
-          </Typography>
 
           {/* Batch editing controls */}
           <Box sx={{ mt: 2, mb: 2, display: 'flex', gap: 2, alignItems: 'center', justifyContent: 'flex-end' }}>

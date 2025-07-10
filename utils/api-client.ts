@@ -81,10 +81,7 @@ export class ApiClient {
   async createOptimizationRequest(payload: any) {
     return this.request('/optimization/v2', {
       method: 'POST',
-      body: JSON.stringify({
-        ...payload,
-        key: this.apiKey,
-      }),
+      body: JSON.stringify(payload),
     })
   }
 

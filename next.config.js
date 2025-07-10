@@ -10,6 +10,14 @@ function getLastCommitDate() {
   }
 }
 
+function getGitCommit() {
+  try {
+    return child_process.execSync('git rev-parse --short=6 HEAD').toString().trim()
+  } catch {
+    return ''
+  }
+}
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   experimental: {
@@ -36,6 +44,7 @@ const nextConfig = {
     NEXT_PUBLIC_USE_CASE: process.env.USE_CASE || 'jobs',
     NEXT_PUBLIC_VERSION: pkg.version,
     NEXT_PUBLIC_LAST_UPDATED: getLastCommitDate(),
+    NEXT_PUBLIC_GIT_COMMIT: getGitCommit(),
   },
   typescript: {
     ignoreBuildErrors: true,

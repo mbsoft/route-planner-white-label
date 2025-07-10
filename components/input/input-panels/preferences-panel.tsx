@@ -25,22 +25,23 @@ export function PreferencesPanel({
       <Box sx={{display: 'flex', alignItems: 'center', mb: 1}}>
         <Box
           sx={{
-            width: 24,
-            height: 24,
+            width: 40,
+            height: 40,
             borderRadius: '50%',
-            bgcolor: 'rgba(30, 85, 222, 0.5)',
+            bgcolor: '#e3f0ff',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
             mr: '12px',
-            color: '#fff',
+            color: '#1976d2',
             fontSize: '12px',
           }}
         >
           {React.cloneElement(icon as React.ReactElement, {
             style: {
-              width: '16px',
-              height: '16px',
+              width: '28px',
+              height: '28px',
+              color: '#1976d2',
             },
           })}
         </Box>

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Box, List, ListItem, ListItemIcon, ListItemText, Typography } from '@mui/material';
-import SettingsOutlinedIcon from '@mui/icons-material/SettingsOutlined';
-import Inventory2OutlinedIcon from '@mui/icons-material/Inventory2Outlined';
+import TuneIcon from '@mui/icons-material/Tune';
+import AssignmentIcon from '@mui/icons-material/Assignment';
 import LocalShippingIcon from '@mui/icons-material/LocalShipping';
 import { useUseCase } from '../../utils/use-case';
 
@@ -17,11 +17,11 @@ export const InputImportStepper: React.FC<InputImportStepperProps> = ({ currentS
   const steps = [
     {
       label: 'Preferences',
-      icon: <SettingsOutlinedIcon fontSize="small" />,
+      icon: <TuneIcon fontSize="small" />,
     },
     {
       label: orderTypeLabel,
-      icon: <Inventory2OutlinedIcon fontSize="small" />,
+      icon: <AssignmentIcon fontSize="small" />,
     },
     {
       label: 'Vehicles',

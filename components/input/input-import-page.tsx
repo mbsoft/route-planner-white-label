@@ -1,7 +1,7 @@
 'use client'
 
 import React from 'react'
-import { Box, Button, Typography, IconButton, LinearProgress } from '@mui/material'
+import { Box, Button, Typography, IconButton, LinearProgress, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Collapse, Checkbox } from '@mui/material'
 import { InputOrderPanel } from './input-panels/input-order'
 import { InputVehiclePanel } from './input-panels/input-vehicle'
 import { InputImportStepper } from './input-import-stepper'
@@ -16,11 +16,14 @@ import EditIcon from '@mui/icons-material/Edit';
 import SaveIcon from '@mui/icons-material/Save';
 import CloseIcon from '@mui/icons-material/Close';
 import DeleteIcon from '@mui/icons-material/Delete';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 import Dialog from '@mui/material/Dialog';
 import DialogTitle from '@mui/material/DialogTitle';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogActions from '@mui/material/DialogActions';
+import { usePreferencesPersistence } from '../../hooks/use-preferences-persistence'
 
 // Types for optimization API
 interface OptimizationMvrpOrderJobV2 {
@@ -97,6 +100,26 @@ interface OptimizationMvrpOrderRequestV2 {
     id: number
     description: string
     location: string[]
+  }
+  options?: {
+    objective?: {
+      travel_cost?: string
+      custom?: {
+        type?: string
+        value?: string
+      }
+    }
+    constraint?: {
+      max_vehicle_overtime?: number
+      max_visit_lateness?: number
+      max_activity_waiting_time?: number
+    }
+    routing?: {
+      mode?: string
+      traffic_timestamp?: number
+      truck_size?: string
+      truck_weight?: number
+    }
   }
 }
 
@@ -384,6 +407,237 @@ function normalizeVehicles(vehicleData: any, mapConfig: any, locMap: Map<string,
   return selectedVehicles;
 }
 
+// Route Summary Table Component
+interface RouteSummaryTableProps {
+  routes: any[]
+  expandedRoutes: Set<number>
+  selectedRoutes: Set<number>
+  onToggleRoute: (routeIndex: number) => void
+  onToggleRouteSelection: (routeIndex: number) => void
+  onSelectAllRoutes: () => void
+  onDeselectAllRoutes: () => void
+}
+
+const RouteSummaryTable: React.FC<RouteSummaryTableProps> = ({ 
+  routes, 
+  expandedRoutes, 
+  selectedRoutes,
+  onToggleRoute, 
+  onToggleRouteSelection,
+  onSelectAllRoutes,
+  onDeselectAllRoutes 
+}) => {
+  const formatDuration = (seconds: number) => {
+    const hours = Math.floor(seconds / 3600)
+    const minutes = Math.floor((seconds % 3600) / 60)
+    return `${hours}h ${minutes}m`
+  }
+
+  const formatDistance = (meters: number) => {
+    const km = meters / 1000
+    return `${km.toFixed(1)} km`
+  }
+
+  const formatTime = (timestamp: number) => {
+    if (!timestamp) return 'N/A'
+    return new Date(timestamp * 1000).toLocaleTimeString('en-GB', {
+      hour: '2-digit',
+      minute: '2-digit',
+      hour12: false
+    })
+  }
+
+  const getRouteStartTime = (route: any) => {
+    if (!route.steps || route.steps.length === 0) return 'N/A'
+    const firstStep = route.steps[0]
+    return formatTime(firstStep.arrival)
+  }
+
+  const getRouteEndTime = (route: any) => {
+    if (!route.steps || route.steps.length === 0) return 'N/A'
+    const lastStep = route.steps[route.steps.length - 1]
+    return formatTime(lastStep.arrival)
+  }
+
+  const getStepTypeIcon = (type: string) => {
+    switch (type) {
+      case 'start': return '🚗'
+      case 'job': return '📦'
+      case 'pickup': return '📥'
+      case 'delivery': return '📤'
+      case 'end': return '🏁'
+      default: return '📍'
+    }
+  }
+
+  return (
+    <TableContainer component={Paper} sx={{ mt: 2, maxHeight: 600 }}>
+      <Table stickyHeader>
+        <TableHead>
+          <TableRow>
+            <TableCell sx={{ width: 50 }}>
+              <Checkbox
+                checked={selectedRoutes.size === routes.length && routes.length > 0}
+                indeterminate={selectedRoutes.size > 0 && selectedRoutes.size < routes.length}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                  if (e.target.checked) {
+                    onSelectAllRoutes();
+                  } else {
+                    onDeselectAllRoutes();
+                  }
+                }}
+              />
+            </TableCell>
+            <TableCell sx={{ width: 50 }}></TableCell>
+            <TableCell><strong>Vehicle</strong></TableCell>
+            <TableCell><strong>Start Time</strong></TableCell>
+            <TableCell><strong>End Time</strong></TableCell>
+            <TableCell><strong>Stops</strong></TableCell>
+            <TableCell><strong>Distance</strong></TableCell>
+            <TableCell><strong>Duration</strong></TableCell>
+            <TableCell><strong>Cost</strong></TableCell>
+            <TableCell><strong>Load</strong></TableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          {routes.map((route, routeIndex) => (
+            <React.Fragment key={routeIndex}>
+              <TableRow 
+                hover 
+                sx={{ 
+                  cursor: 'pointer',
+                  backgroundColor: expandedRoutes.has(routeIndex) ? '#f5f5f5' : 'inherit'
+                }}
+              >
+                <TableCell onClick={(e) => e.stopPropagation()}>
+                  <Checkbox
+                    checked={selectedRoutes.has(routeIndex)}
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                      e.stopPropagation();
+                      onToggleRouteSelection(routeIndex);
+                    }}
+                  />
+                </TableCell>
+                <TableCell onClick={() => onToggleRoute(routeIndex)}>
+                  <IconButton size="small">
+                    {expandedRoutes.has(routeIndex) ? <ExpandLessIcon /> : <ExpandMoreIcon />}
+                  </IconButton>
+                </TableCell>
+                <TableCell onClick={() => onToggleRoute(routeIndex)}>
+                  <Typography variant="body2" sx={{ fontWeight: 'bold' }}>
+                    {route.vehicle || `Vehicle ${routeIndex + 1}`}
+                  </Typography>
+                  {route.description && (
+                    <Typography variant="caption" sx={{ color: '#666' }}>
+                      {route.description}
+                    </Typography>
+                  )}
+                </TableCell>
+                <TableCell onClick={() => onToggleRoute(routeIndex)}>
+                  <Typography variant="body2">
+                    {getRouteStartTime(route)}
+                  </Typography>
+                </TableCell>
+                <TableCell onClick={() => onToggleRoute(routeIndex)}>
+                  <Typography variant="body2">
+                    {getRouteEndTime(route)}
+                  </Typography>
+                </TableCell>
+                <TableCell onClick={() => onToggleRoute(routeIndex)}>
+                  <Typography variant="body2">
+                    {route.steps ? route.steps.length - 2 : 0} stops
+                  </Typography>
+                </TableCell>
+                <TableCell onClick={() => onToggleRoute(routeIndex)}>
+                  <Typography variant="body2">
+                    {formatDistance(route.distance || 0)}
+                  </Typography>
+                </TableCell>
+                <TableCell onClick={() => onToggleRoute(routeIndex)}>
+                  <Typography variant="body2">
+                    {formatDuration(route.duration || 0)}
+                  </Typography>
+                </TableCell>
+                <TableCell onClick={() => onToggleRoute(routeIndex)}>
+                  <Typography variant="body2">
+                    {route.cost || 0}
+                  </Typography>
+                </TableCell>
+                <TableCell onClick={() => onToggleRoute(routeIndex)}>
+                  <Typography variant="body2">
+                    {route.delivery && route.delivery.length > 0 ? 
+                      `Del: ${route.delivery.join(', ')}` : 
+                      route.pickup && route.pickup.length > 0 ? 
+                        `Pick: ${route.pickup.join(', ')}` : 
+                        'Empty'
+                    }
+                  </Typography>
+                </TableCell>
+              </TableRow>
+              
+              {/* Expanded details */}
+              <TableRow>
+                <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={10}>
+                  <Collapse in={expandedRoutes.has(routeIndex)} timeout="auto" unmountOnExit>
+                    <Box sx={{ margin: 1 }}>
+                      <Typography variant="h6" gutterBottom component="div">
+                        Route Details
+                      </Typography>
+                      <Table size="small">
+                        <TableHead>
+                          <TableRow>
+                            <TableCell><strong>Step</strong></TableCell>
+                            <TableCell><strong>Type</strong></TableCell>
+                            <TableCell><strong>Location</strong></TableCell>
+                            <TableCell><strong>Arrival</strong></TableCell>
+                            <TableCell><strong>Service</strong></TableCell>
+                            <TableCell><strong>Load</strong></TableCell>
+                          </TableRow>
+                        </TableHead>
+                        <TableBody>
+                          {route.steps && route.steps.map((step: any, stepIndex: number) => (
+                            <TableRow key={stepIndex}>
+                              <TableCell>{stepIndex + 1}</TableCell>
+                              <TableCell>
+                                <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                                  <span>{getStepTypeIcon(step.type)}</span>
+                                  <span>{step.type}</span>
+                                </Box>
+                              </TableCell>
+                              <TableCell>
+                                {step.location ? 
+                                  `${step.location[0].toFixed(4)}, ${step.location[1].toFixed(4)}` : 
+                                  step.id || 'N/A'
+                                }
+                              </TableCell>
+                              <TableCell>
+                                {step.arrival ? 
+                                  new Date(step.arrival * 1000).toLocaleTimeString() : 
+                                  formatDuration(step.duration || 0)
+                                }
+                              </TableCell>
+                              <TableCell>
+                                {step.service ? formatDuration(step.service) : '-'}
+                              </TableCell>
+                              <TableCell>
+                                {step.load && step.load.length > 0 ? step.load.join(', ') : '-'}
+                              </TableCell>
+                            </TableRow>
+                          ))}
+                        </TableBody>
+                      </Table>
+                    </Box>
+                  </Collapse>
+                </TableCell>
+              </TableRow>
+            </React.Fragment>
+          ))}
+        </TableBody>
+      </Table>
+    </TableContainer>
+  )
+}
+
 const steps = [
   'Preferences',
   'Orders/Shipments',
@@ -416,6 +670,13 @@ export const InputImportPage = ({ currentStep, onStepChange, preferences, onPref
   const [pollingMessage, setPollingMessage] = React.useState('');
   const [routeResults, setRouteResults] = React.useState<any>(null);
   const [pollInterval, setPollInterval] = React.useState<NodeJS.Timeout | null>(null);
+  const { savePreferences } = usePreferencesPersistence();
+  const [isSavingPreferences, setIsSavingPreferences] = React.useState(false);
+  const [saveError, setSaveError] = React.useState<string | null>(null);
+
+  // State for expanded routes in RouteSummaryTable
+  const [expandedRoutes, setExpandedRoutes] = React.useState<Set<number>>(new Set());
+  const [selectedRoutes, setSelectedRoutes] = React.useState<Set<number>>(new Set());
 
   // Cleanup polling interval on unmount
   React.useEffect(() => {
@@ -425,6 +686,23 @@ export const InputImportPage = ({ currentStep, onStepChange, preferences, onPref
       }
     };
   }, [pollInterval]);
+
+  // Update route data passed to parent when selection changes
+  React.useEffect(() => {
+    if (routeResults?.result?.routes && onRouteResultsChange) {
+      const selectedRouteData = routeResults.result.routes
+        .filter((_: any, index: number) => selectedRoutes.has(index))
+        .map((route: any) => ({
+          vehicle: route.vehicle,
+          geometry: route.geometry,
+          cost: route.cost,
+          distance: route.distance,
+          duration: route.duration,
+          steps: route.steps
+        }))
+      onRouteResultsChange(selectedRouteData)
+    }
+  }, [selectedRoutes, routeResults, onRouteResultsChange])
 
   // Handlers for editing
   const handleEdit = () => {
@@ -479,6 +757,7 @@ export const InputImportPage = ({ currentStep, onStepChange, preferences, onPref
       setPollInterval(null);
     }
     setIsPolling(false);
+    setRouteResults(null); // Clear any partial results
     setPollingMessage('Polling cancelled by user.');
   };
 
@@ -486,6 +765,9 @@ export const InputImportPage = ({ currentStep, onStepChange, preferences, onPref
   const handleOptimizationRequest = async () => {
     try {
       setIsOptimizing(true)
+      // Clear any prior optimization results
+      setRouteResults(null)
+      setPollingMessage('')
       
       // Check if at least one job and one vehicle are selected
       // Ensure selection arrays are properly initialized
@@ -533,7 +815,11 @@ export const InputImportPage = ({ currentStep, onStepChange, preferences, onPref
       });
       
       // Normalize the data
-      const normalizedJobs = normalizeJobs(job.rawData, job.mapConfig, locMap)
+      const normalizedJobs = normalizeJobs(
+        { ...job.rawData, selection: job.selection },
+        job.mapConfig,
+        locMap
+      )
       const normalizedVehicles = normalizeVehicles(
         { ...store.inputCore.vehicle.rawData, selection: store.inputCore.vehicle.selection },
         store.inputCore.vehicle.mapConfig,
@@ -551,6 +837,37 @@ export const InputImportPage = ({ currentStep, onStepChange, preferences, onPref
         jobs: normalizedJobs,
         vehicles: normalizedVehicles,
         locations: locations,
+        options: {
+          objective: {
+            travel_cost: (preferences?.objective?.travel_cost && 
+              ['duration', 'distance', 'air_distance', 'customized'].includes(preferences.objective.travel_cost)) 
+              ? preferences.objective.travel_cost 
+              : 'duration',
+            ...(preferences?.objective?.custom && {
+              custom: {
+                type: preferences.objective.custom.type || 'min',
+                value: preferences.objective.custom.value || 'vehicles'
+              }
+            })
+          },
+          constraint: {
+            max_vehicle_overtime: preferences?.constraints?.max_vehicle_overtime || 0,
+            max_visit_lateness: preferences?.constraints?.max_visit_lateness || 0,
+            max_activity_waiting_time: preferences?.constraints?.max_activity_waiting_time || 0
+          },
+          routing: {
+            mode: preferences?.routing?.mode || 'car',
+            ...(preferences?.routing?.traffic_timestamps && {
+              traffic_timestamp: Math.floor(new Date(preferences.routing.traffic_timestamps).getTime() / 1000)
+            }),
+            ...(preferences?.routing?.mode === 'truck' && preferences?.routing?.truck_size && {
+              truck_size: preferences.routing.truck_size
+            }),
+            ...(preferences?.routing?.mode === 'truck' && preferences?.routing?.truck_weight && {
+              truck_weight: preferences.routing.truck_weight
+            })
+          }
+        }
       }
       
       // Send the optimization request
@@ -580,6 +897,8 @@ export const InputImportPage = ({ currentStep, onStepChange, preferences, onPref
                 setPollInterval(null)
                 setIsPolling(false)
                 setRouteResults(resultData)
+                // Reset expanded routes when new results come in
+                setExpandedRoutes(new Set())
                 setPollingMessage(`Optimization completed! Found ${resultData.result?.routes?.length || 0} routes.`)
                 
                 // Convert route results to RouteData format and pass to parent
@@ -593,6 +912,8 @@ export const InputImportPage = ({ currentStep, onStepChange, preferences, onPref
                     steps: route.steps
                   }))
                   onRouteResultsChange(routeData)
+                  // Initialize all routes as selected by default
+                  setSelectedRoutes(new Set(routeData.map((_: any, i: number) => i)))
                 }
               } else if (resultData.message === "Still processing") {
                 // Continue polling - optimization still in progress
@@ -631,6 +952,27 @@ export const InputImportPage = ({ currentStep, onStepChange, preferences, onPref
     }
   }
 
+  // Handler for Next/Run Optimization button
+  const handleNextOrRun = async () => {
+    setSaveError(null);
+    if (preferences) {
+      setIsSavingPreferences(true);
+      try {
+        await savePreferences(preferences);
+      } catch (err: any) {
+        setSaveError('Failed to save preferences. Please try again.');
+        setIsSavingPreferences(false);
+        return;
+      }
+      setIsSavingPreferences(false);
+    }
+    if (currentStep === steps.length - 1) {
+      handleOptimizationRequest();
+    } else {
+      onStepChange(Math.min(steps.length - 1, currentStep + 1));
+    }
+  };
+
   // Only show mapping table in the relevant step
   const showMapping = (step: number) => {
     if (step === 1 && store.inputCore[inputType].rawData.rows.length > 0) return true
@@ -668,9 +1010,6 @@ export const InputImportPage = ({ currentStep, onStepChange, preferences, onPref
                 {store.inputCore[inputType].rawData.rows.length} records loaded
               </Typography>
             </Box>
-            <Typography variant="body2" sx={{ color: '#666', mb: 2 }}>
-              Your {orderTypeLabel.toLowerCase()} data has been successfully imported. You can now proceed to the mapping step or click the delete icon above to remove the data and upload a different file.
-            </Typography>
             {/* Icon toolbar and mapping table are rendered here */}
             <Box sx={{ mt: 2, mb: 2, display: 'flex', gap: 2, alignItems: 'center', justifyContent: 'flex-end' }}>
               <IconButton onClick={() => store.inputCore.resetMapping(inputType)} color="primary" title="Reset Mapping">
@@ -764,21 +1103,43 @@ export const InputImportPage = ({ currentStep, onStepChange, preferences, onPref
                 <LinearProgress sx={{ height: 8, borderRadius: 4 }} />
               </Box>
             )}
-            {/* Results Display */}
-            {routeResults && (
-              <Box sx={{ mt: 3, p: 2, backgroundColor: '#e8f5e8', borderRadius: '4px' }}>
-                <Typography variant="body2" sx={{ color: '#2e7d32', fontWeight: 'bold', mb: 1 }}>
-                  ✓ Optimization Complete
-                </Typography>
-                <Typography variant="body2" sx={{ color: '#2e7d32' }}>
-                  {pollingMessage}
-                </Typography>
-                {routeResults.result?.routes && (
-                  <Typography variant="body2" sx={{ color: '#2e7d32', mt: 1 }}>
-                    Total routes: {routeResults.result.routes.length}
-                  </Typography>
-                )}
-              </Box>
+
+            
+            {/* Route Summary Table */}
+            {routeResults?.result?.routes && (
+              <RouteSummaryTable
+                routes={routeResults.result.routes}
+                expandedRoutes={expandedRoutes}
+                selectedRoutes={selectedRoutes}
+                onToggleRoute={(index) => {
+                  setExpandedRoutes(prev => {
+                    const newSet = new Set(prev);
+                    if (newSet.has(index)) {
+                      newSet.delete(index);
+                    } else {
+                      newSet.add(index);
+                    }
+                    return newSet;
+                  });
+                }}
+                onToggleRouteSelection={(index) => {
+                  setSelectedRoutes(prev => {
+                    const newSet = new Set(prev);
+                    if (newSet.has(index)) {
+                      newSet.delete(index);
+                    } else {
+                      newSet.add(index);
+                    }
+                    return newSet;
+                  });
+                }}
+                                 onSelectAllRoutes={() => {
+                   setSelectedRoutes(new Set(routeResults.result.routes.map((_: any, i: number) => i)));
+                 }}
+                onDeselectAllRoutes={() => {
+                  setSelectedRoutes(new Set());
+                }}
+              />
             )}
           </Box>
         )
@@ -793,28 +1154,28 @@ export const InputImportPage = ({ currentStep, onStepChange, preferences, onPref
     <Box sx={{ display: 'flex', gap: 2, height: '100%' }}>
       <InputImportStepper currentStep={currentStep} onStepChange={onStepChange} />
       <Box sx={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
+        {saveError && (
+          <Box sx={{ color: 'red', mb: 2 }}>{saveError}</Box>
+        )}
         {renderStepContent()}
         <Box sx={{ display: 'flex', justifyContent: 'space-between', mt: 4 }}>
           <Button
             variant="outlined"
-            disabled={currentStep === 0}
+            disabled={currentStep === 0 || isSavingPreferences}
             onClick={() => onStepChange(Math.max(0, currentStep - 1))}
           >
             Back
           </Button>
           <Button
             variant="contained"
-            disabled={currentStep === steps.length - 1 && isOptimizing}
-            onClick={() => {
-              if (currentStep === steps.length - 1) {
-                // This is the Finish button - trigger optimization
-                handleOptimizationRequest()
-              } else {
-                onStepChange(Math.min(steps.length - 1, currentStep + 1))
-              }
-            }}
+            disabled={(currentStep === steps.length - 1 && isOptimizing) || isSavingPreferences}
+            onClick={handleNextOrRun}
           >
-            {currentStep === steps.length - 1 ? (isOptimizing ? 'Optimizing...' : 'Run Optimization') : 'Next'}
+            {isSavingPreferences
+              ? 'Saving...'
+              : currentStep === steps.length - 1
+                ? (isOptimizing ? 'Optimizing...' : 'Run Optimization')
+                : 'Next'}
           </Button>
         </Box>
       </Box>

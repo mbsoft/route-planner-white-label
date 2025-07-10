@@ -4,7 +4,10 @@ A white-label route planning application for logistics, field service optimizati
 
 ## Features
 
-- **Data Import**: Drag-and-drop CSV file upload for jobs, shipments, and vehicles
+- **Data Import**: Drag-and-drop file upload for jobs, shipments, and vehicles
+  - **CSV Support**: Comma-separated values with proper quoted field handling
+  - **Excel Support**: Native support for .xlsx and .xls files
+  - **Smart Header Detection**: Automatically detects and handles header rows
 - **Interactive Mapping**: Visual data mapping interface with column mapping
 - **Advanced Map Visualization**: NextBillion.ai and DeckGL-powered map with markers, tooltips, and hover effects
 - **Step-by-Step Workflow**: Guided import process with stepper navigation
@@ -13,7 +16,7 @@ A white-label route planning application for logistics, field service optimizati
 
 ## Prerequisites
 
-- Node.js 16.0.0 or higher
+- Node.js 18.0.0 or higher (required for Next.js 14+)
 - npm 8.0.0 or higher
 - NextBillion.ai API key for map tiles
 
@@ -51,12 +54,13 @@ A white-label route planning application for logistics, field service optimizati
 ## Usage
 
 ### 1. Import Data
-- Drag and drop CSV files containing your logistics data
-- Supported data types: Jobs, Shipments, Vehicles
-- The app will automatically detect and parse your CSV structure
+- Drag and drop files containing your logistics data
+- **Supported formats**: CSV (.csv), Excel (.xlsx, .xls)
+- The app will automatically detect and parse your file structure
+- **Smart parsing**: Handles quoted fields, empty cells, and mixed data types
 
 ### 2. Map Data Columns
-- Use the interactive mapping interface to map your CSV columns to the required fields
+- Use the interactive mapping interface to map your file columns to the required fields
 - Required fields for jobs: latitude, longitude, id (optional), description (optional)
 - The app supports various column naming conventions (lat/lng, latitude/longitude, etc.)
 
