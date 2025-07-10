@@ -79,7 +79,7 @@ export class ApiClient {
 
   // Route optimization API
   async createOptimizationRequest(payload: any) {
-    return this.request('/optimization/mvrp/v2', {
+    return this.request('/optimization/v2', {
       method: 'POST',
       body: JSON.stringify({
         ...payload,
@@ -89,7 +89,7 @@ export class ApiClient {
   }
 
   async getOptimizationResult(id: string) {
-    return this.request(`/optimization/mvrp/v2/${id}?key=${this.apiKey}`)
+    return this.request(`/optimization/v2/${id}?key=${this.apiKey}`)
   }
 
   // Directions API

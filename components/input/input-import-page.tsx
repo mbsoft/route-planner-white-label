@@ -1,7 +1,7 @@
 'use client'
 
 import React from 'react'
-import { Box, Button, Typography, IconButton } from '@mui/material'
+import { Box, Button, Typography, IconButton, LinearProgress } from '@mui/material'
 import { InputOrderPanel } from './input-panels/input-order'
 import { InputVehiclePanel } from './input-panels/input-vehicle'
 import { InputImportStepper } from './input-import-stepper'
@@ -58,6 +58,8 @@ interface OptimizationMvrpOrderVehicleV2 {
   }
 }
 
+type VehicleType = OptimizationMvrpOrderVehicleV2;
+
 interface OptimizationMvrpOrderShipmentV2 {
   id?: number | string
   amount?: number[]
@@ -89,185 +91,279 @@ interface OptimizationMvrpOrderLocationV2 {
 
 interface OptimizationMvrpOrderRequestV2 {
   jobs?: OptimizationMvrpOrderJobV2[]
-  vehicles: OptimizationMvrpOrderVehicleV2[]
+  vehicles: VehicleType[]
   shipments?: OptimizationMvrpOrderShipmentV2[]
-  locations: OptimizationMvrpOrderLocationV2[]
+  locations: {
+    id: number
+    description: string
+    location: string[]
+  }
 }
 
 // Normalization functions
-function normalizeJobs(jobData: any, mapConfig: any): OptimizationMvrpOrderJobV2[] {
-  if (!jobData.rows || jobData.rows.length === 0) return []
-  
-  return jobData.rows.map((row: string[], index: number) => {
-    const job: OptimizationMvrpOrderJobV2 = {
-      id: index + 1,
-      location_index: index + 1,
-    }
-    
-    // Map each column based on the mapping configuration
-    mapConfig.dataMappings.forEach((mapping: any) => {
-      const value = row[mapping.index]
-      if (!value) return
-      
-      switch (mapping.value) {
-        case 'id':
-          job.id = parseInt(value) || index + 1
-          break
-        case 'description':
-          job.description = value
-          break
-        case 'service':
-          job.service = parseInt(value)
-          break
-        case 'priority':
-          job.priority = parseInt(value)
-          break
-        case 'setup':
-          job.setup = parseInt(value)
-          break
-        case 'skills':
-          job.skills = value.split(',').map(s => parseInt(s.trim())).filter(n => !isNaN(n))
-          break
-        case 'start_time':
-        case 'end_time':
-          // Handle time windows - this is simplified, you may need more complex logic
-          if (!job.time_windows) job.time_windows = []
-          // Convert time to minutes since midnight
-          const timeInMinutes = convertTimeToMinutes(value)
-          if (mapping.value === 'start_time') {
-            job.time_windows.push([timeInMinutes, timeInMinutes + 60]) // Default 1 hour window
-          }
-          break
-        case 'pickup_capacity_1':
-        case 'pickup_capacity_2':
-        case 'pickup_capacity_3':
-          if (!job.pickup) job.pickup = []
-          const pickupIndex = parseInt(mapping.value.split('_').pop()) - 1
-          job.pickup[pickupIndex] = parseInt(value)
-          break
-        case 'delivery_capacity_1':
-        case 'delivery_capacity_2':
-        case 'delivery_capacity_3':
-          if (!job.delivery) job.delivery = []
-          const deliveryIndex = parseInt(mapping.value.split('_').pop()) - 1
-          job.delivery[deliveryIndex] = parseInt(value)
-          break
-      }
-    })
-    
-    return job
-  })
-}
-
-function normalizeVehicles(vehicleData: any, mapConfig: any): OptimizationMvrpOrderVehicleV2[] {
-  if (!vehicleData.rows || vehicleData.rows.length === 0) return []
-  
-  return vehicleData.rows.map((row: string[], index: number) => {
-    const vehicle: OptimizationMvrpOrderVehicleV2 = {
-      id: index + 1,
-      start_index: index + 1,
-    }
-    
-    // Map each column based on the mapping configuration
-    mapConfig.dataMappings.forEach((mapping: any) => {
-      const value = row[mapping.index]
-      if (!value) return
-      
-      switch (mapping.value) {
-        case 'id':
-          vehicle.id = parseInt(value) || index + 1
-          break
-        case 'description':
-          vehicle.description = value
-          break
-        case 'capacity_1':
-        case 'capacity_2':
-        case 'capacity_3':
-          if (!vehicle.capacity) vehicle.capacity = []
-          const capacityIndex = parseInt(mapping.value.split('_').pop()) - 1
-          vehicle.capacity[capacityIndex] = parseInt(value)
-          break
-        case 'skills':
-          vehicle.skills = value.split(',').map(s => parseInt(s.trim())).filter(n => !isNaN(n))
-          break
-        case 'max_tasks':
-          vehicle.max_tasks = parseInt(value)
-          break
-        case 'fixed_cost':
-          if (!vehicle.costs) vehicle.costs = {}
-          vehicle.costs.fixed = parseInt(value)
-          break
-        case 'start_time':
-        case 'end_time':
-          if (!vehicle.time_window) vehicle.time_window = [0, 1440] // Default full day
-          const timeInMinutes = convertTimeToMinutes(value)
-          if (mapping.value === 'start_time') {
-            vehicle.time_window[0] = timeInMinutes
-          } else {
-            vehicle.time_window[1] = timeInMinutes
-          }
-          break
-      }
-    })
-    
-    return vehicle
-  })
-}
-
-function normalizeLocations(jobData: any, vehicleData: any, mapConfig: any): OptimizationMvrpOrderLocationV2[] {
-  const locations: OptimizationMvrpOrderLocationV2[] = []
-  let locationIndex = 1
-  
-  // Add job locations
-  if (jobData.rows) {
-    jobData.rows.forEach((row: string[], index: number) => {
-      const locationMapping = mapConfig.dataMappings.find((m: any) => 
-        m.value === 'location' || m.value === 'location_lat_lng' || m.value === 'location_lng_lat'
-      )
-      
-      if (locationMapping) {
-        const locationValue = row[locationMapping.index]
-        if (locationValue) {
-          locations.push({
-            id: locationIndex,
-            location: [locationValue], // This should be parsed as lat,lng
-          })
-          locationIndex++
-        }
-      }
-    })
-  }
-  
-  // Add vehicle start/end locations
-  if (vehicleData.rows) {
-    vehicleData.rows.forEach((row: string[], index: number) => {
-      const startLocationMapping = mapConfig.dataMappings.find((m: any) => 
-        m.value === 'start_location' || m.value === 'start_location_lat_lng'
-      )
-      
-      if (startLocationMapping) {
-        const locationValue = row[startLocationMapping.index]
-        if (locationValue) {
-          locations.push({
-            id: locationIndex,
-            location: [locationValue],
-          })
-          locationIndex++
-        }
-      }
-    })
-  }
-  
-  return locations
+// Helper to parse lat/lng from a string ("lat,lng" or "lng,lat")
+function parseLatLng(str: string): [number, number] | null {
+  if (!str) return null;
+  const match = str.match(/(-?\d+\.?\d*)\s*,\s*(-?\d+\.?\d*)/);
+  if (!match) return null;
+  const a = parseFloat(match[1]);
+  const b = parseFloat(match[2]);
+  // Heuristic: if abs(a) > 90, treat as lng,lat; else lat,lng
+  if (Math.abs(a) > 90) return [b, a];
+  return [a, b];
 }
 
 function convertTimeToMinutes(timeStr: string): number {
-  // Simple time conversion - you may need more robust parsing
-  const time = timeStr.split(':')
-  if (time.length === 2) {
-    return parseInt(time[0]) * 60 + parseInt(time[1])
+  if (!timeStr) return 0;
+  
+  // Check if it's an ISO8601 string (contains 'T' or 'Z' or has timezone info)
+  if (timeStr.includes('T') || timeStr.includes('Z') || timeStr.includes('+') || timeStr.includes('-')) {
+    try {
+      const date = new Date(timeStr);
+      if (!isNaN(date.getTime())) {
+        // Convert to Unix epoch seconds
+        return Math.floor(date.getTime() / 1000);
+      }
+    } catch (e) {
+      console.warn('Failed to parse ISO8601 time:', timeStr, e);
+    }
   }
-  return 0
+  
+  // Handle HH:MM format (minutes since midnight)
+  const time = timeStr.split(':');
+  if (time.length === 2) {
+    return parseInt(time[0]) * 60 + parseInt(time[1]);
+  }
+  
+  return 0;
+}
+
+// Helper to get location string from row and mapping config
+function getLocationString(row: string[], mapConfig: any, prefix: string = 'location') {
+  // Try combined field first
+  const combined = mapConfig.dataMappings.find((m: any) =>
+    m.value === `${prefix}#latLng` ||
+    m.value === `${prefix}#lngLat` ||
+    m.value === `${prefix}_lat_lng` ||
+    m.value === `${prefix}_lng_lat` ||
+    m.value === prefix
+  );
+  if (combined) {
+    return row[combined.index];
+  }
+  // Try separate lat/lng fields
+  const latMapping = mapConfig.dataMappings.find((m: any) =>
+    m.value === `${prefix}#lat` || m.value === `${prefix}_lat`
+  );
+  const lngMapping = mapConfig.dataMappings.find((m: any) =>
+    m.value === `${prefix}#lng` || m.value === `${prefix}_lng`
+  );
+  if (latMapping && lngMapping) {
+    const lat = row[latMapping.index];
+    const lng = row[lngMapping.index];
+    if (lat && lng) return `${lat},${lng}`;
+  }
+  return null;
+}
+
+// Build unique locations array and mapping from lat/lng string to index
+function buildLocations(jobs: any, vehicles: any, jobMapConfig: any, vehicleMapConfig: any) {
+  const locMap = new Map<string, number>();
+  const locationStrings: string[] = [];
+  let nextId = 0;
+
+  // Helper to add a location and return its index
+  function addLocation(str: string): number {
+    if (!str) return -1;
+    const parsed = parseLatLng(str);
+    if (!parsed) return -1;
+    const key = parsed.join(',');
+    if (locMap.has(key)) return locMap.get(key)!;
+    const id = nextId++;
+    locMap.set(key, id);
+    locationStrings.push(key);
+    return id;
+  }
+
+  // Add job locations (only for selected jobs)
+  jobs.rows.forEach((row: string[], index: number) => {
+    // Only process if this job is selected
+    if (jobs.selection && jobs.selection[index]) {
+      const locStr = getLocationString(row, jobMapConfig, 'location');
+      if (locStr) addLocation(locStr);
+    }
+  });
+
+  // Add vehicle start/end locations (only for selected vehicles)
+  vehicles.rows.forEach((row: string[], index: number) => {
+    // Only process if this vehicle is selected
+    if (vehicles.selection && vehicles.selection[index]) {
+      const startLocStr = getLocationString(row, vehicleMapConfig, 'start_location');
+      if (startLocStr) addLocation(startLocStr);
+      const endLocStr = getLocationString(row, vehicleMapConfig, 'end_location');
+      if (endLocStr) addLocation(endLocStr);
+    }
+  });
+
+  return { 
+    locations: {
+      id: 1,
+      description: "Locations from imported data",
+      location: locationStrings
+    }, 
+    locMap 
+  };
+}
+
+function normalizeJobs(jobData: any, mapConfig: any, locMap: Map<string, number>): OptimizationMvrpOrderJobV2[] {
+  if (!jobData.rows || jobData.rows.length === 0) return [];
+  const selectedJobs: OptimizationMvrpOrderJobV2[] = [];
+  
+  jobData.rows.forEach((row: string[], index: number) => {
+    // Only process if this job is selected
+    if (!jobData.selection || !jobData.selection[index]) {
+      return;
+    }
+    
+    const job: OptimizationMvrpOrderJobV2 = {
+      id: index + 1,
+      location_index: -1,
+    };
+    mapConfig.dataMappings.forEach((mapping: any) => {
+      const value = row[mapping.index];
+      if (!value) return;
+      switch (mapping.value) {
+        case 'id':
+          job.id = parseInt(value) || index + 1;
+          break;
+        case 'description':
+          job.description = value;
+          break;
+        case 'service':
+          job.service = parseInt(value);
+          break;
+        case 'priority':
+          job.priority = parseInt(value);
+          break;
+        case 'setup':
+          job.setup = parseInt(value);
+          break;
+        case 'skills':
+          job.skills = value.split(',').map((s) => parseInt(s.trim())).filter((n) => !isNaN(n));
+          break;
+        case 'start_time':
+        case 'end_time':
+          if (!job.time_windows) job.time_windows = [];
+          const timeInMinutes = convertTimeToMinutes(value);
+          if (mapping.value === 'start_time') {
+            job.time_windows.push([timeInMinutes, timeInMinutes + 60]);
+          }
+          break;
+        case 'pickup_capacity_1':
+        case 'pickup_capacity_2':
+        case 'pickup_capacity_3':
+          if (!job.pickup) job.pickup = [];
+          const pickupIndex = parseInt(mapping.value.split('_').pop()) - 1;
+          job.pickup[pickupIndex] = parseInt(value);
+          break;
+        case 'delivery_capacity_1':
+        case 'delivery_capacity_2':
+        case 'delivery_capacity_3':
+          if (!job.delivery) job.delivery = [];
+          const deliveryIndex = parseInt(mapping.value.split('_').pop()) - 1;
+          job.delivery[deliveryIndex] = parseInt(value);
+          break;
+      }
+    });
+    // Set location_index using helper
+    const locStr = getLocationString(row, mapConfig, 'location');
+    if (locStr) {
+      const parsed = parseLatLng(locStr);
+      if (parsed) {
+        const key = parsed.join(',');
+        job.location_index = locMap.get(key) ?? -1;
+      }
+    }
+    selectedJobs.push(job);
+  });
+  
+  return selectedJobs;
+}
+
+function normalizeVehicles(vehicleData: any, mapConfig: any, locMap: Map<string, number>): VehicleType[] {
+  if (!vehicleData.rows || vehicleData.rows.length === 0) return [];
+  const selectedVehicles: VehicleType[] = [];
+  
+  vehicleData.rows.forEach((row: string[], index: number) => {
+    // Only process if this vehicle is selected
+    if (!vehicleData.selection || !vehicleData.selection[index]) {
+      return;
+    }
+    
+    const vehicle: OptimizationMvrpOrderVehicleV2 = {
+      id: index + 1,
+      start_index: -1,
+    };
+    mapConfig.dataMappings.forEach((mapping: any) => {
+      const value = row[mapping.index];
+      if (!value) return;
+      switch (mapping.value) {
+        case 'id':
+          vehicle.id = parseInt(value) || index + 1;
+          break;
+        case 'description':
+          vehicle.description = value;
+          break;
+        case 'capacity_1':
+        case 'capacity_2':
+        case 'capacity_3':
+          if (!vehicle.capacity) vehicle.capacity = [];
+          const capacityIndex = parseInt(mapping.value.split('_').pop()) - 1;
+          vehicle.capacity[capacityIndex] = parseInt(value);
+          break;
+        case 'skills':
+          vehicle.skills = value.split(',').map((s) => parseInt(s.trim())).filter((n) => !isNaN(n));
+          break;
+        case 'max_tasks':
+          vehicle.max_tasks = parseInt(value);
+          break;
+        case 'fixed_cost':
+          if (!vehicle.costs) vehicle.costs = {};
+          vehicle.costs.fixed = parseInt(value);
+          break;
+        case 'start_time':
+        case 'end_time':
+          if (!vehicle.time_window) vehicle.time_window = [0, 1440];
+          const timeInMinutes = convertTimeToMinutes(value);
+          if (mapping.value === 'start_time') {
+            vehicle.time_window[0] = timeInMinutes;
+          } else {
+            vehicle.time_window[1] = timeInMinutes;
+          }
+          break;
+      }
+    });
+    // Set start_index and end_index using helper
+    const startLocStr = getLocationString(row, mapConfig, 'start_location');
+    if (startLocStr) {
+      const parsed = parseLatLng(startLocStr);
+      if (parsed) {
+        const key = parsed.join(',');
+        vehicle.start_index = locMap.get(key) ?? -1;
+      }
+    }
+    const endLocStr = getLocationString(row, mapConfig, 'end_location');
+    if (endLocStr) {
+      const parsed = parseLatLng(endLocStr);
+      if (parsed) {
+        const key = parsed.join(',');
+        vehicle.end_index = locMap.get(key) ?? -1;
+      }
+    }
+    selectedVehicles.push(vehicle);
+  });
+  
+  return selectedVehicles;
 }
 
 const steps = [
@@ -297,6 +393,9 @@ export const InputImportPage = ({ currentStep, onStepChange, preferences, onPref
   const [editAttachedRows, setEditAttachedRows] = React.useState<string[][]>([])
   const [deleteDialogOpen, setDeleteDialogOpen] = React.useState(false);
   const [isOptimizing, setIsOptimizing] = React.useState(false);
+  const [isPolling, setIsPolling] = React.useState(false);
+  const [pollingMessage, setPollingMessage] = React.useState('');
+  const [routeResults, setRouteResults] = React.useState<any>(null);
 
   // Handlers for editing
   const handleEdit = () => {
@@ -349,6 +448,18 @@ export const InputImportPage = ({ currentStep, onStepChange, preferences, onPref
     try {
       setIsOptimizing(true)
       
+      // Check if at least one job and one vehicle are selected
+      const selectedJobsCount = job.selection?.filter(Boolean).length || 0;
+      const selectedVehiclesCount = vehicle.selection?.filter(Boolean).length || 0;
+      
+      if (selectedJobsCount === 0) {
+        throw new Error('Please select at least one job to optimize');
+      }
+      
+      if (selectedVehiclesCount === 0) {
+        throw new Error('Please select at least one vehicle to optimize');
+      }
+      
       const apiKey = process.env.NEXTBILLION_API_KEY
       if (!apiKey) {
         throw new Error('NEXTBILLION_API_KEY environment variable is required')
@@ -356,16 +467,17 @@ export const InputImportPage = ({ currentStep, onStepChange, preferences, onPref
       
       const apiClient = new ApiClient(apiKey)
       
+      // Build unique locations and mapping
+      const { locations, locMap } = buildLocations(job.rawData, store.inputCore.vehicle.rawData, job.mapConfig, store.inputCore.vehicle.mapConfig);
       // Normalize the data
-      const normalizedJobs = normalizeJobs(job.rawData, job.mapConfig)
-      const normalizedVehicles = normalizeVehicles(vehicle.rawData, vehicle.mapConfig)
-      const normalizedLocations = normalizeLocations(job.rawData, vehicle.rawData, job.mapConfig)
+      const normalizedJobs = normalizeJobs(job.rawData, job.mapConfig, locMap)
+      const normalizedVehicles = normalizeVehicles(store.inputCore.vehicle.rawData, store.inputCore.vehicle.mapConfig, locMap)
       
       // Build the optimization request
       const optimizationRequest: OptimizationMvrpOrderRequestV2 = {
         jobs: normalizedJobs,
         vehicles: normalizedVehicles,
-        locations: normalizedLocations,
+        locations: locations,
       }
       
       // Send the optimization request
@@ -373,9 +485,44 @@ export const InputImportPage = ({ currentStep, onStepChange, preferences, onPref
       
       console.log('Optimization request successful:', response)
       
-      // You can handle the response here - redirect to results page, show success message, etc.
       const responseData = response.data as any
-      alert('Optimization request submitted successfully! Request ID: ' + responseData.id)
+      const requestId = responseData.id
+      
+      if (requestId) {
+        // Start polling for results
+        setIsPolling(true)
+        setPollingMessage('Optimization request submitted successfully! Polling for results...')
+        
+        // Poll every 5 seconds
+        const pollInterval = setInterval(async () => {
+          try {
+            const resultResponse = await apiClient.getOptimizationResult(requestId)
+            const resultData = resultResponse.data as any
+            
+            if (resultData && resultData.routes) {
+              // Optimization completed
+              clearInterval(pollInterval)
+              setIsPolling(false)
+              setRouteResults(resultData)
+              setPollingMessage(`Optimization completed! Found ${resultData.routes.length} routes.`)
+            }
+          } catch (error) {
+            console.error('Polling error:', error)
+            // Continue polling on error (optimization might still be in progress)
+          }
+        }, 5000)
+        
+        // Stop polling after 10 minutes (120 polls)
+        setTimeout(() => {
+          clearInterval(pollInterval)
+          if (isPolling) {
+            setIsPolling(false)
+            setPollingMessage('Polling timeout - optimization may still be in progress.')
+          }
+        }, 600000) // 10 minutes
+      } else {
+        alert('Optimization request submitted successfully!')
+      }
       
     } catch (error) {
       console.error('Optimization request failed:', error)
@@ -486,12 +633,37 @@ export const InputImportPage = ({ currentStep, onStepChange, preferences, onPref
             </p>
             <Box sx={{ mt: 2, p: 2, backgroundColor: '#f9f9f9', borderRadius: '4px' }}>
               <Typography variant="body2" sx={{ color: '#666' }}>
-                <strong>{orderTypeLabel}:</strong> {store.inputCore[inputType].rawData.rows.length} records
+                <strong>{orderTypeLabel}:</strong> {store.inputCore[inputType].selection?.filter(Boolean).length || 0} of {store.inputCore[inputType].rawData.rows.length} records selected
               </Typography>
               <Typography variant="body2" sx={{ color: '#666' }}>
-                <strong>Vehicles:</strong> {vehicle.rawData.rows.length} records
+                <strong>Vehicles:</strong> {vehicle.selection?.filter(Boolean).length || 0} of {vehicle.rawData.rows.length} records selected
               </Typography>
             </Box>
+            {/* Polling Status */}
+            {isPolling && (
+              <Box sx={{ mt: 3, p: 2, backgroundColor: '#e3f2fd', borderRadius: '4px' }}>
+                <Typography variant="body2" sx={{ color: '#1976d2', mb: 1 }}>
+                  {pollingMessage}
+                </Typography>
+                <LinearProgress sx={{ height: 8, borderRadius: 4 }} />
+              </Box>
+            )}
+            {/* Results Display */}
+            {routeResults && (
+              <Box sx={{ mt: 3, p: 2, backgroundColor: '#e8f5e8', borderRadius: '4px' }}>
+                <Typography variant="body2" sx={{ color: '#2e7d32', fontWeight: 'bold', mb: 1 }}>
+                  ✓ Optimization Complete
+                </Typography>
+                <Typography variant="body2" sx={{ color: '#2e7d32' }}>
+                  {pollingMessage}
+                </Typography>
+                {routeResults.routes && (
+                  <Typography variant="body2" sx={{ color: '#2e7d32', mt: 1 }}>
+                    Total routes: {routeResults.routes.length}
+                  </Typography>
+                )}
+              </Box>
+            )}
           </Box>
         )
       default:
@@ -516,7 +688,7 @@ export const InputImportPage = ({ currentStep, onStepChange, preferences, onPref
           </Button>
           <Button
             variant="contained"
-            disabled={currentStep === steps.length - 1}
+            disabled={currentStep === steps.length - 1 && isOptimizing}
             onClick={() => {
               if (currentStep === steps.length - 1) {
                 // This is the Finish button - trigger optimization
