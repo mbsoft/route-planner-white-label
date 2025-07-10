@@ -1,7 +1,13 @@
 import { create } from 'zustand'
 import { InputCoreSlice, InputType } from './input-core'
-import { InputPhaseSlice } from './input-phase'
+import { InputPhaseSlice, InputPage } from './input-phase'
 import { InputUISlice } from './input-ui'
+
+// Get the default active tab based on USE_CASE environment variable
+const getDefaultActiveTab = (): InputType => {
+  const useCase = process.env.NEXT_PUBLIC_USE_CASE || 'jobs'
+  return useCase === 'shipments' ? 'shipment' : 'job'
+}
 
 export interface RootState {
   inputCore: InputCoreSlice
@@ -18,7 +24,7 @@ export type Dispatch = {
 // Create the store using Zustand
 export const useInputStore = create<RootState>((set, get) => ({
   inputCore: {
-    activeTab: 'job' as const,
+    activeTab: getDefaultActiveTab(),
     job: {
       rawData: { header: [], rows: [], attachedRows: [] },
       mapConfig: { dataMappings: [], metaMappings: [] },
@@ -178,7 +184,7 @@ export const useInputStore = create<RootState>((set, get) => ({
       })),
   },
   inputPhase: {
-    page: 'import' as const,
+    page: InputPage.IMPORT,
     isTableEditable: false,
     scrollTableToRight: false,
     setPage: (page) =>

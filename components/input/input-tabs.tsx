@@ -4,25 +4,30 @@ import React from 'react'
 import { Box, Button, Typography } from '@mui/material'
 import { useInputStore } from '../../models/input/store'
 import { InputType } from '../../models/input/input-core'
-
-const tabs: { key: InputType; label: string }[] = [
-  { key: 'job', label: 'Jobs & Shipments' },
-  { key: 'vehicle', label: 'Vehicles' },
-]
+import { useUseCase } from '../../utils/use-case'
 
 export const InputTabs = () => {
   const store = useInputStore()
   const { activeTab, setActiveTab } = store.inputCore
   const { job, vehicle, shipment } = store.inputCore
+  const useCase = useUseCase()
 
   const hasJobData = job.rawData.rows.length > 0
   const hasVehicleData = vehicle.rawData.rows.length > 0
   const hasShipmentData = shipment.rawData.rows.length > 0
 
+  // Create tabs based on use case
+  const tabs: { key: InputType; label: string }[] = [
+    { key: useCase === 'jobs' ? 'job' : 'shipment', label: useCase === 'jobs' ? 'Jobs' : 'Shipments' },
+    { key: 'vehicle', label: 'Vehicles' },
+  ]
+
   const getTabDataCount = (tab: InputType) => {
     switch (tab) {
       case 'job':
-        return (hasJobData ? 1 : 0) + (hasShipmentData ? 1 : 0)
+        return hasJobData ? 1 : 0
+      case 'shipment':
+        return hasShipmentData ? 1 : 0
       case 'vehicle':
         return hasVehicleData ? 1 : 0
       default:

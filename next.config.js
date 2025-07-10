@@ -21,6 +21,7 @@ const nextConfig = {
   },
   env: {
     NEXTBILLION_API_KEY: process.env.NEXTBILLION_API_KEY,
+    NEXT_PUBLIC_USE_CASE: process.env.USE_CASE || 'jobs',
   },
   typescript: {
     ignoreBuildErrors: true,

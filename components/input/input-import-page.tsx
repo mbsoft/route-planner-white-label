@@ -8,6 +8,7 @@ import { InputImportStepper } from './input-import-stepper'
 import { PreferencesPage, PreferencesInput } from './input-panels/preferences-page'
 import { useInputStore } from '../../models/input/store'
 import { DataMapper } from './data-mapper/data-mapper'
+import { useUseCase } from '../../utils/use-case'
 
 const steps = [
   'Preferences',
@@ -26,10 +27,13 @@ interface InputImportPageProps {
 export const InputImportPage = ({ currentStep, onStepChange, preferences, onPreferencesChange }: InputImportPageProps) => {
   const store = useInputStore()
   const { job, vehicle, shipment } = store.inputCore
+  const useCase = useUseCase()
+  const inputType = useCase === 'jobs' ? 'job' : 'shipment'
+  const orderTypeLabel = useCase === 'jobs' ? 'Jobs' : 'Shipments'
 
   // Only show mapping table in the relevant step
   const showMapping = (step: number) => {
-    if (step === 1 && (job.rawData.rows.length > 0 || shipment.rawData.rows.length > 0)) return true
+    if (step === 1 && store.inputCore[inputType].rawData.rows.length > 0) return true
     if (step === 2 && vehicle.rawData.rows.length > 0) return true
     return false
   }
@@ -62,7 +66,7 @@ export const InputImportPage = ({ currentStep, onStepChange, preferences, onPref
             </p>
             <Box sx={{ mt: 2, p: 2, backgroundColor: '#f9f9f9', borderRadius: '4px' }}>
               <Typography variant="body2" sx={{ color: '#666' }}>
-                <strong>Jobs/Shipments:</strong> {job.rawData.rows.length + shipment.rawData.rows.length} records
+                <strong>{orderTypeLabel}:</strong> {store.inputCore[inputType].rawData.rows.length} records
               </Typography>
               <Typography variant="body2" sx={{ color: '#666' }}>
                 <strong>Vehicles:</strong> {vehicle.rawData.rows.length} records
@@ -77,31 +81,16 @@ export const InputImportPage = ({ currentStep, onStepChange, preferences, onPref
 
   // Render mapping table for the current step
   const renderMapping = () => {
-    if (currentStep === 1 && (job.rawData.rows.length > 0 || shipment.rawData.rows.length > 0)) {
+    if (currentStep === 1 && store.inputCore[inputType].rawData.rows.length > 0) {
       return (
         <Box sx={{ mt: 2 }}>
-          {job.rawData.rows.length > 0 && (
-            <>
-              <h4 style={{ margin: '10px 0 4px 0' }}>Jobs Data Mapping</h4>
-              <DataMapper
-                headers={job.rawData.header}
-                rows={job.rawData.rows}
-                attachedRows={job.rawData.attachedRows}
-                inputType="job"
-              />
-            </>
-          )}
-          {shipment.rawData.rows.length > 0 && (
-            <>
-              <h4 style={{ margin: '10px 0 4px 0' }}>Shipments Data Mapping</h4>
-              <DataMapper
-                headers={shipment.rawData.header}
-                rows={shipment.rawData.rows}
-                attachedRows={shipment.rawData.attachedRows}
-                inputType="shipment"
-              />
-            </>
-          )}
+          <h4 style={{ margin: '10px 0 4px 0' }}>{orderTypeLabel} Data Mapping</h4>
+          <DataMapper
+            headers={store.inputCore[inputType].rawData.header}
+            rows={store.inputCore[inputType].rawData.rows}
+            attachedRows={store.inputCore[inputType].rawData.attachedRows}
+            inputType={inputType}
+          />
         </Box>
       )
     }
@@ -122,31 +111,11 @@ export const InputImportPage = ({ currentStep, onStepChange, preferences, onPref
   }
 
   return (
-    <Box sx={{ display: 'flex', flex: 1, gap: '20px', paddingBottom: '72px' }}>
-      {/* Sidebar Stepper */}
-      <Box sx={{ flex: 0 }}>
-        <InputImportStepper currentStep={currentStep} onStepChange={onStepChange} />
-      </Box>
-      {/* Main Content */}
-      <Box sx={{ flex: 1, overflow: 'auto', padding: '0 5px' }}>
+    <Box sx={{ display: 'flex', gap: 2, height: '100%' }}>
+      <InputImportStepper currentStep={currentStep} onStepChange={onStepChange} />
+      <Box sx={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
         {renderStepContent()}
         {showMapping(currentStep) && renderMapping()}
-        <Box sx={{ display: 'flex', justifyContent: 'space-between', mt: 4 }}>
-          <Button
-            variant="outlined"
-            disabled={currentStep === 0}
-            onClick={() => onStepChange(Math.max(0, currentStep - 1))}
-          >
-            Back
-          </Button>
-          <Button
-            variant="contained"
-            disabled={currentStep === steps.length - 1}
-            onClick={() => onStepChange(Math.min(steps.length - 1, currentStep + 1))}
-          >
-            {currentStep === steps.length - 1 ? 'Finish' : 'Next'}
-          </Button>
-        </Box>
       </Box>
     </Box>
   )

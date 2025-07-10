@@ -3,21 +3,7 @@ import { Box, List, ListItem, ListItemIcon, ListItemText, Typography } from '@mu
 import SettingsOutlinedIcon from '@mui/icons-material/SettingsOutlined';
 import Inventory2OutlinedIcon from '@mui/icons-material/Inventory2Outlined';
 import LocalShippingIcon from '@mui/icons-material/LocalShipping';
-
-const steps = [
-  {
-    label: 'Preferences',
-    icon: <SettingsOutlinedIcon fontSize="small" />,
-  },
-  {
-    label: 'Orders/Shipments',
-    icon: <Inventory2OutlinedIcon fontSize="small" />,
-  },
-  {
-    label: 'Vehicles',
-    icon: <LocalShippingIcon fontSize="small" />,
-  },
-];
+import { useUseCase } from '../../utils/use-case';
 
 interface InputImportStepperProps {
   currentStep: number;
@@ -25,6 +11,24 @@ interface InputImportStepperProps {
 }
 
 export const InputImportStepper: React.FC<InputImportStepperProps> = ({ currentStep, onStepChange }) => {
+  const useCase = useUseCase();
+  const orderTypeLabel = useCase === 'jobs' ? 'Jobs' : 'Shipments';
+
+  const steps = [
+    {
+      label: 'Preferences',
+      icon: <SettingsOutlinedIcon fontSize="small" />,
+    },
+    {
+      label: orderTypeLabel,
+      icon: <Inventory2OutlinedIcon fontSize="small" />,
+    },
+    {
+      label: 'Vehicles',
+      icon: <LocalShippingIcon fontSize="small" />,
+    },
+  ];
+
   return (
     <Box
       sx={{
