@@ -1,12 +1,3 @@
-// Fix for missing types for @mapbox/polyline
-// Remove this if you add @types/mapbox__polyline in the future
-declare module '@mapbox/polyline' {
-  const polyline: {
-    decode: (encoded: string) => [number, number][]
-  }
-  export = polyline
-}
-
 import polyline from '@mapbox/polyline'
 
 /**
