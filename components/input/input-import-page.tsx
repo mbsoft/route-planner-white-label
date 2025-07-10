@@ -1,6 +1,6 @@
 'use client'
 
-import React from 'react'
+import React, { useEffect, useState, useRef } from 'react'
 import { Box, Button, Typography, IconButton, LinearProgress, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Collapse, Checkbox } from '@mui/material'
 import DirectionsCarIcon from '@mui/icons-material/DirectionsCar'
 import LocalShippingIcon from '@mui/icons-material/LocalShipping'
@@ -488,6 +488,49 @@ const RouteSummaryTable: React.FC<RouteSummaryTableProps> = ({
     }
   }
 
+  // Reverse geocode cache: { 'lat,lng': address }
+  const [geocodeCache, setGeocodeCache] = useState<{ [key: string]: string }>({})
+  const [loadingGeocode, setLoadingGeocode] = useState<{ [key: string]: boolean }>({})
+  const apiKey = process.env.NEXTBILLION_API_KEY || ''
+
+  // Helper to fetch and cache reverse geocode
+  const fetchGeocode = async (lat: number, lng: number) => {
+    const key = `${lat.toFixed(6)},${lng.toFixed(6)}`
+    if (geocodeCache[key] || loadingGeocode[key] || !apiKey) return
+    setLoadingGeocode(prev => ({ ...prev, [key]: true }))
+    try {
+      const url = `https://api.nextbillion.io/revgeocode?at=${lat},${lng}&key=${apiKey}`
+      const resp = await fetch(url)
+      const data = await resp.json()
+      if (data.items && data.items.length > 0 && data.items[0].title) {
+        setGeocodeCache(prev => ({ ...prev, [key]: data.items[0].title }))
+      } else {
+        setGeocodeCache(prev => ({ ...prev, [key]: key }))
+      }
+    } catch {
+      setGeocodeCache(prev => ({ ...prev, [key]: key }))
+    } finally {
+      setLoadingGeocode(prev => ({ ...prev, [key]: false }))
+    }
+  }
+
+  // When a route is expanded, trigger geocode fetches for its steps
+  useEffect(() => {
+    expandedRoutes.forEach(routeIndex => {
+      const route = routes[routeIndex]
+      if (route && route.steps) {
+        route.steps.forEach((step: any) => {
+          if (Array.isArray(step.location) && step.location.length === 2) {
+            const lat = step.location[0]
+            const lng = step.location[1]
+            fetchGeocode(lat, lng)
+          }
+        })
+      }
+    })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [expandedRoutes, routes])
+
   return (
     <TableContainer component={Paper} sx={{ mt: 2, maxHeight: 600 }}>
       <Table stickyHeader>
@@ -507,8 +550,8 @@ const RouteSummaryTable: React.FC<RouteSummaryTableProps> = ({
               />
             </TableCell>
             <TableCell sx={{ width: 50 }}></TableCell>
-            <TableCell><strong>Description</strong></TableCell>
             <TableCell><strong>Vehicle</strong></TableCell>
+            <TableCell><strong>Description</strong></TableCell>
             <TableCell><strong>Start Time</strong></TableCell>
             <TableCell><strong>End Time</strong></TableCell>
             <TableCell><strong>Stops</strong></TableCell>
@@ -543,13 +586,13 @@ const RouteSummaryTable: React.FC<RouteSummaryTableProps> = ({
                   </IconButton>
                 </TableCell>
                 <TableCell onClick={() => onToggleRoute(routeIndex)}>
-                  <Typography variant="body2">
-                    {route.description || 'No description'}
+                  <Typography variant="body2" sx={{ fontWeight: 'bold' }}>
+                    {route.vehicle}
                   </Typography>
                 </TableCell>
                 <TableCell onClick={() => onToggleRoute(routeIndex)}>
-                  <Typography variant="body2" sx={{ fontWeight: 'bold' }}>
-                    {route.vehicle}
+                  <Typography variant="body2">
+                    {route.description || 'No description'}
                   </Typography>
                 </TableCell>
                 <TableCell onClick={() => onToggleRoute(routeIndex)}>
@@ -619,17 +662,20 @@ const RouteSummaryTable: React.FC<RouteSummaryTableProps> = ({
                               <TableCell>
                                 <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
                                   {getStepTypeIcon(step.type)}
-                                  <span>{step.type?.toUpperCase() || 'N/A'}</span>
+                                  {step.type !== 'job' && <span>{step.type?.toUpperCase() || 'N/A'}</span>}
                                 </Box>
                               </TableCell>
                               <TableCell>
                                 {step.description || 'N/A'}
                               </TableCell>
                               <TableCell>
-                                {step.location ? 
-                                  `${step.location[0].toFixed(4)}, ${step.location[1].toFixed(4)}` : 
-                                  step.id || 'N/A'
-                                }
+                                {step.location && step.location.length === 2 ? (
+                                  geocodeCache[`${step.location[0].toFixed(6)},${step.location[1].toFixed(6)}`]
+                                    ? geocodeCache[`${step.location[0].toFixed(6)},${step.location[1].toFixed(6)}`]
+                                    : loadingGeocode[`${step.location[0].toFixed(6)},${step.location[1].toFixed(6)}`]
+                                      ? <span style={{color:'#aaa'}}>Loading...</span>
+                                      : `${step.location[0].toFixed(4)}, ${step.location[1].toFixed(4)}`
+                                ) : (step.id || 'N/A')}
                               </TableCell>
                               <TableCell>
                                 {step.arrival ? 
