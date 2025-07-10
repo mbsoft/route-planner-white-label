@@ -33,14 +33,17 @@ export interface InputState {
   job: {
     rawData: RawData
     mapConfig: MapConfig
+    selection: boolean[]
   }
   vehicle: {
     rawData: RawData
     mapConfig: MapConfig
+    selection: boolean[]
   }
   shipment: {
     rawData: RawData
     mapConfig: MapConfig
+    selection: boolean[]
   }
   errors: Record<InputType, InputErrorInfo[]>
   isInitialized: boolean
@@ -62,4 +65,7 @@ export interface InputCoreSlice {
   setErrors: (inputType: InputType, errors: InputErrorInfo[]) => void
   initialize: (params: { isFleetifyEnable: boolean; isTelematicEnable: boolean }) => Promise<void>
   setIsInitialized: (value: boolean) => void
+  setRowSelected: (inputType: InputType, rowIndex: number, selected: boolean) => void
+  setAllRowsSelected: (inputType: InputType, selected: boolean) => void
+  clearSelection: (inputType: InputType) => void
 } 

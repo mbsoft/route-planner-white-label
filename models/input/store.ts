@@ -1,5 +1,5 @@
 import { create } from 'zustand'
-import { InputCoreSlice } from './input-core'
+import { InputCoreSlice, InputType } from './input-core'
 import { InputPhaseSlice } from './input-phase'
 import { InputUISlice } from './input-ui'
 
@@ -22,14 +22,17 @@ export const useInputStore = create<RootState>((set, get) => ({
     job: {
       rawData: { header: [], rows: [], attachedRows: [] },
       mapConfig: { dataMappings: [], metaMappings: [] },
+      selection: [],
     },
     vehicle: {
       rawData: { header: [], rows: [], attachedRows: [] },
       mapConfig: { dataMappings: [], metaMappings: [] },
+      selection: [],
     },
     shipment: {
       rawData: { header: [], rows: [], attachedRows: [] },
       mapConfig: { dataMappings: [], metaMappings: [] },
+      selection: [],
     },
     errors: { job: [], vehicle: [], shipment: [] },
     isInitialized: false,
@@ -40,6 +43,44 @@ export const useInputStore = create<RootState>((set, get) => ({
           [inputType]: {
             ...state.inputCore[inputType],
             rawData: data,
+            selection: Array(data.rows.length).fill(true), // select all by default
+          },
+        },
+      })),
+    setRowSelected: (inputType: InputType, rowIndex: number, selected: boolean) =>
+      set((state) => {
+        const selection = [...(state.inputCore[inputType].selection || [])]
+        selection[rowIndex] = selected
+        return {
+          inputCore: {
+            ...state.inputCore,
+            [inputType]: {
+              ...state.inputCore[inputType],
+              selection,
+            },
+          },
+        }
+      }),
+    setAllRowsSelected: (inputType: InputType, selected: boolean) =>
+      set((state) => {
+        const rowCount = state.inputCore[inputType].rawData.rows.length
+        return {
+          inputCore: {
+            ...state.inputCore,
+            [inputType]: {
+              ...state.inputCore[inputType],
+              selection: Array(rowCount).fill(selected),
+            },
+          },
+        }
+      }),
+    clearSelection: (inputType: InputType) =>
+      set((state) => ({
+        inputCore: {
+          ...state.inputCore,
+          [inputType]: {
+            ...state.inputCore[inputType],
+            selection: [],
           },
         },
       })),

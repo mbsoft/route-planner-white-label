@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react'
-import { TableCell, TableRow, Box, InputBase, Typography } from '@mui/material'
+import { TableCell, TableRow, Box, InputBase, Typography, Checkbox } from '@mui/material'
 import { MapSelector } from './map-selector'
-import { InputType } from '../../../models/input/input-core'
+import { InputType, InputCoreSlice } from '../../../models/input/input-core'
 import { useCurrentInput } from '../../../hooks/input/use-current-input'
 import { useInputStore } from '../../../models/input/store'
 import { DataMapperCell } from './data-mapper-cell'
@@ -160,11 +160,46 @@ export function DataMapperTable(props: DataMapperTableProps) {
     })
   }
 
+  const inputCore = store.inputCore as InputCoreSlice
+  const validTypes = ['job', 'vehicle', 'shipment'] as const
+  const selection = validTypes.includes(inputType as any)
+    ? inputCore[inputType as 'job' | 'vehicle' | 'shipment'].selection || []
+    : []
+  const setRowSelected = store.inputCore.setRowSelected
+  const setAllRowsSelected = store.inputCore.setAllRowsSelected
+  const allSelected = selection.length > 0 && selection.every(Boolean)
+  const someSelected = selection.some(Boolean)
+
   return (
     <Box sx={{ height: '100%', overflow: 'scroll' }} ref={tableRef}>
       <Box sx={{ display: 'table', width: '100%' }}>
         {/* Header */}
         <Box sx={{ display: 'table-row', backgroundColor: '#FFF' }}>
+          {/* Selection checkbox header */}
+          <Box
+            sx={{
+              display: 'table-cell',
+              width: 40,
+              minWidth: 40,
+              border: 'none',
+              borderRadius: '0px',
+              padding: '0px',
+              borderRight: '1px solid #e0e0e0',
+              borderTop: '1px solid #e0e0e0',
+              borderBottom: '1px solid #e0e0e0',
+              backgroundColor: '#f8f9fa',
+              textAlign: 'center',
+              verticalAlign: 'middle',
+            }}
+          >
+            <Checkbox
+              size="small"
+              checked={allSelected}
+              indeterminate={!allSelected && someSelected}
+              onChange={e => setAllRowsSelected(inputType, e.target.checked)}
+              inputProps={{ 'aria-label': 'Select all rows' }}
+            />
+          </Box>
           {innerColumns.map((column, index) => (
             <Box
               key={`${index}`}
@@ -197,6 +232,8 @@ export function DataMapperTable(props: DataMapperTableProps) {
 
         {/* CSV Header Row Reference */}
         <Box sx={{ display: 'table-row', backgroundColor: '#f8f9fa' }}>
+          {/* Empty cell for selection column */}
+          <Box sx={{ display: 'table-cell', width: 40, minWidth: 40, border: 'none', borderRadius: '0px', padding: '0px', borderRight: '1px solid #e0e0e0', borderBottom: '1px solid #e0e0e0', backgroundColor: '#f8f9fa' }} />
           {innerColumns.map((column, index) => (
             <Box
               key={`csv-header-${index}`}
@@ -232,7 +269,30 @@ export function DataMapperTable(props: DataMapperTableProps) {
         {/* Rows */}
         {innerRows.map((row: string[], rowIndex: number) => (
           <Box key={rowIndex} sx={{ display: 'table-row' }}>
-            {innerColumns.map((column, colIndex: number) => (
+            {/* Row selection checkbox */}
+            <Box
+              sx={{
+                display: 'table-cell',
+                width: 40,
+                minWidth: 40,
+                border: 'none',
+                borderRadius: '0px',
+                padding: '0px',
+                borderRight: '1px solid #e0e0e0',
+                borderBottom: '1px solid #e0e0e0',
+                backgroundColor: '#f8f9fa',
+                textAlign: 'center',
+                verticalAlign: 'middle',
+              }}
+            >
+              <Checkbox
+                size="small"
+                checked={!!selection[rowIndex]}
+                onChange={e => setRowSelected(inputType, rowIndex, e.target.checked)}
+                inputProps={{ 'aria-label': `Select row ${rowIndex + 1}` }}
+              />
+            </Box>
+            {innerColumns.map((column, colIndex) => (
               <Box
                 key={`${rowIndex}-${colIndex}`}
                 id={`cell-${rowIndex}-${colIndex}`}
@@ -260,7 +320,6 @@ export function DataMapperTable(props: DataMapperTableProps) {
                       props.onCellChange(rowIndex, colIndex, value)
                     }
                   }}
-                  onCopy={() => onCopyAttributeColumn(colIndex, rowIndex)}
                   onRepeatToAll={props.onRepeatToAll ? (value) => props.onRepeatToAll!(rowIndex, colIndex, value) : undefined}
                 />
               </Box>
