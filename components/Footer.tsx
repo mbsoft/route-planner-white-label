@@ -3,7 +3,9 @@ import React from 'react'
 const version = process.env.NEXT_PUBLIC_GIT_COMMIT || process.env.NEXT_PUBLIC_VERSION || '1.0.0'
 const lastUpdated = process.env.NEXT_PUBLIC_LAST_UPDATED || ''
 
+
 export default function Footer() {
+  console.log('COMMIT:', process.env.NEXT_PUBLIC_GIT_COMMIT, 'VERSION:', process.env.NEXT_PUBLIC_VERSION)
   return (
     <footer style={{
       width: '100%',
