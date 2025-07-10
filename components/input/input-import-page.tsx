@@ -185,9 +185,13 @@ function buildLocations(jobs: any, vehicles: any, jobMapConfig: any, vehicleMapC
     return id;
   }
 
-  // Only process explicitly selected rows
-  const jobSelection = jobs.selection || [];
-  const vehicleSelection = vehicles.selection || [];
+  // Only process explicitly selected rows, ensure selection arrays are properly initialized
+  const jobSelection = jobs.selection && jobs.selection.length === jobs.rows.length 
+    ? jobs.selection 
+    : Array(jobs.rows.length).fill(true);
+  const vehicleSelection = vehicles.selection && vehicles.selection.length === vehicles.rows.length 
+    ? vehicles.selection 
+    : Array(vehicles.rows.length).fill(true);
 
   // Add job locations (only for selected jobs)
   jobs.rows.forEach((row: string[], index: number) => {
@@ -223,8 +227,10 @@ function normalizeJobs(jobData: any, mapConfig: any, locMap: Map<string, number>
   if (!jobData.rows || jobData.rows.length === 0) return [];
   const selectedJobs: OptimizationMvrpOrderJobV2[] = [];
   
-  // Only process explicitly selected rows
-  const selection = jobData.selection || [];
+  // Only process explicitly selected rows, ensure selection array is properly initialized
+  const selection = jobData.selection && jobData.selection.length === jobData.rows.length 
+    ? jobData.selection 
+    : Array(jobData.rows.length).fill(true);
   
   jobData.rows.forEach((row: string[], index: number) => {
     // Only process if this job is explicitly selected
@@ -301,8 +307,10 @@ function normalizeVehicles(vehicleData: any, mapConfig: any, locMap: Map<string,
   if (!vehicleData.rows || vehicleData.rows.length === 0) return [];
   const selectedVehicles: VehicleType[] = [];
   
-  // Only process explicitly selected rows
-  const selection = vehicleData.selection || [];
+  // Only process explicitly selected rows, ensure selection array is properly initialized
+  const selection = vehicleData.selection && vehicleData.selection.length === vehicleData.rows.length 
+    ? vehicleData.selection 
+    : Array(vehicleData.rows.length).fill(true);
   
   vehicleData.rows.forEach((row: string[], index: number) => {
     // Only process if this vehicle is explicitly selected
@@ -479,8 +487,13 @@ export const InputImportPage = ({ currentStep, onStepChange, preferences, onPref
       setIsOptimizing(true)
       
       // Check if at least one job and one vehicle are selected
-      const jobSelection = job.selection || [];
-      const vehicleSelection = vehicle.selection || [];
+      // Ensure selection arrays are properly initialized
+      const jobSelection = job.selection && job.selection.length === job.rawData.rows.length 
+        ? job.selection 
+        : Array(job.rawData.rows.length).fill(true);
+      const vehicleSelection = vehicle.selection && vehicle.selection.length === vehicle.rawData.rows.length 
+        ? vehicle.selection 
+        : Array(vehicle.rawData.rows.length).fill(true);
       
       const selectedJobsCount = jobSelection.filter(Boolean).length;
       const selectedVehiclesCount = vehicleSelection.filter(Boolean).length;
@@ -506,11 +519,15 @@ export const InputImportPage = ({ currentStep, onStepChange, preferences, onPref
       console.log('Debug - Job data:', {
         rawData: job.rawData,
         selection: job.selection,
+        selectionLength: job.selection?.length,
+        rowsLength: job.rawData.rows.length,
         mapConfig: job.mapConfig
       });
       console.log('Debug - Vehicle data:', {
         rawData: store.inputCore.vehicle.rawData,
         selection: store.inputCore.vehicle.selection,
+        selectionLength: store.inputCore.vehicle.selection?.length,
+        rowsLength: store.inputCore.vehicle.rawData.rows.length,
         mapConfig: store.inputCore.vehicle.mapConfig
       });
       
