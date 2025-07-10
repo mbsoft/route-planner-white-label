@@ -185,19 +185,18 @@ function buildLocations(jobs: any, vehicles: any, jobMapConfig: any, vehicleMapC
     return id;
   }
 
-  // If no selection array exists or all are false, select all rows
-  const jobSelection = jobs.selection || Array(jobs.rows.length).fill(true);
-  const jobHasAnySelected = jobSelection.some(Boolean);
-  const jobEffectiveSelection = jobHasAnySelected ? jobSelection : Array(jobs.rows.length).fill(true);
-  
-  const vehicleSelection = vehicles.selection || Array(vehicles.rows.length).fill(true);
-  const vehicleHasAnySelected = vehicleSelection.some(Boolean);
-  const vehicleEffectiveSelection = vehicleHasAnySelected ? vehicleSelection : Array(vehicles.rows.length).fill(true);
+  // Only process explicitly selected rows, ensure selection arrays are properly initialized
+  const jobSelection = jobs.selection && jobs.selection.length === jobs.rows.length 
+    ? jobs.selection 
+    : Array(jobs.rows.length).fill(true);
+  const vehicleSelection = vehicles.selection && vehicles.selection.length === vehicles.rows.length 
+    ? vehicles.selection 
+    : Array(vehicles.rows.length).fill(true);
 
   // Add job locations (only for selected jobs)
   jobs.rows.forEach((row: string[], index: number) => {
-    // Only process if this job is selected
-    if (jobEffectiveSelection[index]) {
+    // Only process if this job is explicitly selected
+    if (jobSelection[index]) {
       const locStr = getLocationString(row, jobMapConfig, 'location');
       if (locStr) addLocation(locStr);
     }
@@ -205,8 +204,8 @@ function buildLocations(jobs: any, vehicles: any, jobMapConfig: any, vehicleMapC
 
   // Add vehicle start/end locations (only for selected vehicles)
   vehicles.rows.forEach((row: string[], index: number) => {
-    // Only process if this vehicle is selected
-    if (vehicleEffectiveSelection[index]) {
+    // Only process if this vehicle is explicitly selected
+    if (vehicleSelection[index]) {
       const startLocStr = getLocationString(row, vehicleMapConfig, 'start_location');
       if (startLocStr) addLocation(startLocStr);
       const endLocStr = getLocationString(row, vehicleMapConfig, 'end_location');
@@ -228,14 +227,14 @@ function normalizeJobs(jobData: any, mapConfig: any, locMap: Map<string, number>
   if (!jobData.rows || jobData.rows.length === 0) return [];
   const selectedJobs: OptimizationMvrpOrderJobV2[] = [];
   
-  // If no selection array exists or all are false, select all rows
-  const selection = jobData.selection || Array(jobData.rows.length).fill(true);
-  const hasAnySelected = selection.some(Boolean);
-  const effectiveSelection = hasAnySelected ? selection : Array(jobData.rows.length).fill(true);
+  // Only process explicitly selected rows, ensure selection array is properly initialized
+  const selection = jobData.selection && jobData.selection.length === jobData.rows.length 
+    ? jobData.selection 
+    : Array(jobData.rows.length).fill(true);
   
   jobData.rows.forEach((row: string[], index: number) => {
-    // Only process if this job is selected
-    if (!effectiveSelection[index]) {
+    // Only process if this job is explicitly selected
+    if (!selection[index]) {
       return;
     }
     
@@ -308,14 +307,14 @@ function normalizeVehicles(vehicleData: any, mapConfig: any, locMap: Map<string,
   if (!vehicleData.rows || vehicleData.rows.length === 0) return [];
   const selectedVehicles: VehicleType[] = [];
   
-  // If no selection array exists or all are false, select all rows
-  const selection = vehicleData.selection || Array(vehicleData.rows.length).fill(true);
-  const hasAnySelected = selection.some(Boolean);
-  const effectiveSelection = hasAnySelected ? selection : Array(vehicleData.rows.length).fill(true);
+  // Only process explicitly selected rows, ensure selection array is properly initialized
+  const selection = vehicleData.selection && vehicleData.selection.length === vehicleData.rows.length 
+    ? vehicleData.selection 
+    : Array(vehicleData.rows.length).fill(true);
   
   vehicleData.rows.forEach((row: string[], index: number) => {
-    // Only process if this vehicle is selected
-    if (!effectiveSelection[index]) {
+    // Only process if this vehicle is explicitly selected
+    if (!selection[index]) {
       return;
     }
     
@@ -397,9 +396,10 @@ interface InputImportPageProps {
   onStepChange: (nextStep: number) => void
   preferences?: PreferencesInput
   onPreferencesChange?: (preferences: PreferencesInput) => void
+  onRouteResultsChange?: (routes: any) => void
 }
 
-export const InputImportPage = ({ currentStep, onStepChange, preferences, onPreferencesChange }: InputImportPageProps) => {
+export const InputImportPage = ({ currentStep, onStepChange, preferences, onPreferencesChange, onRouteResultsChange }: InputImportPageProps) => {
   const store = useInputStore()
   const { job, vehicle, shipment } = store.inputCore
   const useCase = useUseCase()
@@ -488,8 +488,13 @@ export const InputImportPage = ({ currentStep, onStepChange, preferences, onPref
       setIsOptimizing(true)
       
       // Check if at least one job and one vehicle are selected
-      const jobSelection = job.selection || Array(job.rawData.rows.length).fill(true);
-      const vehicleSelection = vehicle.selection || Array(vehicle.rawData.rows.length).fill(true);
+      // Ensure selection arrays are properly initialized
+      const jobSelection = job.selection && job.selection.length === job.rawData.rows.length 
+        ? job.selection 
+        : Array(job.rawData.rows.length).fill(true);
+      const vehicleSelection = vehicle.selection && vehicle.selection.length === vehicle.rawData.rows.length 
+        ? vehicle.selection 
+        : Array(vehicle.rawData.rows.length).fill(true);
       
       const selectedJobsCount = jobSelection.filter(Boolean).length;
       const selectedVehiclesCount = vehicleSelection.filter(Boolean).length;
@@ -515,17 +520,25 @@ export const InputImportPage = ({ currentStep, onStepChange, preferences, onPref
       console.log('Debug - Job data:', {
         rawData: job.rawData,
         selection: job.selection,
+        selectionLength: job.selection?.length,
+        rowsLength: job.rawData.rows.length,
         mapConfig: job.mapConfig
       });
       console.log('Debug - Vehicle data:', {
         rawData: store.inputCore.vehicle.rawData,
         selection: store.inputCore.vehicle.selection,
+        selectionLength: store.inputCore.vehicle.selection?.length,
+        rowsLength: store.inputCore.vehicle.rawData.rows.length,
         mapConfig: store.inputCore.vehicle.mapConfig
       });
       
       // Normalize the data
       const normalizedJobs = normalizeJobs(job.rawData, job.mapConfig, locMap)
-      const normalizedVehicles = normalizeVehicles(store.inputCore.vehicle.rawData, store.inputCore.vehicle.mapConfig, locMap)
+      const normalizedVehicles = normalizeVehicles(
+        { ...store.inputCore.vehicle.rawData, selection: store.inputCore.vehicle.selection },
+        store.inputCore.vehicle.mapConfig,
+        locMap
+      )
       
       console.log('Debug - Normalized data:', {
         jobs: normalizedJobs,
@@ -559,13 +572,35 @@ export const InputImportPage = ({ currentStep, onStepChange, preferences, onPref
             const resultResponse = await apiClient.getOptimizationResult(requestId)
             const resultData = resultResponse.data as any
             
-            if (resultData && resultData.routes) {
-              // Optimization completed
-              clearInterval(interval)
-              setPollInterval(null)
-              setIsPolling(false)
-              setRouteResults(resultData)
-              setPollingMessage(`Optimization completed! Found ${resultData.routes.length} routes.`)
+            if (resultData) {
+              // Check if optimization is complete (empty message) or still processing
+              if (resultData.message === "" || resultData.message === undefined) {
+                // Optimization completed
+                clearInterval(interval)
+                setPollInterval(null)
+                setIsPolling(false)
+                setRouteResults(resultData)
+                setPollingMessage(`Optimization completed! Found ${resultData.result?.routes?.length || 0} routes.`)
+                
+                // Convert route results to RouteData format and pass to parent
+                if (resultData.result?.routes && onRouteResultsChange) {
+                  const routeData = resultData.result.routes.map((route: any) => ({
+                    vehicle: route.vehicle,
+                    geometry: route.geometry,
+                    cost: route.cost,
+                    distance: route.distance,
+                    duration: route.duration,
+                    steps: route.steps
+                  }))
+                  onRouteResultsChange(routeData)
+                }
+              } else if (resultData.message === "Still processing") {
+                // Continue polling - optimization still in progress
+                console.log('Optimization still processing...')
+              } else {
+                // Other status - might be an error or different state
+                console.log('Optimization status:', resultData.message)
+              }
             }
           } catch (error) {
             console.error('Polling error:', error)
@@ -697,10 +732,10 @@ export const InputImportPage = ({ currentStep, onStepChange, preferences, onPref
             </p>
             <Box sx={{ mt: 2, p: 2, backgroundColor: '#f9f9f9', borderRadius: '4px' }}>
               <Typography variant="body2" sx={{ color: '#666' }}>
-                <strong>{orderTypeLabel}:</strong> {(store.inputCore[inputType].selection || Array(store.inputCore[inputType].rawData.rows.length).fill(true)).filter(Boolean).length} of {store.inputCore[inputType].rawData.rows.length} records selected
+                <strong>{orderTypeLabel}:</strong> {(store.inputCore[inputType].selection || []).filter(Boolean).length} of {store.inputCore[inputType].rawData.rows.length} records selected
               </Typography>
               <Typography variant="body2" sx={{ color: '#666' }}>
-                <strong>Vehicles:</strong> {(vehicle.selection || Array(vehicle.rawData.rows.length).fill(true)).filter(Boolean).length} of {vehicle.rawData.rows.length} records selected
+                <strong>Vehicles:</strong> {(vehicle.selection || []).filter(Boolean).length} of {vehicle.rawData.rows.length} records selected
               </Typography>
             </Box>
             {/* Polling Status */}
@@ -738,9 +773,9 @@ export const InputImportPage = ({ currentStep, onStepChange, preferences, onPref
                 <Typography variant="body2" sx={{ color: '#2e7d32' }}>
                   {pollingMessage}
                 </Typography>
-                {routeResults.routes && (
+                {routeResults.result?.routes && (
                   <Typography variant="body2" sx={{ color: '#2e7d32', mt: 1 }}>
-                    Total routes: {routeResults.routes.length}
+                    Total routes: {routeResults.result.routes.length}
                   </Typography>
                 )}
               </Box>
@@ -779,7 +814,7 @@ export const InputImportPage = ({ currentStep, onStepChange, preferences, onPref
               }
             }}
           >
-            {currentStep === steps.length - 1 ? (isOptimizing ? 'Optimizing...' : 'Finish') : 'Next'}
+            {currentStep === steps.length - 1 ? (isOptimizing ? 'Optimizing...' : 'Run Optimization') : 'Next'}
           </Button>
         </Box>
       </Box>

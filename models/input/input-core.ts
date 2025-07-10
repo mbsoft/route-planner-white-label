@@ -68,4 +68,5 @@ export interface InputCoreSlice {
   setRowSelected: (inputType: InputType, rowIndex: number, selected: boolean) => void
   setAllRowsSelected: (inputType: InputType, selected: boolean) => void
   clearSelection: (inputType: InputType) => void
+  loadPersistedMapping: (inputType: InputType) => Promise<void>
 } 

@@ -2,6 +2,7 @@ import { create } from 'zustand'
 import { InputCoreSlice, InputType } from './input-core'
 import { InputPhaseSlice, InputPage } from './input-phase'
 import { InputUISlice } from './input-ui'
+import { mappingPersistence } from '../../utils/mapping-persistence'
 
 // Get the default active tab based on USE_CASE environment variable
 const getDefaultActiveTab = (): InputType => {
@@ -90,7 +91,8 @@ export const useInputStore = create<RootState>((set, get) => ({
           },
         },
       })),
-    setMapConfig: (inputType, config) =>
+    setMapConfig: (inputType, config) => {
+      // Update the store immediately
       set((state) => ({
         inputCore: {
           ...state.inputCore,
@@ -99,8 +101,15 @@ export const useInputStore = create<RootState>((set, get) => ({
             mapConfig: config,
           },
         },
-      })),
-    resetMapping: (inputType) =>
+      }))
+      
+      // Persist the mapping configuration asynchronously (non-blocking)
+      mappingPersistence.saveMapping(inputType, config).catch((error) => {
+        console.error(`Failed to persist ${inputType} mapping:`, error)
+      })
+    },
+    resetMapping: (inputType) => {
+      // Update the store immediately
       set((state) => ({
         inputCore: {
           ...state.inputCore,
@@ -109,7 +118,13 @@ export const useInputStore = create<RootState>((set, get) => ({
             mapConfig: { dataMappings: [], metaMappings: [] },
           },
         },
-      })),
+      }))
+      
+      // Clear the persisted mapping configuration asynchronously (non-blocking)
+      mappingPersistence.clearMapping(inputType).catch((error) => {
+        console.error(`Failed to clear persisted ${inputType} mapping:`, error)
+      })
+    },
     appendAttachedRows: (inputType) =>
       set((state) => {
         const currentData = state.inputCore[inputType].rawData
@@ -167,6 +182,44 @@ export const useInputStore = create<RootState>((set, get) => ({
     initialize: async (params) => {
       // Initialize logic here
       console.log('Initializing with params:', params)
+      
+      // Load persisted mappings for all input types
+      try {
+        const inputTypes: InputType[] = ['job', 'vehicle', 'shipment']
+        
+        for (const inputType of inputTypes) {
+          const persistedMapping = await mappingPersistence.loadMapping(inputType)
+          if (persistedMapping) {
+            set((state) => ({
+              inputCore: {
+                ...state.inputCore,
+                [inputType]: {
+                  ...state.inputCore[inputType],
+                  mapConfig: persistedMapping,
+                },
+              },
+            }))
+            console.log(`Loaded persisted mapping for ${inputType}`)
+          }
+        }
+        
+        // Mark as initialized after successful completion
+        set((state) => ({
+          inputCore: {
+            ...state.inputCore,
+            isInitialized: true,
+          },
+        }))
+      } catch (error) {
+        console.error('Failed to load persisted mappings:', error)
+        // Still mark as initialized even if there's an error to prevent infinite retries
+        set((state) => ({
+          inputCore: {
+            ...state.inputCore,
+            isInitialized: true,
+          },
+        }))
+      }
     },
     setIsInitialized: (value) =>
       set((state) => ({
@@ -182,6 +235,25 @@ export const useInputStore = create<RootState>((set, get) => ({
           activeTab: tab,
         },
       })),
+    loadPersistedMapping: async (inputType) => {
+      try {
+        const persistedMapping = await mappingPersistence.loadMapping(inputType)
+        if (persistedMapping) {
+          set((state) => ({
+            inputCore: {
+              ...state.inputCore,
+              [inputType]: {
+                ...state.inputCore[inputType],
+                mapConfig: persistedMapping,
+              },
+            },
+          }))
+          console.log(`Loaded persisted mapping for ${inputType}`)
+        }
+      } catch (error) {
+        console.error(`Failed to load persisted mapping for ${inputType}:`, error)
+      }
+    },
   },
   inputPhase: {
     page: InputPage.IMPORT,

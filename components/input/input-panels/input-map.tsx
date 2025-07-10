@@ -12,6 +12,11 @@ import turfCenter from '@turf/center'
 import turfBbox from '@turf/bbox'
 import turfBboxPolygon from '@turf/bbox-polygon'
 import booleanContains from '@turf/boolean-contains'
+import { Box, IconButton, Typography, Collapse } from '@mui/material'
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
+import ExpandLessIcon from '@mui/icons-material/ExpandLess'
+import MapIcon from '@mui/icons-material/Map'
+import { polylineToGeoJSON } from '../../../utils/polyline-decoder'
 import MapOptionsControls from './map-options-controls'
 import styles from './input-map.module.scss'
 
@@ -22,10 +27,6 @@ declare global {
   }
 }
 
-
-
-
-
 export interface MapMarker {
   latitude: number
   longitude: number
@@ -34,10 +35,28 @@ export interface MapMarker {
   type?: 'job' | 'vehicle'
 }
 
-export const InputMap = ({ markers }: { markers?: MapMarker[] }) => {
+export interface RouteData {
+  vehicle: string
+  geometry: string
+  cost?: number
+  distance?: number
+  duration?: number
+  steps?: any[]
+}
+
+interface CollapsibleMapProps {
+  markers?: MapMarker[]
+  routes?: RouteData[]
+  isVisible?: boolean
+  onToggle?: (visible: boolean) => void
+}
+
+export const CollapsibleMap = ({ markers, routes, isVisible = false, onToggle }: CollapsibleMapProps) => {
+  const [isExpanded, setIsExpanded] = useState(isVisible)
   const [hoverInfo, setHoverInfo] = useState<PickingInfo>()
   const [showJobMarkers, setShowJobMarkers] = useState(true)
   const [showVehicleMarkers, setShowVehicleMarkers] = useState(true)
+  const [showRoutes, setShowRoutes] = useState(true)
   const [viewState, setViewState] = useState({
     longitude: -74.0060, // New York City longitude
     latitude: 40.7128,   // New York City latitude
@@ -53,11 +72,15 @@ export const InputMap = ({ markers }: { markers?: MapMarker[] }) => {
     ? `https://api.nextbillion.io/tt/style/1/style/22.2.1-9?map=2/basic_street-dark&key=${apiKey}`
     : ''
 
-
+  const handleToggle = () => {
+    const newExpanded = !isExpanded
+    setIsExpanded(newExpanded)
+    onToggle?.(newExpanded)
+  }
 
   // Convert markers to GeoJSON features
   const markerFeatures = useMemo(() => {
-    console.log('InputMap received markers:', markers)
+    console.log('CollapsibleMap received markers:', markers)
     if (!markers || markers.length === 0) return []
     
     // Filter markers based on options
@@ -81,32 +104,57 @@ export const InputMap = ({ markers }: { markers?: MapMarker[] }) => {
     })
   }, [markers, showJobMarkers, showVehicleMarkers])
 
+  // Helper to generate a random RGBA color
+  function getRandomColor(seed: number) {
+    // Use a seeded pseudo-random generator for consistent colors per session
+    const x = Math.sin(seed + 1) * 10000;
+    const r = Math.floor((Math.abs(Math.sin(seed) * 256)) % 256);
+    const g = Math.floor((Math.abs(Math.sin(seed + 1) * 256)) % 256);
+    const b = Math.floor((Math.abs(Math.sin(seed + 2) * 256)) % 256);
+    return [r, g, b, 255];
+  }
+
+  // Convert routes to GeoJSON features
+  const routeFeatures = useMemo(() => {
+    if (!routes || routes.length === 0 || !showRoutes) return []
+    
+    return routes.map((route, index) => {
+      try {
+        const geoJSON = polylineToGeoJSON(route.geometry)
+        return {
+          ...geoJSON,
+          properties: {
+            id: `route-${index}`,
+            vehicle: route.vehicle,
+            cost: route.cost,
+            distance: route.distance,
+            duration: route.duration,
+            color: getRandomColor(index), // Assign a different random color for each route
+            width: 3,
+          }
+        }
+      } catch (error) {
+        console.error(`Failed to decode route ${index}:`, error)
+        return null
+      }
+    }).filter((feature): feature is any => feature !== null)
+  }, [routes, showRoutes])
+
+  // Combine all features for bounding box calculation
+  const allFeatures = useMemo(() => {
+    return [...markerFeatures, ...routeFeatures] as any[]
+  }, [markerFeatures, routeFeatures])
+
   // Smart bounding box logic - only adjust view if markers are not visible
   useEffect(() => {
-    console.log('DEBUG: Bounding box effect triggered')
-    console.log('DEBUG: markerFeatures.length:', markerFeatures.length)
-    console.log('DEBUG: isMapReady:', isMapReady)
-    console.log('DEBUG: mapRef.current:', mapRef.current)
-    console.log('DEBUG: viewMap:', viewMap)
+    if (allFeatures.length === 0) return
     
-    if (markerFeatures.length === 0) {
-      console.log('DEBUG: No markers to process')
-      return
-    }
-    
-    // Use mapRef.current as fallback if viewMap is not available
     const mapInstance = viewMap || mapRef.current
     
-    if (!isMapReady || !mapInstance) {
-      console.log('DEBUG: Map not ready yet')
-      return
-    }
+    if (!isMapReady || !mapInstance) return
     
     try {
-      const bbox = turfBbox(featureCollection(markerFeatures))
-      
-      // Always optimize the view to fit all markers with padding
-      console.log('DEBUG: Optimizing map view to fit all markers')
+      const bbox = turfBbox(featureCollection(allFeatures))
       
       // Calculate new view state from bbox
       const [minLng, minLat, maxLng, maxLat] = bbox
@@ -117,7 +165,6 @@ export const InputMap = ({ markers }: { markers?: MapMarker[] }) => {
       const lngDiff = maxLng - minLng
       const latDiff = maxLat - minLat
       const maxDiff = Math.max(lngDiff, latDiff)
-      // Add padding by reducing the zoom level slightly
       const zoom = Math.max(1, Math.min(15, Math.log2(360 / maxDiff) - 0.5))
       
       setViewState({
@@ -126,26 +173,10 @@ export const InputMap = ({ markers }: { markers?: MapMarker[] }) => {
         zoom: zoom,
         bearing: 0,
       })
-      
-      console.log('DEBUG: New view state:', {
-        longitude: centerLng,
-        latitude: centerLat,
-        zoom: zoom,
-        bbox: bbox
-      })
     } catch (error) {
-      console.error('DEBUG: Error in bounding box logic:', error)
+      console.error('Error in bounding box logic:', error)
     }
-  }, [markerFeatures, isMapReady, viewMap])
-
-  // Monitor viewMap availability
-  useEffect(() => {
-    console.log('DEBUG: viewMap availability changed:', !!viewMap)
-    if (viewMap) {
-      console.log('DEBUG: viewMap is now available')
-      console.log('DEBUG: viewMap.getBounds():', viewMap.getBounds())
-    }
-  }, [viewMap])
+  }, [allFeatures, isMapReady, viewMap])
 
   // Create GeoJsonLayer for markers
   const markerLayer = useMemo(() => {
@@ -161,8 +192,8 @@ export const InputMap = ({ markers }: { markers?: MapMarker[] }) => {
       getFillColor: (f: any) => f?.properties?.color ?? [25, 118, 210, 255],
       getText: (f: any) => f?.properties?.text ?? '',
       getTextColor: [255, 255, 255, 255],
-      getTextSize: (f: any) => f?.properties?.type === 'vehicle' ? 16 : 10, // Larger text for vehicle icons
-      getPointRadius: (f: any) => f?.properties?.type === 'vehicle' ? 12 : 9, // Larger radius for vehicles
+      getTextSize: (f: any) => f?.properties?.type === 'vehicle' ? 16 : 10,
+      getPointRadius: (f: any) => f?.properties?.type === 'vehicle' ? 12 : 9,
       pointRadiusUnits: 'pixels',
       onHover: (info: PickingInfo) => {
         if (info.object) {
@@ -173,83 +204,128 @@ export const InputMap = ({ markers }: { markers?: MapMarker[] }) => {
     })
   }, [markerFeatures])
 
+  // Create GeoJsonLayer for routes
+  const routeLayer = useMemo(() => {
+    if (routeFeatures.length === 0) return null
+
+    return new GeoJsonLayer({
+      id: 'route-layer',
+      data: featureCollection(routeFeatures),
+      stroked: true,
+      filled: false,
+      lineWidthUnits: 'pixels',
+      getLineColor: (f: any) => f?.properties?.color ?? [255, 87, 34, 255],
+      getLineWidth: (f: any) => f?.properties?.width ?? 3,
+      pickable: true,
+      onHover: (info: PickingInfo) => {
+        if (info.object) {
+          info.object.popupType = 'route'
+        }
+        setHoverInfo(info)
+      },
+    })
+  }, [routeFeatures])
+
   const layers: Layer[] = []
+  if (routeLayer) {
+    layers.push(routeLayer)
+  }
   if (markerLayer) {
     layers.push(markerLayer)
   }
 
   if (!apiKey) {
     return (
-      <div className={styles.root} style={{
-        background: '#fffbe6',
-        color: '#b26a00',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        fontWeight: 500,
-        fontSize: 16,
-        textAlign: 'center',
-        height: '320px',
-      }}>
-        Missing NEXTBILLION API Key.<br />
-        Please set NEXTBILLION_API_KEY in your environment.
-      </div>
+      <Box className={styles.collapsibleRoot}>
+        <Box className={styles.toggleButton} onClick={handleToggle}>
+          <MapIcon sx={{ mr: 1 }} />
+          <Typography variant="body2">Map View</Typography>
+          {isExpanded ? <ExpandLessIcon /> : <ExpandMoreIcon />}
+        </Box>
+        <Collapse in={isExpanded} timeout={300}>
+          <Box className={styles.errorContainer}>
+            <Typography variant="body1" color="warning.main">
+              Missing NEXTBILLION API Key.<br />
+              Please set NEXTBILLION_API_KEY in your environment.
+            </Typography>
+          </Box>
+        </Collapse>
+      </Box>
     )
   }
 
   return (
-    <div className={styles.root}>
-      <div className={styles.mapContainer}>
-        <DeckGL
-          style={{ width: '100%', height: '100%' }}
-          viewState={viewState}
-          onViewStateChange={({ viewState: newViewState }) => {
-            setViewState({
-              longitude: newViewState.longitude,
-              latitude: newViewState.latitude,
-              zoom: newViewState.zoom,
-              bearing: newViewState.bearing,
-            })
-          }}
-          pickingRadius={10}
-          controller={{ doubleClickZoom: false }}
-          layers={layers}
-        >
-          <Map
-            id="viewMap"
-            mapLib={nbmapgl as any}
+    <Box className={styles.collapsibleRoot}>
+      <Box className={styles.toggleButton} onClick={handleToggle}>
+        <MapIcon sx={{ mr: 1 }} />
+        <Typography variant="body2">
+          Map View {markers && markers.length > 0 && `(${markers.length} locations)`}
+          {routes && routes.length > 0 && ` • ${routes.length} routes`}
+        </Typography>
+        {isExpanded ? <ExpandLessIcon /> : <ExpandMoreIcon />}
+      </Box>
+      
+      <Collapse in={isExpanded} timeout={300}>
+        <Box className={styles.mapContainer}>
+          <DeckGL
             style={{ width: '100%', height: '100%' }}
-            mapStyle={mapStyleUrl}
-            projection={{ name: 'globe' }}
-            attributionControl={false}
-            ref={mapRef}
-            onLoad={() => {
-              console.log('DEBUG: Map loaded, setting isMapReady to true')
-              console.log('DEBUG: mapRef.current:', mapRef.current)
-              setIsMapReady(true)
+            viewState={viewState}
+            onViewStateChange={({ viewState: newViewState }) => {
+              setViewState({
+                longitude: newViewState.longitude,
+                latitude: newViewState.latitude,
+                zoom: newViewState.zoom,
+                bearing: newViewState.bearing,
+              })
             }}
-          />
-          {hoverInfo?.object && (
-            <div
-              className={styles.tooltip}
-              style={{
-                left: hoverInfo.x,
-                top: hoverInfo.y,
+            pickingRadius={10}
+            controller={{ doubleClickZoom: false }}
+            layers={layers}
+          >
+            <Map
+              id="viewMap"
+              mapLib={nbmapgl as any}
+              style={{ width: '100%', height: '100%' }}
+              mapStyle={mapStyleUrl}
+              projection={{ name: 'globe' }}
+              attributionControl={false}
+              ref={mapRef}
+              onLoad={() => {
+                setIsMapReady(true)
               }}
-            >
-              {hoverInfo.object.properties?.description || 'Location'}
-            </div>
-          )}
-        </DeckGL>
-        <div className={styles.optionsContainer}>
-          <MapOptionsControls
-            showJobMarkers={showJobMarkers}
-            showVehicleMarkers={showVehicleMarkers}
-            onShowJobMarkersChange={setShowJobMarkers}
-            onShowVehicleMarkersChange={setShowVehicleMarkers}
-          />
-        </div>
-      </div>
-    </div>
+            />
+            {hoverInfo?.object && (
+              <div
+                className={styles.tooltip}
+                style={{
+                  left: hoverInfo.x,
+                  top: hoverInfo.y,
+                }}
+              >
+                {hoverInfo.object.popupType === 'route' 
+                  ? `Route ${hoverInfo.object.properties?.vehicle || 'Unknown'}`
+                  : hoverInfo.object.properties?.description || 'Location'
+                }
+              </div>
+            )}
+          </DeckGL>
+          <div className={styles.optionsContainer}>
+            <MapOptionsControls
+              showJobMarkers={showJobMarkers}
+              showVehicleMarkers={showVehicleMarkers}
+              showRoutes={showRoutes}
+              onShowJobMarkersChange={setShowJobMarkers}
+              onShowVehicleMarkersChange={setShowVehicleMarkers}
+              onShowRoutesChange={setShowRoutes}
+            />
+          </div>
+        </Box>
+      </Collapse>
+    </Box>
   )
+}
+
+// Keep the original InputMap for backward compatibility
+export const InputMap = ({ markers }: { markers?: MapMarker[] }) => {
+  return <CollapsibleMap markers={markers} />
 } 

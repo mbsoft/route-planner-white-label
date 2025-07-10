@@ -4,8 +4,9 @@ import React, { useState } from 'react'
 import { Box, Container, Typography } from '@mui/material'
 import { WhiteLabelLayout } from './white-label-layout'
 import { InputImportPage } from '../components/input/input-import-page'
-import { InputMap, MapMarker } from '../components/input/input-panels/input-map'
+import { CollapsibleMap, MapMarker, RouteData } from '../components/input/input-panels/input-map'
 import { PreferencesPage, PreferencesInput } from '../components/input/input-panels/preferences-page'
+import { MappingManagement } from '../components/input/mapping-management'
 import { useInputStore } from '../models/input/store'
 
 // Force dynamic rendering to prevent prerendering issues
@@ -13,6 +14,7 @@ export const dynamic = 'force-dynamic'
 
 export default function HomePage() {
   const [markers, setMarkers] = useState<MapMarker[]>([])
+  const [routes, setRoutes] = useState<RouteData[]>([])
   const [currentStep, setCurrentStep] = useState(0)
   const [preferences, setPreferences] = useState<PreferencesInput>({
     routing: {
@@ -25,6 +27,26 @@ export default function HomePage() {
   })
   const store = useInputStore()
   const { job, vehicle } = store.inputCore
+
+  // Initialize store and load persisted mappings on mount
+  React.useEffect(() => {
+    const initializeApp = async () => {
+      try {
+        await store.inputCore.initialize({
+          isFleetifyEnable: false,
+          isTelematicEnable: false,
+        })
+        console.log('App initialized with persisted mappings')
+      } catch (error) {
+        console.error('Failed to initialize app:', error)
+      }
+    }
+
+    // Only initialize if not already initialized
+    if (!store.inputCore.isInitialized) {
+      initializeApp()
+    }
+  }, []) // Empty dependency array - only run once on mount
 
   // Helper to extract lat/lng from mapped jobs data, only for selected rows
   function extractJobMarkers() {
@@ -250,16 +272,18 @@ export default function HomePage() {
 
           {/* Map always shown below header */}
           <Box sx={{ p: 2, borderBottom: '1px solid #e0e0e0', backgroundColor: '#f9f9f9' }}>
-            <InputMap markers={markers} />
+            <CollapsibleMap markers={markers} routes={routes} />
           </Box>
 
           {/* Main content area */}
           <Box sx={{ flex: 1 }}>
+            <MappingManagement />
             <InputImportPage
               currentStep={currentStep}
               onStepChange={handleNextStep}
               preferences={preferences}
               onPreferencesChange={setPreferences}
+              onRouteResultsChange={setRoutes}
             />
           </Box>
 
