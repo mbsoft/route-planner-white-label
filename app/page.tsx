@@ -6,6 +6,7 @@ import { WhiteLabelLayout } from './white-label-layout'
 import { InputImportPage } from '../components/input/input-import-page'
 import { InputMap, MapMarker } from '../components/input/input-panels/input-map'
 import { PreferencesPage, PreferencesInput } from '../components/input/input-panels/preferences-page'
+import { MappingManagement } from '../components/input/mapping-management'
 import { useInputStore } from '../models/input/store'
 
 // Force dynamic rendering to prevent prerendering issues
@@ -25,6 +26,23 @@ export default function HomePage() {
   })
   const store = useInputStore()
   const { job, vehicle } = store.inputCore
+
+  // Initialize store and load persisted mappings on mount
+  React.useEffect(() => {
+    const initializeApp = async () => {
+      try {
+        await store.inputCore.initialize({
+          isFleetifyEnable: false,
+          isTelematicEnable: false,
+        })
+        console.log('App initialized with persisted mappings')
+      } catch (error) {
+        console.error('Failed to initialize app:', error)
+      }
+    }
+
+    initializeApp()
+  }, [store.inputCore])
 
   // Helper to extract lat/lng from mapped jobs data, only for selected rows
   function extractJobMarkers() {
@@ -255,6 +273,7 @@ export default function HomePage() {
 
           {/* Main content area */}
           <Box sx={{ flex: 1 }}>
+            <MappingManagement />
             <InputImportPage
               currentStep={currentStep}
               onStepChange={handleNextStep}
