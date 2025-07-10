@@ -26,11 +26,12 @@ export default function HomePage() {
   const store = useInputStore()
   const { job, vehicle } = store.inputCore
 
-  // Helper to extract lat/lng from mapped jobs data
+  // Helper to extract lat/lng from mapped jobs data, only for selected rows
   function extractJobMarkers() {
     const header = job.rawData.header
     const rows = job.rawData.rows
     const mapConfig = job.mapConfig
+    const selection = job.selection || []
     
     // Try to find latitude and longitude columns with various common names
     const latIdx = header.findIndex(h => 
@@ -54,6 +55,7 @@ export default function HomePage() {
     
     return rows
       .map((row, index) => {
+        if (!selection[index]) return null
         const lat = parseFloat(row[latIdx])
         const lng = parseFloat(row[lngIdx])
         if (!isNaN(lat) && !isNaN(lng)) {
@@ -83,11 +85,12 @@ export default function HomePage() {
       .filter(Boolean) as MapMarker[]
   }
 
-  // Helper to extract lat/lng from mapped vehicle data
+  // Helper to extract lat/lng from mapped vehicle data, only for selected rows
   function extractVehicleMarkers() {
     const header = vehicle.rawData.header
     const rows = vehicle.rawData.rows
     const mapConfig = vehicle.mapConfig
+    const selection = vehicle.selection || []
     
     // First try to find a combined lat,lng field (like "start location" or "end location")
     const combinedLocationIdx = header.findIndex(h => 
@@ -103,6 +106,7 @@ export default function HomePage() {
       
       return rows
         .map((row, index) => {
+          if (!selection[index]) return null
           const locationValue = row[combinedLocationIdx]
           if (!locationValue) return null
           
@@ -175,6 +179,7 @@ export default function HomePage() {
     
     return rows
       .map((row, index) => {
+        if (!selection[index]) return null
         const lat = parseFloat(row[latIdx])
         const lng = parseFloat(row[lngIdx])
         if (!isNaN(lat) && !isNaN(lng)) {
@@ -204,29 +209,15 @@ export default function HomePage() {
       .filter(Boolean) as MapMarker[]
   }
 
+  // Update markers whenever selection or data changes
+  React.useEffect(() => {
+    const jobMarkers = extractJobMarkers()
+    const vehicleMarkers = extractVehicleMarkers()
+    setMarkers([...jobMarkers, ...vehicleMarkers])
+  }, [job.rawData, job.selection, vehicle.rawData, vehicle.selection])
+
   // Handler for Next button in InputImportPage
   function handleNextStep(nextStep: number) {
-    // If advancing from Orders/Shipments to Vehicles, update markers
-    if (currentStep === 1 && nextStep === 2) {
-      const extractedMarkers = extractJobMarkers()
-      console.log('Extracted job markers:', extractedMarkers)
-      console.log('Job data:', job)
-      setMarkers(extractedMarkers)
-    }
-    // If advancing from Vehicles to Preferences, add vehicle markers
-    if (currentStep === 2 && nextStep === 3) {
-      console.log('Vehicle data:', vehicle)
-      console.log('Vehicle raw data:', vehicle.rawData)
-      console.log('Vehicle map config:', vehicle.mapConfig)
-      
-      const vehicleMarkers = extractVehicleMarkers()
-      const jobMarkers = extractJobMarkers()
-      const allMarkers = [...jobMarkers, ...vehicleMarkers]
-      console.log('Extracted vehicle markers:', vehicleMarkers)
-      console.log('Job markers:', jobMarkers)
-      console.log('All markers:', allMarkers)
-      setMarkers(allMarkers)
-    }
     setCurrentStep(nextStep)
   }
 

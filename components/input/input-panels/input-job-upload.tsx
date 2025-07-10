@@ -7,6 +7,7 @@ import { FileDropZone } from './file-drop-zone'
 import { DataTable } from './data-table'
 import { useInputStore } from '../../../models/input/store'
 import { useUseCase } from '../../../utils/use-case'
+import { DataMapperTable } from '../data-mapper/data-mapper-table'
 
 export const InputJobUpload = () => {
   const store = useInputStore()
@@ -36,6 +37,54 @@ export const InputJobUpload = () => {
       header: [],
       rows: [],
       attachedRows: [],
+    })
+  }
+
+  // Batch editing state
+  const [isEditing, setIsEditing] = useState(false)
+  const [editRows, setEditRows] = useState<string[][]>([])
+  const [editAttachedRows, setEditAttachedRows] = useState<string[][]>([])
+
+  // Start editing: copy current data
+  const handleEdit = () => {
+    setEditRows(currentData.rows.map(row => [...row]))
+    setEditAttachedRows(currentData.attachedRows.map(row => [...row]))
+    setIsEditing(true)
+  }
+  // Cancel editing: discard changes
+  const handleCancel = () => {
+    setIsEditing(false)
+    setEditRows([])
+    setEditAttachedRows([])
+  }
+  // Save editing: commit to store
+  const handleSave = () => {
+    store.inputCore.setRawData(inputType, {
+      header: currentData.header,
+      rows: editRows,
+      attachedRows: editAttachedRows,
+    })
+    setIsEditing(false)
+    setEditRows([])
+    setEditAttachedRows([])
+  }
+
+  // Cell change handler for editing
+  const handleCellChange = (row: number, col: number, value: string) => {
+    setEditRows(prev => {
+      const updated = prev.map(r => [...r])
+      if (updated[row]) updated[row][col] = value
+      return updated
+    })
+  }
+  // Fill-down handler for editing
+  const handleRepeatToAll = (row: number, col: number, value: string) => {
+    setEditRows(prev => {
+      const updated = prev.map(r => [...r])
+      for (let i = 0; i < updated.length; i++) {
+        updated[i][col] = value
+      }
+      return updated
     })
   }
 
@@ -101,10 +150,40 @@ export const InputJobUpload = () => {
             Your {orderTypeLabel.toLowerCase()}s data has been successfully imported. 
             You can now proceed to the mapping step or click the delete icon above to remove the data and upload a different file.
           </Typography>
+
+          {/* Batch editing controls */}
+          <Box sx={{ mt: 2, mb: 2, display: 'flex', gap: 2 }}>
+            {!isEditing && (
+              <IconButton onClick={handleEdit} color="primary" title="Edit table">
+                <span role="img" aria-label="edit">✏️</span>
+              </IconButton>
+            )}
+            {isEditing && (
+              <>
+                <IconButton onClick={handleSave} color="success" title="Save changes">
+                  <span role="img" aria-label="save">💾</span>
+                </IconButton>
+                <IconButton onClick={handleCancel} color="error" title="Cancel editing">
+                  <span role="img" aria-label="cancel">❌</span>
+                </IconButton>
+              </>
+            )}
+          </Box>
+
+          {/* Editable table */}
+          <DataMapperTable
+            inputType={inputType}
+            isEditing={isEditing}
+            highlightCell={null}
+            onCellChange={handleCellChange}
+            onRepeatToAll={handleRepeatToAll}
+            // Use editRows for editing, otherwise currentData.rows
+            rows={isEditing ? editRows : currentData.rows}
+            attachedRows={isEditing ? editAttachedRows : currentData.attachedRows}
+            header={currentData.header}
+          />
         </Box>
       )}
-
-      {/* Remove DataTable rendering here */}
     </div>
   )
 } 

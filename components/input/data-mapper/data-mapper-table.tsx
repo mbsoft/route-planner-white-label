@@ -16,6 +16,9 @@ type DataMapperTableProps = {
   highlightCell: { row: number; col: number } | null
   onCellChange: (row: number, col: number, value: string) => void
   onRepeatToAll?: (row: number, col: number, value: string) => void // New prop
+  rows?: string[][]
+  attachedRows?: string[][]
+  header?: string[]
 }
 
 function isTimestamp(
@@ -42,7 +45,7 @@ function isTimestamp(
 }
 
 export function DataMapperTable(props: DataMapperTableProps) {
-  const { isEditing, highlightCell } = props
+  const { isEditing, highlightCell, rows: propRows, attachedRows: propAttachedRows, header: propHeader } = props
   const [edittingValue, setEdittingValue] = useState<string>('')
   const [edittingCell, setEdittingCell] = useState<{ row: number; col: number }>({
     row: -1,
@@ -57,14 +60,19 @@ export function DataMapperTable(props: DataMapperTableProps) {
     col: -1,
   })
   const {
-    header,
-    rows,
-    attachedRows,
+    header: storeHeader,
+    rows: storeRows,
+    attachedRows: storeAttachedRows,
     columns,
     inputType,
     mapConfig,
     dataOptionMap,
   } = useCurrentInput(props.inputType)
+
+  // Use props if provided, otherwise fall back to store
+  const header = propHeader || storeHeader
+  const rows = propRows || storeRows
+  const attachedRows = propAttachedRows || storeAttachedRows
 
   const innerColumns = useMemo(() => {
     const dataColumns = header.map((header: string, index: number) => {

@@ -6,6 +6,7 @@ import DeleteIcon from '@mui/icons-material/Delete'
 import { FileDropZone } from './file-drop-zone'
 import { DataTable } from './data-table'
 import { useInputStore } from '../../../models/input/store'
+import { DataMapperTable } from '../data-mapper/data-mapper-table'
 
 export const InputVehicleUpload = () => {
   const store = useInputStore()
@@ -25,6 +26,54 @@ export const InputVehicleUpload = () => {
       header: [],
       rows: [],
       attachedRows: [],
+    })
+  }
+
+  // Batch editing state
+  const [isEditing, setIsEditing] = useState(false)
+  const [editRows, setEditRows] = useState<string[][]>([])
+  const [editAttachedRows, setEditAttachedRows] = useState<string[][]>([])
+
+  // Start editing: copy current data
+  const handleEdit = () => {
+    setEditRows(vehicle.rawData.rows.map(row => [...row]))
+    setEditAttachedRows(vehicle.rawData.attachedRows.map(row => [...row]))
+    setIsEditing(true)
+  }
+  // Cancel editing: discard changes
+  const handleCancel = () => {
+    setIsEditing(false)
+    setEditRows([])
+    setEditAttachedRows([])
+  }
+  // Save editing: commit to store
+  const handleSave = () => {
+    store.inputCore.setRawData('vehicle', {
+      header: vehicle.rawData.header,
+      rows: editRows,
+      attachedRows: editAttachedRows,
+    })
+    setIsEditing(false)
+    setEditRows([])
+    setEditAttachedRows([])
+  }
+
+  // Cell change handler for editing
+  const handleCellChange = (row: number, col: number, value: string) => {
+    setEditRows(prev => {
+      const updated = prev.map(r => [...r])
+      if (updated[row]) updated[row][col] = value
+      return updated
+    })
+  }
+  // Fill-down handler for editing
+  const handleRepeatToAll = (row: number, col: number, value: string) => {
+    setEditRows(prev => {
+      const updated = prev.map(r => [...r])
+      for (let i = 0; i < updated.length; i++) {
+        updated[i][col] = value
+      }
+      return updated
     })
   }
 
@@ -93,10 +142,39 @@ export const InputVehicleUpload = () => {
             Your vehicle fleet data has been successfully imported. 
             You can now proceed to the mapping step or click the delete icon above to remove the data and upload a different file.
           </Typography>
+
+          {/* Batch editing controls */}
+          <Box sx={{ mt: 2, mb: 2, display: 'flex', gap: 2 }}>
+            {!isEditing && (
+              <IconButton onClick={handleEdit} color="primary" title="Edit table">
+                <span role="img" aria-label="edit">✏️</span>
+              </IconButton>
+            )}
+            {isEditing && (
+              <>
+                <IconButton onClick={handleSave} color="success" title="Save changes">
+                  <span role="img" aria-label="save">💾</span>
+                </IconButton>
+                <IconButton onClick={handleCancel} color="error" title="Cancel editing">
+                  <span role="img" aria-label="cancel">❌</span>
+                </IconButton>
+              </>
+            )}
+          </Box>
+
+          {/* Editable table */}
+          <DataMapperTable
+            inputType="vehicle"
+            isEditing={isEditing}
+            highlightCell={null}
+            onCellChange={handleCellChange}
+            onRepeatToAll={handleRepeatToAll}
+            rows={isEditing ? editRows : vehicle.rawData.rows}
+            attachedRows={isEditing ? editAttachedRows : vehicle.rawData.attachedRows}
+            header={vehicle.rawData.header}
+          />
         </Box>
       )}
-
-      {/* Remove DataTable rendering here */}
     </div>
   )
 } 
