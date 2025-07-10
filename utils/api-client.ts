@@ -89,7 +89,7 @@ export class ApiClient {
   }
 
   async getOptimizationResult(id: string) {
-    return this.request(`/optimization/v2/${id}?key=${this.apiKey}`)
+    return this.request(`/optimization/v2/result?id=${id}`)
   }
 
   // Directions API
