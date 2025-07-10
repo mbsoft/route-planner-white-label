@@ -559,13 +559,22 @@ export const InputImportPage = ({ currentStep, onStepChange, preferences, onPref
             const resultResponse = await apiClient.getOptimizationResult(requestId)
             const resultData = resultResponse.data as any
             
-            if (resultData && resultData.routes) {
-              // Optimization completed
-              clearInterval(interval)
-              setPollInterval(null)
-              setIsPolling(false)
-              setRouteResults(resultData)
-              setPollingMessage(`Optimization completed! Found ${resultData.routes.length} routes.`)
+            if (resultData) {
+              // Check if optimization is complete (empty message) or still processing
+              if (resultData.message === "" || resultData.message === undefined) {
+                // Optimization completed
+                clearInterval(interval)
+                setPollInterval(null)
+                setIsPolling(false)
+                setRouteResults(resultData)
+                setPollingMessage(`Optimization completed! Found ${resultData.routes?.length || 0} routes.`)
+              } else if (resultData.message === "Still processing") {
+                // Continue polling - optimization still in progress
+                console.log('Optimization still processing...')
+              } else {
+                // Other status - might be an error or different state
+                console.log('Optimization status:', resultData.message)
+              }
             }
           } catch (error) {
             console.error('Polling error:', error)
