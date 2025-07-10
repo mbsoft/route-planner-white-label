@@ -15,6 +15,11 @@ import EditIcon from '@mui/icons-material/Edit';
 import SaveIcon from '@mui/icons-material/Save';
 import CloseIcon from '@mui/icons-material/Close';
 import DeleteIcon from '@mui/icons-material/Delete';
+import Dialog from '@mui/material/Dialog';
+import DialogTitle from '@mui/material/DialogTitle';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogActions from '@mui/material/DialogActions';
 
 const steps = [
   'Preferences',
@@ -41,6 +46,7 @@ export const InputImportPage = ({ currentStep, onStepChange, preferences, onPref
   const [isEditing, setIsEditing] = React.useState(false)
   const [editRows, setEditRows] = React.useState<string[][]>([])
   const [editAttachedRows, setEditAttachedRows] = React.useState<string[][]>([])
+  const [deleteDialogOpen, setDeleteDialogOpen] = React.useState(false);
 
   // Handlers for editing
   const handleEdit = () => {
@@ -79,6 +85,14 @@ export const InputImportPage = ({ currentStep, onStepChange, preferences, onPref
       return updated
     })
   }
+
+  // Handler for delete with confirmation
+  const handleDelete = () => setDeleteDialogOpen(true);
+  const handleDeleteConfirm = () => {
+    store.inputCore.setRawData(inputType, { header: [], rows: [], attachedRows: [] });
+    setDeleteDialogOpen(false);
+  };
+  const handleDeleteCancel = () => setDeleteDialogOpen(false);
 
   // Only show mapping table in the relevant step
   const showMapping = (step: number) => {
@@ -143,10 +157,23 @@ export const InputImportPage = ({ currentStep, onStepChange, preferences, onPref
                   </IconButton>
                 </>
               )}
-              <IconButton onClick={() => store.inputCore.setRawData(inputType, { header: [], rows: [], attachedRows: [] })} color="error" title="Delete imported data">
+              <IconButton onClick={handleDelete} color="error" title="Delete imported data">
                 <DeleteIcon />
               </IconButton>
             </Box>
+            {/* Delete confirmation dialog */}
+            <Dialog open={deleteDialogOpen} onClose={handleDeleteCancel}>
+              <DialogTitle>Are you sure?</DialogTitle>
+              <DialogContent>
+                <DialogContentText>
+                  This will delete all imported data. This action cannot be undone.
+                </DialogContentText>
+              </DialogContent>
+              <DialogActions>
+                <Button onClick={handleDeleteCancel} color="primary">Cancel</Button>
+                <Button onClick={handleDeleteConfirm} color="error" variant="contained">Confirm</Button>
+              </DialogActions>
+            </Dialog>
             <Box sx={{ mt: 4 }}>
               <DataMapper
                 headers={store.inputCore[inputType].rawData.header}

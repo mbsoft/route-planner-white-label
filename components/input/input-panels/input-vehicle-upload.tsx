@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { Box, IconButton, Typography } from '@mui/material'
+import { Box, IconButton, Typography, Button, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions } from '@mui/material'
 import DeleteIcon from '@mui/icons-material/Delete'
 import { FileDropZone } from './file-drop-zone'
 import { DataTable } from './data-table'
@@ -38,6 +38,7 @@ export const InputVehicleUpload = () => {
   const [isEditing, setIsEditing] = useState(false)
   const [editRows, setEditRows] = useState<string[][]>([])
   const [editAttachedRows, setEditAttachedRows] = useState<string[][]>([])
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
 
   // Start editing: copy current data
   const handleEdit = () => {
@@ -81,6 +82,14 @@ export const InputVehicleUpload = () => {
       return updated
     })
   }
+
+  // Handler for delete with confirmation
+  const handleDelete = () => setDeleteDialogOpen(true);
+  const handleDeleteConfirm = () => {
+    store.inputCore.setRawData('vehicle', { header: [], rows: [], attachedRows: [] });
+    setDeleteDialogOpen(false);
+  };
+  const handleDeleteCancel = () => setDeleteDialogOpen(false);
 
   return (
     <div style={{ padding: '20px' }}>
@@ -157,10 +166,23 @@ export const InputVehicleUpload = () => {
                 </IconButton>
               </>
             )}
-            <IconButton onClick={handleClearData} color="error" title="Delete imported data">
+            <IconButton onClick={handleDelete} color="error" title="Delete imported data">
               <DeleteIcon />
             </IconButton>
           </Box>
+         {/* Delete confirmation dialog */}
+         <Dialog open={deleteDialogOpen} onClose={handleDeleteCancel}>
+           <DialogTitle>Are you sure?</DialogTitle>
+           <DialogContent>
+             <DialogContentText>
+               This will delete all imported vehicle data. This action cannot be undone.
+             </DialogContentText>
+           </DialogContent>
+           <DialogActions>
+             <Button onClick={handleDeleteCancel} color="primary">Cancel</Button>
+             <Button onClick={handleDeleteConfirm} color="error" variant="contained">Confirm</Button>
+           </DialogActions>
+         </Dialog>
 
           {/* Editable table */}
           <DataMapperTable
