@@ -2,6 +2,12 @@
 
 import React from 'react'
 import { Box, Button, Typography, IconButton, LinearProgress, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Collapse, Checkbox } from '@mui/material'
+import DirectionsCarIcon from '@mui/icons-material/DirectionsCar'
+import LocalShippingIcon from '@mui/icons-material/LocalShipping'
+import FlagIcon from '@mui/icons-material/Flag'
+import InventoryIcon from '@mui/icons-material/Inventory'
+import DownloadIcon from '@mui/icons-material/Download'
+import UploadIcon from '@mui/icons-material/Upload'
 import { InputOrderPanel } from './input-panels/input-order'
 import { InputVehiclePanel } from './input-panels/input-vehicle'
 import { InputImportStepper } from './input-import-stepper'
@@ -460,13 +466,25 @@ const RouteSummaryTable: React.FC<RouteSummaryTableProps> = ({
   }
 
   const getStepTypeIcon = (type: string) => {
+    const iconStyle = {
+      width: '20px',
+      height: '20px',
+      color: '#1976d2',
+    }
+    
     switch (type) {
-      case 'start': return '🚗'
-      case 'job': return '📦'
-      case 'pickup': return '📥'
-      case 'delivery': return '📤'
-      case 'end': return '🏁'
-      default: return '📍'
+      case 'start': 
+        return <DirectionsCarIcon sx={iconStyle} />
+      case 'job': 
+        return <InventoryIcon sx={iconStyle} />
+      case 'pickup': 
+        return <DownloadIcon sx={iconStyle} />
+      case 'delivery': 
+        return <UploadIcon sx={iconStyle} />
+      case 'end': 
+        return <FlagIcon sx={iconStyle} />
+      default: 
+        return <LocalShippingIcon sx={iconStyle} />
     }
   }
 
@@ -489,12 +507,13 @@ const RouteSummaryTable: React.FC<RouteSummaryTableProps> = ({
               />
             </TableCell>
             <TableCell sx={{ width: 50 }}></TableCell>
+            <TableCell><strong>Description</strong></TableCell>
             <TableCell><strong>Vehicle</strong></TableCell>
             <TableCell><strong>Start Time</strong></TableCell>
             <TableCell><strong>End Time</strong></TableCell>
             <TableCell><strong>Stops</strong></TableCell>
             <TableCell><strong>Distance</strong></TableCell>
-            <TableCell><strong>Duration</strong></TableCell>
+            <TableCell><strong>Drive Time</strong></TableCell>
             <TableCell><strong>Cost</strong></TableCell>
             <TableCell><strong>Load</strong></TableCell>
           </TableRow>
@@ -524,14 +543,14 @@ const RouteSummaryTable: React.FC<RouteSummaryTableProps> = ({
                   </IconButton>
                 </TableCell>
                 <TableCell onClick={() => onToggleRoute(routeIndex)}>
-                  <Typography variant="body2" sx={{ fontWeight: 'bold' }}>
-                    {route.vehicle || `Vehicle ${routeIndex + 1}`}
+                  <Typography variant="body2">
+                    {route.description || 'No description'}
                   </Typography>
-                  {route.description && (
-                    <Typography variant="caption" sx={{ color: '#666' }}>
-                      {route.description}
-                    </Typography>
-                  )}
+                </TableCell>
+                <TableCell onClick={() => onToggleRoute(routeIndex)}>
+                  <Typography variant="body2" sx={{ fontWeight: 'bold' }}>
+                    {route.vehicle}
+                  </Typography>
                 </TableCell>
                 <TableCell onClick={() => onToggleRoute(routeIndex)}>
                   <Typography variant="body2">
@@ -586,8 +605,8 @@ const RouteSummaryTable: React.FC<RouteSummaryTableProps> = ({
                       <Table size="small">
                         <TableHead>
                           <TableRow>
-                            <TableCell><strong>Step</strong></TableCell>
                             <TableCell><strong>Type</strong></TableCell>
+                            <TableCell><strong>Description</strong></TableCell>
                             <TableCell><strong>Location</strong></TableCell>
                             <TableCell><strong>Arrival</strong></TableCell>
                             <TableCell><strong>Service</strong></TableCell>
@@ -597,12 +616,14 @@ const RouteSummaryTable: React.FC<RouteSummaryTableProps> = ({
                         <TableBody>
                           {route.steps && route.steps.map((step: any, stepIndex: number) => (
                             <TableRow key={stepIndex}>
-                              <TableCell>{stepIndex + 1}</TableCell>
                               <TableCell>
                                 <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                                  <span>{getStepTypeIcon(step.type)}</span>
-                                  <span>{step.type}</span>
+                                  {getStepTypeIcon(step.type)}
+                                  <span>{step.type?.toUpperCase() || 'N/A'}</span>
                                 </Box>
+                              </TableCell>
+                              <TableCell>
+                                {step.description || 'N/A'}
                               </TableCell>
                               <TableCell>
                                 {step.location ? 
@@ -612,8 +633,8 @@ const RouteSummaryTable: React.FC<RouteSummaryTableProps> = ({
                               </TableCell>
                               <TableCell>
                                 {step.arrival ? 
-                                  new Date(step.arrival * 1000).toLocaleTimeString() : 
-                                  formatDuration(step.duration || 0)
+                                  new Date(step.arrival * 1000).toLocaleTimeString(undefined, { hour: '2-digit', minute: '2-digit', hour12: false }) : 
+                                  'N/A'
                                 }
                               </TableCell>
                               <TableCell>
