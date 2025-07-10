@@ -3,7 +3,6 @@
 import React, {createContext, useContext, useEffect, useState} from 'react'
 import {ThemeProvider, createTheme} from '@mui/material/styles'
 import CssBaseline from '@mui/material/CssBaseline'
-import getConfig from 'next/config'
 import Footer from '../components/Footer'
 
 // Create a context for the API key
@@ -45,26 +44,36 @@ export function WhiteLabelLayout({children}: WhiteLabelLayoutProps) {
   const [error, setError] = useState<string | null>(null)
 
   useEffect(() => {
-    // Try multiple ways to get the API key
-    const {publicRuntimeConfig} = getConfig() || {}
-    const configApiKey = publicRuntimeConfig?.NEXTBILLION_API_KEY
-    const envApiKey = process.env.NEXTBILLION_API_KEY
-    const runtimeApiKey = configApiKey || envApiKey
+    // Fetch the API key from the config API route
+    const fetchConfig = async () => {
+      try {
+        const response = await fetch('/api/config')
+        if (!response.ok) {
+          throw new Error('Failed to fetch configuration')
+        }
+        
+        const config = await response.json()
+        console.log('Config from API:', config)
+        
+        const apiKey = config.NEXTBILLION_API_KEY
+        console.log('API Key from API:', apiKey)
 
-    console.log('API Key check:', {
-      configApiKey: configApiKey ? 'Present' : 'Missing',
-      envApiKey: envApiKey ? 'Present' : 'Missing',
-      runtimeApiKey: runtimeApiKey ? 'Present' : 'Missing'
-    })
+        if (!apiKey) {
+          setError('NEXTBILLION_API_KEY environment variable is required')
+          setIsLoading(false)
+          return
+        }
 
-    if (!runtimeApiKey) {
-      setError('NEXTBILLION_API_KEY environment variable is required')
-      setIsLoading(false)
-      return
+        setApiKey(apiKey)
+        setIsLoading(false)
+      } catch (error) {
+        console.error('Error fetching config:', error)
+        setError('Failed to load configuration')
+        setIsLoading(false)
+      }
     }
 
-    setApiKey(runtimeApiKey)
-    setIsLoading(false)
+    fetchConfig()
   }, [])
 
   if (isLoading) {

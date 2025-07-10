@@ -396,9 +396,10 @@ interface InputImportPageProps {
   onStepChange: (nextStep: number) => void
   preferences?: PreferencesInput
   onPreferencesChange?: (preferences: PreferencesInput) => void
+  onRouteResultsChange?: (routes: any) => void
 }
 
-export const InputImportPage = ({ currentStep, onStepChange, preferences, onPreferencesChange }: InputImportPageProps) => {
+export const InputImportPage = ({ currentStep, onStepChange, preferences, onPreferencesChange, onRouteResultsChange }: InputImportPageProps) => {
   const store = useInputStore()
   const { job, vehicle, shipment } = store.inputCore
   const useCase = useUseCase()
@@ -533,7 +534,11 @@ export const InputImportPage = ({ currentStep, onStepChange, preferences, onPref
       
       // Normalize the data
       const normalizedJobs = normalizeJobs(job.rawData, job.mapConfig, locMap)
-      const normalizedVehicles = normalizeVehicles(store.inputCore.vehicle.rawData, store.inputCore.vehicle.mapConfig, locMap)
+      const normalizedVehicles = normalizeVehicles(
+        { ...store.inputCore.vehicle.rawData, selection: store.inputCore.vehicle.selection },
+        store.inputCore.vehicle.mapConfig,
+        locMap
+      )
       
       console.log('Debug - Normalized data:', {
         jobs: normalizedJobs,
@@ -576,6 +581,19 @@ export const InputImportPage = ({ currentStep, onStepChange, preferences, onPref
                 setIsPolling(false)
                 setRouteResults(resultData)
                 setPollingMessage(`Optimization completed! Found ${resultData.result?.routes?.length || 0} routes.`)
+                
+                // Convert route results to RouteData format and pass to parent
+                if (resultData.result?.routes && onRouteResultsChange) {
+                  const routeData = resultData.result.routes.map((route: any) => ({
+                    vehicle: route.vehicle,
+                    geometry: route.geometry,
+                    cost: route.cost,
+                    distance: route.distance,
+                    duration: route.duration,
+                    steps: route.steps
+                  }))
+                  onRouteResultsChange(routeData)
+                }
               } else if (resultData.message === "Still processing") {
                 // Continue polling - optimization still in progress
                 console.log('Optimization still processing...')
@@ -796,7 +814,7 @@ export const InputImportPage = ({ currentStep, onStepChange, preferences, onPref
               }
             }}
           >
-            {currentStep === steps.length - 1 ? (isOptimizing ? 'Optimizing...' : 'Finish') : 'Next'}
+            {currentStep === steps.length - 1 ? (isOptimizing ? 'Optimizing...' : 'Run Optimization') : 'Next'}
           </Button>
         </Box>
       </Box>

@@ -91,8 +91,8 @@ export const useInputStore = create<RootState>((set, get) => ({
           },
         },
       })),
-    setMapConfig: async (inputType, config) => {
-      // Update the store
+    setMapConfig: (inputType, config) => {
+      // Update the store immediately
       set((state) => ({
         inputCore: {
           ...state.inputCore,
@@ -103,15 +103,13 @@ export const useInputStore = create<RootState>((set, get) => ({
         },
       }))
       
-      // Persist the mapping configuration
-      try {
-        await mappingPersistence.saveMapping(inputType, config)
-      } catch (error) {
+      // Persist the mapping configuration asynchronously (non-blocking)
+      mappingPersistence.saveMapping(inputType, config).catch((error) => {
         console.error(`Failed to persist ${inputType} mapping:`, error)
-      }
+      })
     },
-    resetMapping: async (inputType) => {
-      // Update the store
+    resetMapping: (inputType) => {
+      // Update the store immediately
       set((state) => ({
         inputCore: {
           ...state.inputCore,
@@ -122,12 +120,10 @@ export const useInputStore = create<RootState>((set, get) => ({
         },
       }))
       
-      // Clear the persisted mapping configuration
-      try {
-        await mappingPersistence.clearMapping(inputType)
-      } catch (error) {
+      // Clear the persisted mapping configuration asynchronously (non-blocking)
+      mappingPersistence.clearMapping(inputType).catch((error) => {
         console.error(`Failed to clear persisted ${inputType} mapping:`, error)
-      }
+      })
     },
     appendAttachedRows: (inputType) =>
       set((state) => {
@@ -206,8 +202,23 @@ export const useInputStore = create<RootState>((set, get) => ({
             console.log(`Loaded persisted mapping for ${inputType}`)
           }
         }
+        
+        // Mark as initialized after successful completion
+        set((state) => ({
+          inputCore: {
+            ...state.inputCore,
+            isInitialized: true,
+          },
+        }))
       } catch (error) {
         console.error('Failed to load persisted mappings:', error)
+        // Still mark as initialized even if there's an error to prevent infinite retries
+        set((state) => ({
+          inputCore: {
+            ...state.inputCore,
+            isInitialized: true,
+          },
+        }))
       }
     },
     setIsInitialized: (value) =>

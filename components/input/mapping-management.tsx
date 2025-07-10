@@ -195,6 +195,9 @@ export const MappingManagement: React.FC = () => {
         <DialogTitle>Clear All Mappings</DialogTitle>
         <DialogContent>
           <DialogContentText>
+            <Typography variant="h6" sx={{ mb: 2, color: '#d32f2f' }}>
+              Are you sure?
+            </Typography>
             This will permanently delete all saved column mappings from your browser's local storage. 
             This action cannot be undone.
           </DialogContentText>

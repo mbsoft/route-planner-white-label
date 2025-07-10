@@ -8,15 +8,19 @@ import ExpandLessIcon from '@mui/icons-material/ExpandLess'
 type MapOptionsControlsProps = {
   showJobMarkers: boolean
   showVehicleMarkers: boolean
+  showRoutes?: boolean
   onShowJobMarkersChange: (showJobMarkers: boolean) => void
   onShowVehicleMarkersChange: (showVehicleMarkers: boolean) => void
+  onShowRoutesChange?: (showRoutes: boolean) => void
 }
 
 export default function MapOptionsControls({
   showJobMarkers,
   showVehicleMarkers,
+  showRoutes,
   onShowJobMarkersChange,
   onShowVehicleMarkersChange,
+  onShowRoutesChange,
 }: MapOptionsControlsProps) {
   const [isExpanded, setIsExpanded] = useState(false)
 
@@ -63,7 +67,7 @@ export default function MapOptionsControls({
         <Box sx={{ 
           overflow: 'hidden',
           transition: 'all 0.3s ease',
-          maxHeight: isExpanded ? '100px' : '0px',
+          maxHeight: isExpanded ? '150px' : '0px',
           opacity: isExpanded ? 1 : 0,
         }}>
           <Stack spacing={0.5}>
@@ -105,6 +109,27 @@ export default function MapOptionsControls({
                 }}
               />
             </Card>
+            {showRoutes !== undefined && onShowRoutesChange && (
+              <Card sx={{ boxShadow: 'none', backgroundColor: 'transparent', m: 0, p: 0 }}>
+                <FormControlLabel
+                  control={
+                    <Switch
+                      checked={showRoutes}
+                      size="small"
+                      onChange={(ev) => {
+                        onShowRoutesChange(ev.target.checked)
+                      }}
+                    />
+                  }
+                  label={<span style={{ fontSize: '12px', color: 'white' }}>Routes</span>}
+                  sx={{ 
+                    fontSize: '12px',
+                    m: 0,
+                    '& .MuiFormControlLabel-label': { fontSize: '12px', color: 'white' }
+                  }}
+                />
+              </Card>
+            )}
           </Stack>
         </Box>
       </Stack>
