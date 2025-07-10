@@ -7,6 +7,11 @@ import { FileDropZone } from './file-drop-zone'
 import { DataTable } from './data-table'
 import { useInputStore } from '../../../models/input/store'
 import { DataMapperTable } from '../data-mapper/data-mapper-table'
+import ReplayIcon from '@mui/icons-material/Replay';
+import AddIcon from '@mui/icons-material/Add';
+import EditIcon from '@mui/icons-material/Edit';
+import SaveIcon from '@mui/icons-material/Save';
+import CloseIcon from '@mui/icons-material/Close';
 
 export const InputVehicleUpload = () => {
   const store = useInputStore()
@@ -90,20 +95,6 @@ export const InputVehicleUpload = () => {
         >
           Import Vehicle Fleet Data
         </h3>
-        {hasData && (
-          <IconButton
-            onClick={handleClearData}
-            sx={{
-              color: '#d32f2f',
-              '&:hover': {
-                backgroundColor: 'rgba(211, 47, 47, 0.04)',
-              },
-            }}
-            title="Delete imported data"
-          >
-            <DeleteIcon />
-          </IconButton>
-        )}
       </Box>
 
       {!hasData ? (
@@ -144,22 +135,31 @@ export const InputVehicleUpload = () => {
           </Typography>
 
           {/* Batch editing controls */}
-          <Box sx={{ mt: 2, mb: 2, display: 'flex', gap: 2 }}>
+          <Box sx={{ mt: 2, mb: 2, display: 'flex', gap: 2, alignItems: 'center', justifyContent: 'flex-end' }}>
+            <IconButton onClick={() => store.inputCore.resetMapping('vehicle')} color="primary" title="Reset Mapping">
+              <ReplayIcon />
+            </IconButton>
+            <IconButton onClick={() => store.inputCore.appendAttachedRows('vehicle')} color="primary" title="Add attribute">
+              <AddIcon />
+            </IconButton>
             {!isEditing && (
               <IconButton onClick={handleEdit} color="primary" title="Edit table">
-                <span role="img" aria-label="edit">✏️</span>
+                <EditIcon />
               </IconButton>
             )}
             {isEditing && (
               <>
                 <IconButton onClick={handleSave} color="success" title="Save changes">
-                  <span role="img" aria-label="save">💾</span>
+                  <SaveIcon />
                 </IconButton>
                 <IconButton onClick={handleCancel} color="error" title="Cancel editing">
-                  <span role="img" aria-label="cancel">❌</span>
+                  <CloseIcon />
                 </IconButton>
               </>
             )}
+            <IconButton onClick={handleClearData} color="error" title="Delete imported data">
+              <DeleteIcon />
+            </IconButton>
           </Box>
 
           {/* Editable table */}

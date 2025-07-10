@@ -1,7 +1,7 @@
 'use client'
 
 import React from 'react'
-import { Box, Button, Typography } from '@mui/material'
+import { Box, Button, Typography, IconButton } from '@mui/material'
 import { InputOrderPanel } from './input-panels/input-order'
 import { InputVehiclePanel } from './input-panels/input-vehicle'
 import { InputImportStepper } from './input-import-stepper'
@@ -9,6 +9,12 @@ import { PreferencesPage, PreferencesInput } from './input-panels/preferences-pa
 import { useInputStore } from '../../models/input/store'
 import { DataMapper } from './data-mapper/data-mapper'
 import { useUseCase } from '../../utils/use-case'
+import ReplayIcon from '@mui/icons-material/Replay';
+import AddIcon from '@mui/icons-material/Add';
+import EditIcon from '@mui/icons-material/Edit';
+import SaveIcon from '@mui/icons-material/Save';
+import CloseIcon from '@mui/icons-material/Close';
+import DeleteIcon from '@mui/icons-material/Delete';
 
 const steps = [
   'Preferences',
@@ -30,6 +36,49 @@ export const InputImportPage = ({ currentStep, onStepChange, preferences, onPref
   const useCase = useUseCase()
   const inputType = useCase === 'jobs' ? 'job' : 'shipment'
   const orderTypeLabel = useCase === 'jobs' ? 'Jobs' : 'Shipments'
+
+  // Local editing state for jobs mapping
+  const [isEditing, setIsEditing] = React.useState(false)
+  const [editRows, setEditRows] = React.useState<string[][]>([])
+  const [editAttachedRows, setEditAttachedRows] = React.useState<string[][]>([])
+
+  // Handlers for editing
+  const handleEdit = () => {
+    setEditRows(store.inputCore[inputType].rawData.rows.map(row => [...row]))
+    setEditAttachedRows(store.inputCore[inputType].rawData.attachedRows.map(row => [...row]))
+    setIsEditing(true)
+  }
+  const handleCancel = () => {
+    setIsEditing(false)
+    setEditRows([])
+    setEditAttachedRows([])
+  }
+  const handleSave = () => {
+    store.inputCore.setRawData(inputType, {
+      header: store.inputCore[inputType].rawData.header,
+      rows: editRows,
+      attachedRows: editAttachedRows,
+    })
+    setIsEditing(false)
+    setEditRows([])
+    setEditAttachedRows([])
+  }
+  const handleCellChange = (row: number, col: number, value: string) => {
+    setEditRows(prev => {
+      const updated = prev.map(r => [...r])
+      if (updated[row]) updated[row][col] = value
+      return updated
+    })
+  }
+  const handleRepeatToAll = (row: number, col: number, value: string) => {
+    setEditRows(prev => {
+      const updated = prev.map(r => [...r])
+      for (let i = 0; i < updated.length; i++) {
+        updated[i][col] = value
+      }
+      return updated
+    })
+  }
 
   // Only show mapping table in the relevant step
   const showMapping = (step: number) => {
@@ -54,7 +103,60 @@ export const InputImportPage = ({ currentStep, onStepChange, preferences, onPref
           </Box>
         )
       case 1:
-        return <InputOrderPanel />
+        // Jobs/Shipments step: show drag-drop if no data, otherwise show summary, icons, and mapping table
+        if (store.inputCore[inputType].rawData.rows.length === 0) {
+          return <InputOrderPanel />;
+        }
+        return (
+          <Box sx={{ border: '1px solid #e0e0e0', borderRadius: '12px', background: '#fff', p: 4, mb: 2 }}>
+            <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 1 }}>
+              <Typography variant="h5" sx={{ color: '#1976d2', fontWeight: 'bold' }}>
+                ✓ {orderTypeLabel} Data Imported
+              </Typography>
+              <Typography variant="body2" sx={{ color: '#666' }}>
+                {store.inputCore[inputType].rawData.rows.length} records loaded
+              </Typography>
+            </Box>
+            <Typography variant="body2" sx={{ color: '#666', mb: 2 }}>
+              Your {orderTypeLabel.toLowerCase()} data has been successfully imported. You can now proceed to the mapping step or click the delete icon above to remove the data and upload a different file.
+            </Typography>
+            {/* Icon toolbar and mapping table are rendered here */}
+            <Box sx={{ mt: 2, mb: 2, display: 'flex', gap: 2, alignItems: 'center', justifyContent: 'flex-end' }}>
+              <IconButton onClick={() => store.inputCore.resetMapping(inputType)} color="primary" title="Reset Mapping">
+                <ReplayIcon />
+              </IconButton>
+              <IconButton onClick={() => store.inputCore.appendAttachedRows(inputType)} color="primary" title="Add attribute">
+                <AddIcon />
+              </IconButton>
+              {!isEditing && (
+                <IconButton onClick={handleEdit} color="primary" title="Edit table">
+                  <EditIcon />
+                </IconButton>
+              )}
+              {isEditing && (
+                <>
+                  <IconButton onClick={handleSave} color="success" title="Save changes">
+                    <SaveIcon />
+                  </IconButton>
+                  <IconButton onClick={handleCancel} color="error" title="Cancel editing">
+                    <CloseIcon />
+                  </IconButton>
+                </>
+              )}
+              <IconButton onClick={() => store.inputCore.setRawData(inputType, { header: [], rows: [], attachedRows: [] })} color="error" title="Delete imported data">
+                <DeleteIcon />
+              </IconButton>
+            </Box>
+            <Box sx={{ mt: 4 }}>
+              <DataMapper
+                headers={store.inputCore[inputType].rawData.header}
+                rows={isEditing ? editRows : store.inputCore[inputType].rawData.rows}
+                attachedRows={isEditing ? editAttachedRows : store.inputCore[inputType].rawData.attachedRows}
+                inputType={inputType}
+              />
+            </Box>
+          </Box>
+        );
       case 2:
         return <InputVehiclePanel />
       case 3:
@@ -79,43 +181,13 @@ export const InputImportPage = ({ currentStep, onStepChange, preferences, onPref
     }
   }
 
-  // Render mapping table for the current step
-  const renderMapping = () => {
-    if (currentStep === 1 && store.inputCore[inputType].rawData.rows.length > 0) {
-      return (
-        <Box sx={{ mt: 2 }}>
-          <h4 style={{ margin: '10px 0 4px 0' }}>{orderTypeLabel} Data Mapping</h4>
-          <DataMapper
-            headers={store.inputCore[inputType].rawData.header}
-            rows={store.inputCore[inputType].rawData.rows}
-            attachedRows={store.inputCore[inputType].rawData.attachedRows}
-            inputType={inputType}
-          />
-        </Box>
-      )
-    }
-    if (currentStep === 2 && vehicle.rawData.rows.length > 0) {
-      return (
-        <Box sx={{ mt: 2 }}>
-          <h4 style={{ margin: '10px 0 4px 0' }}>Vehicles Data Mapping</h4>
-          <DataMapper
-            headers={vehicle.rawData.header}
-            rows={vehicle.rawData.rows}
-            attachedRows={vehicle.rawData.attachedRows}
-            inputType="vehicle"
-          />
-        </Box>
-      )
-    }
-    return null
-  }
+  // Remove renderMapping and showMapping logic for jobs step, since mapping is now inside the card
 
   return (
     <Box sx={{ display: 'flex', gap: 2, height: '100%' }}>
       <InputImportStepper currentStep={currentStep} onStepChange={onStepChange} />
       <Box sx={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
         {renderStepContent()}
-        {showMapping(currentStep) && renderMapping()}
         <Box sx={{ display: 'flex', justifyContent: 'space-between', mt: 4 }}>
           <Button
             variant="outlined"
