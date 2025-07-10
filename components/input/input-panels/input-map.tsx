@@ -249,11 +249,6 @@ export const InputMap = ({ markers }: { markers?: MapMarker[] }) => {
             onShowVehicleMarkersChange={setShowVehicleMarkers}
           />
         </div>
-        <div className={styles.attributionContainer}>
-          <div className={styles.attribution}>
-            © 2025 COMPANY NAME. All rights reserved.
-          </div>
-        </div>
       </div>
     </div>
   )

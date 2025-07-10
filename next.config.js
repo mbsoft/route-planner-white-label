@@ -1,3 +1,15 @@
+const fs = require('fs')
+const child_process = require('child_process')
+const pkg = require('./package.json')
+
+function getLastCommitDate() {
+  try {
+    return child_process.execSync('git log -1 --format=%cd --date=short').toString().trim()
+  } catch {
+    return ''
+  }
+}
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   experimental: {
@@ -22,6 +34,8 @@ const nextConfig = {
   env: {
     NEXTBILLION_API_KEY: process.env.NEXTBILLION_API_KEY,
     NEXT_PUBLIC_USE_CASE: process.env.USE_CASE || 'jobs',
+    NEXT_PUBLIC_VERSION: pkg.version,
+    NEXT_PUBLIC_LAST_UPDATED: getLastCommitDate(),
   },
   typescript: {
     ignoreBuildErrors: true,

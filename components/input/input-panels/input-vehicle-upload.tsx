@@ -57,16 +57,6 @@ export const InputVehicleUpload = () => {
         )}
       </Box>
 
-      <p
-        style={{
-          color: '#666',
-          fontSize: '14px',
-          marginBottom: '20px',
-        }}
-      >
-        Upload your vehicle fleet information including capacity, working hours, and constraints.
-      </p>
-
       {!hasData ? (
         <div
           style={{

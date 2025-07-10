@@ -166,7 +166,7 @@ export const FileDropZone = (props: FileDropZoneProps) => {
       }}
     >
       <div style={{
-        fontSize: '48px',
+        fontSize: '33.6px', // 48px * 0.7
         marginBottom: '10px',
         color: '#1976d2'
       }}>
@@ -174,7 +174,7 @@ export const FileDropZone = (props: FileDropZoneProps) => {
       </div>
       
       <div style={{
-        fontSize: '21px',
+        fontSize: '15px', // 21px * 0.7
         fontWeight: '500',
         color: '#2A3249',
         marginBottom: '10px'

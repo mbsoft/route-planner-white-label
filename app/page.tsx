@@ -276,84 +276,16 @@ export default function HomePage() {
             borderTop: '1px solid #e0e0e0', 
             backgroundColor: '#f5f5f5', 
             py: 3,
-            px: 2
+            px: 2,
+            mt: '5px' // Add 5px margin above the footer
           }}>
             <Container maxWidth="xl">
-              <Box sx={{ 
-                display: 'flex', 
-                justifyContent: 'space-between', 
-                alignItems: 'center',
-                flexWrap: 'wrap',
-                gap: 2
-              }}>
-                <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-                  <img 
-                    src="/company_logo.png" 
-                    alt="Company Logo" 
-                    style={{ 
-                      height: '30px', 
-                      width: 'auto',
-                      borderRadius: '4px'
-                    }} 
-                  />
-                  <Typography variant="body2" sx={{ color: '#666' }}>
-                    © 2025 COMPANY NAME. All rights reserved.
-                  </Typography>
-                </Box>
-                
-                <Box sx={{ display: 'flex', gap: 3, flexWrap: 'wrap' }}>
-                  <Typography 
-                    variant="body2" 
-                    component="a" 
-                    href="#" 
-                    sx={{ 
-                      color: '#666', 
-                      textDecoration: 'none',
-                      '&:hover': { color: '#1976d2' }
-                    }}
-                  >
-                    Privacy Policy
-                  </Typography>
-                  <Typography 
-                    variant="body2" 
-                    component="a" 
-                    href="#" 
-                    sx={{ 
-                      color: '#666', 
-                      textDecoration: 'none',
-                      '&:hover': { color: '#1976d2' }
-                    }}
-                  >
-                    Terms of Service
-                  </Typography>
-                  <Typography 
-                    variant="body2" 
-                    component="a" 
-                    href="#" 
-                    sx={{ 
-                      color: '#666', 
-                      textDecoration: 'none',
-                      '&:hover': { color: '#1976d2' }
-                    }}
-                  >
-                    Contact Us
-                  </Typography>
-                  <Typography 
-                    variant="body2" 
-                    component="a" 
-                    href="#" 
-                    sx={{ 
-                      color: '#666', 
-                      textDecoration: 'none',
-                      '&:hover': { color: '#1976d2' }
-                    }}
-                  >
-                    Support
-                  </Typography>
-                </Box>
-              </Box>
-              
-              <Box sx={{ mt: 2, pt: 2, borderTop: '1px solid #e0e0e0' }}>
+              <Box sx={{ mt: 0, pt: 0, display: 'flex', alignItems: 'center', gap: 1 }}>
+                <img 
+                  src="/company_logo.png" 
+                  alt="Company Logo" 
+                  style={{ height: '20px', width: 'auto', marginRight: '8px', verticalAlign: 'middle' }} 
+                />
                 <Typography variant="caption" sx={{ color: '#999' }}>
                   PlanPath-AI powered by NextBillion.ai | Version 1.0.0 | Last updated: {new Date().toLocaleDateString()}
                 </Typography>
