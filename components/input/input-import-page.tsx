@@ -185,10 +185,19 @@ function buildLocations(jobs: any, vehicles: any, jobMapConfig: any, vehicleMapC
     return id;
   }
 
+  // If no selection array exists or all are false, select all rows
+  const jobSelection = jobs.selection || Array(jobs.rows.length).fill(true);
+  const jobHasAnySelected = jobSelection.some(Boolean);
+  const jobEffectiveSelection = jobHasAnySelected ? jobSelection : Array(jobs.rows.length).fill(true);
+  
+  const vehicleSelection = vehicles.selection || Array(vehicles.rows.length).fill(true);
+  const vehicleHasAnySelected = vehicleSelection.some(Boolean);
+  const vehicleEffectiveSelection = vehicleHasAnySelected ? vehicleSelection : Array(vehicles.rows.length).fill(true);
+
   // Add job locations (only for selected jobs)
   jobs.rows.forEach((row: string[], index: number) => {
     // Only process if this job is selected
-    if (jobs.selection && jobs.selection[index]) {
+    if (jobEffectiveSelection[index]) {
       const locStr = getLocationString(row, jobMapConfig, 'location');
       if (locStr) addLocation(locStr);
     }
@@ -197,7 +206,7 @@ function buildLocations(jobs: any, vehicles: any, jobMapConfig: any, vehicleMapC
   // Add vehicle start/end locations (only for selected vehicles)
   vehicles.rows.forEach((row: string[], index: number) => {
     // Only process if this vehicle is selected
-    if (vehicles.selection && vehicles.selection[index]) {
+    if (vehicleEffectiveSelection[index]) {
       const startLocStr = getLocationString(row, vehicleMapConfig, 'start_location');
       if (startLocStr) addLocation(startLocStr);
       const endLocStr = getLocationString(row, vehicleMapConfig, 'end_location');
@@ -219,9 +228,14 @@ function normalizeJobs(jobData: any, mapConfig: any, locMap: Map<string, number>
   if (!jobData.rows || jobData.rows.length === 0) return [];
   const selectedJobs: OptimizationMvrpOrderJobV2[] = [];
   
+  // If no selection array exists or all are false, select all rows
+  const selection = jobData.selection || Array(jobData.rows.length).fill(true);
+  const hasAnySelected = selection.some(Boolean);
+  const effectiveSelection = hasAnySelected ? selection : Array(jobData.rows.length).fill(true);
+  
   jobData.rows.forEach((row: string[], index: number) => {
     // Only process if this job is selected
-    if (!jobData.selection || !jobData.selection[index]) {
+    if (!effectiveSelection[index]) {
       return;
     }
     
@@ -294,9 +308,14 @@ function normalizeVehicles(vehicleData: any, mapConfig: any, locMap: Map<string,
   if (!vehicleData.rows || vehicleData.rows.length === 0) return [];
   const selectedVehicles: VehicleType[] = [];
   
+  // If no selection array exists or all are false, select all rows
+  const selection = vehicleData.selection || Array(vehicleData.rows.length).fill(true);
+  const hasAnySelected = selection.some(Boolean);
+  const effectiveSelection = hasAnySelected ? selection : Array(vehicleData.rows.length).fill(true);
+  
   vehicleData.rows.forEach((row: string[], index: number) => {
     // Only process if this vehicle is selected
-    if (!vehicleData.selection || !vehicleData.selection[index]) {
+    if (!effectiveSelection[index]) {
       return;
     }
     
@@ -449,8 +468,11 @@ export const InputImportPage = ({ currentStep, onStepChange, preferences, onPref
       setIsOptimizing(true)
       
       // Check if at least one job and one vehicle are selected
-      const selectedJobsCount = job.selection?.filter(Boolean).length || 0;
-      const selectedVehiclesCount = vehicle.selection?.filter(Boolean).length || 0;
+      const jobSelection = job.selection || Array(job.rawData.rows.length).fill(true);
+      const vehicleSelection = vehicle.selection || Array(vehicle.rawData.rows.length).fill(true);
+      
+      const selectedJobsCount = jobSelection.filter(Boolean).length;
+      const selectedVehiclesCount = vehicleSelection.filter(Boolean).length;
       
       if (selectedJobsCount === 0) {
         throw new Error('Please select at least one job to optimize');
@@ -469,9 +491,27 @@ export const InputImportPage = ({ currentStep, onStepChange, preferences, onPref
       
       // Build unique locations and mapping
       const { locations, locMap } = buildLocations(job.rawData, store.inputCore.vehicle.rawData, job.mapConfig, store.inputCore.vehicle.mapConfig);
+      
+      console.log('Debug - Job data:', {
+        rawData: job.rawData,
+        selection: job.selection,
+        mapConfig: job.mapConfig
+      });
+      console.log('Debug - Vehicle data:', {
+        rawData: store.inputCore.vehicle.rawData,
+        selection: store.inputCore.vehicle.selection,
+        mapConfig: store.inputCore.vehicle.mapConfig
+      });
+      
       // Normalize the data
       const normalizedJobs = normalizeJobs(job.rawData, job.mapConfig, locMap)
       const normalizedVehicles = normalizeVehicles(store.inputCore.vehicle.rawData, store.inputCore.vehicle.mapConfig, locMap)
+      
+      console.log('Debug - Normalized data:', {
+        jobs: normalizedJobs,
+        vehicles: normalizedVehicles,
+        locations: locations
+      });
       
       // Build the optimization request
       const optimizationRequest: OptimizationMvrpOrderRequestV2 = {
@@ -633,10 +673,10 @@ export const InputImportPage = ({ currentStep, onStepChange, preferences, onPref
             </p>
             <Box sx={{ mt: 2, p: 2, backgroundColor: '#f9f9f9', borderRadius: '4px' }}>
               <Typography variant="body2" sx={{ color: '#666' }}>
-                <strong>{orderTypeLabel}:</strong> {store.inputCore[inputType].selection?.filter(Boolean).length || 0} of {store.inputCore[inputType].rawData.rows.length} records selected
+                <strong>{orderTypeLabel}:</strong> {(store.inputCore[inputType].selection || Array(store.inputCore[inputType].rawData.rows.length).fill(true)).filter(Boolean).length} of {store.inputCore[inputType].rawData.rows.length} records selected
               </Typography>
               <Typography variant="body2" sx={{ color: '#666' }}>
-                <strong>Vehicles:</strong> {vehicle.selection?.filter(Boolean).length || 0} of {vehicle.rawData.rows.length} records selected
+                <strong>Vehicles:</strong> {(vehicle.selection || Array(vehicle.rawData.rows.length).fill(true)).filter(Boolean).length} of {vehicle.rawData.rows.length} records selected
               </Typography>
             </Box>
             {/* Polling Status */}
