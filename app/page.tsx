@@ -247,10 +247,10 @@ export default function HomePage() {
               />
               <Box>
                 <Typography variant="h4" component="h1" sx={{ color: '#333', fontWeight: 'bold' }}>
-                  Route Planner
+                  PlanPath-AI
                 </Typography>
                 <Typography variant="body1" sx={{ color: '#666', mt: 1 }}>
-                  Import your data and configure route optimization
+                  Plan and manage your routes
                 </Typography>
               </Box>
             </Box>
@@ -355,7 +355,7 @@ export default function HomePage() {
               
               <Box sx={{ mt: 2, pt: 2, borderTop: '1px solid #e0e0e0' }}>
                 <Typography variant="caption" sx={{ color: '#999' }}>
-                  Route Planner powered by NextBillion.ai | Version 1.0.0 | Last updated: {new Date().toLocaleDateString()}
+                  PlanPath-AI powered by NextBillion.ai | Version 1.0.0 | Last updated: {new Date().toLocaleDateString()}
                 </Typography>
               </Box>
             </Container>

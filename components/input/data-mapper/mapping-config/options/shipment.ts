@@ -44,7 +44,7 @@ export const SHIPMENT_OPTIONS: DataMapOption[] = [
     validators: [positiveNumberValidator],
   },
   {
-    label: 'Pickup Location',
+    label: 'Pickup Location (Lat,Lng)',
     value: ShipmentMapOption.PickupLocationLatLng,
     type: MapInputType.LocationLatLng,
     required: true,
@@ -52,28 +52,6 @@ export const SHIPMENT_OPTIONS: DataMapOption[] = [
     extra: {
       parent: 'pickup.location',
       alternativeTo: 'pickup.location#lngLat',
-    },
-  },
-  {
-    label: 'PickupLocation(Lat,Lng)',
-    value: ShipmentMapOption.PickupLocationLatLng,
-    type: MapInputType.LocationLatLng,
-    required: true,
-    validators: [latlongFunc],
-    extra: {
-      parent: 'pickup.location',
-      alternativeTo: 'pickup.location#lngLat',
-    },
-  },
-  {
-    label: 'Pickup Location (Lng,Lat)',
-    value: ShipmentMapOption.PickupLocationLngLat,
-    type: MapInputType.LocationLngLat,
-    required: true,
-    validators: [longlatFunc],
-    extra: {
-      parent: 'pickup.location',
-      alternativeTo: 'pickup.location',
     },
   },
   {
@@ -126,7 +104,7 @@ export const SHIPMENT_OPTIONS: DataMapOption[] = [
     validators: [positiveNumberValidator],
   },
   {
-    label: 'Delivery Location',
+    label: 'Delivery Location (Lat,Lng)',
     value: ShipmentMapOption.DeliveryLocationLatLng,
     type: MapInputType.LocationLatLng,
     required: true,
@@ -134,17 +112,6 @@ export const SHIPMENT_OPTIONS: DataMapOption[] = [
     extra: {
       parent: 'delivery.location',
       alternativeTo: 'delivery.location#lngLat',
-    },
-  },
-  {
-    label: 'Delivery Location (Lng,Lat)',
-    value: ShipmentMapOption.DeliveryLocationLngLat,
-    type: MapInputType.LocationLngLat,
-    required: true,
-    validators: [longlatFunc],
-    extra: {
-      parent: 'delivery.location',
-      alternativeTo: 'delivery.location',
     },
   },
   {
@@ -404,7 +371,7 @@ export const SHIPMENT_OPTIONS_MAP: Record<string, DataMapOption> = {
     validators: [positiveNumberValidator],
   },
   [ShipmentMapOption.PickupLocationLatLng]: {
-    label: 'Pickup Location',
+    label: 'Pickup Location (Lat,Lng)',
     value: ShipmentMapOption.PickupLocationLatLng,
     type: MapInputType.LocationLatLng,
     required: true,
@@ -412,28 +379,6 @@ export const SHIPMENT_OPTIONS_MAP: Record<string, DataMapOption> = {
     extra: {
       parent: 'pickup.location',
       alternativeTo: 'pickup.location#lngLat',
-    },
-  },
-  'pickup.location#latLng_explicit': {
-    label: 'PickupLocation(Lat,Lng)',
-    value: ShipmentMapOption.PickupLocationLatLng,
-    type: MapInputType.LocationLatLng,
-    required: true,
-    validators: [latlongFunc],
-    extra: {
-      parent: 'pickup.location',
-      alternativeTo: 'pickup.location#lngLat',
-    },
-  },
-  [ShipmentMapOption.PickupLocationLngLat]: {
-    label: 'Pickup Location (Lng,Lat)',
-    value: ShipmentMapOption.PickupLocationLngLat,
-    type: MapInputType.LocationLngLat,
-    required: true,
-    validators: [longlatFunc],
-    extra: {
-      parent: 'pickup.location',
-      alternativeTo: 'pickup.location',
     },
   },
   [ShipmentMapOption.PickupLocationLat]: {
@@ -492,7 +437,7 @@ export const SHIPMENT_OPTIONS_MAP: Record<string, DataMapOption> = {
     validators: [positiveNumberValidator],
   },
   [ShipmentMapOption.DeliveryLocationLatLng]: {
-    label: 'Delivery Location',
+    label: 'Delivery Location (Lat,Lng)',
     value: ShipmentMapOption.DeliveryLocationLatLng,
     type: MapInputType.LocationLatLng,
     required: true,
@@ -500,17 +445,6 @@ export const SHIPMENT_OPTIONS_MAP: Record<string, DataMapOption> = {
     extra: {
       parent: 'delivery.location',
       alternativeTo: 'delivery.location#lngLat',
-    },
-  },
-  [ShipmentMapOption.DeliveryLocationLngLat]: {
-    label: 'Delivery Location (Lng,Lat)',
-    value: ShipmentMapOption.DeliveryLocationLngLat,
-    type: MapInputType.LocationLngLat,
-    required: true,
-    validators: [longlatFunc],
-    extra: {
-      parent: 'delivery.location',
-      alternativeTo: 'delivery.location',
     },
   },
   [ShipmentMapOption.DeliveryLocationLat]: {
@@ -759,13 +693,8 @@ export const SHIPMENT_OPTION_MENU_LIST: MenuInfo[] = [
     value: ShipmentMapOption.PickupPriority,
   },
   {
-    label: 'Pickup Location',
+    label: 'Pickup Location (Lat,Lng)',
     value: ShipmentMapOption.PickupLocationLatLng,
-    required: true,
-  },
-  {
-    label: 'Pickup Location (Lng,Lat)',
-    value: ShipmentMapOption.PickupLocationLngLat,
     required: true,
   },
   {
@@ -804,13 +733,8 @@ export const SHIPMENT_OPTION_MENU_LIST: MenuInfo[] = [
     value: ShipmentMapOption.DeliveryPriority,
   },
   {
-    label: 'Delivery Location',
+    label: 'Delivery Location (Lat,Lng)',
     value: ShipmentMapOption.DeliveryLocationLatLng,
-    required: true,
-  },
-  {
-    label: 'Delivery Location (Lng,Lat)',
-    value: ShipmentMapOption.DeliveryLocationLngLat,
     required: true,
   },
   {

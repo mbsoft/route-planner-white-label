@@ -116,6 +116,22 @@ export const InputImportPage = ({ currentStep, onStepChange, preferences, onPref
       <Box sx={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
         {renderStepContent()}
         {showMapping(currentStep) && renderMapping()}
+        <Box sx={{ display: 'flex', justifyContent: 'space-between', mt: 4 }}>
+          <Button
+            variant="outlined"
+            disabled={currentStep === 0}
+            onClick={() => onStepChange(Math.max(0, currentStep - 1))}
+          >
+            Back
+          </Button>
+          <Button
+            variant="contained"
+            disabled={currentStep === steps.length - 1}
+            onClick={() => onStepChange(Math.min(steps.length - 1, currentStep + 1))}
+          >
+            {currentStep === steps.length - 1 ? 'Finish' : 'Next'}
+          </Button>
+        </Box>
       </Box>
     </Box>
   )

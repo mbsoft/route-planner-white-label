@@ -51,7 +51,7 @@ export const InputImportStepper: React.FC<InputImportStepperProps> = ({ currentS
           padding: '10px 20px',
         }}
       >
-        Steps for Route Planning
+        Inputs for PlanPath-AI
       </Typography>
       <List disablePadding>
         {steps.map((step, idx) => (

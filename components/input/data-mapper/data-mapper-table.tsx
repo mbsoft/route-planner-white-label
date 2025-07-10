@@ -88,7 +88,7 @@ export function DataMapperTable(props: DataMapperTableProps) {
   }, [columns, attachedRows])
 
   useEffect(() => {
-    setColumnWidths(innerColumns.map((column) => 240))
+    setColumnWidths(innerColumns.map((column) => 120))
   }, [innerColumns])
 
   const setScrollTableToRightRef = useRef(store.inputPhase.setScrollTableToRight)
@@ -171,8 +171,22 @@ export function DataMapperTable(props: DataMapperTableProps) {
   const someSelected = selection.some(Boolean)
 
   return (
-    <Box sx={{ height: '100%', overflow: 'scroll' }} ref={tableRef}>
-      <Box sx={{ display: 'table', width: '100%' }}>
+    <Box
+      sx={{
+        height: 400,
+        maxHeight: 400,
+        width: '100%',
+        maxWidth: '1000px',
+        margin: '0 auto',
+        overflowX: 'auto',
+        overflowY: 'auto',
+        border: '1px solid #e0e0e0',
+        borderRadius: '8px',
+        background: '#fff',
+      }}
+      ref={tableRef}
+    >
+      <Box sx={{ display: 'table', minWidth: 'max-content' }}>
         {/* Header */}
         <Box sx={{ display: 'table-row', backgroundColor: '#FFF' }}>
           {/* Selection checkbox header */}
@@ -206,7 +220,7 @@ export function DataMapperTable(props: DataMapperTableProps) {
               sx={{
                 display: 'table-cell',
                 width: columnWidths[index],
-                minWidth: '240px',
+                minWidth: '120px',
                 border: 'none',
                 borderRadius: '0px',
                 padding: '0px',
@@ -240,7 +254,7 @@ export function DataMapperTable(props: DataMapperTableProps) {
               sx={{
                 display: 'table-cell',
                 width: columnWidths[index],
-                minWidth: '240px',
+                minWidth: '120px',
                 border: 'none',
                 borderRadius: '0px',
                 padding: '8px 12px',
@@ -299,7 +313,7 @@ export function DataMapperTable(props: DataMapperTableProps) {
                 sx={{
                   display: 'table-cell',
                   width: columnWidths[colIndex],
-                  minWidth: '240px',
+                  minWidth: '120px',
                   border: 'none',
                   borderRadius: '0px',
                   padding: '0px',
