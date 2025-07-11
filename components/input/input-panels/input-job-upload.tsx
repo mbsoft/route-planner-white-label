@@ -167,6 +167,16 @@ export const InputJobUpload = () => {
           </Box>
 
           {/* Editable table */}
+          <DataMapperTable
+            inputType={inputType}
+            isEditing={isEditing}
+            highlightCell={null}
+            onCellChange={handleCellChange}
+            onRepeatToAll={handleRepeatToAll}
+            rows={isEditing ? editRows : currentData.rows}
+            attachedRows={isEditing ? editAttachedRows : currentData.attachedRows}
+            header={currentData.header}
+          />
         </Box>
       )}
     </div>

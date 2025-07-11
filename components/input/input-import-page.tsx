@@ -14,6 +14,8 @@ import { InputImportStepper } from './input-import-stepper'
 import { PreferencesPage, PreferencesInput } from './input-panels/preferences-page'
 import { useInputStore } from '../../models/input/store'
 import { DataMapper } from './data-mapper/data-mapper'
+import { DataMapperTable } from './data-mapper/data-mapper-table'
+import ErrorPanel from './data-mapper/error-panel'
 import { useUseCase } from '../../utils/use-case'
 import { ApiClient } from '../../utils/api-client'
 import ReplayIcon from '@mui/icons-material/Replay';
@@ -709,7 +711,7 @@ const steps = [
   'Preferences',
   'Orders/Shipments',
   'Vehicles',
-  'Review',
+  'Review & Run',
 ]
 
 interface InputImportPageProps {
@@ -776,11 +778,13 @@ export const InputImportPage = ({ currentStep, onStepChange, preferences, onPref
     setEditRows(store.inputCore[inputType].rawData.rows.map(row => [...row]))
     setEditAttachedRows(store.inputCore[inputType].rawData.attachedRows.map(row => [...row]))
     setIsEditing(true)
+    store.inputPhase.setIsTableEditable(true)
   }
   const handleCancel = () => {
     setIsEditing(false)
     setEditRows([])
     setEditAttachedRows([])
+    store.inputPhase.setIsTableEditable(false)
   }
   const handleSave = () => {
     store.inputCore.setRawData(inputType, {
@@ -791,6 +795,7 @@ export const InputImportPage = ({ currentStep, onStepChange, preferences, onPref
     setIsEditing(false)
     setEditRows([])
     setEditAttachedRows([])
+    store.inputPhase.setIsTableEditable(false)
   }
   const handleCellChange = (row: number, col: number, value: string) => {
     setEditRows(prev => {
@@ -800,13 +805,27 @@ export const InputImportPage = ({ currentStep, onStepChange, preferences, onPref
     })
   }
   const handleRepeatToAll = (row: number, col: number, value: string) => {
-    setEditRows(prev => {
-      const updated = prev.map(r => [...r])
-      for (let i = 0; i < updated.length; i++) {
-        updated[i][col] = value
-      }
-      return updated
-    })
+    console.log('handleRepeatToAll called:', { row, col, value, isEditing })
+    if (isEditing) {
+      setEditRows(prev => {
+        const updated = prev.map(r => [...r])
+        for (let i = 0; i < updated.length; i++) {
+          updated[i][col] = value
+        }
+        return updated
+      })
+    } else {
+      const newRows = store.inputCore[inputType].rawData.rows.map((r, i) => {
+        const updated = [...r]
+        updated[col] = value
+        return updated
+      })
+      store.inputCore.setRawData(inputType, {
+        header: store.inputCore[inputType].rawData.header,
+        rows: newRows,
+        attachedRows: store.inputCore[inputType].rawData.attachedRows,
+      })
+    }
   }
 
   // Handler for delete with confirmation
@@ -1117,12 +1136,26 @@ export const InputImportPage = ({ currentStep, onStepChange, preferences, onPref
                 <Button onClick={handleDeleteConfirm} color="error" variant="contained">Confirm</Button>
               </DialogActions>
             </Dialog>
-            <Box sx={{ mt: 4 }}>
-              <DataMapper
-                headers={store.inputCore[inputType].rawData.header}
+            <Box sx={{ mt: 4, position: 'relative' }}>
+              <ErrorPanel
+                errors={store.inputCore.errors[inputType]}
+                style={{
+                  position: 'absolute',
+                  top: '65px',
+                  right: '120px',
+                  zIndex: 100,
+                }}
+                onItemHover={() => {}}
+              />
+              <DataMapperTable
+                inputType={inputType}
+                isEditing={isEditing}
+                highlightCell={null}
+                onCellChange={handleCellChange}
+                onRepeatToAll={handleRepeatToAll}
                 rows={isEditing ? editRows : store.inputCore[inputType].rawData.rows}
                 attachedRows={isEditing ? editAttachedRows : store.inputCore[inputType].rawData.attachedRows}
-                inputType={inputType}
+                header={store.inputCore[inputType].rawData.header}
               />
             </Box>
           </Box>
@@ -1132,7 +1165,7 @@ export const InputImportPage = ({ currentStep, onStepChange, preferences, onPref
       case 3:
         return (
           <Box sx={{ p: 2 }}>
-            <h3 style={{ color: '#585656', fontSize: '16px', fontWeight: 500 }}>Review & Optimize</h3>
+            <h3 style={{ color: '#585656', fontSize: '16px', fontWeight: 500 }}>Review & Run</h3>
             <p style={{ color: '#666', fontSize: '14px' }}>
               All data has been imported and mapped. You can now review the data and proceed with route optimization.
             </p>
