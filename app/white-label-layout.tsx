@@ -59,7 +59,9 @@ export function WhiteLabelLayout({children}: WhiteLabelLayoutProps) {
         console.log('API Key from API:', apiKey)
 
         if (!apiKey) {
-          setError('NEXTBILLION_API_KEY environment variable is required')
+          console.warn('NEXTBILLION_API_KEY not found in environment variables')
+          // Don't set error, just continue without API key for now
+          setApiKey(null)
           setIsLoading(false)
           return
         }
@@ -68,7 +70,8 @@ export function WhiteLabelLayout({children}: WhiteLabelLayoutProps) {
         setIsLoading(false)
       } catch (error) {
         console.error('Error fetching config:', error)
-        setError('Failed to load configuration')
+        // Don't show error, just continue without API key
+        setApiKey(null)
         setIsLoading(false)
       }
     }

@@ -1,7 +1,9 @@
 'use client'
 
 import React, { useState, useEffect } from 'react'
-import { Container, Box, Typography } from '@mui/material'
+import { Container, Box, Typography, Button } from '@mui/material'
+import { Logout as LogoutIcon } from '@mui/icons-material'
+import { useRouter } from 'next/navigation'
 import { WhiteLabelLayout } from './white-label-layout'
 import { InputImportPage } from '../components/input/input-import-page'
 import { CollapsibleMap } from '../components/input/input-panels/input-map'
@@ -32,6 +34,7 @@ export interface RouteData {
 export const dynamic = 'force-dynamic'
 
 export default function HomePage() {
+  const router = useRouter()
   const [markers, setMarkers] = useState<MapMarker[]>([])
   const [routes, setRoutes] = useState<RouteData[]>([])
   const [currentStep, setCurrentStep] = useState(0)
@@ -302,22 +305,38 @@ export default function HomePage() {
     setPreferences(newPreferences)
   }
 
+  const handleLogout = async () => {
+    try {
+      const response = await fetch('/api/auth/logout', {
+        method: 'POST',
+      })
+      
+      if (response.ok) {
+        router.push('/login')
+      } else {
+        console.error('Logout failed')
+      }
+    } catch (error) {
+      console.error('Logout error:', error)
+    }
+  }
+
   return (
     <WhiteLabelLayout>
       <Container maxWidth="xl" sx={{ minHeight: '100vh', p: 0 }}>
         <Box sx={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
           <Box sx={{ p: 2, borderBottom: '1px solid #e0e0e0', backgroundColor: '#E5EEFA' }}>
-            <Box sx={{ maxHeight: '25px', height: '25px', display: 'flex', alignItems: 'center', gap: 2 }}>
-              <img
-                src="/company_logo.png"
-                alt="Company Logo"
-                style={{
-                  height: '25px',
-                  width: 'auto',
-                  borderRadius: '4px'
-                }}
-              />
-              <Box>
+            <Box sx={{ maxHeight: '25px', height: '25px', display: 'flex', alignItems: 'center', gap: 2, justifyContent: 'space-between' }}>
+              <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+                <img
+                  src="/company_logo.png"
+                  alt="Company Logo"
+                  style={{
+                    height: '25px',
+                    width: 'auto',
+                    borderRadius: '4px'
+                  }}
+                />
                 <Typography
                   variant="h4"
                   component="h1"
@@ -326,6 +345,19 @@ export default function HomePage() {
                   PlanPath-AI : Plan, manage and monitor your routes
                 </Typography>
               </Box>
+              <Button
+                variant="outlined"
+                size="small"
+                onClick={handleLogout}
+                startIcon={<LogoutIcon />}
+                sx={{ 
+                  height: '25px',
+                  fontSize: '0.75rem',
+                  textTransform: 'none'
+                }}
+              >
+                Logout
+              </Button>
             </Box>
           </Box>
 
