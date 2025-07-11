@@ -41,7 +41,7 @@ export default function InputToolbar({currentPhase, onPhaseChange}: InputToolbar
               padding: '8px 16px',
               border: 'none',
               borderRadius: '4px',
-              backgroundColor: currentPhase === phase.key ? '#1976d2' : '#f5f5f5',
+              backgroundColor: currentPhase === phase.key ? '#d36784' : '#f5f5f5',
               color: currentPhase === phase.key ? 'white' : '#333',
               cursor: 'pointer',
               fontSize: '14px'

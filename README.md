@@ -13,6 +13,34 @@ A white-label route planning application for logistics, field service optimizati
 - **Step-by-Step Workflow**: Guided import process with stepper navigation
 - **Responsive Design**: Modern UI built with Material-UI components
 - **White-Label Ready**: Easily customizable for different brands and use cases
+- **Role-Based Authentication**: Admin and User roles with different permission levels
+
+## Authentication & Authorization
+
+The application supports two user roles with different permission levels:
+
+### Admin Role
+- Full access to all features
+- Can delete optimization results
+- Can save and clear mapping preferences
+- Can access all administrative functions
+
+### User Role
+- Can view and run optimizations
+- Can view optimization history (read-only)
+- Cannot delete optimization results
+- Cannot save or clear mapping preferences
+- Limited to basic route planning functionality
+
+### Environment Variables
+Set the following environment variables for authentication:
+
+```bash
+ADMIN_USERNAME=admin
+ADMIN_PASSWORD=your_secure_admin_password_here
+USER_USERNAME=user
+USER_PASSWORD=your_secure_user_password_here
+```
 
 ## Prerequisites
 

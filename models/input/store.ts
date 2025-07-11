@@ -103,10 +103,8 @@ export const useInputStore = create<RootState>((set, get) => ({
         },
       }))
       
-      // Persist the mapping configuration asynchronously (non-blocking)
-      mappingPersistence.saveMapping(inputType, config).catch((error) => {
-        console.error(`Failed to persist ${inputType} mapping:`, error)
-      })
+      // Note: Mappings are now only saved when the user clicks "Save Mappings"
+      // This prevents automatic saving on every mapping change
     },
     resetMapping: (inputType) => {
       // Update the store immediately
@@ -125,10 +123,42 @@ export const useInputStore = create<RootState>((set, get) => ({
         console.error(`Failed to clear persisted ${inputType} mapping:`, error)
       })
     },
-    appendAttachedRows: (inputType) =>
+    addAttachedColumn: (inputType) =>
       set((state) => {
         const currentData = state.inputCore[inputType].rawData
-        const newAttachedRows = [...currentData.attachedRows, Array(currentData.header.length).fill('')]
+        // Add a new column to all existing attached rows
+        const newAttachedRows = currentData.attachedRows.map((row: string[]) => 
+          [...row, '']
+        )
+        // If there are no attached rows yet, create one with a single empty column
+        if (newAttachedRows.length === 0 && currentData.rows.length > 0) {
+          for (let i = 0; i < currentData.rows.length; i++) {
+            newAttachedRows.push([''])
+          }
+        }
+        return {
+          inputCore: {
+            ...state.inputCore,
+            [inputType]: {
+              ...state.inputCore[inputType],
+              rawData: {
+                ...currentData,
+                attachedRows: newAttachedRows,
+              },
+            },
+          },
+        }
+      }),
+    deleteAttachedColumn: (inputType: InputType, columnIndex: number) =>
+      set((state) => {
+        const currentData = state.inputCore[inputType].rawData
+        // Ensure columnIndex is valid
+        if (columnIndex < 0 || currentData.attachedRows.length === 0) {
+          return state
+        }
+        const newAttachedRows = currentData.attachedRows.map((row: string[]) => 
+          row.filter((_: string, index: number) => index !== columnIndex)
+        )
         return {
           inputCore: {
             ...state.inputCore,

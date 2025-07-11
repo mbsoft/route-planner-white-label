@@ -9,9 +9,20 @@ import { useUseCase } from '../../utils/use-case';
 interface InputImportStepperProps {
   currentStep: number;
   onStepChange: (step: number) => void;
+  hasJobsData?: boolean;
+  hasVehiclesData?: boolean;
+  hasJobsMapping?: boolean;
+  hasVehiclesMapping?: boolean;
 }
 
-export const InputImportStepper: React.FC<InputImportStepperProps> = ({ currentStep, onStepChange }) => {
+export const InputImportStepper: React.FC<InputImportStepperProps> = ({ 
+  currentStep, 
+  onStepChange, 
+  hasJobsData = false, 
+  hasVehiclesData = false,
+  hasJobsMapping = false,
+  hasVehiclesMapping = false
+}) => {
   const useCase = useUseCase();
   const orderTypeLabel = useCase === 'jobs' ? 'Jobs' : 'Shipments';
 
@@ -20,21 +31,25 @@ export const InputImportStepper: React.FC<InputImportStepperProps> = ({ currentS
       label: 'Preferences',
       icon: <TuneIcon fontSize="small" />,
       description: 'Configure optimization settings',
+      isCompleted: true, // Preferences step is always considered complete
     },
     {
       label: orderTypeLabel,
       icon: <AssignmentIcon fontSize="small" />,
       description: 'Import and map job data',
+      isCompleted: hasJobsData && hasJobsMapping,
     },
     {
       label: 'Vehicles',
       icon: <LocalShippingIcon fontSize="small" />,
       description: 'Import and map vehicle data',
+      isCompleted: hasVehiclesData && hasVehiclesMapping,
     },
     {
       label: 'Review & Run',
       icon: <PlayArrowIcon fontSize="small" />,
       description: 'Review data and start optimization',
+      isCompleted: false, // This step is never "completed" as it's the final step
     },
   ];
 
@@ -120,8 +135,8 @@ export const InputImportStepper: React.FC<InputImportStepperProps> = ({ currentS
             onClick={() => onStepChange(idx)}
             sx={{
               mb: 1,
-              bgcolor: currentStep === idx ? 'rgba(51, 103, 241, 0.10)' : 'transparent',
-              border: currentStep === idx ? '1px solid rgba(30, 85, 222, 1)' : 'none',
+              bgcolor: currentStep === idx ? 'rgba(211, 103, 132, 0.10)' : 'transparent',
+              border: currentStep === idx ? '1px solid rgba(211, 103, 132, 1)' : 'none',
               borderWidth: currentStep === idx ? '1px 1px 1px 4px' : 'none',
               borderRadius: '0px 8px 8px 0px',
               width: currentStep === idx ? '97%' : '100%',
@@ -129,7 +144,7 @@ export const InputImportStepper: React.FC<InputImportStepperProps> = ({ currentS
               paddingBottom: '7px',
               cursor: 'pointer',
               '&:hover': {
-                bgcolor: idx <= currentStep ? 'rgba(51, 103, 241, 0.05)' : 'rgba(0, 0, 0, 0.04)',
+                bgcolor: idx <= currentStep ? 'rgba(211, 103, 132, 0.05)' : 'rgba(0, 0, 0, 0.04)',
               },
             }}
           >
@@ -153,7 +168,7 @@ export const InputImportStepper: React.FC<InputImportStepperProps> = ({ currentS
                 color: idx <= currentStep ? '#666' : '#999'
               }}
             />
-            {idx < currentStep && (
+            {step.isCompleted && (
               <Chip 
                 label="✓" 
                 size="small" 

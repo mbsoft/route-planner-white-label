@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react'
-import { TableCell, TableRow, Box, InputBase, Typography, Checkbox } from '@mui/material'
+import { TableCell, TableRow, Box, InputBase, Typography, Checkbox, IconButton, Tooltip } from '@mui/material'
 import { MapSelector } from './map-selector'
 import { InputType, InputCoreSlice } from '../../../models/input/input-core'
 import { useCurrentInput } from '../../../hooks/input/use-current-input'
@@ -16,6 +16,7 @@ type DataMapperTableProps = {
   highlightCell: { row: number; col: number } | null
   onCellChange: (row: number, col: number, value: string) => void
   onRepeatToAll?: (row: number, col: number, value: string) => void // New prop
+  onDeleteAttributeColumn?: (colIndex: number) => void // New prop
   rows?: string[][]
   attachedRows?: string[][]
   header?: string[]
@@ -93,7 +94,7 @@ export function DataMapperTable(props: DataMapperTableProps) {
     })
 
     return [...dataColumns, ...attachedColumns]
-  }, [columns, attachedRows])
+  }, [header, attachedRows])
 
   useEffect(() => {
     setColumnWidths(innerColumns.map((column) => 120))
@@ -131,7 +132,7 @@ export function DataMapperTable(props: DataMapperTableProps) {
 
       return [...row]
     })
-  }, [rows, innerColumns, attachedRows, columns.length])
+  }, [rows, attachedRows])
 
   useEffect(() => {
     if (highlightCell && tableRef.current) {
@@ -247,6 +248,7 @@ export function DataMapperTable(props: DataMapperTableProps) {
                 index={index}
                 headerName={column.headerName}
                 onResize={onHeaderResize}
+                onDeleteAttributeColumn={props.onDeleteAttributeColumn}
               />
             </Box>
           ))}
@@ -343,7 +345,6 @@ export function DataMapperTable(props: DataMapperTableProps) {
                     }
                   }}
                   onRepeatToAll={props.onRepeatToAll ? (value) => {
-                    console.log('DataMapperTable onRepeatToAll called:', { rowIndex, colIndex, value })
                     props.onRepeatToAll!(rowIndex, colIndex, value)
                   } : undefined}
                 />
@@ -363,8 +364,10 @@ export function MapperTableHeader(props: {
   inputType: InputType
   isEditing: boolean
   onResize: (index: number, width: number) => void
+  onDeleteAttributeColumn?: (colIndex: number) => void
 }) {
-  const { isAttribute, index, headerName, inputType, isEditing } = props
+  const { isAttribute, index, headerName, inputType, isEditing, onDeleteAttributeColumn } = props
+  const store = useInputStore()
   const [isResizing, setIsResizing] = useState(false)
   const [startX, setStartX] = useState(0)
   const [startWidth, setStartWidth] = useState(0)
@@ -374,6 +377,18 @@ export function MapperTableHeader(props: {
     setIsResizing(true)
     setStartX(e.clientX)
     setStartWidth(240) // Default width
+  }
+
+  const handleDeleteColumn = () => {
+    if (isAttribute) {
+      const dataColumnCount = store.inputCore[inputType].rawData.header.length
+      const attachedColumnIndex = index - dataColumnCount
+      if (onDeleteAttributeColumn) {
+        onDeleteAttributeColumn(attachedColumnIndex)
+      } else {
+        store.inputCore.deleteAttachedColumn(inputType, attachedColumnIndex)
+      }
+    }
   }
 
   useEffect(() => {
@@ -424,6 +439,26 @@ export function MapperTableHeader(props: {
           </Typography>
         )}
       </Box>
+      {isAttribute && isEditing && (
+        <Box sx={{ display: 'flex', alignItems: 'center', mr: 1 }}>
+          <Tooltip title="Delete attribute column">
+            <IconButton
+              size="small"
+              onClick={handleDeleteColumn}
+              sx={{ 
+                width: '20px', 
+                height: '20px',
+                color: '#d32f2f',
+                '&:hover': {
+                  backgroundColor: 'rgba(211, 47, 47, 0.1)',
+                }
+              }}
+            >
+              <DeleteOutline sx={{ fontSize: '16px' }} />
+            </IconButton>
+          </Tooltip>
+        </Box>
+      )}
       <Box
         sx={{
           width: '4px',

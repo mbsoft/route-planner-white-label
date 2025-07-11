@@ -93,6 +93,15 @@ export const InputJobUpload = () => {
     })
   }
 
+  // Handler for deleting an attribute column
+  const handleDeleteAttributeColumn = (colIndex: number) => {
+    if (isEditing) {
+      setEditAttachedRows(prev => prev.map(row => row.filter((_, i) => i !== colIndex)))
+    } else {
+      store.inputCore.deleteAttachedColumn(inputType, colIndex)
+    }
+  }
+
   return (
     <div style={{ padding: '20px' }}>
       <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 2 }}>
@@ -130,11 +139,8 @@ export const InputJobUpload = () => {
           }}
         >
           <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 2 }}>
-            <Typography variant="h6" sx={{ color: '#1976d2', fontWeight: 'bold' }}>
-              ✓ {orderTypeLabel}s Data Imported
-            </Typography>
-            <Typography variant="body2" sx={{ color: '#666' }}>
-              {currentData.rows.length} records loaded
+            <Typography variant="h6" sx={{ color: '#d36784', fontWeight: 'bold', display: 'flex', alignItems: 'center', gap: 1 }}>
+              <span style={{ fontSize: 22, lineHeight: 1, color: '#43a047' }}>✓</span> {currentData.rows.length} records loaded
             </Typography>
           </Box>
 
@@ -143,7 +149,7 @@ export const InputJobUpload = () => {
             <IconButton onClick={() => store.inputCore.resetMapping(inputType)} color="primary" title="Reset Mapping">
               <ReplayIcon />
             </IconButton>
-            <IconButton onClick={() => store.inputCore.appendAttachedRows(inputType)} color="primary" title="Add attribute">
+            <IconButton onClick={() => store.inputCore.addAttachedColumn(inputType)} color="primary" title="Add attribute">
               <AddIcon />
             </IconButton>
             {!isEditing && (
@@ -173,6 +179,7 @@ export const InputJobUpload = () => {
             highlightCell={null}
             onCellChange={handleCellChange}
             onRepeatToAll={handleRepeatToAll}
+            onDeleteAttributeColumn={handleDeleteAttributeColumn}
             rows={isEditing ? editRows : currentData.rows}
             attachedRows={isEditing ? editAttachedRows : currentData.attachedRows}
             header={currentData.header}

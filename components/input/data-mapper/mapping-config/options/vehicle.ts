@@ -10,6 +10,7 @@ import {
   capacityValidator,
   arrayValidator,
   latlongFunc,
+  alternativeCapacityValidator,
 } from '../validator'
 
 export const VEHICLE_OPTIONS: DataMapOption[] = [
@@ -189,6 +190,16 @@ export const VEHICLE_OPTIONS: DataMapOption[] = [
     extra: {
       divider: true,
       parent: 'capacity',
+    },
+  },
+  {
+    label: 'Alternative Capacities',
+    value: VehicleMapOption.AlternativeCapacities,
+    type: MapInputType.AlternativeCapacity,
+    validators: [alternativeCapacityValidator],
+    extra: {
+      divider: true,
+      parent: 'alternative_capacities',
     },
   },
   {
@@ -438,6 +449,16 @@ export const VEHICLE_OPTIONS_MAP: Record<string, DataMapOption> = {
       parent: 'capacity',
     },
   },
+  [VehicleMapOption.AlternativeCapacities]: {
+    label: 'Alternative Capacities',
+    value: VehicleMapOption.AlternativeCapacities,
+    type: MapInputType.AlternativeCapacity,
+    validators: [alternativeCapacityValidator],
+    extra: {
+      divider: true,
+      parent: 'alternative_capacities',
+    },
+  },
   [VehicleMapOption.Capacity1]: {
     label: 'Capacity 1',
     value: VehicleMapOption.Capacity1,
@@ -595,6 +616,10 @@ export const VEHICLE_OPTION_MENU_LIST: MenuInfo[] = [
   {
     label: 'Capacities',
     value: VehicleMapOption.Capacities,
+  },
+  {
+    label: 'Alternative Capacities',
+    value: VehicleMapOption.AlternativeCapacities,
   },
   {
     label: 'Capacity 1',

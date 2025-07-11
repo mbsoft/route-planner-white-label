@@ -97,7 +97,7 @@ export function RoutingPanel({ preferences, onPreferencesChange }: RoutingPanelP
 
   return (
     <PreferencesPanel
-      icon={<DirectionsIcon />}
+      icon={<DirectionsIcon sx={{ color: '#d36784' }} />}
       title="Routing Configuration"
       description=""
     >
@@ -118,13 +118,13 @@ export function RoutingPanel({ preferences, onPreferencesChange }: RoutingPanelP
                 color: 'text.secondary',
                 border: '1px solid #e0e0e0',
                 '&.Mui-selected': {
-                  border: '1px solid #1E55DE',
+                  border: '1px solid #d36784',
                   backgroundColor: 'transparent',
-                  color: '#1E55DE',
+                  color: '#d36784',
                 },
                 '&:hover': {
-                  border: '1px solid #1E55DE',
-                  color: '#1E55DE',
+                  border: '1px solid #d36784',
+                  color: '#d36784',
                 },
               }}
             >

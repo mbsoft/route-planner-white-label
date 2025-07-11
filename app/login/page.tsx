@@ -21,10 +21,17 @@ import { Visibility, VisibilityOff, Login as LoginIcon } from '@mui/icons-materi
 const theme = createTheme({
   palette: {
     primary: {
-      main: '#1976d2',
+      main: '#d36784', // Light pink/mauve for buttons and badges
+      light: '#E0859A',
+      dark: '#B54A6A',
+      contrastText: '#ffffff',
     },
     secondary: {
       main: '#dc004e',
+    },
+    background: {
+      default: '#ffffff',
+      paper: '#ffffff',
     },
   },
 })
@@ -89,12 +96,12 @@ export default function LoginPage() {
           >
             <Box sx={{ textAlign: 'center', mb: 3 }}>
               <img 
-                src="/company_logo.png" 
+                src="/company_logo.svg" 
                 alt="Company Logo" 
                 style={{ height: 60, marginBottom: 16 }}
               />
               <Typography variant="h4" component="h1" gutterBottom>
-                PlanPath-AI
+                NextBillion.ai PoC
               </Typography>
               <Typography variant="body2" color="text.secondary">
                 Sign in to access the route planning system

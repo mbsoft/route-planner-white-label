@@ -42,6 +42,8 @@ export interface RouteData {
   distance?: number
   duration?: number
   steps?: any[]
+  delivery?: number[]
+  pickup?: number[]
 }
 
 interface CollapsibleMapProps {

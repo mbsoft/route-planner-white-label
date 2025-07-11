@@ -50,9 +50,9 @@ export const InputTabs = () => {
               py: 2,
               px: 3,
               borderRadius: 0,
-              borderBottom: isActive ? '2px solid #1976d2' : '2px solid transparent',
+              borderBottom: isActive ? '2px solid #d36784' : '2px solid transparent',
               backgroundColor: isActive ? '#fff' : 'transparent',
-              color: isActive ? '#1976d2' : '#666',
+              color: isActive ? '#d36784' : '#666',
               fontWeight: isActive ? 'bold' : 'normal',
               textTransform: 'none',
               fontSize: '14px',
@@ -66,7 +66,7 @@ export const InputTabs = () => {
               {dataCount > 0 && (
                 <Box
                   sx={{
-                    backgroundColor: isActive ? '#1976d2' : '#999',
+                    backgroundColor: isActive ? '#d36784' : '#999',
                     color: 'white',
                     borderRadius: '50%',
                     width: '20px',

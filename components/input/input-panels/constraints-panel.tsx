@@ -56,7 +56,7 @@ export function ConstraintsPanel({ preferences, onPreferencesChange }: Constrain
 
   return (
     <PreferencesPanel
-      icon={<GavelIcon />}
+      icon={<GavelIcon sx={{ color: '#d36784' }} />}
       title="Specify Constraints"
       description=""
     >
