@@ -711,7 +711,7 @@ const steps = [
   'Preferences',
   'Orders/Shipments',
   'Vehicles',
-  'Review',
+  'Review & Run',
 ]
 
 interface InputImportPageProps {
@@ -1165,7 +1165,7 @@ export const InputImportPage = ({ currentStep, onStepChange, preferences, onPref
       case 3:
         return (
           <Box sx={{ p: 2 }}>
-            <h3 style={{ color: '#585656', fontSize: '16px', fontWeight: 500 }}>Review & Optimize</h3>
+            <h3 style={{ color: '#585656', fontSize: '16px', fontWeight: 500 }}>Review & Run</h3>
             <p style={{ color: '#666', fontSize: '14px' }}>
               All data has been imported and mapped. You can now review the data and proceed with route optimization.
             </p>
