@@ -342,7 +342,10 @@ export function DataMapperTable(props: DataMapperTableProps) {
                       props.onCellChange(rowIndex, colIndex, value)
                     }
                   }}
-                  onRepeatToAll={props.onRepeatToAll ? (value) => props.onRepeatToAll!(rowIndex, colIndex, value) : undefined}
+                  onRepeatToAll={props.onRepeatToAll ? (value) => {
+                    console.log('DataMapperTable onRepeatToAll called:', { rowIndex, colIndex, value })
+                    props.onRepeatToAll!(rowIndex, colIndex, value)
+                  } : undefined}
                 />
               </Box>
             ))}

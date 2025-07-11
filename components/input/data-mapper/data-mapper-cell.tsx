@@ -70,12 +70,10 @@ export function DataMapperCell({
   }
 
   const handleRepeatToAll = () => {
-    console.log('Repeat button clicked, editValue:', editValue)
-    if (editValue !== value) {
-      onValueChange(editValue)
-    }
+    const valueToRepeat = isEditingCell ? editValue : value
+    console.log('Repeat button clicked, valueToRepeat:', valueToRepeat, 'isEditingCell:', isEditingCell)
     if (onRepeatToAll) {
-      onRepeatToAll(editValue)
+      onRepeatToAll(valueToRepeat)
     }
   }
 
