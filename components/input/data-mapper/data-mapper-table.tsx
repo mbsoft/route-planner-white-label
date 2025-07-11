@@ -16,6 +16,7 @@ type DataMapperTableProps = {
   highlightCell: { row: number; col: number } | null
   onCellChange: (row: number, col: number, value: string) => void
   onRepeatToAll?: (row: number, col: number, value: string) => void // New prop
+  onDeleteAttributeColumn?: (colIndex: number) => void // New prop
   rows?: string[][]
   attachedRows?: string[][]
   header?: string[]
@@ -247,6 +248,7 @@ export function DataMapperTable(props: DataMapperTableProps) {
                 index={index}
                 headerName={column.headerName}
                 onResize={onHeaderResize}
+                onDeleteAttributeColumn={props.onDeleteAttributeColumn}
               />
             </Box>
           ))}
@@ -362,8 +364,9 @@ export function MapperTableHeader(props: {
   inputType: InputType
   isEditing: boolean
   onResize: (index: number, width: number) => void
+  onDeleteAttributeColumn?: (colIndex: number) => void
 }) {
-  const { isAttribute, index, headerName, inputType, isEditing } = props
+  const { isAttribute, index, headerName, inputType, isEditing, onDeleteAttributeColumn } = props
   const store = useInputStore()
   const [isResizing, setIsResizing] = useState(false)
   const [startX, setStartX] = useState(0)
@@ -378,10 +381,13 @@ export function MapperTableHeader(props: {
 
   const handleDeleteColumn = () => {
     if (isAttribute) {
-      // Calculate the actual column index in attachedRows
       const dataColumnCount = store.inputCore[inputType].rawData.header.length
       const attachedColumnIndex = index - dataColumnCount
-      store.inputCore.deleteAttachedColumn(inputType, attachedColumnIndex)
+      if (onDeleteAttributeColumn) {
+        onDeleteAttributeColumn(attachedColumnIndex)
+      } else {
+        store.inputCore.deleteAttachedColumn(inputType, attachedColumnIndex)
+      }
     }
   }
 

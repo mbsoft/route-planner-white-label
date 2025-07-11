@@ -111,7 +111,7 @@ export function ObjectivePanel({ preferences, onPreferencesChange }: ObjectivePa
 
   return (
     <PreferencesPanel
-      icon={<FlagIcon sx={{ mr: 1, color: '#1976d2' }} />}
+      icon={<FlagIcon sx={{ mr: 1, color: '#d36784' }} />}
       title="Set Your Objective"
       description=""
     >

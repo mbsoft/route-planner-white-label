@@ -91,6 +91,15 @@ export const InputVehicleUpload = () => {
   };
   const handleDeleteCancel = () => setDeleteDialogOpen(false);
 
+  // Handler for deleting an attribute column
+  const handleDeleteAttributeColumn = (colIndex: number) => {
+    if (isEditing) {
+      setEditAttachedRows(prev => prev.map(row => row.filter((_, i) => i !== colIndex)))
+    } else {
+      store.inputCore.deleteAttachedColumn('vehicle', colIndex)
+    }
+  }
+
   return (
     <div style={{ padding: '20px' }}>
       <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 2 }}>
@@ -131,11 +140,8 @@ export const InputVehicleUpload = () => {
           }}
         >
           <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 2 }}>
-            <Typography variant="h6" sx={{ color: '#1976d2', fontWeight: 'bold' }}>
-              ✓ Vehicle Data Imported
-            </Typography>
-            <Typography variant="body2" sx={{ color: '#666' }}>
-              {vehicle.rawData.rows.length} records loaded
+            <Typography variant="h6" sx={{ color: '#d36784', fontWeight: 'bold', display: 'flex', alignItems: 'center', gap: 1 }}>
+              <span style={{ fontSize: 22, lineHeight: 1, color: '#43a047' }}>✓</span> {vehicle.rawData.rows.length} records loaded
             </Typography>
           </Box>
 
@@ -144,7 +150,7 @@ export const InputVehicleUpload = () => {
             <IconButton onClick={() => store.inputCore.resetMapping('vehicle')} color="primary" title="Reset Mapping">
               <ReplayIcon />
             </IconButton>
-            <IconButton onClick={() => store.inputCore.appendAttachedRows('vehicle')} color="primary" title="Add attribute">
+            <IconButton onClick={() => store.inputCore.addAttachedColumn('vehicle')} color="primary" title="Add attribute">
               <AddIcon />
             </IconButton>
             {!isEditing && (
@@ -187,6 +193,7 @@ export const InputVehicleUpload = () => {
             highlightCell={null}
             onCellChange={handleCellChange}
             onRepeatToAll={handleRepeatToAll}
+            onDeleteAttributeColumn={handleDeleteAttributeColumn}
             rows={isEditing ? editRows : vehicle.rawData.rows}
             attachedRows={isEditing ? editAttachedRows : vehicle.rawData.attachedRows}
             header={vehicle.rawData.header}

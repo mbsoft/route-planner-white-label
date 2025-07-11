@@ -5,7 +5,7 @@ import { Box, Button, Typography, IconButton, LinearProgress, Table, TableBody, 
 import DirectionsCarIcon from '@mui/icons-material/DirectionsCar'
 import LocalShippingIcon from '@mui/icons-material/LocalShipping'
 import FlagIcon from '@mui/icons-material/Flag'
-import InventoryIcon from '@mui/icons-material/Inventory'
+import LocalGasStationIcon from '@mui/icons-material/LocalGasStation'
 import DownloadIcon from '@mui/icons-material/Download'
 import UploadIcon from '@mui/icons-material/Upload'
 import { InputOrderPanel } from './input-panels/input-order'
@@ -32,10 +32,11 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogActions from '@mui/material/DialogActions';
 import { usePreferencesPersistence } from '../../hooks/use-preferences-persistence'
+import { RouteSummaryTable } from '../common/route-summary-table'
 
 // Types for optimization API
 interface OptimizationMvrpOrderJobV2 {
-  id: number
+  id: string
   location_index: number
   service?: number
   delivery?: number[]
@@ -52,6 +53,7 @@ interface OptimizationMvrpOrderVehicleV2 {
   start_index: number
   end_index?: number
   capacity?: number[]
+  alternative_capacities?: number[][]
   skills?: number[]
   time_window?: [number, number]
   costs?: {
@@ -255,7 +257,9 @@ function buildLocations(jobs: any, vehicles: any, jobMapConfig: any, vehicleMapC
 }
 
 function normalizeJobs(jobData: any, mapConfig: any, locMap: Map<string, number>): OptimizationMvrpOrderJobV2[] {
+  
   if (!jobData.rows || jobData.rows.length === 0) return [];
+  
   const selectedJobs: OptimizationMvrpOrderJobV2[] = [];
   
   // Only process explicitly selected rows, ensure selection array is properly initialized
@@ -270,15 +274,16 @@ function normalizeJobs(jobData: any, mapConfig: any, locMap: Map<string, number>
     }
     
     const job: OptimizationMvrpOrderJobV2 = {
-      id: index + 1,
+      id: (index + 1).toString(),
       location_index: -1,
     };
     mapConfig.dataMappings.forEach((mapping: any) => {
       const value = row[mapping.index];
       if (!value) return;
+      
       switch (mapping.value) {
         case 'id':
-          job.id = parseInt(value) || index + 1;
+          job.id = value || (index + 1).toString();
           break;
         case 'description':
           job.description = value;
@@ -310,12 +315,48 @@ function normalizeJobs(jobData: any, mapConfig: any, locMap: Map<string, number>
           const pickupIndex = parseInt(mapping.value.split('_').pop()) - 1;
           job.pickup[pickupIndex] = parseInt(value);
           break;
+        case 'pickup':
+          try {
+            // Handle both JSON array format and comma-separated string
+            let pickupArray: number[];
+            if (value.startsWith('[') && value.endsWith(']')) {
+              // JSON array format
+              pickupArray = JSON.parse(value);
+            } else {
+              // Comma-separated string format
+              pickupArray = value.split(',').map(v => parseInt(v.trim())).filter(n => !isNaN(n));
+            }
+            if (Array.isArray(pickupArray) && pickupArray.length > 0) {
+              job.pickup = pickupArray;
+            }
+          } catch (error) {
+            console.warn('Failed to parse pickup array:', value);
+          }
+          break;
         case 'delivery_capacity_1':
         case 'delivery_capacity_2':
         case 'delivery_capacity_3':
           if (!job.delivery) job.delivery = [];
           const deliveryIndex = parseInt(mapping.value.split('_').pop()) - 1;
           job.delivery[deliveryIndex] = parseInt(value);
+          break;
+        case 'delivery':
+          try {
+            // Handle both JSON array format and comma-separated string
+            let deliveryArray: number[];
+            if (value.startsWith('[') && value.endsWith(']')) {
+              // JSON array format
+              deliveryArray = JSON.parse(value);
+            } else {
+              // Comma-separated string format
+              deliveryArray = value.split(',').map(v => parseInt(v.trim())).filter(n => !isNaN(n));
+            }
+            if (Array.isArray(deliveryArray) && deliveryArray.length > 0) {
+              job.delivery = deliveryArray;
+            }
+          } catch (error) {
+            console.warn('Failed to parse delivery array:', value);
+          }
           break;
       }
     });
@@ -328,6 +369,7 @@ function normalizeJobs(jobData: any, mapConfig: any, locMap: Map<string, number>
         job.location_index = locMap.get(key) ?? -1;
       }
     }
+    
     selectedJobs.push(job);
   });
   
@@ -369,6 +411,26 @@ function normalizeVehicles(vehicleData: any, mapConfig: any, locMap: Map<string,
           if (!vehicle.capacity) vehicle.capacity = [];
           const capacityIndex = parseInt(mapping.value.split('_').pop()) - 1;
           vehicle.capacity[capacityIndex] = parseInt(value);
+          break;
+        case 'capacity':
+          try {
+            const parsedCapacity = JSON.parse(value);
+            if (Array.isArray(parsedCapacity)) {
+              vehicle.capacity = parsedCapacity;
+            }
+          } catch (error) {
+            console.warn('Failed to parse capacity array:', value);
+          }
+          break;
+        case 'alternative_capacities':
+          try {
+            const parsedAlternativeCapacities = JSON.parse(value);
+            if (Array.isArray(parsedAlternativeCapacities)) {
+              vehicle.alternative_capacities = parsedAlternativeCapacities;
+            }
+          } catch (error) {
+            console.warn('Failed to parse alternative_capacities array:', value);
+          }
           break;
         case 'skills':
           vehicle.skills = value.split(',').map((s) => parseInt(s.trim())).filter((n) => !isNaN(n));
@@ -413,298 +475,6 @@ function normalizeVehicles(vehicleData: any, mapConfig: any, locMap: Map<string,
   });
   
   return selectedVehicles;
-}
-
-// Route Summary Table Component
-interface RouteSummaryTableProps {
-  routes: any[]
-  expandedRoutes: Set<number>
-  selectedRoutes: Set<number>
-  onToggleRoute: (routeIndex: number) => void
-  onToggleRouteSelection: (routeIndex: number) => void
-  onSelectAllRoutes: () => void
-  onDeselectAllRoutes: () => void
-}
-
-const RouteSummaryTable: React.FC<RouteSummaryTableProps> = ({ 
-  routes, 
-  expandedRoutes, 
-  selectedRoutes,
-  onToggleRoute, 
-  onToggleRouteSelection,
-  onSelectAllRoutes,
-  onDeselectAllRoutes 
-}) => {
-  const formatDuration = (seconds: number) => {
-    const hours = Math.floor(seconds / 3600)
-    const minutes = Math.floor((seconds % 3600) / 60)
-    return `${hours}h ${minutes}m`
-  }
-
-  const formatDistance = (meters: number) => {
-    const km = meters / 1000
-    return `${km.toFixed(1)} km`
-  }
-
-  const formatTime = (timestamp: number) => {
-    if (!timestamp) return 'N/A'
-    return new Date(timestamp * 1000).toLocaleTimeString('en-GB', {
-      hour: '2-digit',
-      minute: '2-digit',
-      hour12: false
-    })
-  }
-
-  const getRouteStartTime = (route: any) => {
-    if (!route.steps || route.steps.length === 0) return 'N/A'
-    const firstStep = route.steps[0]
-    return formatTime(firstStep.arrival)
-  }
-
-  const getRouteEndTime = (route: any) => {
-    if (!route.steps || route.steps.length === 0) return 'N/A'
-    const lastStep = route.steps[route.steps.length - 1]
-    return formatTime(lastStep.arrival)
-  }
-
-  const getStepTypeIcon = (type: string) => {
-    const iconStyle = {
-      width: '20px',
-      height: '20px',
-      color: '#1976d2',
-    }
-    
-    switch (type) {
-      case 'start': 
-        return <DirectionsCarIcon sx={iconStyle} />
-      case 'job': 
-        return <InventoryIcon sx={iconStyle} />
-      case 'pickup': 
-        return <DownloadIcon sx={iconStyle} />
-      case 'delivery': 
-        return <UploadIcon sx={iconStyle} />
-      case 'end': 
-        return <FlagIcon sx={iconStyle} />
-      default: 
-        return <LocalShippingIcon sx={iconStyle} />
-    }
-  }
-
-  // Reverse geocode cache: { 'lat,lng': address }
-  const [geocodeCache, setGeocodeCache] = useState<{ [key: string]: string }>({})
-  const [loadingGeocode, setLoadingGeocode] = useState<{ [key: string]: boolean }>({})
-  const apiKey = process.env.NEXTBILLION_API_KEY || ''
-
-  // Helper to fetch and cache reverse geocode
-  const fetchGeocode = async (lat: number, lng: number) => {
-    const key = `${lat.toFixed(6)},${lng.toFixed(6)}`
-    if (geocodeCache[key] || loadingGeocode[key] || !apiKey) return
-    setLoadingGeocode(prev => ({ ...prev, [key]: true }))
-    try {
-      const url = `https://api.nextbillion.io/revgeocode?at=${lat},${lng}&key=${apiKey}`
-      const resp = await fetch(url)
-      const data = await resp.json()
-      if (data.items && data.items.length > 0 && data.items[0].title) {
-        setGeocodeCache(prev => ({ ...prev, [key]: data.items[0].title }))
-      } else {
-        setGeocodeCache(prev => ({ ...prev, [key]: key }))
-      }
-    } catch {
-      setGeocodeCache(prev => ({ ...prev, [key]: key }))
-    } finally {
-      setLoadingGeocode(prev => ({ ...prev, [key]: false }))
-    }
-  }
-
-  // When a route is expanded, trigger geocode fetches for its steps
-  useEffect(() => {
-    expandedRoutes.forEach(routeIndex => {
-      const route = routes[routeIndex]
-      if (route && route.steps) {
-        route.steps.forEach((step: any) => {
-          if (Array.isArray(step.location) && step.location.length === 2) {
-            const lat = step.location[0]
-            const lng = step.location[1]
-            fetchGeocode(lat, lng)
-          }
-        })
-      }
-    })
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [expandedRoutes, routes])
-
-  return (
-    <TableContainer component={Paper} sx={{ mt: 2, maxHeight: 600 }}>
-      <Table stickyHeader>
-        <TableHead>
-          <TableRow>
-            <TableCell sx={{ width: 50 }}>
-              <Checkbox
-                checked={selectedRoutes.size === routes.length && routes.length > 0}
-                indeterminate={selectedRoutes.size > 0 && selectedRoutes.size < routes.length}
-                onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                  if (e.target.checked) {
-                    onSelectAllRoutes();
-                  } else {
-                    onDeselectAllRoutes();
-                  }
-                }}
-              />
-            </TableCell>
-            <TableCell sx={{ width: 50 }}></TableCell>
-            <TableCell><strong>Vehicle</strong></TableCell>
-            <TableCell><strong>Description</strong></TableCell>
-            <TableCell><strong>Start Time</strong></TableCell>
-            <TableCell><strong>End Time</strong></TableCell>
-            <TableCell><strong>Stops</strong></TableCell>
-            <TableCell><strong>Distance</strong></TableCell>
-            <TableCell><strong>Drive Time</strong></TableCell>
-            <TableCell><strong>Cost</strong></TableCell>
-            <TableCell><strong>Load</strong></TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {routes.map((route, routeIndex) => (
-            <React.Fragment key={routeIndex}>
-              <TableRow 
-                hover 
-                sx={{ 
-                  cursor: 'pointer',
-                  backgroundColor: expandedRoutes.has(routeIndex) ? '#f5f5f5' : 'inherit'
-                }}
-              >
-                <TableCell onClick={(e) => e.stopPropagation()}>
-                  <Checkbox
-                    checked={selectedRoutes.has(routeIndex)}
-                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                      e.stopPropagation();
-                      onToggleRouteSelection(routeIndex);
-                    }}
-                  />
-                </TableCell>
-                <TableCell onClick={() => onToggleRoute(routeIndex)}>
-                  <IconButton size="small">
-                    {expandedRoutes.has(routeIndex) ? <ExpandLessIcon /> : <ExpandMoreIcon />}
-                  </IconButton>
-                </TableCell>
-                <TableCell onClick={() => onToggleRoute(routeIndex)}>
-                  <Typography variant="body2" sx={{ fontWeight: 'bold' }}>
-                    {route.vehicle}
-                  </Typography>
-                </TableCell>
-                <TableCell onClick={() => onToggleRoute(routeIndex)}>
-                  <Typography variant="body2">
-                    {route.description || 'No description'}
-                  </Typography>
-                </TableCell>
-                <TableCell onClick={() => onToggleRoute(routeIndex)}>
-                  <Typography variant="body2">
-                    {getRouteStartTime(route)}
-                  </Typography>
-                </TableCell>
-                <TableCell onClick={() => onToggleRoute(routeIndex)}>
-                  <Typography variant="body2">
-                    {getRouteEndTime(route)}
-                  </Typography>
-                </TableCell>
-                <TableCell onClick={() => onToggleRoute(routeIndex)}>
-                  <Typography variant="body2">
-                    {route.steps ? route.steps.length - 2 : 0} stops
-                  </Typography>
-                </TableCell>
-                <TableCell onClick={() => onToggleRoute(routeIndex)}>
-                  <Typography variant="body2">
-                    {formatDistance(route.distance || 0)}
-                  </Typography>
-                </TableCell>
-                <TableCell onClick={() => onToggleRoute(routeIndex)}>
-                  <Typography variant="body2">
-                    {formatDuration(route.duration || 0)}
-                  </Typography>
-                </TableCell>
-                <TableCell onClick={() => onToggleRoute(routeIndex)}>
-                  <Typography variant="body2">
-                    {route.cost || 0}
-                  </Typography>
-                </TableCell>
-                <TableCell onClick={() => onToggleRoute(routeIndex)}>
-                  <Typography variant="body2">
-                    {route.delivery && route.delivery.length > 0 ? 
-                      `Del: ${route.delivery.join(', ')}` : 
-                      route.pickup && route.pickup.length > 0 ? 
-                        `Pick: ${route.pickup.join(', ')}` : 
-                        'Empty'
-                    }
-                  </Typography>
-                </TableCell>
-              </TableRow>
-              
-              {/* Expanded details */}
-              <TableRow>
-                <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={10}>
-                  <Collapse in={expandedRoutes.has(routeIndex)} timeout="auto" unmountOnExit>
-                    <Box sx={{ margin: 1 }}>
-                      <Typography variant="h6" gutterBottom component="div">
-                        Route Details
-                      </Typography>
-                      <Table size="small">
-                        <TableHead>
-                          <TableRow>
-                            <TableCell><strong>Type</strong></TableCell>
-                            <TableCell><strong>Description</strong></TableCell>
-                            <TableCell><strong>Location</strong></TableCell>
-                            <TableCell><strong>Arrival</strong></TableCell>
-                            <TableCell><strong>Service</strong></TableCell>
-                            <TableCell><strong>Load</strong></TableCell>
-                          </TableRow>
-                        </TableHead>
-                        <TableBody>
-                          {route.steps && route.steps.map((step: any, stepIndex: number) => (
-                            <TableRow key={stepIndex}>
-                              <TableCell>
-                                <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                                  {getStepTypeIcon(step.type)}
-                                  {step.type !== 'job' && <span>{step.type?.toUpperCase() || 'N/A'}</span>}
-                                </Box>
-                              </TableCell>
-                              <TableCell>
-                                {step.description || 'N/A'}
-                              </TableCell>
-                              <TableCell>
-                                {step.location && step.location.length === 2 ? (
-                                  geocodeCache[`${step.location[0].toFixed(6)},${step.location[1].toFixed(6)}`]
-                                    ? geocodeCache[`${step.location[0].toFixed(6)},${step.location[1].toFixed(6)}`]
-                                    : loadingGeocode[`${step.location[0].toFixed(6)},${step.location[1].toFixed(6)}`]
-                                      ? <span style={{color:'#aaa'}}>Loading...</span>
-                                      : `${step.location[0].toFixed(4)}, ${step.location[1].toFixed(4)}`
-                                ) : (step.id || 'N/A')}
-                              </TableCell>
-                              <TableCell>
-                                {step.arrival ? 
-                                  new Date(step.arrival * 1000).toLocaleTimeString(undefined, { hour: '2-digit', minute: '2-digit', hour12: false }) : 
-                                  'N/A'
-                                }
-                              </TableCell>
-                              <TableCell>
-                                {step.service ? formatDuration(step.service) : '-'}
-                              </TableCell>
-                              <TableCell>
-                                {step.load && step.load.length > 0 ? step.load.join(', ') : '-'}
-                              </TableCell>
-                            </TableRow>
-                          ))}
-                        </TableBody>
-                      </Table>
-                    </Box>
-                  </Collapse>
-                </TableCell>
-              </TableRow>
-            </React.Fragment>
-          ))}
-        </TableBody>
-      </Table>
-    </TableContainer>
-  )
 }
 
 const steps = [
@@ -767,7 +537,9 @@ export const InputImportPage = ({ currentStep, onStepChange, preferences, onPref
           cost: route.cost,
           distance: route.distance,
           duration: route.duration,
-          steps: route.steps
+          steps: route.steps,
+          delivery: route.delivery,
+          pickup: route.pickup
         }))
       onRouteResultsChange(selectedRouteData)
     }
@@ -824,6 +596,15 @@ export const InputImportPage = ({ currentStep, onStepChange, preferences, onPref
         rows: newRows,
         attachedRows: store.inputCore[inputType].rawData.attachedRows,
       })
+    }
+  }
+
+  // Handler for deleting an attribute column
+  const handleDeleteAttributeColumn = (colIndex: number) => {
+    if (isEditing) {
+      setEditAttachedRows(prev => prev.map(row => row.filter((_, i) => i !== colIndex)))
+    } else {
+      store.inputCore.deleteAttachedColumn(inputType, colIndex)
     }
   }
 
@@ -884,21 +665,6 @@ export const InputImportPage = ({ currentStep, onStepChange, preferences, onPref
       // Build unique locations and mapping
       const { locations, locMap } = buildLocations(job.rawData, store.inputCore.vehicle.rawData, job.mapConfig, store.inputCore.vehicle.mapConfig);
       
-      console.log('Debug - Job data:', {
-        rawData: job.rawData,
-        selection: job.selection,
-        selectionLength: job.selection?.length,
-        rowsLength: job.rawData.rows.length,
-        mapConfig: job.mapConfig
-      });
-      console.log('Debug - Vehicle data:', {
-        rawData: store.inputCore.vehicle.rawData,
-        selection: store.inputCore.vehicle.selection,
-        selectionLength: store.inputCore.vehicle.selection?.length,
-        rowsLength: store.inputCore.vehicle.rawData.rows.length,
-        mapConfig: store.inputCore.vehicle.mapConfig
-      });
-      
       // Normalize the data
       const normalizedJobs = normalizeJobs(
         { ...job.rawData, selection: job.selection },
@@ -910,12 +676,6 @@ export const InputImportPage = ({ currentStep, onStepChange, preferences, onPref
         store.inputCore.vehicle.mapConfig,
         locMap
       )
-      
-      console.log('Debug - Normalized data:', {
-        jobs: normalizedJobs,
-        vehicles: normalizedVehicles,
-        locations: locations
-      });
       
       // Build the optimization request
       const optimizationRequest: OptimizationMvrpOrderRequestV2 = {
@@ -955,12 +715,10 @@ export const InputImportPage = ({ currentStep, onStepChange, preferences, onPref
         }
       }
       
-      // Send the optimization request
+      // Before sending the optimization request
       const response = await apiClient.createOptimizationRequest(optimizationRequest)
-      
-      console.log('Optimization request successful:', response)
-      
       const responseData = response.data as any
+      
       const requestId = responseData.id
       
       if (requestId) {
@@ -986,6 +744,38 @@ export const InputImportPage = ({ currentStep, onStepChange, preferences, onPref
                 setExpandedRoutes(new Set())
                 setPollingMessage(`Optimization completed! Found ${resultData.result?.routes?.length || 0} routes.`)
                 
+                // Save optimization results to Turso storage
+                try {
+                  // Generate a unique job ID based on the current job data
+                  const jobIds = normalizedJobs.map(job => job.id).join(',');
+                  const jobId = jobIds.length > 50 ? jobIds.substring(0, 50) + '...' : jobIds;
+                  
+                  // Generate title from optimization results
+                  const dateTime = new Date().toLocaleString();
+                  const routes = resultData.result?.routes?.length || 0;
+                  const unassigned = resultData.result?.summary?.unassigned || 0;
+                  const duration = resultData.result?.summary?.duration || 0;
+                  const title = `${dateTime}|Routes: ${routes}|Unassigned: ${unassigned}|Duration: ${duration}`;
+                  
+                  await fetch('/api/optimization-results', {
+                    method: 'POST',
+                    headers: {
+                      'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                      id: requestId,
+                      job_id: jobId,
+                      title: title,
+                      response_data: resultData,
+                      status: 'completed'
+                    }),
+                  });
+                  console.log('Optimization results saved to Turso storage');
+                } catch (error) {
+                  console.error('Failed to save optimization results:', error);
+                  // Don't fail the optimization if storage fails
+                }
+                
                 // Convert route results to RouteData format and pass to parent
                 if (resultData.result?.routes && onRouteResultsChange) {
                   const routeData = resultData.result.routes.map((route: any) => ({
@@ -994,7 +784,9 @@ export const InputImportPage = ({ currentStep, onStepChange, preferences, onPref
                     cost: route.cost,
                     distance: route.distance,
                     duration: route.duration,
-                    steps: route.steps
+                    steps: route.steps,
+                    delivery: route.delivery,
+                    pickup: route.pickup
                   }))
                   onRouteResultsChange(routeData)
                   // Initialize all routes as selected by default
@@ -1002,10 +794,8 @@ export const InputImportPage = ({ currentStep, onStepChange, preferences, onPref
                 }
               } else if (resultData.message === "Still processing") {
                 // Continue polling - optimization still in progress
-                console.log('Optimization still processing...')
               } else {
                 // Other status - might be an error or different state
-                console.log('Optimization status:', resultData.message)
               }
             }
           } catch (error) {
@@ -1030,6 +820,8 @@ export const InputImportPage = ({ currentStep, onStepChange, preferences, onPref
       }
       
     } catch (error) {
+      console.error('=== OPTIMIZATION REQUEST FAILED ===');
+      console.error('Error details:', error);
       console.error('Optimization request failed:', error)
       alert('Optimization request failed: ' + (error as Error).message)
     } finally {
@@ -1100,7 +892,7 @@ export const InputImportPage = ({ currentStep, onStepChange, preferences, onPref
               <IconButton onClick={() => store.inputCore.resetMapping(inputType)} color="primary" title="Reset Mapping">
                 <ReplayIcon />
               </IconButton>
-              <IconButton onClick={() => store.inputCore.appendAttachedRows(inputType)} color="primary" title="Add attribute">
+              <IconButton onClick={() => store.inputCore.addAttachedColumn(inputType)} color="primary" title="Add attribute">
                 <AddIcon />
               </IconButton>
               {!isEditing && (
@@ -1152,6 +944,7 @@ export const InputImportPage = ({ currentStep, onStepChange, preferences, onPref
                 highlightCell={null}
                 onCellChange={handleCellChange}
                 onRepeatToAll={handleRepeatToAll}
+                onDeleteAttributeColumn={handleDeleteAttributeColumn}
                 rows={isEditing ? editRows : store.inputCore[inputType].rawData.rows}
                 attachedRows={isEditing ? editAttachedRows : store.inputCore[inputType].rawData.attachedRows}
                 header={store.inputCore[inputType].rawData.header}
@@ -1249,9 +1042,22 @@ export const InputImportPage = ({ currentStep, onStepChange, preferences, onPref
 
   // Remove renderMapping and showMapping logic for jobs step, since mapping is now inside the card
 
+  // Determine if data has been imported and mapped
+  const hasJobsData = store.inputCore[inputType].rawData.rows.length > 0;
+  const hasVehiclesData = vehicle.rawData.rows.length > 0;
+  const hasJobsMapping = job.mapConfig.dataMappings.length > 0;
+  const hasVehiclesMapping = vehicle.mapConfig.dataMappings.length > 0;
+
   return (
     <Box sx={{ display: 'flex', gap: 2, height: '100%' }}>
-      <InputImportStepper currentStep={currentStep} onStepChange={onStepChange} />
+      <InputImportStepper 
+        currentStep={currentStep} 
+        onStepChange={onStepChange}
+        hasJobsData={hasJobsData}
+        hasVehiclesData={hasVehiclesData}
+        hasJobsMapping={hasJobsMapping}
+        hasVehiclesMapping={hasVehiclesMapping}
+      />
       <Box sx={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
         {saveError && (
           <Box sx={{ color: 'red', mb: 2 }}>{saveError}</Box>

@@ -28,12 +28,12 @@ export function PreferencesPanel({
             width: 40,
             height: 40,
             borderRadius: '50%',
-            bgcolor: '#e3f0ff',
+            bgcolor: 'rgba(211, 103, 132, 0.1)',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
             mr: '12px',
-            color: '#1976d2',
+            color: '#d36784',
             fontSize: '12px',
           }}
         >
@@ -41,7 +41,7 @@ export function PreferencesPanel({
             style: {
               width: '28px',
               height: '28px',
-              color: '#1976d2',
+              color: '#d36784',
             },
           })}
         </Box>

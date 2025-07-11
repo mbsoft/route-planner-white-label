@@ -200,7 +200,7 @@ export const FileDropZone = (props: FileDropZoneProps) => {
     setImportInfo(null)
     
     try {
-      const fileType = file.type
+    const fileType = file.type
       const fileName = file.name.toLowerCase()
       
       // Check file type by both MIME type and file extension
@@ -211,14 +211,14 @@ export const FileDropZone = (props: FileDropZoneProps) => {
                      fileName.endsWith('.xls')
       
       if (!isCSV && !isExcel) {
-        setError('Invalid file. Please upload a CSV, XLS or XLSX file.')
-        return
-      }
+      setError('Invalid file. Please upload a CSV, XLS or XLSX file.')
+      return
+    }
 
       if (isCSV) {
         // Handle CSV files
         const text = await new Promise<string>((resolve, reject) => {
-          const reader = new FileReader()
+      const reader = new FileReader()
           reader.onload = (e) => resolve(e.target?.result as string)
           reader.onerror = () => reject(new Error('Error reading CSV file'))
           reader.readAsText(file)
@@ -278,20 +278,20 @@ export const FileDropZone = (props: FileDropZoneProps) => {
       setImportInfo(`Excel file imported from worksheet "${worksheetName}": ${rows.length} rows`)
       
       // Determine if first row is header
-      if (isIncludeHeader(rows[0])) {
-        const header = rows[0]
-        const data = rows.slice(1).filter(row => row.length > 0 && row.some(cell => cell !== ''))
-        onDataUpload(header, data)
-      } else {
-        const header = rows[0].map((item: string, index: number) => {
-          return `Column_${index + 1}`
-        })
-        onDataUpload(header, rows.filter(row => row.length > 0 && row.some(cell => cell !== '')))
-      }
-    } catch (error) {
+          if (isIncludeHeader(rows[0])) {
+            const header = rows[0]
+            const data = rows.slice(1).filter(row => row.length > 0 && row.some(cell => cell !== ''))
+            onDataUpload(header, data)
+          } else {
+            const header = rows[0].map((item: string, index: number) => {
+              return `Column_${index + 1}`
+            })
+            onDataUpload(header, rows.filter(row => row.length > 0 && row.some(cell => cell !== '')))
+          }
+        } catch (error) {
       setError('Error importing worksheet: ' + (error as Error).message)
-    }
-  }
+        }
+      }
 
   const handleWorksheetSelect = async (worksheetName: string) => {
     if (currentFile) {
@@ -336,56 +336,56 @@ export const FileDropZone = (props: FileDropZoneProps) => {
 
   return (
     <>
-      <div
-        onDragOver={handleDragOver}
-        onDragLeave={handleDragLeave}
-        onDrop={handleDrop}
-        style={{
-          width: '100%',
-          borderRadius: '8px',
-          padding: '5.5px',
-          textAlign: 'center',
-          color: '#5A5A5A',
+    <div
+      onDragOver={handleDragOver}
+      onDragLeave={handleDragLeave}
+      onDrop={handleDrop}
+      style={{
+        width: '100%',
+        borderRadius: '8px',
+        padding: '5.5px',
+        textAlign: 'center',
+        color: '#5A5A5A',
           cursor: isLoading ? 'wait' : 'pointer',
-          border: isDragOver ? '2px dashed #1976d2' : '2px dashed #ccc',
-          backgroundColor: isDragOver ? 'rgba(25, 118, 210, 0.1)' : '#f9f9f9',
+        border: isDragOver ? '2px dashed #1976d2' : '2px dashed #ccc',
+        backgroundColor: isDragOver ? 'rgba(25, 118, 210, 0.1)' : '#f9f9f9',
           transition: 'all 0.2s ease',
           opacity: isLoading ? 0.7 : 1
-        }}
-      >
-        <div style={{
-          fontSize: '33.6px', // 48px * 0.7
-          marginBottom: '10px',
-          color: '#1976d2'
-        }}>
+      }}
+    >
+      <div style={{
+        fontSize: '33.6px', // 48px * 0.7
+        marginBottom: '10px',
+        color: '#1976d2'
+      }}>
           {isLoading ? '⏳' : '📁'}
-        </div>
-        
-        <div style={{
-          fontSize: '15px', // 21px * 0.7
-          fontWeight: '500',
-          color: '#2A3249',
-          marginBottom: '10px'
-        }}>
+      </div>
+      
+      <div style={{
+        fontSize: '15px', // 21px * 0.7
+        fontWeight: '500',
+        color: '#2A3249',
+        marginBottom: '10px'
+      }}>
           {isLoading ? (
             'Processing file...'
           ) : (
             <>
               Drag and drop a file (CSV, Excel) or{' '}
-              <span
+        <span
                 onClick={() => !isLoading && openFileDialog()}
-                style={{
+          style={{
                   cursor: isLoading ? 'wait' : 'pointer',
-                  color: '#1976d2',
-                  textDecoration: 'underline',
-                }}
-              >
-                Browse for file
-              </span>
+            color: '#1976d2',
+            textDecoration: 'underline',
+          }}
+        >
+          Browse for file
+        </span>
             </>
           )}
-        </div>
-        
+      </div>
+      
         <div style={{
           fontSize: '12px',
           color: '#666',
@@ -404,16 +404,16 @@ export const FileDropZone = (props: FileDropZoneProps) => {
           </div>
         )}
 
-        {error && (
-          <div style={{
-            marginTop: '10px',
-            color: 'red',
-            fontSize: '14px'
-          }}>
-            {error}
-          </div>
-        )}
-      </div>
+      {error && (
+        <div style={{
+          marginTop: '10px',
+          color: 'red',
+          fontSize: '14px'
+        }}>
+          {error}
+        </div>
+      )}
+    </div>
 
       {/* Worksheet Selection Dialog */}
       <Dialog open={showWorksheetDialog} onClose={() => setShowWorksheetDialog(false)} maxWidth="sm" fullWidth>

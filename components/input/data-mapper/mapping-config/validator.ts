@@ -360,4 +360,36 @@ export const parseArray = (
     }
   }
   return [`${fieldName} ${value} is not a valid array format`]
+}
+
+export const alternativeCapacityValidator = (
+  value: string,
+  rowIndex: number,
+  fieldName: string,
+): string[] => {
+  const trimmedValue = value.trim()
+  if (trimmedValue === '') {
+    return []
+  }
+  try {
+    const parsedValue = JSON.parse(trimmedValue)
+    if (Array.isArray(parsedValue)) {
+      // Check if it's an array of arrays
+      if (parsedValue.every(item => Array.isArray(item))) {
+        // Validate each inner array contains only positive numbers
+        for (let i = 0; i < parsedValue.length; i++) {
+          const innerArray = parsedValue[i]
+          if (!innerArray.every(item => typeof item === 'number' && item >= 0)) {
+            return [`${fieldName} inner array at index ${i} contains invalid values`]
+          }
+        }
+        return []
+      } else {
+        return [`${fieldName} ${value} is not a valid array of arrays`]
+      }
+    }
+  } catch (error) {
+    return [`${fieldName} ${value} is not a valid JSON array`]
+  }
+  return [`${fieldName} ${value} is not a valid array of arrays`]
 } 

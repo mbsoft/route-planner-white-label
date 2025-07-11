@@ -26,10 +26,17 @@ export function useWhiteLabelContext() {
 const theme = createTheme({
   palette: {
     primary: {
-      main: '#1976d2',
+      main: '#d36784', // Light pink/mauve for buttons and badges
+      light: '#E0859A',
+      dark: '#B54A6A',
+      contrastText: '#ffffff',
     },
     secondary: {
       main: '#dc004e',
+    },
+    background: {
+      default: '#ffffff',
+      paper: '#ffffff',
     },
   },
 })

@@ -61,7 +61,7 @@ export const MappingManagement: React.FC = () => {
 
   const getStatusColor = (has: boolean, loading: boolean) => {
     if (loading) return 'default'
-    return has ? 'success' : 'default'
+    return has ? 'primary' : 'default'
   }
   const getStatusText = (has: boolean, loading: boolean, label: string) => {
     if (loading) return 'Loading...'
@@ -76,21 +76,45 @@ export const MappingManagement: React.FC = () => {
         label={getStatusText(mappingStatus.job.hasMapping, mappingStatus.job.loading, 'Jobs Map')}
         color={getStatusColor(mappingStatus.job.hasMapping, mappingStatus.job.loading)}
         size="small"
+        sx={{
+          '&.MuiChip-colorPrimary': {
+            backgroundColor: '#d36784',
+            color: '#ffffff',
+          }
+        }}
       />
       <Chip
         label={getStatusText(mappingStatus.vehicle.hasMapping, mappingStatus.vehicle.loading, 'Vehicles Map')}
         color={getStatusColor(mappingStatus.vehicle.hasMapping, mappingStatus.vehicle.loading)}
         size="small"
+        sx={{
+          '&.MuiChip-colorPrimary': {
+            backgroundColor: '#d36784',
+            color: '#ffffff',
+          }
+        }}
       />
       <Chip
         label={getStatusText(mappingStatus.shipment.hasMapping, mappingStatus.shipment.loading, 'Shipment Map')}
         color={getStatusColor(mappingStatus.shipment.hasMapping, mappingStatus.shipment.loading)}
         size="small"
+        sx={{
+          '&.MuiChip-colorPrimary': {
+            backgroundColor: '#d36784',
+            color: '#ffffff',
+          }
+        }}
       />
       <Chip
         label={getStatusText(preferences.hasPreferences, preferences.loading, 'Preferences')}
         color={getStatusColor(preferences.hasPreferences, preferences.loading)}
         size="small"
+        sx={{
+          '&.MuiChip-colorPrimary': {
+            backgroundColor: '#d36784',
+            color: '#ffffff',
+          }
+        }}
       />
     </Box>
   )

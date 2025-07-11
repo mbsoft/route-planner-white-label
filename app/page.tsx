@@ -9,9 +9,11 @@ import { InputImportPage } from '../components/input/input-import-page'
 import { CollapsibleMap } from '../components/input/input-panels/input-map'
 import { MappingManagement } from '../components/input/mapping-management'
 import { PreferencesManagement } from '../components/input/preferences-management'
+import { HamburgerMenu } from '../components/common/hamburger-menu'
 import { useInputStore } from '../models/input/store'
 import { PreferencesInput } from '../components/input/input-panels/preferences-page'
 import { usePreferencesPersistence } from '../hooks/use-preferences-persistence'
+import { useAuth } from '../hooks/use-auth'
 
 export interface MapMarker {
   id: string
@@ -28,6 +30,8 @@ export interface RouteData {
   distance: number
   duration: number
   steps: any[]
+  delivery?: number[]
+  pickup?: number[]
 }
 
 // Force dynamic rendering to prevent prerendering issues
@@ -51,6 +55,7 @@ export default function HomePage() {
   const store = useInputStore()
   const { job, vehicle } = store.inputCore
   const { status: preferencesStatus, savePreferences, loadPreferences } = usePreferencesPersistence()
+  const { isAdmin } = useAuth()
 
   // Initialize store and load persisted mappings on mount
   React.useEffect(() => {
@@ -323,14 +328,15 @@ export default function HomePage() {
 
   return (
     <WhiteLabelLayout>
-      <Container maxWidth="xl" sx={{ minHeight: '100vh', p: 0 }}>
-        <Box sx={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
-          <Box sx={{ p: 2, borderBottom: '1px solid #e0e0e0', backgroundColor: '#E5EEFA' }}>
+      <Container maxWidth="xl" sx={{ minHeight: '100vh', p: 0, backgroundColor: '#ffffff' }}>
+        <Box sx={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', backgroundColor: '#ffffff' }}>
+          <Box sx={{ p: 2, borderBottom: '1px solid #e0e0e0', backgroundColor: '#ffffff' }}>
             <Box sx={{ maxHeight: '25px', height: '25px', display: 'flex', alignItems: 'center', gap: 2, justifyContent: 'space-between' }}>
               <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+                <HamburgerMenu currentPage="home" />
                 <img
-                  src="/company_logo.png"
-                  alt="Company Logo"
+                  src="/company_logo.svg"
+                  alt="Diesel Direct Logo"
                   style={{
                     height: '25px',
                     width: 'auto',
@@ -342,34 +348,52 @@ export default function HomePage() {
                   component="h1"
                   sx={{ color: '#333', fontWeight: 'bold', fontSize: '1.1rem' }}
                 >
-                  PlanPath-AI : Plan, manage and monitor your routes
+                  Plan, manage and monitor your routes
                 </Typography>
               </Box>
-              <Button
-                variant="outlined"
-                size="small"
-                onClick={handleLogout}
-                startIcon={<LogoutIcon />}
-                sx={{ 
-                  height: '25px',
-                  fontSize: '0.75rem',
-                  textTransform: 'none'
-                }}
-              >
-                Logout
-              </Button>
+              <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+                {isAdmin && (
+                  <Typography
+                    variant="caption"
+                    sx={{
+                      backgroundColor: '#d36784',
+                      color: 'white',
+                      px: 1,
+                      py: 0.5,
+                      borderRadius: '4px',
+                      fontSize: '0.7rem',
+                      fontWeight: 'bold'
+                    }}
+                  >
+                    ADMIN
+                  </Typography>
+                )}
+                <Button
+                  variant="outlined"
+                  size="small"
+                  onClick={handleLogout}
+                  startIcon={<LogoutIcon />}
+                  sx={{ 
+                    height: '25px',
+                    fontSize: '0.75rem',
+                    textTransform: 'none'
+                  }}
+                >
+                  Logout
+                </Button>
+              </Box>
             </Box>
           </Box>
 
           {/* Map always shown below header */}
-          <Box sx={{ p: 2, borderBottom: '1px solid #e0e0e0', backgroundColor: '#f9f9f9' }}>
+          <Box sx={{ p: 2, borderBottom: '1px solid #e0e0e0', backgroundColor: '#ffffff' }}>
             <CollapsibleMap markers={markers} routes={routes} />
           </Box>
 
           {/* Main content area */}
-          <Box sx={{ flex: 1 }}>
+          <Box sx={{ flex: 1, backgroundColor: '#ffffff' }}>
             <MappingManagement />
-            <PreferencesManagement />
+            {isAdmin && <PreferencesManagement />}
             <InputImportPage
               currentStep={currentStep}
               onStepChange={handleNextStep}
@@ -382,7 +406,7 @@ export default function HomePage() {
           {/* Footer */}
           <Box sx={{
             borderTop: '1px solid #e0e0e0',
-            backgroundColor: '#f5f5f5',
+            backgroundColor: '#ffffff',
             py: 3,
             px: 2,
             mt: '5px' // Add 5px margin above the footer
@@ -390,12 +414,12 @@ export default function HomePage() {
             <Container maxWidth="xl">
               <Box sx={{ mt: 0, pt: 0, display: 'flex', alignItems: 'center', gap: 1 }}>
                 <img
-                  src="/company_logo.png"
-                  alt="Company Logo"
+                  src="/company_logo.svg"
+                  alt="Diesel Direct Logo"
                   style={{ height: '20px', width: 'auto', marginRight: '8px', verticalAlign: 'middle' }}
                 />
                 <Typography variant="caption" sx={{ color: '#999' }}>
-                  PlanPath-AI powered by NextBillion.ai | Version 1.0.0 | Last updated: {new Date().toLocaleDateString()}
+                  powered by NextBillion.ai | Version 1.0.0 | Last updated: {new Date().toLocaleDateString()}
                 </Typography>
               </Box>
             </Container>

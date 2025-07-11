@@ -1,7 +1,7 @@
 const fs = require('fs');
 
 // Read the JSON file
-const jsonData = JSON.parse(fs.readFileSync('/Users/jameswelch/Downloads/ea0becd48d179e8c94b5c9c412a428f5-input.json', 'utf8'));
+const jsonData = JSON.parse(fs.readFileSync('26ed61ed4e7649e378dc23e1656e1a9c-input.json', 'utf8'));
 
 // Helper function to convert timestamp to readable date
 function timestampToDate(timestamp) {
@@ -48,8 +48,8 @@ function convertJobsToCSV() {
       `"${location}"`,
       lat,
       lng,
-      job.service,
-      job.delivery ? job.delivery.join(';') : '',
+      job.service || '',
+      job.delivery ? `"${JSON.stringify(job.delivery)}"` : '',
       job.skills ? `"${job.skills.join(', ')}"` : '""',
       job.time_windows && job.time_windows[0] ? timestampToDate(job.time_windows[0][0]) : '',
       job.time_windows && job.time_windows[0] ? timestampToDate(job.time_windows[0][1]) : ''
@@ -77,6 +77,7 @@ function convertVehiclesToCSV() {
     'time_window_start',
     'time_window_end',
     'capacity',
+    'alternative_capacities',
     'skills',
     'fixed_cost',
     'max_tasks'
@@ -100,7 +101,8 @@ function convertVehiclesToCSV() {
       endLng,
       vehicle.time_window && vehicle.time_window[0] ? timestampToDate(vehicle.time_window[0]) : '',
       vehicle.time_window && vehicle.time_window[1] ? timestampToDate(vehicle.time_window[1]) : '',
-      vehicle.capacity ? vehicle.capacity.join(';') : '',
+      vehicle.capacity ? `"${JSON.stringify(vehicle.capacity)}"` : '',
+      vehicle.alternative_capacities ? `"${JSON.stringify(vehicle.alternative_capacities)}"` : '',
       vehicle.skills ? `"${vehicle.skills.join(', ')}"` : '""',
       vehicle.costs && vehicle.costs.fixed ? vehicle.costs.fixed : '',
       vehicle.max_tasks || ''
