@@ -61,6 +61,7 @@ export interface InputCoreSlice {
   setMapConfig: (inputType: InputType, config: MapConfig) => void
   resetMapping: (inputType: InputType) => void
   appendAttachedRows: (inputType: InputType) => void
+  deleteAttachedColumn: (inputType: InputType, columnIndex: number) => void
   copyAttributeColumn: (inputType: InputType, params: { columnIndex: number; rowIndex: number }) => void
   setErrors: (inputType: InputType, errors: InputErrorInfo[]) => void
   initialize: (params: { isFleetifyEnable: boolean; isTelematicEnable: boolean }) => Promise<void>

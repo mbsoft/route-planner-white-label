@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react'
-import { TableCell, TableRow, Box, InputBase, Typography, Checkbox } from '@mui/material'
+import { TableCell, TableRow, Box, InputBase, Typography, Checkbox, IconButton, Tooltip } from '@mui/material'
 import { MapSelector } from './map-selector'
 import { InputType, InputCoreSlice } from '../../../models/input/input-core'
 import { useCurrentInput } from '../../../hooks/input/use-current-input'
@@ -365,6 +365,7 @@ export function MapperTableHeader(props: {
   onResize: (index: number, width: number) => void
 }) {
   const { isAttribute, index, headerName, inputType, isEditing } = props
+  const store = useInputStore()
   const [isResizing, setIsResizing] = useState(false)
   const [startX, setStartX] = useState(0)
   const [startWidth, setStartWidth] = useState(0)
@@ -374,6 +375,15 @@ export function MapperTableHeader(props: {
     setIsResizing(true)
     setStartX(e.clientX)
     setStartWidth(240) // Default width
+  }
+
+  const handleDeleteColumn = () => {
+    if (isAttribute) {
+      // Calculate the actual column index in attachedRows
+      const dataColumnCount = store.inputCore[inputType].rawData.header.length
+      const attachedColumnIndex = index - dataColumnCount
+      store.inputCore.deleteAttachedColumn(inputType, attachedColumnIndex)
+    }
   }
 
   useEffect(() => {
@@ -424,6 +434,26 @@ export function MapperTableHeader(props: {
           </Typography>
         )}
       </Box>
+      {isAttribute && isEditing && (
+        <Box sx={{ display: 'flex', alignItems: 'center', mr: 1 }}>
+          <Tooltip title="Delete attribute column">
+            <IconButton
+              size="small"
+              onClick={handleDeleteColumn}
+              sx={{ 
+                width: '20px', 
+                height: '20px',
+                color: '#d32f2f',
+                '&:hover': {
+                  backgroundColor: 'rgba(211, 47, 47, 0.1)',
+                }
+              }}
+            >
+              <DeleteOutline sx={{ fontSize: '16px' }} />
+            </IconButton>
+          </Tooltip>
+        </Box>
+      )}
       <Box
         sx={{
           width: '4px',

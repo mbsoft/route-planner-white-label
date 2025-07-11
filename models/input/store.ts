@@ -142,6 +142,25 @@ export const useInputStore = create<RootState>((set, get) => ({
           },
         }
       }),
+    deleteAttachedColumn: (inputType: InputType, columnIndex: number) =>
+      set((state) => {
+        const currentData = state.inputCore[inputType].rawData
+        const newAttachedRows = currentData.attachedRows.map((row: string[]) => 
+          row.filter((_: string, index: number) => index !== columnIndex)
+        )
+        return {
+          inputCore: {
+            ...state.inputCore,
+            [inputType]: {
+              ...state.inputCore[inputType],
+              rawData: {
+                ...currentData,
+                attachedRows: newAttachedRows,
+              },
+            },
+          },
+        }
+      }),
     copyAttributeColumn: (inputType, params) =>
       set((state) => {
         const currentData = state.inputCore[inputType].rawData
