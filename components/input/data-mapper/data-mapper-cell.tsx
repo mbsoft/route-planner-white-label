@@ -21,6 +21,8 @@ export function DataMapperCell({
   const [editValue, setEditValue] = useState(value)
   const inputRef = useRef<HTMLInputElement>(null)
 
+  console.log('DataMapperCell render:', { isEditing, isEditingCell, hasOnRepeatToAll: !!onRepeatToAll })
+
   useEffect(() => {
     if (!isEditingCell) {
       setEditValue(value)
@@ -149,6 +151,17 @@ export function DataMapperCell({
           >
             {formatValue(value)}
           </Box>
+          {onRepeatToAll && isEditing && (
+            <Tooltip title="Repeat to all rows in this column">
+              <IconButton
+                size="small"
+                onClick={handleRepeatToAll}
+                sx={{ ml: 1, width: '20px', height: '20px' }}
+              >
+                <RepeatIcon sx={{ fontSize: '14px' }} />
+              </IconButton>
+            </Tooltip>
+          )}
         </Box>
       )}
     </Box>
