@@ -536,7 +536,16 @@ export default function RouteAnalysisPage() {
                                     <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
                                       <Typography 
                                         variant="body2" 
-                                        sx={{ flex: 1 }}
+                                        sx={{ 
+                                          flex: 1,
+                                          cursor: 'pointer',
+                                          textDecoration: 'underline',
+                                          color: '#1976d2',
+                                          '&:hover': {
+                                            color: '#1565c0'
+                                          }
+                                        }}
+                                        onClick={() => handleViewResult(result.job_id)}
                                       >
                                         {result.title}
                                       </Typography>
