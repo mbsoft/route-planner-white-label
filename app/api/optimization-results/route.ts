@@ -14,6 +14,7 @@ async function ensureTable() {
       job_id TEXT NOT NULL,
       title TEXT NOT NULL,
       response_data TEXT NOT NULL,
+      shared_url TEXT,
       created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
       status TEXT DEFAULT 'completed'
     )
@@ -25,6 +26,14 @@ async function ensureTable() {
   } catch (error) {
     // Title column doesn't exist, add it
     await turso.execute('ALTER TABLE optimization_results ADD COLUMN title TEXT DEFAULT "Untitled"');
+  }
+
+  // Check if shared_url column exists, if not add it
+  try {
+    await turso.execute('SELECT shared_url FROM optimization_results LIMIT 1');
+  } catch (error) {
+    // shared_url column doesn't exist, add it
+    await turso.execute('ALTER TABLE optimization_results ADD COLUMN shared_url TEXT');
   }
 }
 
@@ -52,6 +61,7 @@ export async function GET(req: NextRequest) {
         id: row.id,
         job_id: row.job_id,
         response_data: responseData,
+        shared_url: row.shared_url,
         created_at: row.created_at,
         status: row.status
       });
@@ -68,6 +78,7 @@ export async function GET(req: NextRequest) {
       id: row.id,
       job_id: row.job_id,
       title: row.title,
+      shared_url: row.shared_url,
       created_at: row.created_at,
       status: row.status
     }));
@@ -81,7 +92,7 @@ export async function POST(req: NextRequest) {
   
   try {
     const body = await req.json();
-    const { id, job_id, title, response_data, status = 'completed' } = body;
+    const { id, job_id, title, response_data, shared_url, status = 'completed' } = body;
     
     if (!id || !job_id || !title || !response_data) {
       return NextResponse.json(
@@ -91,8 +102,8 @@ export async function POST(req: NextRequest) {
     }
     
     await turso.execute(
-      'INSERT OR REPLACE INTO optimization_results (id, job_id, title, response_data, status) VALUES (?, ?, ?, ?, ?)',
-      [id, job_id, title, JSON.stringify(response_data), status]
+      'INSERT OR REPLACE INTO optimization_results (id, job_id, title, response_data, shared_url, status) VALUES (?, ?, ?, ?, ?, ?)',
+      [id, job_id, title, JSON.stringify(response_data), shared_url, status]
     );
     
     return NextResponse.json({ 
@@ -113,28 +124,37 @@ export async function PATCH(req: NextRequest) {
   
   try {
     const body = await req.json();
-    const { id, title } = body;
+    const { id, title, shared_url } = body;
     
-    if (!id || !title) {
+    if (!id) {
       return NextResponse.json(
-        { error: 'Missing required fields: id, title' },
+        { error: 'Missing required field: id' },
         { status: 400 }
       );
     }
     
-    await turso.execute(
-      'UPDATE optimization_results SET title = ? WHERE id = ?',
-      [title, id]
-    );
+    if (title !== undefined) {
+      await turso.execute(
+        'UPDATE optimization_results SET title = ? WHERE id = ?',
+        [title, id]
+      );
+    }
+    
+    if (shared_url !== undefined) {
+      await turso.execute(
+        'UPDATE optimization_results SET shared_url = ? WHERE id = ?',
+        [shared_url, id]
+      );
+    }
     
     return NextResponse.json({ 
       success: true, 
-      message: 'Optimization result title updated successfully' 
+      message: 'Optimization result updated successfully' 
     });
   } catch (error) {
-    console.error('Error updating optimization result title:', error);
+    console.error('Error updating optimization result:', error);
     return NextResponse.json(
-      { error: 'Failed to update optimization result title' },
+      { error: 'Failed to update optimization result' },
       { status: 500 }
     );
   }
