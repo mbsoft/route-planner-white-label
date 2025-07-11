@@ -805,13 +805,27 @@ export const InputImportPage = ({ currentStep, onStepChange, preferences, onPref
     })
   }
   const handleRepeatToAll = (row: number, col: number, value: string) => {
-    setEditRows(prev => {
-      const updated = prev.map(r => [...r])
-      for (let i = 0; i < updated.length; i++) {
-        updated[i][col] = value
-      }
-      return updated
-    })
+    console.log('handleRepeatToAll called:', { row, col, value, isEditing })
+    if (isEditing) {
+      setEditRows(prev => {
+        const updated = prev.map(r => [...r])
+        for (let i = 0; i < updated.length; i++) {
+          updated[i][col] = value
+        }
+        return updated
+      })
+    } else {
+      const newRows = store.inputCore[inputType].rawData.rows.map((r, i) => {
+        const updated = [...r]
+        updated[col] = value
+        return updated
+      })
+      store.inputCore.setRawData(inputType, {
+        header: store.inputCore[inputType].rawData.header,
+        rows: newRows,
+        attachedRows: store.inputCore[inputType].rawData.attachedRows,
+      })
+    }
   }
 
   // Handler for delete with confirmation
