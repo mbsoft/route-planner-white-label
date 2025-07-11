@@ -47,7 +47,8 @@ export function DataMapperCell({
   }
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setEditValue(e.target.value)
+    const newValue = isTimestamp ? parseDateFromInput(e.target.value) : e.target.value
+    setEditValue(newValue)
   }
 
   const handleInputBlur = () => {
@@ -69,7 +70,9 @@ export function DataMapperCell({
     }
   }
 
-  const handleRepeatToAll = () => {
+  const handleRepeatToAll = (e: React.MouseEvent) => {
+    e.preventDefault()
+    e.stopPropagation()
     const valueToRepeat = isEditingCell ? editValue : value
     console.log('Repeat button clicked, valueToRepeat:', valueToRepeat, 'isEditingCell:', isEditingCell)
     if (onRepeatToAll) {
@@ -84,6 +87,38 @@ export function DataMapperCell({
         const date = new Date(val)
         if (!isNaN(date.getTime())) {
           return date.toLocaleString()
+        }
+      } catch (e) {}
+    }
+    return val
+  }
+
+  const formatDateForInput = (val: string) => {
+    if (!val) return ''
+    if (isTimestamp) {
+      try {
+        const date = new Date(val)
+        if (!isNaN(date.getTime())) {
+          // Convert to YYYY-MM-DDTHH:mm format for datetime-local input
+          const year = date.getFullYear()
+          const month = String(date.getMonth() + 1).padStart(2, '0')
+          const day = String(date.getDate()).padStart(2, '0')
+          const hours = String(date.getHours()).padStart(2, '0')
+          const minutes = String(date.getMinutes()).padStart(2, '0')
+          return `${year}-${month}-${day}T${hours}:${minutes}`
+        }
+      } catch (e) {}
+    }
+    return val
+  }
+
+  const parseDateFromInput = (val: string) => {
+    if (!val) return ''
+    if (isTimestamp) {
+      try {
+        const date = new Date(val)
+        if (!isNaN(date.getTime())) {
+          return date.toISOString()
         }
       } catch (e) {}
     }
@@ -106,23 +141,44 @@ export function DataMapperCell({
     >
       {isEditingCell ? (
         <>
-          <input
-            ref={inputRef}
-            value={editValue}
-            onChange={handleInputChange}
-            onBlur={handleInputBlur}
-            onKeyDown={handleInputKeyDown}
-            aria-label="Edit cell value"
-            style={{
-              flex: 1,
-              fontSize: '12px',
-              padding: '0',
-              border: 'none',
-              outline: 'none',
-              background: 'transparent',
-              width: '100%',
-            }}
-          />
+          {isTimestamp ? (
+            <input
+              ref={inputRef}
+              type="datetime-local"
+              value={formatDateForInput(editValue)}
+              onChange={handleInputChange}
+              onBlur={handleInputBlur}
+              onKeyDown={handleInputKeyDown}
+              aria-label="Edit datetime value"
+              style={{
+                flex: 1,
+                fontSize: '12px',
+                padding: '4px',
+                border: '1px solid #ccc',
+                borderRadius: '4px',
+                background: 'white',
+                width: '100%',
+              }}
+            />
+          ) : (
+            <input
+              ref={inputRef}
+              value={editValue}
+              onChange={handleInputChange}
+              onBlur={handleInputBlur}
+              onKeyDown={handleInputKeyDown}
+              aria-label="Edit cell value"
+              style={{
+                flex: 1,
+                fontSize: '12px',
+                padding: '0',
+                border: 'none',
+                outline: 'none',
+                background: 'transparent',
+                width: '100%',
+              }}
+            />
+          )}
           {onRepeatToAll && (
             <Tooltip title="Repeat to all rows in this column">
               <IconButton
