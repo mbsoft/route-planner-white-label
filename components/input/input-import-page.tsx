@@ -14,6 +14,8 @@ import { InputImportStepper } from './input-import-stepper'
 import { PreferencesPage, PreferencesInput } from './input-panels/preferences-page'
 import { useInputStore } from '../../models/input/store'
 import { DataMapper } from './data-mapper/data-mapper'
+import { DataMapperTable } from './data-mapper/data-mapper-table'
+import ErrorPanel from './data-mapper/error-panel'
 import { useUseCase } from '../../utils/use-case'
 import { ApiClient } from '../../utils/api-client'
 import ReplayIcon from '@mui/icons-material/Replay';
@@ -776,11 +778,13 @@ export const InputImportPage = ({ currentStep, onStepChange, preferences, onPref
     setEditRows(store.inputCore[inputType].rawData.rows.map(row => [...row]))
     setEditAttachedRows(store.inputCore[inputType].rawData.attachedRows.map(row => [...row]))
     setIsEditing(true)
+    store.inputPhase.setIsTableEditable(true)
   }
   const handleCancel = () => {
     setIsEditing(false)
     setEditRows([])
     setEditAttachedRows([])
+    store.inputPhase.setIsTableEditable(false)
   }
   const handleSave = () => {
     store.inputCore.setRawData(inputType, {
@@ -791,6 +795,7 @@ export const InputImportPage = ({ currentStep, onStepChange, preferences, onPref
     setIsEditing(false)
     setEditRows([])
     setEditAttachedRows([])
+    store.inputPhase.setIsTableEditable(false)
   }
   const handleCellChange = (row: number, col: number, value: string) => {
     setEditRows(prev => {
@@ -1117,12 +1122,26 @@ export const InputImportPage = ({ currentStep, onStepChange, preferences, onPref
                 <Button onClick={handleDeleteConfirm} color="error" variant="contained">Confirm</Button>
               </DialogActions>
             </Dialog>
-            <Box sx={{ mt: 4 }}>
-              <DataMapper
-                headers={store.inputCore[inputType].rawData.header}
+            <Box sx={{ mt: 4, position: 'relative' }}>
+              <ErrorPanel
+                errors={store.inputCore.errors[inputType]}
+                style={{
+                  position: 'absolute',
+                  top: '65px',
+                  right: '120px',
+                  zIndex: 100,
+                }}
+                onItemHover={() => {}}
+              />
+              <DataMapperTable
+                inputType={inputType}
+                isEditing={isEditing}
+                highlightCell={null}
+                onCellChange={handleCellChange}
+                onRepeatToAll={handleRepeatToAll}
                 rows={isEditing ? editRows : store.inputCore[inputType].rawData.rows}
                 attachedRows={isEditing ? editAttachedRows : store.inputCore[inputType].rawData.attachedRows}
-                inputType={inputType}
+                header={store.inputCore[inputType].rawData.header}
               />
             </Box>
           </Box>

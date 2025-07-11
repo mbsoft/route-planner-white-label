@@ -52,6 +52,9 @@ export const DataMapper = function ({
       updated[col] = value
       return updated
     })
+    
+    // If we're in editing mode, we need to update the parent's editing state
+    // For now, we'll update the store directly since the DataMapper doesn't have access to the parent's editing state
     store.inputCore.setRawData(inputType, {
       header: headers,
       rows: newRows,
