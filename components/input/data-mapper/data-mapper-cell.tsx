@@ -21,7 +21,7 @@ export function DataMapperCell({
   const [editValue, setEditValue] = useState(value)
   const inputRef = useRef<HTMLInputElement>(null)
 
-  console.log('DataMapperCell render:', { isEditing, isEditingCell, hasOnRepeatToAll: !!onRepeatToAll })
+
 
   useEffect(() => {
     if (!isEditingCell) {
@@ -74,7 +74,6 @@ export function DataMapperCell({
     e.preventDefault()
     e.stopPropagation()
     const valueToRepeat = isEditingCell ? editValue : value
-    console.log('Repeat button clicked, valueToRepeat:', valueToRepeat, 'isEditingCell:', isEditingCell)
     if (onRepeatToAll) {
       onRepeatToAll(valueToRepeat)
     }

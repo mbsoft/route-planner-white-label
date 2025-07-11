@@ -93,7 +93,7 @@ export function DataMapperTable(props: DataMapperTableProps) {
     })
 
     return [...dataColumns, ...attachedColumns]
-  }, [columns, attachedRows])
+  }, [header, attachedRows])
 
   useEffect(() => {
     setColumnWidths(innerColumns.map((column) => 120))
@@ -131,7 +131,7 @@ export function DataMapperTable(props: DataMapperTableProps) {
 
       return [...row]
     })
-  }, [rows, innerColumns, attachedRows, columns.length])
+  }, [rows, attachedRows])
 
   useEffect(() => {
     if (highlightCell && tableRef.current) {
@@ -343,7 +343,6 @@ export function DataMapperTable(props: DataMapperTableProps) {
                     }
                   }}
                   onRepeatToAll={props.onRepeatToAll ? (value) => {
-                    console.log('DataMapperTable onRepeatToAll called:', { rowIndex, colIndex, value })
                     props.onRepeatToAll!(rowIndex, colIndex, value)
                   } : undefined}
                 />

@@ -805,7 +805,6 @@ export const InputImportPage = ({ currentStep, onStepChange, preferences, onPref
     })
   }
   const handleRepeatToAll = (row: number, col: number, value: string) => {
-    console.log('handleRepeatToAll called:', { row, col, value, isEditing })
     if (isEditing) {
       setEditRows(prev => {
         const updated = prev.map(r => [...r])
