@@ -86,7 +86,13 @@ export function DataMapperCell({
       try {
         const date = new Date(val)
         if (!isNaN(date.getTime())) {
-          return date.toLocaleString()
+          // Format in 24-hour format
+          const year = date.getFullYear()
+          const month = String(date.getMonth() + 1).padStart(2, '0')
+          const day = String(date.getDate()).padStart(2, '0')
+          const hours = String(date.getHours()).padStart(2, '0')
+          const minutes = String(date.getMinutes()).padStart(2, '0')
+          return `${year}-${month}-${day} ${hours}:${minutes}`
         }
       } catch (e) {}
     }
@@ -99,13 +105,14 @@ export function DataMapperCell({
       try {
         const date = new Date(val)
         if (!isNaN(date.getTime())) {
-          // Convert to YYYY-MM-DDTHH:mm format for datetime-local input
+          // Convert to YYYY-MM-DDTHH:mm:ss format for datetime-local input (24-hour format)
           const year = date.getFullYear()
           const month = String(date.getMonth() + 1).padStart(2, '0')
           const day = String(date.getDate()).padStart(2, '0')
           const hours = String(date.getHours()).padStart(2, '0')
           const minutes = String(date.getMinutes()).padStart(2, '0')
-          return `${year}-${month}-${day}T${hours}:${minutes}`
+          const seconds = String(date.getSeconds()).padStart(2, '0')
+          return `${year}-${month}-${day}T${hours}:${minutes}:${seconds}`
         }
       } catch (e) {}
     }
@@ -150,6 +157,7 @@ export function DataMapperCell({
               onBlur={handleInputBlur}
               onKeyDown={handleInputKeyDown}
               aria-label="Edit datetime value"
+              step="60"
               style={{
                 flex: 1,
                 fontSize: '12px',
