@@ -757,6 +757,27 @@ export const InputImportPage = ({ currentStep, onStepChange, preferences, onPref
                   const duration = resultData.result?.summary?.duration || 0;
                   const title = `${dateTime}|Routes: ${routes}|Unassigned: ${unassigned}|Duration: ${duration}`;
                   
+                  // Create shared URL for the optimization result
+                  let sharedUrl = null;
+                  try {
+                    console.log('Creating shared URL for request ID:', requestId);
+                    const sharedResponse = await apiClient.createSharedResult(requestId);
+                    console.log('Shared response:', sharedResponse);
+                    
+                    // If the shared result was created successfully, construct the shared URL
+                    if ((sharedResponse.data as any)?.message === "Create shared result successfully") {
+                      const sharedResultId = (sharedResponse.data as any)?.id || requestId;
+                      sharedUrl = `https://console.nextbillion.ai/route-planner-viewer?id=${sharedResultId}&host=api.nextbillion.io`;
+                      console.log('Shared URL constructed:', sharedUrl);
+                    } else {
+                      console.log('Shared result creation failed or returned unexpected response');
+                    }
+                  } catch (sharedError) {
+                    console.error('Failed to create shared URL:', sharedError);
+                    console.error('Shared URL error details:', sharedError);
+                    // Don't fail the optimization if shared URL creation fails
+                  }
+                  
                   await fetch('/api/optimization-results', {
                     method: 'POST',
                     headers: {
@@ -767,6 +788,7 @@ export const InputImportPage = ({ currentStep, onStepChange, preferences, onPref
                       job_id: jobId,
                       title: title,
                       response_data: resultData,
+                      shared_url: sharedUrl,
                       status: 'completed'
                     }),
                   });

@@ -89,6 +89,11 @@ export class ApiClient {
     return this.request(`/optimization/v2/result?id=${id}`)
   }
 
+  // Create shared optimization result
+  async createSharedResult(id: string) {
+    return this.request(`/optimization/v2/create_shared_result?id=${id}`)
+  }
+
   // Directions API
   async getDirections(waypoints: Array<[number, number]>, mode: string = 'driving') {
     const waypointsStr = waypoints.map(wp => `${wp[0]},${wp[1]}`).join('|')

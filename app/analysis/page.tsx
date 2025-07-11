@@ -34,6 +34,7 @@ import {
   History as HistoryIcon,
   Visibility as VisibilityIcon,
   Delete as DeleteIcon,
+  Map as MapIcon,
 } from '@mui/icons-material'
 import { WhiteLabelLayout } from '../white-label-layout'
 import { HamburgerMenu } from '../../components/common/hamburger-menu'
@@ -64,6 +65,7 @@ export default function RouteAnalysisPage() {
       const response = await fetch('/api/optimization-results')
       if (response.ok) {
         const data = await response.json()
+        console.log('Fetched optimization results:', data.results)
         setOptimizationResults(data.results || [])
       } else {
         setError('Failed to fetch optimization results')
@@ -83,8 +85,18 @@ export default function RouteAnalysisPage() {
         const data = await response.json()
         // Find the summary result for this jobId
         const summary = optimizationResults.find(r => r.job_id === jobId)
-        // Merge the title from summary if available
-        setSelectedResult({ ...data, title: summary?.title || data.title })
+        // Merge the title and shared_url from summary if available
+        const resultWithSharedUrl = { 
+          ...data, 
+          title: summary?.title || data.title,
+          shared_url: summary?.shared_url || data.shared_url
+        }
+        console.log('Selected result data:', resultWithSharedUrl)
+        console.log('Shared URL available:', !!resultWithSharedUrl.shared_url)
+        console.log('Shared URL value:', resultWithSharedUrl.shared_url)
+        console.log('Summary shared_url:', summary?.shared_url)
+        console.log('Data shared_url:', data.shared_url)
+        setSelectedResult(resultWithSharedUrl)
       } else {
         setError('Failed to fetch result details')
       }
@@ -524,7 +536,16 @@ export default function RouteAnalysisPage() {
                                     <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
                                       <Typography 
                                         variant="body2" 
-                                        sx={{ flex: 1 }}
+                                        sx={{ 
+                                          flex: 1,
+                                          cursor: 'pointer',
+                                          textDecoration: 'underline',
+                                          color: '#1976d2',
+                                          '&:hover': {
+                                            color: '#1565c0'
+                                          }
+                                        }}
+                                        onClick={() => handleViewResult(result.job_id)}
                                       >
                                         {result.title}
                                       </Typography>
@@ -561,6 +582,17 @@ export default function RouteAnalysisPage() {
                                     >
                                       View Details
                                     </Button>
+                                    {result.shared_url && (
+                                      <Button
+                                        variant="outlined"
+                                        size="small"
+                                        startIcon={<MapIcon />}
+                                        onClick={() => window.open(result.shared_url, '_blank')}
+                                        sx={{ textTransform: 'none' }}
+                                      >
+                                        Map
+                                      </Button>
+                                    )}
                                     {isAdmin && (
                                       <Button
                                         variant="outlined"
