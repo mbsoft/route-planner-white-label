@@ -61,7 +61,8 @@ export default function RouteAnalysisPage() {
     totalUnassignedJobs: 0,
     avgStopsPerRoute: 0,
     avgDistancePerRoute: 0,
-    totalWaitingTime: 0
+    totalWaitingTime: 0,
+    avgServiceTimePerRoute: 0
   })
   const isCalculatingRef = useRef(false)
 
@@ -135,7 +136,8 @@ export default function RouteAnalysisPage() {
         totalUnassignedJobs: 0,
         avgStopsPerRoute: 0,
         avgDistancePerRoute: 0,
-        totalWaitingTime: 0
+        totalWaitingTime: 0,
+        avgServiceTimePerRoute: 0
       })
       isCalculatingRef.current = false
       return
@@ -148,6 +150,7 @@ export default function RouteAnalysisPage() {
     let totalStops = 0
     let totalDistance = 0
     let totalWaitingTime = 0
+    let totalServiceTime = 0
     let validResults = 0
 
     // Create a Set to track processed job_ids to avoid duplicates
@@ -183,8 +186,9 @@ export default function RouteAnalysisPage() {
             totalStops += kpis.totalStops
             totalDistance += kpis.totalDistance
             totalWaitingTime += kpis.totalWaiting
+            totalServiceTime += kpis.totalService
             validResults++
-            console.log('Added to totals - routes:', kpis.routesCount, 'speed:', kpis.avgSpeed, 'fuel:', kpis.totalFuel, 'unassigned:', kpis.unassignedCount, 'stops:', kpis.totalStops, 'distance:', kpis.totalDistance, 'waiting:', kpis.totalWaiting, 'running total routes:', totalRoutes)
+            console.log('Added to totals - routes:', kpis.routesCount, 'speed:', kpis.avgSpeed, 'fuel:', kpis.totalFuel, 'unassigned:', kpis.unassignedCount, 'stops:', kpis.totalStops, 'distance:', kpis.totalDistance, 'waiting:', kpis.totalWaiting, 'service:', kpis.totalService, 'running total routes:', totalRoutes)
           } else {
             console.log('No KPIs calculated for', result.job_id)
           }
@@ -205,7 +209,8 @@ export default function RouteAnalysisPage() {
       totalUnassignedJobs: totalUnassigned,
       avgStopsPerRoute: totalRoutes > 0 ? Math.round(totalStops / totalRoutes) : 0,
       avgDistancePerRoute: totalRoutes > 0 ? Math.round(totalDistance / totalRoutes) : 0,
-      totalWaitingTime: totalWaitingTime
+      totalWaitingTime: totalWaitingTime,
+      avgServiceTimePerRoute: totalRoutes > 0 ? Math.round(totalServiceTime / totalRoutes) : 0
     }
     
     console.log('Setting summary stats to:', finalStats)
@@ -641,6 +646,24 @@ export default function RouteAnalysisPage() {
                     </Typography>
                     <Typography variant="body2" sx={{ color: '#666', mt: 1 }}>
                       Total waiting time
+                    </Typography>
+                  </CardContent>
+                </Card>
+              </Grid>
+
+              <Grid item xs={12} md={6} lg={3}>
+                <Card sx={{ height: '100%' }}>
+                  <CardHeader
+                    avatar={<AnalyticsIcon sx={{ color: '#607d8b' }} />}
+                    title="Avg Service Time/Route"
+                    titleTypographyProps={{ variant: 'h6' }}
+                  />
+                  <CardContent>
+                    <Typography variant="h3" sx={{ fontWeight: 'bold', color: '#607d8b' }}>
+                      {formatDuration(summaryStats.avgServiceTimePerRoute)}
+                    </Typography>
+                    <Typography variant="body2" sx={{ color: '#666', mt: 1 }}>
+                      Average service time per route
                     </Typography>
                   </CardContent>
                 </Card>
