@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import {
   Container,
   Box,
@@ -60,6 +60,7 @@ export default function RouteAnalysisPage() {
     avgGallonsPerRoute: 0,
     totalUnassignedJobs: 0
   })
+  const isCalculatingRef = useRef(false)
 
   useEffect(() => {
     fetchOptimizationResults()
@@ -91,7 +92,7 @@ export default function RouteAnalysisPage() {
       console.log('useEffect triggered - recalculating stats for', optimizationResults.length, 'results')
       calculateSummaryStats(optimizationResults)
     }
-  }, [optimizationResults])
+  }, [optimizationResults]) // Trigger when the array changes
 
   const fetchOptimizationResults = async () => {
     try {
@@ -113,6 +114,13 @@ export default function RouteAnalysisPage() {
   }
 
   const calculateSummaryStats = async (results: any[]) => {
+    // Prevent multiple simultaneous calculations
+    if (isCalculatingRef.current) {
+      console.log('Already calculating stats, skipping...')
+      return
+    }
+    
+    isCalculatingRef.current = true
     console.log('Calculating summary stats for', results.length, 'results')
     
     if (results.length === 0) {
@@ -122,6 +130,7 @@ export default function RouteAnalysisPage() {
         avgGallonsPerRoute: 0,
         totalUnassignedJobs: 0
       })
+      isCalculatingRef.current = false
       return
     }
 
@@ -185,6 +194,7 @@ export default function RouteAnalysisPage() {
     
     console.log('Setting summary stats to:', finalStats)
     setSummaryStats(finalStats)
+    isCalculatingRef.current = false
   }
 
   const handleViewResult = async (jobId: string) => {
