@@ -225,6 +225,8 @@ export default function RouteAnalysisPage() {
 
     const { summary, routes, unassigned } = resultData.result
     
+    console.log('KPI calculation - summary.unassigned:', summary?.unassigned, 'unassigned array length:', unassigned?.length)
+    
     // Fuel delivery metrics
     const totalFuelDelivered = summary?.delivery || [0, 0]
     const ulsdClearDelivered = totalFuelDelivered[0] || 0
