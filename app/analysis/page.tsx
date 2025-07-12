@@ -80,6 +80,11 @@ export default function RouteAnalysisPage() {
     }
   }, [optimizationResults])
 
+  // Debug summary stats changes
+  useEffect(() => {
+    console.log('Summary stats updated:', summaryStats)
+  }, [summaryStats])
+
   const fetchOptimizationResults = async () => {
     try {
       setLoading(true)
@@ -152,12 +157,15 @@ export default function RouteAnalysisPage() {
 
     console.log('Final totals - routes:', totalRoutes, 'speed:', totalSpeed, 'fuel:', totalGallons, 'unassigned:', totalUnassigned, 'valid results:', validResults)
 
-    setSummaryStats({
+    const finalStats = {
       totalRoutes: totalRoutes,
       avgSpeed: validResults > 0 ? Math.round(totalSpeed / validResults) : 0,
       avgGallonsPerRoute: totalRoutes > 0 ? Math.round(totalGallons / totalRoutes) : 0,
       totalUnassignedJobs: totalUnassigned
-    })
+    }
+    
+    console.log('Setting summary stats to:', finalStats)
+    setSummaryStats(finalStats)
   }
 
   const handleViewResult = async (jobId: string) => {
