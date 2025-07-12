@@ -27,7 +27,6 @@ import {
 } from '@mui/material'
 import {
   Analytics as AnalyticsIcon,
-  TrendingUp as TrendingUpIcon,
   Speed as SpeedIcon,
   Route as RouteIcon,
   Logout as LogoutIcon,
@@ -104,6 +103,8 @@ export default function RouteAnalysisPage() {
   }
 
   const calculateSummaryStats = async (results: any[]) => {
+    console.log('Calculating summary stats for', results.length, 'results')
+    
     if (results.length === 0) {
       setSummaryStats({
         totalRoutes: 0,
@@ -122,11 +123,14 @@ export default function RouteAnalysisPage() {
 
     for (const result of results) {
       try {
+        console.log('Fetching details for result:', result.job_id)
         // Fetch the detailed result data
         const detailResponse = await fetch(`/api/optimization-results?job_id=${encodeURIComponent(result.job_id)}`)
         if (detailResponse.ok) {
           const detailData = await detailResponse.json()
+          console.log('Detail data for', result.job_id, ':', detailData)
           const kpis = calculateKPIs(detailData.response_data)
+          console.log('KPIs for', result.job_id, ':', kpis)
           
           if (kpis) {
             totalRoutes += kpis.routesCount
@@ -134,12 +138,19 @@ export default function RouteAnalysisPage() {
             totalGallons += kpis.totalFuel
             totalUnassigned += kpis.unassignedCount
             validResults++
+            console.log('Added to totals - routes:', kpis.routesCount, 'speed:', kpis.avgSpeed, 'fuel:', kpis.totalFuel, 'unassigned:', kpis.unassignedCount)
+          } else {
+            console.log('No KPIs calculated for', result.job_id)
           }
+        } else {
+          console.log('Failed to fetch details for', result.job_id, 'Status:', detailResponse.status)
         }
       } catch (error) {
         console.error('Error fetching result details for stats:', error)
       }
     }
+
+    console.log('Final totals - routes:', totalRoutes, 'speed:', totalSpeed, 'fuel:', totalGallons, 'unassigned:', totalUnassigned, 'valid results:', validResults)
 
     setSummaryStats({
       totalRoutes: totalRoutes,
@@ -451,24 +462,6 @@ export default function RouteAnalysisPage() {
               </Grid>
 
               {/* Analysis Cards */}
-              <Grid item xs={12} md={6} lg={3}>
-                <Card sx={{ height: '100%' }}>
-                  <CardHeader
-                    avatar={<TrendingUpIcon sx={{ color: '#4caf50' }} />}
-                    title="Efficiency Score"
-                    titleTypographyProps={{ variant: 'h6' }}
-                  />
-                  <CardContent>
-                    <Typography variant="h3" sx={{ fontWeight: 'bold', color: '#4caf50' }}>
-                      85%
-                    </Typography>
-                    <Typography variant="body2" sx={{ color: '#666', mt: 1 }}>
-                      Overall route efficiency
-                    </Typography>
-                  </CardContent>
-                </Card>
-              </Grid>
-
               <Grid item xs={12} md={6} lg={3}>
                 <Card sx={{ height: '100%' }}>
                   <CardHeader

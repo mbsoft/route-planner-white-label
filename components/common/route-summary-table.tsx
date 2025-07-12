@@ -198,7 +198,6 @@ export const RouteSummaryTable: React.FC<RouteSummaryTableProps> = ({
             <TableCell><strong>Stops</strong></TableCell>
             <TableCell><strong>Distance</strong></TableCell>
             <TableCell><strong>Drive Time</strong></TableCell>
-            <TableCell><strong>Cost</strong></TableCell>
             <TableCell><strong>Fuel Delivery</strong></TableCell>
             <TableCell><strong>% Full at Departure</strong></TableCell>
           </TableRow>
@@ -262,11 +261,6 @@ export const RouteSummaryTable: React.FC<RouteSummaryTableProps> = ({
                 <TableCell onClick={() => handleToggleRoute(routeIndex)}>
                   <Typography variant="body2">
                     {formatDuration(route.duration || 0)}
-                  </Typography>
-                </TableCell>
-                <TableCell onClick={() => handleToggleRoute(routeIndex)}>
-                  <Typography variant="body2">
-                    {route.cost || 0}
                   </Typography>
                 </TableCell>
                 <TableCell onClick={() => handleToggleRoute(routeIndex)}>
