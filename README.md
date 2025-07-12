@@ -50,6 +50,8 @@ USER_PASSWORD=your_secure_user_password_here
 
 ## Installation
 
+### Local Development
+
 1. **Clone the repository**
    ```bash
    git clone https://github.com/mbsoft/route-planner-white-label.git
@@ -78,6 +80,13 @@ USER_PASSWORD=your_secure_user_password_here
 
 5. **Open your browser**
    Navigate to [http://localhost:3000](http://localhost:3000)
+
+### Production Deployment
+
+For production deployment on Vercel, see our deployment guides:
+
+- **[Quick Start Guide](DEPLOYMENT_QUICKSTART.md)** - Get deployed in minutes
+- **[Complete Deployment Guide](VERCEL_DEPLOYMENT.md)** - Detailed setup and troubleshooting
 
 ## Usage
 
