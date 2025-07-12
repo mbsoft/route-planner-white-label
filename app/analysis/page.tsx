@@ -85,6 +85,13 @@ export default function RouteAnalysisPage() {
     console.log('Summary stats updated:', summaryStats)
   }, [summaryStats])
 
+  // Recalculate summary stats when optimization results change
+  useEffect(() => {
+    if (optimizationResults.length > 0) {
+      calculateSummaryStats(optimizationResults)
+    }
+  }, [optimizationResults])
+
   const fetchOptimizationResults = async () => {
     try {
       setLoading(true)
@@ -93,9 +100,6 @@ export default function RouteAnalysisPage() {
         const data = await response.json()
         console.log('Fetched optimization results:', data.results)
         setOptimizationResults(data.results || [])
-        
-        // Calculate summary statistics
-        await calculateSummaryStats(data.results || [])
       } else {
         setError('Failed to fetch optimization results')
       }
@@ -126,7 +130,17 @@ export default function RouteAnalysisPage() {
     let totalUnassigned = 0
     let validResults = 0
 
+    // Create a Set to track processed job_ids to avoid duplicates
+    const processedJobIds = new Set()
+
     for (const result of results) {
+      // Skip if we've already processed this job_id
+      if (processedJobIds.has(result.job_id)) {
+        console.log('Skipping duplicate job_id:', result.job_id)
+        continue
+      }
+      processedJobIds.add(result.job_id)
+
       try {
         console.log('Fetching details for result:', result.job_id)
         // Fetch the detailed result data
@@ -354,13 +368,10 @@ export default function RouteAnalysisPage() {
       })
 
       if (response.ok) {
-        // Remove the deleted result from the local state and recalculate stats
-        setOptimizationResults(prev => {
-          const updatedResults = prev.filter(r => r.id !== resultToDelete.id)
-          // Recalculate summary stats with the updated results
-          calculateSummaryStats(updatedResults)
-          return updatedResults
-        })
+        // Remove the deleted result from the local state
+        setOptimizationResults(prev => 
+          prev.filter(r => r.id !== resultToDelete.id)
+        )
         setDeleteDialogOpen(false)
         setResultToDelete(null)
       } else {
