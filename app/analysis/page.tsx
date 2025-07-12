@@ -750,18 +750,18 @@ export default function RouteAnalysisPage() {
                           <Grid container spacing={2} sx={{ mb: 3 }}>
                             <Grid item xs={12} md={6}>
                               <Typography variant="body2" sx={{ fontWeight: 'bold' }}>
-                                ID:
-                              </Typography>
-                              <Typography variant="body2" sx={{ fontFamily: 'monospace', mb: 2 }}>
-                                {selectedResult.id}
-                              </Typography>
-                            </Grid>
-                            <Grid item xs={12} md={6}>
-                              <Typography variant="body2" sx={{ fontWeight: 'bold' }}>
                                 Title:
                               </Typography>
                               <Typography variant="body2" sx={{ fontFamily: 'monospace', mb: 2 }}>
                                 {selectedResult.title}
+                              </Typography>
+                            </Grid>
+                            <Grid item xs={12} md={6}>
+                              <Typography variant="body2" sx={{ fontWeight: 'bold' }}>
+                                ID:
+                              </Typography>
+                              <Typography variant="body2" sx={{ fontFamily: 'monospace', mb: 2 }}>
+                                {selectedResult.id}
                               </Typography>
                             </Grid>
                             <Grid item xs={12} md={6}>
