@@ -55,6 +55,12 @@ export default function RouteAnalysisPage() {
   const [resultToDelete, setResultToDelete] = useState<any>(null)
   const [expandedRoutes, setExpandedRoutes] = useState<Set<number>>(new Set())
   const [selectedJobId, setSelectedJobId] = useState<string | null>(null)
+  const [summaryStats, setSummaryStats] = useState({
+    totalRoutes: 0,
+    avgSpeed: 0,
+    avgGallonsPerRoute: 0,
+    totalUnassignedJobs: 0
+  })
 
   useEffect(() => {
     fetchOptimizationResults()
@@ -83,6 +89,9 @@ export default function RouteAnalysisPage() {
         const data = await response.json()
         console.log('Fetched optimization results:', data.results)
         setOptimizationResults(data.results || [])
+        
+        // Calculate summary statistics
+        await calculateSummaryStats(data.results || [])
       } else {
         setError('Failed to fetch optimization results')
       }
@@ -92,6 +101,52 @@ export default function RouteAnalysisPage() {
     } finally {
       setLoading(false)
     }
+  }
+
+  const calculateSummaryStats = async (results: any[]) => {
+    if (results.length === 0) {
+      setSummaryStats({
+        totalRoutes: 0,
+        avgSpeed: 0,
+        avgGallonsPerRoute: 0,
+        totalUnassignedJobs: 0
+      })
+      return
+    }
+
+    let totalRoutes = 0
+    let totalSpeed = 0
+    let totalGallons = 0
+    let totalUnassigned = 0
+    let validResults = 0
+
+    for (const result of results) {
+      try {
+        // Fetch the detailed result data
+        const detailResponse = await fetch(`/api/optimization-results?job_id=${encodeURIComponent(result.job_id)}`)
+        if (detailResponse.ok) {
+          const detailData = await detailResponse.json()
+          const kpis = calculateKPIs(detailData.response_data)
+          
+          if (kpis) {
+            totalRoutes += kpis.routesCount
+            totalSpeed += kpis.avgSpeed
+            totalGallons += kpis.totalFuel
+            totalUnassigned += kpis.unassignedCount
+            validResults++
+          }
+        }
+      } catch (error) {
+        console.error('Error fetching result details for stats:', error)
+      }
+    }
+
+    setSummaryStats({
+      totalRoutes: totalRoutes,
+      avgSpeed: validResults > 0 ? Math.round(totalSpeed / validResults) : 0,
+      avgGallonsPerRoute: totalRoutes > 0 ? Math.round(totalGallons / totalRoutes) : 0,
+      totalUnassignedJobs: totalUnassigned
+    })
   }
 
   const handleViewResult = async (jobId: string) => {
@@ -423,7 +478,7 @@ export default function RouteAnalysisPage() {
                   />
                   <CardContent>
                     <Typography variant="h3" sx={{ fontWeight: 'bold', color: '#ff9800' }}>
-                      45
+                      {summaryStats.avgSpeed}
                     </Typography>
                     <Typography variant="body2" sx={{ color: '#666', mt: 1 }}>
                       km/h average speed
@@ -441,10 +496,10 @@ export default function RouteAnalysisPage() {
                   />
                   <CardContent>
                     <Typography variant="h3" sx={{ fontWeight: 'bold', color: '#2196f3' }}>
-                      24
+                      {summaryStats.totalRoutes}
                     </Typography>
                     <Typography variant="body2" sx={{ color: '#666', mt: 1 }}>
-                      Active routes today
+                      Optimization plans
                     </Typography>
                   </CardContent>
                 </Card>
@@ -454,15 +509,33 @@ export default function RouteAnalysisPage() {
                 <Card sx={{ height: '100%' }}>
                   <CardHeader
                     avatar={<AnalyticsIcon sx={{ color: '#9c27b0' }} />}
-                    title="Cost Savings"
+                    title="Avg Gallons/Route"
                     titleTypographyProps={{ variant: 'h6' }}
                   />
                   <CardContent>
                     <Typography variant="h3" sx={{ fontWeight: 'bold', color: '#9c27b0' }}>
-                      $2.4k
+                      {summaryStats.avgGallonsPerRoute.toLocaleString()}
                     </Typography>
                     <Typography variant="body2" sx={{ color: '#666', mt: 1 }}>
-                      Monthly savings
+                      Average gallons per route
+                    </Typography>
+                  </CardContent>
+                </Card>
+              </Grid>
+
+              <Grid item xs={12} md={6} lg={3}>
+                <Card sx={{ height: '100%' }}>
+                  <CardHeader
+                    avatar={<AnalyticsIcon sx={{ color: '#f44336' }} />}
+                    title="Unassigned Jobs"
+                    titleTypographyProps={{ variant: 'h6' }}
+                  />
+                  <CardContent>
+                    <Typography variant="h3" sx={{ fontWeight: 'bold', color: '#f44336' }}>
+                      {summaryStats.totalUnassignedJobs}
+                    </Typography>
+                    <Typography variant="body2" sx={{ color: '#666', mt: 1 }}>
+                      Total unassigned jobs
                     </Typography>
                   </CardContent>
                 </Card>
