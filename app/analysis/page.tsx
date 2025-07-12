@@ -564,10 +564,8 @@ export default function RouteAnalysisPage() {
                                         sx={{ 
                                           flex: 1,
                                           cursor: 'pointer',
-                                          textDecoration: 'underline',
-                                          color: '#1976d2',
                                           '&:hover': {
-                                            color: '#1565c0'
+                                            color: '#666'
                                           }
                                         }}
                                         onClick={() => handleViewResult(result.job_id)}
@@ -598,15 +596,6 @@ export default function RouteAnalysisPage() {
                                 </TableCell>
                                 <TableCell>
                                   <Box sx={{ display: 'flex', gap: 1 }}>
-                                    <Button
-                                      variant="outlined"
-                                      size="small"
-                                      startIcon={<VisibilityIcon />}
-                                      onClick={() => handleViewResult(result.job_id)}
-                                      sx={{ textTransform: 'none' }}
-                                    >
-                                      View Details
-                                    </Button>
                                     {result.shared_url && (
                                       <Button
                                         variant="outlined"
