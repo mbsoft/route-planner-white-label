@@ -54,6 +54,7 @@ export default function RouteAnalysisPage() {
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false)
   const [resultToDelete, setResultToDelete] = useState<any>(null)
   const [expandedRoutes, setExpandedRoutes] = useState<Set<number>>(new Set())
+  const [selectedJobId, setSelectedJobId] = useState<string | null>(null)
 
   useEffect(() => {
     fetchOptimizationResults()
@@ -69,6 +70,7 @@ export default function RouteAnalysisPage() {
       const result = optimizationResults.find(r => r.job_id === jobIdFromUrl)
       if (result) {
         handleViewResult(jobIdFromUrl)
+        setSelectedJobId(jobIdFromUrl)
       }
     }
   }, [optimizationResults])
@@ -111,6 +113,7 @@ export default function RouteAnalysisPage() {
         console.log('Summary shared_url:', summary?.shared_url)
         console.log('Data shared_url:', data.shared_url)
         setSelectedResult(resultWithSharedUrl)
+        setSelectedJobId(jobId)
       } else {
         setError('Failed to fetch result details')
       }
@@ -508,7 +511,15 @@ export default function RouteAnalysisPage() {
                           </TableHead>
                           <TableBody>
                             {optimizationResults.map((result) => (
-                              <TableRow key={result.id}>
+                              <TableRow 
+                                key={result.id}
+                                sx={{
+                                  backgroundColor: selectedJobId === result.job_id ? '#f0f8ff' : 'inherit',
+                                  '&:hover': {
+                                    backgroundColor: selectedJobId === result.job_id ? '#e6f3ff' : '#f5f5f5'
+                                  }
+                                }}
+                              >
                                 <TableCell>
                                   {editingTitle === result.id ? (
                                     <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
@@ -856,7 +867,10 @@ export default function RouteAnalysisPage() {
                           <Button
                             variant="outlined"
                             size="small"
-                            onClick={() => setSelectedResult(null)}
+                            onClick={() => {
+                              setSelectedResult(null)
+                              setSelectedJobId(null)
+                            }}
                             sx={{ mt: 2 }}
                           >
                             Close Details
