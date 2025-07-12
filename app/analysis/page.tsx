@@ -131,20 +131,20 @@ export default function RouteAnalysisPage() {
     let totalUnassigned = 0
     let validResults = 0
 
-    // Create a Set to track processed job_ids to avoid duplicates
-    const processedJobIds = new Set()
+    // Create a Set to track processed ids to avoid duplicates
+    const processedIds = new Set()
     let skippedCount = 0
 
     console.log('Processing', results.length, 'optimization results')
 
     for (const result of results) {
-      // Skip if we've already processed this job_id
-      if (processedJobIds.has(result.job_id)) {
-        console.log('Skipping duplicate job_id:', result.job_id)
+      // Skip if we've already processed this id
+      if (processedIds.has(result.id)) {
+        console.log('Skipping duplicate id:', result.id)
         skippedCount++
         continue
       }
-      processedJobIds.add(result.job_id)
+      processedIds.add(result.id)
 
       try {
         console.log('Fetching details for result:', result.job_id)
