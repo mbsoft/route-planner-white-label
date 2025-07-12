@@ -490,9 +490,10 @@ interface InputImportPageProps {
   preferences?: PreferencesInput
   onPreferencesChange?: (preferences: PreferencesInput) => void
   onRouteResultsChange?: (routes: any) => void
+  onOptimizationComplete?: (jobId: string) => void
 }
 
-export const InputImportPage = ({ currentStep, onStepChange, preferences, onPreferencesChange, onRouteResultsChange }: InputImportPageProps) => {
+export const InputImportPage = ({ currentStep, onStepChange, preferences, onPreferencesChange, onRouteResultsChange, onOptimizationComplete }: InputImportPageProps) => {
   const store = useInputStore()
   const { job, vehicle, shipment } = store.inputCore
   const useCase = useUseCase()
@@ -793,6 +794,11 @@ export const InputImportPage = ({ currentStep, onStepChange, preferences, onPref
                     }),
                   });
                   console.log('Optimization results saved to Turso storage');
+                  
+                  // Navigate to analysis page with the completed optimization
+                  if (onOptimizationComplete) {
+                    onOptimizationComplete(jobId);
+                  }
                 } catch (error) {
                   console.error('Failed to save optimization results:', error);
                   // Don't fail the optimization if storage fails

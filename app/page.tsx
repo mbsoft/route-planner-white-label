@@ -310,6 +310,11 @@ export default function HomePage() {
     setPreferences(newPreferences)
   }
 
+  const handleOptimizationComplete = (jobId: string) => {
+    // Navigate to analysis page with the job ID as a query parameter
+    router.push(`/analysis?job_id=${encodeURIComponent(jobId)}`)
+  }
+
   const handleLogout = async () => {
     try {
       const response = await fetch('/api/auth/logout', {
@@ -400,6 +405,7 @@ export default function HomePage() {
               preferences={preferences}
               onPreferencesChange={handlePreferencesChange}
               onRouteResultsChange={setRoutes}
+              onOptimizationComplete={handleOptimizationComplete}
             />
           </Box>
 

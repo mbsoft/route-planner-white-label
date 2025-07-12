@@ -59,6 +59,20 @@ export default function RouteAnalysisPage() {
     fetchOptimizationResults()
   }, [])
 
+  // Check for job_id in URL query parameters and auto-open details
+  useEffect(() => {
+    const urlParams = new URLSearchParams(window.location.search)
+    const jobIdFromUrl = urlParams.get('job_id')
+    
+    if (jobIdFromUrl && optimizationResults.length > 0) {
+      // Find the optimization result with this job_id
+      const result = optimizationResults.find(r => r.job_id === jobIdFromUrl)
+      if (result) {
+        handleViewResult(jobIdFromUrl)
+      }
+    }
+  }, [optimizationResults])
+
   const fetchOptimizationResults = async () => {
     try {
       setLoading(true)
