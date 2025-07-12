@@ -352,10 +352,13 @@ export default function RouteAnalysisPage() {
       })
 
       if (response.ok) {
-        // Remove the deleted result from the local state
-        setOptimizationResults(prev => 
-          prev.filter(r => r.id !== resultToDelete.id)
-        )
+        // Remove the deleted result from the local state and recalculate stats
+        setOptimizationResults(prev => {
+          const updatedResults = prev.filter(r => r.id !== resultToDelete.id)
+          // Recalculate summary stats with the updated results
+          calculateSummaryStats(updatedResults)
+          return updatedResults
+        })
         setDeleteDialogOpen(false)
         setResultToDelete(null)
       } else {
