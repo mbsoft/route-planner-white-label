@@ -58,7 +58,10 @@ export default function RouteAnalysisPage() {
     totalRoutes: 0,
     avgSpeed: 0,
     avgGallonsPerRoute: 0,
-    totalUnassignedJobs: 0
+    totalUnassignedJobs: 0,
+    avgStopsPerRoute: 0,
+    avgDistancePerRoute: 0,
+    totalWaitingTime: 0
   })
   const isCalculatingRef = useRef(false)
 
@@ -129,7 +132,10 @@ export default function RouteAnalysisPage() {
         totalRoutes: 0,
         avgSpeed: 0,
         avgGallonsPerRoute: 0,
-        totalUnassignedJobs: 0
+        totalUnassignedJobs: 0,
+        avgStopsPerRoute: 0,
+        avgDistancePerRoute: 0,
+        totalWaitingTime: 0
       })
       isCalculatingRef.current = false
       return
@@ -139,6 +145,9 @@ export default function RouteAnalysisPage() {
     let totalSpeed = 0
     let totalGallons = 0
     let totalUnassigned = 0
+    let totalStops = 0
+    let totalDistance = 0
+    let totalWaitingTime = 0
     let validResults = 0
 
     // Create a Set to track processed job_ids to avoid duplicates
@@ -171,8 +180,11 @@ export default function RouteAnalysisPage() {
             totalSpeed += kpis.avgSpeed
             totalGallons += kpis.totalFuel
             totalUnassigned += kpis.unassignedCount
+            totalStops += kpis.totalStops
+            totalDistance += kpis.totalDistance
+            totalWaitingTime += kpis.totalWaiting
             validResults++
-            console.log('Added to totals - routes:', kpis.routesCount, 'speed:', kpis.avgSpeed, 'fuel:', kpis.totalFuel, 'unassigned:', kpis.unassignedCount, 'running total routes:', totalRoutes)
+            console.log('Added to totals - routes:', kpis.routesCount, 'speed:', kpis.avgSpeed, 'fuel:', kpis.totalFuel, 'unassigned:', kpis.unassignedCount, 'stops:', kpis.totalStops, 'distance:', kpis.totalDistance, 'waiting:', kpis.totalWaiting, 'running total routes:', totalRoutes)
           } else {
             console.log('No KPIs calculated for', result.job_id)
           }
@@ -190,7 +202,10 @@ export default function RouteAnalysisPage() {
       totalRoutes: totalRoutes,
       avgSpeed: validResults > 0 ? Math.round(totalSpeed / validResults) : 0,
       avgGallonsPerRoute: totalRoutes > 0 ? Math.round(totalGallons / totalRoutes) : 0,
-      totalUnassignedJobs: totalUnassigned
+      totalUnassignedJobs: totalUnassigned,
+      avgStopsPerRoute: totalRoutes > 0 ? Math.round(totalStops / totalRoutes) : 0,
+      avgDistancePerRoute: totalRoutes > 0 ? Math.round(totalDistance / totalRoutes) : 0,
+      totalWaitingTime: totalWaitingTime
     }
     
     console.log('Setting summary stats to:', finalStats)
@@ -323,7 +338,10 @@ export default function RouteAnalysisPage() {
       
       // Efficiency
       fuelEfficiency,
-      routesCount
+      routesCount,
+      
+      // Additional metrics for summary tiles
+      totalStops: routes?.reduce((sum: number, route: any) => sum + (route.steps?.length || 0), 0) || 0
     }
   }
 
@@ -569,6 +587,60 @@ export default function RouteAnalysisPage() {
                     </Typography>
                     <Typography variant="body2" sx={{ color: '#666', mt: 1 }}>
                       Total unassigned jobs
+                    </Typography>
+                  </CardContent>
+                </Card>
+              </Grid>
+
+              <Grid item xs={12} md={6} lg={3}>
+                <Card sx={{ height: '100%' }}>
+                  <CardHeader
+                    avatar={<AnalyticsIcon sx={{ color: '#4caf50' }} />}
+                    title="Avg Stops/Route"
+                    titleTypographyProps={{ variant: 'h6' }}
+                  />
+                  <CardContent>
+                    <Typography variant="h3" sx={{ fontWeight: 'bold', color: '#4caf50' }}>
+                      {summaryStats.avgStopsPerRoute}
+                    </Typography>
+                    <Typography variant="body2" sx={{ color: '#666', mt: 1 }}>
+                      Average stops per route
+                    </Typography>
+                  </CardContent>
+                </Card>
+              </Grid>
+
+              <Grid item xs={12} md={6} lg={3}>
+                <Card sx={{ height: '100%' }}>
+                  <CardHeader
+                    avatar={<AnalyticsIcon sx={{ color: '#ff5722' }} />}
+                    title="Avg Distance/Route"
+                    titleTypographyProps={{ variant: 'h6' }}
+                  />
+                  <CardContent>
+                    <Typography variant="h3" sx={{ fontWeight: 'bold', color: '#ff5722' }}>
+                      {formatDistance(summaryStats.avgDistancePerRoute)}
+                    </Typography>
+                    <Typography variant="body2" sx={{ color: '#666', mt: 1 }}>
+                      Average distance per route
+                    </Typography>
+                  </CardContent>
+                </Card>
+              </Grid>
+
+              <Grid item xs={12} md={6} lg={3}>
+                <Card sx={{ height: '100%' }}>
+                  <CardHeader
+                    avatar={<AnalyticsIcon sx={{ color: '#795548' }} />}
+                    title="Total Waiting Time"
+                    titleTypographyProps={{ variant: 'h6' }}
+                  />
+                  <CardContent>
+                    <Typography variant="h3" sx={{ fontWeight: 'bold', color: '#795548' }}>
+                      {formatDuration(summaryStats.totalWaitingTime)}
+                    </Typography>
+                    <Typography variant="body2" sx={{ color: '#666', mt: 1 }}>
+                      Total waiting time
                     </Typography>
                   </CardContent>
                 </Card>
