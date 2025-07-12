@@ -101,6 +101,7 @@ export default function RouteAnalysisPage() {
       if (response.ok) {
         const data = await response.json()
         console.log('Fetched optimization results:', data.results)
+        console.log('Sample result fields:', data.results?.[0] ? Object.keys(data.results[0]) : 'No results')
         setOptimizationResults(data.results || [])
       } else {
         setError('Failed to fetch optimization results')
