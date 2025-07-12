@@ -186,7 +186,7 @@ export default function RouteAnalysisPage() {
             totalStops += kpis.totalStops
             totalDistance += kpis.totalDistance
             totalWaitingTime += kpis.totalWaiting
-            totalServiceTime += kpis.totalService
+            totalServiceTime += kpis.totalService || 0
             validResults++
             console.log('Added to totals - routes:', kpis.routesCount, 'speed:', kpis.avgSpeed, 'fuel:', kpis.totalFuel, 'unassigned:', kpis.unassignedCount, 'stops:', kpis.totalStops, 'distance:', kpis.totalDistance, 'waiting:', kpis.totalWaiting, 'service:', kpis.totalService, 'running total routes:', totalRoutes)
           } else {
@@ -200,7 +200,7 @@ export default function RouteAnalysisPage() {
       }
     }
 
-    console.log('Final totals - routes:', totalRoutes, 'speed:', totalSpeed, 'fuel:', totalGallons, 'unassigned:', totalUnassigned, 'valid results:', validResults, 'skipped duplicates:', skippedCount)
+    console.log('Final totals - routes:', totalRoutes, 'speed:', totalSpeed, 'fuel:', totalGallons, 'unassigned:', totalUnassigned, 'service:', totalServiceTime, 'valid results:', validResults, 'skipped duplicates:', skippedCount)
 
     const finalStats = {
       totalRoutes: totalRoutes,
@@ -210,7 +210,7 @@ export default function RouteAnalysisPage() {
       avgStopsPerRoute: totalRoutes > 0 ? Math.round(totalStops / totalRoutes) : 0,
       avgDistancePerRoute: totalRoutes > 0 ? Math.round(totalDistance / totalRoutes) : 0,
       totalWaitingTime: totalWaitingTime,
-      avgServiceTimePerRoute: totalRoutes > 0 ? Math.round(totalServiceTime / totalRoutes) : 0
+      avgServiceTimePerRoute: totalRoutes > 0 && totalServiceTime > 0 && !isNaN(totalServiceTime) ? Math.round(totalServiceTime / totalRoutes) : 0
     }
     
     console.log('Setting summary stats to:', finalStats)
@@ -275,7 +275,7 @@ export default function RouteAnalysisPage() {
 
     const { summary, routes, unassigned } = resultData.result
     
-    console.log('KPI calculation - summary.unassigned:', summary?.unassigned, 'unassigned array length:', unassigned?.length)
+    console.log('KPI calculation - summary.unassigned:', summary?.unassigned, 'unassigned array length:', unassigned?.length, 'totalService:', summary?.service)
     
     // Fuel delivery metrics
     const totalFuelDelivered = summary?.delivery || [0, 0]
