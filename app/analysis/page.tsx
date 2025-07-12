@@ -88,6 +88,7 @@ export default function RouteAnalysisPage() {
   // Recalculate summary stats when optimization results change
   useEffect(() => {
     if (optimizationResults.length > 0) {
+      console.log('useEffect triggered - recalculating stats for', optimizationResults.length, 'results')
       calculateSummaryStats(optimizationResults)
     }
   }, [optimizationResults])
@@ -132,11 +133,15 @@ export default function RouteAnalysisPage() {
 
     // Create a Set to track processed job_ids to avoid duplicates
     const processedJobIds = new Set()
+    let skippedCount = 0
+
+    console.log('Processing', results.length, 'optimization results')
 
     for (const result of results) {
       // Skip if we've already processed this job_id
       if (processedJobIds.has(result.job_id)) {
         console.log('Skipping duplicate job_id:', result.job_id)
+        skippedCount++
         continue
       }
       processedJobIds.add(result.job_id)
@@ -157,7 +162,7 @@ export default function RouteAnalysisPage() {
             totalGallons += kpis.totalFuel
             totalUnassigned += kpis.unassignedCount
             validResults++
-            console.log('Added to totals - routes:', kpis.routesCount, 'speed:', kpis.avgSpeed, 'fuel:', kpis.totalFuel, 'unassigned:', kpis.unassignedCount)
+            console.log('Added to totals - routes:', kpis.routesCount, 'speed:', kpis.avgSpeed, 'fuel:', kpis.totalFuel, 'unassigned:', kpis.unassignedCount, 'running total routes:', totalRoutes)
           } else {
             console.log('No KPIs calculated for', result.job_id)
           }
@@ -169,7 +174,7 @@ export default function RouteAnalysisPage() {
       }
     }
 
-    console.log('Final totals - routes:', totalRoutes, 'speed:', totalSpeed, 'fuel:', totalGallons, 'unassigned:', totalUnassigned, 'valid results:', validResults)
+    console.log('Final totals - routes:', totalRoutes, 'speed:', totalSpeed, 'fuel:', totalGallons, 'unassigned:', totalUnassigned, 'valid results:', validResults, 'skipped duplicates:', skippedCount)
 
     const finalStats = {
       totalRoutes: totalRoutes,
