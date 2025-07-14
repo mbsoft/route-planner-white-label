@@ -1,0 +1,189 @@
+'use client'
+
+import React, { useState } from 'react'
+import {
+  Box,
+  List,
+  ListItem,
+  ListItemButton,
+  ListItemIcon,
+  ListItemText,
+  IconButton,
+  Typography,
+  Divider,
+  Tooltip,
+  Collapse,
+} from '@mui/material'
+import {
+  ChevronLeft as ChevronLeftIcon,
+  ChevronRight as ChevronRightIcon,
+  Route as RouteIcon,
+  Analytics as AnalyticsIcon,
+  Home as HomeIcon,
+  Info as InfoIcon,
+  Storage as StorageIcon,
+} from '@mui/icons-material'
+import { useRouter } from 'next/navigation'
+import { useWhiteLabelContext } from '../../app/white-label-layout'
+
+interface SidebarProps {
+  currentPage?: string
+}
+
+export const Sidebar: React.FC<SidebarProps> = ({ currentPage = 'home' }) => {
+  // Read initial state from localStorage
+  const [isExpanded, setIsExpanded] = useState(() => {
+    if (typeof window !== 'undefined') {
+      const stored = localStorage.getItem('sidebar-expanded')
+      return stored === null ? true : stored === 'true'
+    }
+    return true
+  })
+  const router = useRouter()
+  const { companyName } = useWhiteLabelContext()
+
+  // Save state to localStorage whenever it changes
+  React.useEffect(() => {
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('sidebar-expanded', isExpanded ? 'true' : 'false')
+    }
+    // Update CSS custom property for main content margin
+    document.documentElement.style.setProperty(
+      '--sidebar-width', 
+      isExpanded ? '280px' : '64px'
+    )
+  }, [isExpanded])
+
+  const handleNavigation = (path: string) => {
+    router.push(path)
+    // Do NOT expand the sidebar on navigation; preserve current state
+  }
+
+  const toggleExpanded = () => {
+    setIsExpanded(!isExpanded)
+  }
+
+  const menuItems = [
+    {
+      text: 'Route Planner',
+      icon: <RouteIcon />,
+      path: '/',
+      isActive: currentPage === 'home',
+    },
+    {
+      text: 'Route Analysis',
+      icon: <AnalyticsIcon />,
+      path: '/analysis',
+      isActive: currentPage === 'analysis',
+    },
+    {
+      text: 'Information',
+      icon: <InfoIcon />,
+      path: '/information',
+      isActive: currentPage === 'information',
+    },
+  ]
+
+  return (
+    <Box
+      sx={{
+        width: isExpanded ? 280 : 64,
+        height: '100vh',
+        backgroundColor: '#ffffff',
+        borderRight: '1px solid #e0e0e0',
+        display: 'flex',
+        flexDirection: 'column',
+        transition: 'width 0.3s ease',
+        position: 'fixed',
+        left: 0,
+        top: 0,
+        zIndex: 1200,
+      }}
+    >
+      {/* Header */}
+      <Box 
+        sx={{ 
+          p: 2, 
+          display: 'flex', 
+          alignItems: 'center', 
+          justifyContent: 'space-between',
+          minHeight: '64px',
+          borderBottom: '1px solid #e0e0e0'
+        }}
+      >
+        <Collapse in={isExpanded} orientation="horizontal">
+          <Typography variant="h6" sx={{ fontWeight: 'bold', color: '#d36784' }}>
+            {companyName}
+          </Typography>
+        </Collapse>
+        
+        <Tooltip title={isExpanded ? "Collapse sidebar" : "Expand sidebar"} placement="right">
+          <IconButton 
+            onClick={toggleExpanded}
+            sx={{ 
+              ml: isExpanded ? 1 : 'auto',
+              mr: isExpanded ? 0 : 'auto'
+            }}
+          >
+            {isExpanded ? <ChevronLeftIcon /> : <ChevronRightIcon />}
+          </IconButton>
+        </Tooltip>
+      </Box>
+      
+      <Divider />
+      
+      {/* Navigation Menu */}
+      <List sx={{ pt: 1, flex: 1 }}>
+        {menuItems.map((item) => (
+          <ListItem key={item.text} disablePadding>
+            <Tooltip 
+              title={!isExpanded ? item.text : ""} 
+              placement="right"
+              disableHoverListener={isExpanded}
+            >
+              <ListItemButton
+                onClick={() => handleNavigation(item.path)}
+                selected={item.isActive}
+                sx={{
+                  minHeight: 48,
+                  justifyContent: isExpanded ? 'initial' : 'center',
+                  px: isExpanded ? 3 : 2,
+                  '&.Mui-selected': {
+                    backgroundColor: 'rgba(211, 103, 132, 0.08)',
+                    '&:hover': {
+                      backgroundColor: 'rgba(211, 103, 132, 0.12)',
+                    },
+                  },
+                  '&:hover': {
+                    backgroundColor: 'rgba(0, 0, 0, 0.04)',
+                  },
+                }}
+              >
+                <ListItemIcon 
+                  sx={{ 
+                    color: item.isActive ? '#d36784' : 'inherit',
+                    minWidth: isExpanded ? 40 : 0,
+                    justifyContent: 'center'
+                  }}
+                >
+                  {item.icon}
+                </ListItemIcon>
+                <Collapse in={isExpanded} orientation="horizontal">
+                  <ListItemText 
+                    primary={item.text}
+                    sx={{
+                      '& .MuiListItemText-primary': {
+                        fontWeight: item.isActive ? 'bold' : 'normal',
+                        color: item.isActive ? '#d36784' : 'inherit',
+                      },
+                    }}
+                  />
+                </Collapse>
+              </ListItemButton>
+            </Tooltip>
+          </ListItem>
+        ))}
+      </List>
+    </Box>
+  )
+} 

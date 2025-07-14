@@ -23,6 +23,7 @@ import DownloadIcon from '@mui/icons-material/Download'
 import UploadIcon from '@mui/icons-material/Upload'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 import ExpandLessIcon from '@mui/icons-material/ExpandLess'
+// Removed timeline imports
 
 // Route Summary Table Component
 interface RouteSummaryTableProps {
@@ -106,14 +107,22 @@ export const RouteSummaryTable: React.FC<RouteSummaryTableProps> = ({
   // Reverse geocode cache: { 'lat,lng': address }
   const [geocodeCache, setGeocodeCache] = useState<{ [key: string]: string }>({})
   const [loadingGeocode, setLoadingGeocode] = useState<{ [key: string]: boolean }>({})
+  const [pendingGeocodes, setPendingGeocodes] = useState<Set<string>>(new Set())
   const apiKey = process.env.NEXTBILLION_API_KEY || ''
 
-  // Helper to fetch and cache reverse geocode
+  // Helper to fetch and cache reverse geocode with rate limiting
   const fetchGeocode = async (lat: number, lng: number) => {
     const key = `${lat.toFixed(6)},${lng.toFixed(6)}`
-    if (geocodeCache[key] || loadingGeocode[key] || !apiKey) return
+    if (geocodeCache[key] || loadingGeocode[key] || pendingGeocodes.has(key) || !apiKey) return
+    
+    // Add to pending set to prevent duplicate requests
+    setPendingGeocodes(prev => new Set(prev).add(key))
     setLoadingGeocode(prev => ({ ...prev, [key]: true }))
+    
     try {
+      // Add a small delay to prevent overwhelming the API
+      await new Promise(resolve => setTimeout(resolve, 100))
+      
       const url = `https://api.nextbillion.io/revgeocode?at=${lat},${lng}&key=${apiKey}`
       const resp = await fetch(url)
       const data = await resp.json()
@@ -126,6 +135,11 @@ export const RouteSummaryTable: React.FC<RouteSummaryTableProps> = ({
       setGeocodeCache(prev => ({ ...prev, [key]: key }))
     } finally {
       setLoadingGeocode(prev => ({ ...prev, [key]: false }))
+      setPendingGeocodes(prev => {
+        const newSet = new Set(prev)
+        newSet.delete(key)
+        return newSet
+      })
     }
   }
 
@@ -198,7 +212,6 @@ export const RouteSummaryTable: React.FC<RouteSummaryTableProps> = ({
             <TableCell><strong>Stops</strong></TableCell>
             <TableCell><strong>Distance</strong></TableCell>
             <TableCell><strong>Drive Time</strong></TableCell>
-            <TableCell><strong>Cost</strong></TableCell>
             <TableCell><strong>Fuel Delivery</strong></TableCell>
             <TableCell><strong>% Full at Departure</strong></TableCell>
           </TableRow>
@@ -265,11 +278,6 @@ export const RouteSummaryTable: React.FC<RouteSummaryTableProps> = ({
                   </Typography>
                 </TableCell>
                 <TableCell onClick={() => handleToggleRoute(routeIndex)}>
-                  <Typography variant="body2">
-                    {route.cost || 0}
-                  </Typography>
-                </TableCell>
-                <TableCell onClick={() => handleToggleRoute(routeIndex)}>
                   {route.delivery && route.delivery.length >= 2 ? (
                     <Box>
                       <Typography variant="caption" sx={{ display: 'block', color: '#666' }}>
@@ -313,70 +321,71 @@ export const RouteSummaryTable: React.FC<RouteSummaryTableProps> = ({
                       <Typography variant="h6" gutterBottom component="div">
                         Route Details
                       </Typography>
+                      
                       <Table size="small">
-                        <TableHead>
-                          <TableRow>
-                            <TableCell><strong>Type</strong></TableCell>
-                            <TableCell><strong>Description</strong></TableCell>
-                            <TableCell><strong>Location</strong></TableCell>
-                            <TableCell><strong>Arrival</strong></TableCell>
-                            <TableCell><strong>Service</strong></TableCell>
-                            <TableCell><strong>Fuel Delivery</strong></TableCell>
-                          </TableRow>
-                        </TableHead>
-                        <TableBody>
-                          {route.steps && route.steps.map((step: any, stepIndex: number) => (
-                            <TableRow key={stepIndex}>
-                              <TableCell>
-                                <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                                  {getStepTypeIcon(step.type)}
-                                  {step.type !== 'job' && <span>{step.type?.toUpperCase() || 'N/A'}</span>}
-                                </Box>
-                              </TableCell>
-                              <TableCell>
-                                {step.description || 'N/A'}
-                              </TableCell>
-                              <TableCell>
-                                {step.location && step.location.length === 2 ? (
-                                  geocodeCache[`${step.location[0].toFixed(6)},${step.location[1].toFixed(6)}`]
-                                    ? geocodeCache[`${step.location[0].toFixed(6)},${step.location[1].toFixed(6)}`]
-                                    : loadingGeocode[`${step.location[0].toFixed(6)},${step.location[1].toFixed(6)}`]
-                                      ? <span style={{color:'#aaa'}}>Loading...</span>
-                                      : `${step.location[0].toFixed(4)}, ${step.location[1].toFixed(4)}`
-                                ) : (step.id || 'N/A')}
-                              </TableCell>
-                              <TableCell>
-                                {step.arrival ? 
-                                  new Date(step.arrival * 1000).toLocaleTimeString(undefined, { hour: '2-digit', minute: '2-digit', hour12: false }) : 
-                                  'N/A'
-                                }
-                              </TableCell>
-                              <TableCell>
-                                {step.service ? formatDuration(step.service) : '-'}
-                              </TableCell>
-                              <TableCell>
-                                {step.load && step.load.length >= 2 ? (
-                                  <Box>
-                                    <Typography variant="caption" sx={{ display: 'block', color: '#666' }}>
-                                      ULSD Clear: {step.load[0]} gal
-                                    </Typography>
-                                    <Typography variant="caption" sx={{ display: 'block', color: '#666' }}>
-                                      ULSD Dyed: {step.load[1]} gal
-                                    </Typography>
-                                    <Typography variant="caption" sx={{ display: 'block', fontWeight: 'bold', color: '#d36784' }}>
-                                      Total: {step.load[0] + step.load[1]} gal
-                                    </Typography>
-                                  </Box>
-                                ) : step.load && step.load.length > 0 ? (
-                                  step.load.join(', ')
-                                ) : (
-                                  '-'
-                                )}
-                              </TableCell>
+                          <TableHead>
+                            <TableRow>
+                              <TableCell><strong>Type</strong></TableCell>
+                              <TableCell><strong>Description</strong></TableCell>
+                              <TableCell><strong>Location</strong></TableCell>
+                              <TableCell><strong>Arrival</strong></TableCell>
+                              <TableCell><strong>Service</strong></TableCell>
+                              <TableCell><strong>Fuel Delivery</strong></TableCell>
                             </TableRow>
-                          ))}
-                        </TableBody>
-                      </Table>
+                          </TableHead>
+                          <TableBody>
+                            {route.steps && route.steps.map((step: any, stepIndex: number) => (
+                              <TableRow key={stepIndex}>
+                                <TableCell>
+                                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                                    {getStepTypeIcon(step.type)}
+                                    {step.type !== 'job' && <span>{step.type?.toUpperCase() || 'N/A'}</span>}
+                                  </Box>
+                                </TableCell>
+                                <TableCell>
+                                  {step.description || 'N/A'}
+                                </TableCell>
+                                <TableCell>
+                                  {step.location && step.location.length === 2 ? (
+                                    geocodeCache[`${step.location[0].toFixed(6)},${step.location[1].toFixed(6)}`]
+                                      ? geocodeCache[`${step.location[0].toFixed(6)},${step.location[1].toFixed(6)}`]
+                                      : loadingGeocode[`${step.location[0].toFixed(6)},${step.location[1].toFixed(6)}`]
+                                        ? <span style={{color:'#aaa'}}>Loading...</span>
+                                        : `${step.location[0].toFixed(4)}, ${step.location[1].toFixed(4)}`
+                                  ) : (step.id || 'N/A')}
+                                </TableCell>
+                                <TableCell>
+                                  {step.arrival ? 
+                                    new Date(step.arrival * 1000).toLocaleTimeString(undefined, { hour: '2-digit', minute: '2-digit', hour12: false }) : 
+                                    'N/A'
+                                  }
+                                </TableCell>
+                                <TableCell>
+                                  {step.service ? formatDuration(step.service) : '-'}
+                                </TableCell>
+                                <TableCell>
+                                  {step.load && step.load.length >= 2 ? (
+                                    <Box>
+                                      <Typography variant="caption" sx={{ display: 'block', color: '#666' }}>
+                                        ULSD Clear: {step.load[0]} gal
+                                      </Typography>
+                                      <Typography variant="caption" sx={{ display: 'block', color: '#666' }}>
+                                        ULSD Dyed: {step.load[1]} gal
+                                      </Typography>
+                                      <Typography variant="caption" sx={{ display: 'block', fontWeight: 'bold', color: '#d36784' }}>
+                                        Total: {step.load[0] + step.load[1]} gal
+                                      </Typography>
+                                    </Box>
+                                  ) : step.load && step.load.length > 0 ? (
+                                    step.load.join(', ')
+                                  ) : (
+                                    '-'
+                                  )}
+                                </TableCell>
+                              </TableRow>
+                            ))}
+                          </TableBody>
+                        </Table>
                     </Box>
                   </Collapse>
                 </TableCell>
