@@ -567,10 +567,50 @@ export async function POST(req: NextRequest) {
         console.log('Using minimal data, length:', responseDataString.length);
       }
       
+      // Check if the ID already exists and create a unique ID if needed
+      let finalId = id;
+      let counter = 1;
+      
+      while (true) {
+        try {
+          // Check if this ID already exists
+          const existingResult = await turso.execute(
+            'SELECT id FROM optimization_results WHERE id = ?',
+            [finalId]
+          );
+          
+          if (existingResult.rows.length === 0) {
+            // ID doesn't exist, we can use it
+            break;
+          }
+          
+          // ID exists, create a new one with counter
+          finalId = `${id}_${counter}`;
+          counter++;
+          
+          // Prevent infinite loop (safety check)
+          if (counter > 1000) {
+            console.error('Too many duplicate IDs, using timestamp as fallback');
+            finalId = `${id}_${Date.now()}`;
+            break;
+          }
+        } catch (error) {
+          console.error('Error checking for existing ID:', error);
+          // If there's an error checking, use the original ID
+          break;
+        }
+      }
+      
+      // Insert with the final unique ID
       await turso.execute(
-        'INSERT OR REPLACE INTO optimization_results (id, job_id, title, response_data, shared_url, status, solution_time) VALUES (?, ?, ?, ?, ?, ?, ?)',
-        [id, job_id, title, responseDataString, shared_url, status, solution_time]
+        'INSERT INTO optimization_results (id, job_id, title, response_data, shared_url, status, solution_time) VALUES (?, ?, ?, ?, ?, ?, ?)',
+        [finalId, job_id, title, responseDataString, shared_url, status, solution_time]
       );
+      
+      // Log if we had to create a unique ID
+      if (finalId !== id) {
+        console.log(`Original ID '${id}' already existed, created unique ID: '${finalId}'`);
+      }
       
       console.log('Optimization result saved successfully');
       return NextResponse.json({ 
