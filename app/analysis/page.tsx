@@ -757,6 +757,11 @@ export default function RouteAnalysisPage() {
                                   }}
                                   hover
                                   onClick={() => {
+                                    // Disable row click if any title is being edited
+                                    if (editingTitle !== null) {
+                                      return;
+                                    }
+                                    
                                     // If the panel is already open for this result, close it
                                     if (selectedJobId === result.job_id) {
                                       setSelectedResult(null)
@@ -766,7 +771,10 @@ export default function RouteAnalysisPage() {
                                       handleViewResult(result.job_id)
                                     }
                                   }}
-                                  style={{ cursor: 'pointer' }}
+                                  style={{ 
+                                    cursor: editingTitle !== null ? 'default' : 'pointer',
+                                    opacity: editingTitle !== null ? 0.6 : 1
+                                  }}
                                 >
                                   <TableCell>
                                     {editingTitle === result.id ? (
@@ -811,13 +819,20 @@ export default function RouteAnalysisPage() {
                                           variant="body2" 
                                           sx={{ 
                                             flex: 1,
-                                            cursor: 'pointer',
+                                            cursor: editingTitle !== null ? 'default' : 'pointer',
+                                            opacity: editingTitle !== null ? 0.6 : 1,
                                             '&:hover': {
-                                              color: '#666'
+                                              color: editingTitle !== null ? 'inherit' : '#666'
                                             }
                                           }}
                                           onClick={(e) => {
                                             e.stopPropagation() // Prevent row click from firing
+                                            
+                                            // Disable title click if any title is being edited
+                                            if (editingTitle !== null) {
+                                              return;
+                                            }
+                                            
                                             // If the panel is already open for this result, close it
                                             if (selectedJobId === result.job_id) {
                                               setSelectedResult(null)
