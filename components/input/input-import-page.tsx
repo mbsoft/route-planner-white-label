@@ -534,7 +534,6 @@ export const InputImportPage = ({ currentStep, onStepChange, preferences, onPref
         .filter((_: any, index: number) => selectedRoutes.has(index))
         .map((route: any) => ({
           vehicle: route.vehicle,
-          geometry: route.geometry,
           cost: route.cost,
           distance: route.distance,
           duration: route.duration,
@@ -816,7 +815,6 @@ export const InputImportPage = ({ currentStep, onStepChange, preferences, onPref
                 if (resultData.result?.routes && onRouteResultsChange) {
                   const routeData = resultData.result.routes.map((route: any) => ({
                     vehicle: route.vehicle,
-                    geometry: route.geometry,
                     cost: route.cost,
                     distance: route.distance,
                     duration: route.duration,
