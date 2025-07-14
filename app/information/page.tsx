@@ -568,19 +568,46 @@ export default function InformationPage() {
                     <List dense>
                       <ListItem sx={{ py: 0.5 }}>
                         <ListItemText 
-                          primary="• API Documentation"
+                          primary={
+                            <a 
+                              href="https://docs.nextbillion.ai/optimization/route-optimization-api" 
+                              target="_blank" 
+                              rel="noopener noreferrer"
+                              style={{ color: '#d36784', textDecoration: 'none' }}
+                            >
+                              • API Documentation
+                            </a>
+                          }
                           secondary="Complete NextBillion.ai API reference"
                         />
                       </ListItem>
                       <ListItem sx={{ py: 0.5 }}>
                         <ListItemText 
-                          primary="• Data Format Specifications"
+                          primary={
+                            <a 
+                              href="https://github.com/mbsoft/route-planner-white-label/blob/main/DOCUMENTATION.md#database-schema" 
+                              target="_blank" 
+                              rel="noopener noreferrer"
+                              style={{ color: '#d36784', textDecoration: 'none' }}
+                            >
+                              • Data Format Specifications
+                            </a>
+                          }
                           secondary="Required CSV formats and field mappings"
                         />
                       </ListItem>
                       <ListItem sx={{ py: 0.5 }}>
                         <ListItemText 
-                          primary="• White Label Guide"
+                          primary={
+                            <a 
+                              href="https://github.com/mbsoft/route-planner-white-label/blob/main/docs/DEPLOYMENT_QUICKSTART.md" 
+                              target="_blank" 
+                              rel="noopener noreferrer"
+                              style={{ color: '#d36784', textDecoration: 'none' }}
+                            >
+                              • White Label Guide
+                            </a>
+                          }
                           secondary="Detailed customization instructions"
                         />
                       </ListItem>
