@@ -37,7 +37,7 @@ export interface MapMarker {
 
 export interface RouteData {
   vehicle: string
-  geometry: string
+  geometry?: string
   cost?: number
   distance?: number
   duration?: number
@@ -122,6 +122,12 @@ export const CollapsibleMap = ({ markers, routes, isVisible = false, onToggle }:
     
     return routes.map((route, index) => {
       try {
+        // Skip routes without geometry (they won't be displayed on map)
+        if (!route.geometry) {
+          console.warn(`Route ${index} has no geometry data - skipping map display`)
+          return null
+        }
+        
         const geoJSON = polylineToGeoJSON(route.geometry)
         return {
           ...geoJSON,
