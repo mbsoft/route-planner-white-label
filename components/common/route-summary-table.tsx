@@ -286,8 +286,17 @@ export const RouteSummaryTable: React.FC<RouteSummaryTableProps> = ({
                       <Typography variant="caption" sx={{ display: 'block', color: '#666' }}>
                         ULSD Dyed: {route.delivery[1]} gal
                       </Typography>
+                      <Typography variant="caption" sx={{ display: 'block', color: '#666' }}>
+                        UNL: {route.delivery[2]} gal
+                      </Typography>
+                      <Typography variant="caption" sx={{ display: 'block', color: '#666' }}>
+                        GAS UNL PRE: {route.delivery[3]} gal
+                      </Typography>
+                      <Typography variant="caption" sx={{ display: 'block', color: '#666' }}>
+                        REC 90 GAS: {route.delivery[4]} gal
+                      </Typography>
                       <Typography variant="caption" sx={{ display: 'block', fontWeight: 'bold', color: '#d36784' }}>
-                        Total: {route.delivery[0] + route.delivery[1]} gal
+                        Total: {route.delivery[0] + route.delivery[1] + route.delivery[2] + route.delivery[3] + route.delivery[4]} gal
                       </Typography>
                     </Box>
                   ) : route.delivery && route.delivery.length > 0 ? (
