@@ -49,7 +49,7 @@ interface OptimizationMvrpOrderJobV2 {
 }
 
 interface OptimizationMvrpOrderVehicleV2 {
-  id: number
+  id: string | number
   start_index: number
   end_index?: number
   capacity?: number[]
@@ -392,7 +392,7 @@ function normalizeVehicles(vehicleData: any, mapConfig: any, locMap: Map<string,
     }
     
     const vehicle: OptimizationMvrpOrderVehicleV2 = {
-      id: index + 1,
+      id: (index + 1).toString(),
       start_index: -1,
     };
     mapConfig.dataMappings.forEach((mapping: any) => {
@@ -400,7 +400,7 @@ function normalizeVehicles(vehicleData: any, mapConfig: any, locMap: Map<string,
       if (!value) return;
       switch (mapping.value) {
         case 'id':
-          vehicle.id = parseInt(value) || index + 1;
+          vehicle.id = value || (index + 1).toString();
           break;
         case 'description':
           vehicle.description = value;
