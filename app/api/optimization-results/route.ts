@@ -502,15 +502,95 @@ export async function POST(req: NextRequest) {
       );
     }
     
-    await turso.execute(
-      'INSERT OR REPLACE INTO optimization_results (id, job_id, title, response_data, shared_url, status, solution_time) VALUES (?, ?, ?, ?, ?, ?, ?)',
-      [id, job_id, title, JSON.stringify(response_data), shared_url, status, solution_time]
-    );
-    
-    return NextResponse.json({ 
-      success: true, 
-      message: 'Optimization result saved successfully' 
-    });
+    try {
+      // Validate and sanitize the response_data
+      console.log('Saving optimization result:', { id, job_id, title, status, solution_time });
+      console.log('Response data type:', typeof response_data);
+      console.log('Response data keys:', Object.keys(response_data || {}));
+      
+      // Stringify the response_data with error handling
+      let responseDataString;
+      try {
+        responseDataString = JSON.stringify(response_data);
+        console.log('Response data stringified successfully, length:', responseDataString.length);
+      } catch (stringifyError) {
+        console.error('Failed to stringify response_data:', stringifyError);
+        return NextResponse.json(
+          { error: 'Failed to serialize response data' },
+          { status: 400 }
+        );
+      }
+      
+      // Check if the stringified data is too large (SQLite has limits)
+      if (responseDataString.length > 1000000) { // 1MB limit
+        console.warn('Response data is very large:', responseDataString.length, 'bytes');
+        // Create a more comprehensive simplified version that preserves key information
+        const simplifiedData = {
+          summary: response_data.result?.summary || {},
+          routes_count: response_data.result?.routes?.length || 0,
+          routes: response_data.result?.routes?.map((route: any) => ({
+            vehicle: route.vehicle,
+            cost: route.cost,
+            duration: route.duration,
+            distance: route.distance,
+            steps_count: route.steps?.length || 0,
+            service: route.service,
+            delivery: route.delivery,
+            pickup: route.pickup
+          })) || [],
+          routing_profiles: response_data.result?.routing_profiles || {},
+          status: response_data.status,
+          message: response_data.message,
+          original_size: responseDataString.length,
+          simplified: true
+        };
+        responseDataString = JSON.stringify(simplifiedData);
+        console.log('Using simplified data, length:', responseDataString.length);
+      }
+      
+      // Additional check for still-too-large data
+      if (responseDataString.length > 500000) { // 500KB limit
+        console.warn('Data still too large after simplification:', responseDataString.length, 'bytes');
+        // Create an even more minimal version
+        const minimalData = {
+          summary: response_data.result?.summary || {},
+          routes_count: response_data.result?.routes?.length || 0,
+          total_cost: response_data.result?.summary?.cost || 0,
+          total_distance: response_data.result?.summary?.distance || 0,
+          total_duration: response_data.result?.summary?.duration || 0,
+          status: response_data.status,
+          message: response_data.message,
+          original_size: responseDataString.length,
+          minimal: true
+        };
+        responseDataString = JSON.stringify(minimalData);
+        console.log('Using minimal data, length:', responseDataString.length);
+      }
+      
+      await turso.execute(
+        'INSERT OR REPLACE INTO optimization_results (id, job_id, title, response_data, shared_url, status, solution_time) VALUES (?, ?, ?, ?, ?, ?, ?)',
+        [id, job_id, title, responseDataString, shared_url, status, solution_time]
+      );
+      
+      console.log('Optimization result saved successfully');
+      return NextResponse.json({ 
+        success: true, 
+        message: 'Optimization result saved successfully' 
+      });
+    } catch (dbError) {
+      console.error('Database error during insert:', dbError);
+      console.error('Error details:', {
+        id,
+        job_id,
+        title,
+        status,
+        solution_time,
+        shared_url: shared_url ? 'present' : 'null',
+        response_data_type: typeof response_data,
+        response_data_keys: Object.keys(response_data || {})
+      });
+      throw dbError;
+    }
   } catch (error) {
     console.error('Database error in POST /api/optimization-results:', error);
     return NextResponse.json(

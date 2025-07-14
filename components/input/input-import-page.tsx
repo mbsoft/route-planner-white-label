@@ -630,6 +630,7 @@ export const InputImportPage = ({ currentStep, onStepChange, preferences, onPref
 
   // Handler for optimization request
   const handleOptimizationRequest = async () => {
+    let optimizationStartTime: number | null = null;
     try {
       setIsOptimizing(true)
       // Clear any prior optimization results
@@ -717,6 +718,7 @@ export const InputImportPage = ({ currentStep, onStepChange, preferences, onPref
       }
       
       // Before sending the optimization request
+      optimizationStartTime = Date.now();
       const response = await apiClient.createOptimizationRequest(optimizationRequest)
       const responseData = response.data as any
       
@@ -779,6 +781,11 @@ export const InputImportPage = ({ currentStep, onStepChange, preferences, onPref
                     // Don't fail the optimization if shared URL creation fails
                   }
                   
+                  // Calculate solution_time
+                  let solutionTime = null;
+                  if (optimizationStartTime) {
+                    solutionTime = (Date.now() - optimizationStartTime) / 1000;
+                  }
                   await fetch('/api/optimization-results', {
                     method: 'POST',
                     headers: {
@@ -790,7 +797,8 @@ export const InputImportPage = ({ currentStep, onStepChange, preferences, onPref
                       title: title,
                       response_data: resultData,
                       shared_url: sharedUrl,
-                      status: 'completed'
+                      status: 'completed',
+                      solution_time: solutionTime
                     }),
                   });
                   console.log('Optimization results saved to Turso storage');
@@ -908,7 +916,7 @@ export const InputImportPage = ({ currentStep, onStepChange, preferences, onPref
         return (
           <Box sx={{ border: '1px solid #e0e0e0', borderRadius: '12px', background: '#fff', p: 4, mb: 2 }}>
             <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 1 }}>
-              <Typography variant="h5" sx={{ color: '#1976d2', fontWeight: 'bold' }}>
+              <Typography variant="h5" sx={{ color: '#B54A6A', fontWeight: 'bold' }}>
                 ✓ {orderTypeLabel} Data Imported
               </Typography>
               <Typography variant="body2" sx={{ color: '#666' }}>
@@ -1091,7 +1099,7 @@ export const InputImportPage = ({ currentStep, onStepChange, preferences, onPref
           <Box sx={{ color: 'red', mb: 2 }}>{saveError}</Box>
         )}
         {renderStepContent()}
-        <Box sx={{ display: 'flex', justifyContent: 'space-between', mt: 4 }}>
+        <Box sx={{ display: 'flex', justifyContent: 'flex-start', gap: 2, mt: 4 }}>
           <Button
             variant="outlined"
             disabled={currentStep === 0 || isSavingPreferences}
