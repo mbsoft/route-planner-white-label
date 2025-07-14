@@ -423,6 +423,13 @@ export default function RouteAnalysisPage() {
       })
 
       if (response.ok) {
+        // Check if the deleted result is currently being viewed in the right panel
+        if (selectedResult && selectedResult.id === resultToDelete.id) {
+          // Close the right panel since the result being viewed was deleted
+          setSelectedResult(null)
+          setSelectedJobId(null)
+        }
+        
         // Remove the deleted result from the local state
         setOptimizationResults(prev => 
           prev.filter(r => r.id !== resultToDelete.id)
