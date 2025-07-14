@@ -288,10 +288,13 @@ export default function RouteAnalysisPage() {
     const { summary, routes, unassigned } = resultData.result
     
     // Fuel delivery metrics
-    const totalFuelDelivered = summary?.delivery || [0, 0]
+    const totalFuelDelivered = summary?.delivery || [0, 0, 0, 0, 0]
     const ulsdClearDelivered = totalFuelDelivered[0] || 0
     const ulsdDyedDelivered = totalFuelDelivered[1] || 0
-    const totalFuel = ulsdClearDelivered + ulsdDyedDelivered
+    const unlDelivered = totalFuelDelivered[2] || 0
+    const gasUnlPreDelivered = totalFuelDelivered[3] || 0
+    const rec90Delivered = totalFuelDelivered[4] || 0
+    const totalFuel = ulsdClearDelivered + ulsdDyedDelivered + unlDelivered + gasUnlPreDelivered + rec90Delivered
     
     // Operational metrics
     const totalDistance = summary?.distance || 0
@@ -326,6 +329,9 @@ export default function RouteAnalysisPage() {
       // Fuel metrics
       ulsdClearDelivered,
       ulsdDyedDelivered,
+      unlDelivered,
+      gasUnlPreDelivered,
+      rec90Delivered,
       totalFuel,
       avgFuelPerRoute,
       
@@ -1018,7 +1024,7 @@ export default function RouteAnalysisPage() {
                                   Fuel Delivery Metrics
                                 </Typography>
                                 <Grid container spacing={2} sx={{ mb: 3 }}>
-                                  <Grid item xs={12} md={3}>
+                                  <Grid item xs={12} md={2}>
                                     <Box sx={{ p: 2, bgcolor: '#f8f9fa', borderRadius: 1, textAlign: 'center' }}>
                                       <Typography variant="h6" sx={{ color: '#d36784', fontWeight: 'bold' }}>
                                         {kpis.ulsdClearDelivered.toLocaleString()}
@@ -1028,7 +1034,7 @@ export default function RouteAnalysisPage() {
                                       </Typography>
                                     </Box>
                                   </Grid>
-                                  <Grid item xs={12} md={3}>
+                                  <Grid item xs={12} md={2}>
                                     <Box sx={{ p: 2, bgcolor: '#f8f9fa', borderRadius: 1, textAlign: 'center' }}>
                                       <Typography variant="h6" sx={{ color: '#d36784', fontWeight: 'bold' }}>
                                         {kpis.ulsdDyedDelivered.toLocaleString()}
@@ -1038,7 +1044,37 @@ export default function RouteAnalysisPage() {
                                       </Typography>
                                     </Box>
                                   </Grid>
-                                  <Grid item xs={12} md={3}>
+                                  <Grid item xs={12} md={2}>
+                                    <Box sx={{ p: 2, bgcolor: '#f8f9fa', borderRadius: 1, textAlign: 'center' }}>
+                                      <Typography variant="h6" sx={{ color: '#d36784', fontWeight: 'bold' }}>
+                                        {kpis.unlDelivered.toLocaleString()}
+                                      </Typography>
+                                      <Typography variant="caption" sx={{ color: '#666' }}>
+                                        UNL (gal)
+                                      </Typography>
+                                    </Box>
+                                  </Grid>
+                                  <Grid item xs={12} md={2}>
+                                    <Box sx={{ p: 2, bgcolor: '#f8f9fa', borderRadius: 1, textAlign: 'center' }}>
+                                      <Typography variant="h6" sx={{ color: '#d36784', fontWeight: 'bold' }}>
+                                        {kpis.gasUnlPreDelivered.toLocaleString()}
+                                      </Typography>
+                                      <Typography variant="caption" sx={{ color: '#666' }}>
+                                        GAS UNL PRE (gal)
+                                      </Typography>
+                                    </Box>
+                                  </Grid>
+                                  <Grid item xs={12} md={2}>
+                                    <Box sx={{ p: 2, bgcolor: '#f8f9fa', borderRadius: 1, textAlign: 'center' }}>
+                                      <Typography variant="h6" sx={{ color: '#d36784', fontWeight: 'bold' }}>
+                                        {kpis.rec90Delivered.toLocaleString()}
+                                      </Typography>
+                                      <Typography variant="caption" sx={{ color: '#666' }}>
+                                        REC 90 (gal)
+                                      </Typography>
+                                    </Box>
+                                  </Grid>
+                                  <Grid item xs={12} md={2}>
                                     <Box sx={{ p: 2, bgcolor: '#f8f9fa', borderRadius: 1, textAlign: 'center' }}>
                                       <Typography variant="h6" sx={{ color: '#d36784', fontWeight: 'bold' }}>
                                         {kpis.totalFuel.toLocaleString()}
@@ -1048,6 +1084,8 @@ export default function RouteAnalysisPage() {
                                       </Typography>
                                     </Box>
                                   </Grid>
+                                </Grid>
+                                <Grid container spacing={2} sx={{ mb: 3 }}>
                                   <Grid item xs={12} md={3}>
                                     <Box sx={{ p: 2, bgcolor: '#f8f9fa', borderRadius: 1, textAlign: 'center' }}>
                                       <Typography variant="h6" sx={{ color: '#d36784', fontWeight: 'bold' }}>
