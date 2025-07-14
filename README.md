@@ -33,13 +33,19 @@ The application supports two user roles with different permission levels:
 - Limited to basic route planning functionality
 
 ### Environment Variables
-Set the following environment variables for authentication:
+Set the following environment variables for authentication and configuration:
 
 ```bash
+# Authentication
 ADMIN_USERNAME=admin
 ADMIN_PASSWORD=your_secure_admin_password_here
 USER_USERNAME=user
 USER_PASSWORD=your_secure_user_password_here
+
+# CSV Import Configuration
+# Set to 'true' to show CSV file upload panels alongside database import
+# Set to 'false' or leave unset to only show database import
+NEXT_PUBLIC_ENABLE_CSV_IMPORT=false
 ```
 
 ## Prerequisites
@@ -47,6 +53,12 @@ USER_PASSWORD=your_secure_user_password_here
 - Node.js 18.0.0 or higher (required for Next.js 14+)
 - npm 8.0.0 or higher
 - NextBillion.ai API key for map tiles
+
+## Documentation
+
+For detailed technical documentation, API references, and advanced configuration options, see:
+
+- **[Complete Technical Documentation](docs/DOCUMENTATION.md)** - Database schema, API endpoints, authentication, and more
 
 ## Installation
 
@@ -85,13 +97,14 @@ USER_PASSWORD=your_secure_user_password_here
 
 For production deployment on Vercel, see our deployment guides:
 
-- **[Quick Start Guide](DEPLOYMENT_QUICKSTART.md)** - Get deployed in minutes
-- **[Complete Deployment Guide](VERCEL_DEPLOYMENT.md)** - Detailed setup and troubleshooting
+- **[Quick Start Guide](docs/DEPLOYMENT_QUICKSTART.md)** - Get deployed in minutes
+- **[Complete Deployment Guide](docs/VERCEL_DEPLOYMENT.md)** - Detailed setup and troubleshooting
 
 ## Usage
 
 ### 1. Import Data
-- Drag and drop files containing your logistics data
+- **Database Import**: Import jobs and vehicles directly from the database (primary method)
+- **File Upload**: Drag and drop files containing your logistics data (optional, controlled by `NEXT_PUBLIC_ENABLE_CSV_IMPORT`)
 - **Supported formats**: CSV (.csv), Excel (.xlsx, .xls)
 - The app will automatically detect and parse your file structure
 - **Smart parsing**: Handles quoted fields, empty cells, and mixed data types
@@ -147,6 +160,18 @@ VEH001,1000,40.7128,-74.0060,40.7128,-74.0060
 ```
 
 ## Customization
+
+### CSV Import Configuration
+The application supports two data import methods:
+- **Database Import**: Primary method for importing jobs and vehicles from the database
+- **CSV/File Import**: Optional method for uploading files directly
+
+To enable CSV file upload alongside database import:
+```bash
+NEXT_PUBLIC_ENABLE_CSV_IMPORT=true
+```
+
+When disabled (default), only the database import option is available, providing a cleaner interface focused on database-driven workflows.
 
 ### Branding
 - Update colors and styling in the Material-UI theme
