@@ -34,16 +34,19 @@ import {
   Visibility as VisibilityIcon,
   Delete as DeleteIcon,
   Map as MapIcon,
+  Edit as EditIcon,
 } from '@mui/icons-material'
 import { WhiteLabelLayout } from '../white-label-layout'
-import { HamburgerMenu } from '../../components/common/hamburger-menu'
+import { Sidebar } from '../../components/common/sidebar'
 import { RouteSummaryTable } from '../../components/common/route-summary-table'
 import { useRouter } from 'next/navigation'
 import { useAuth } from '../../hooks/use-auth'
+import { useWhiteLabelContext } from '../white-label-layout'
 
 export default function RouteAnalysisPage() {
   const router = useRouter()
   const { isAdmin } = useAuth()
+  const { companyName, companyLogo } = useWhiteLabelContext()
   const [optimizationResults, setOptimizationResults] = useState<any[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
@@ -54,6 +57,7 @@ export default function RouteAnalysisPage() {
   const [resultToDelete, setResultToDelete] = useState<any>(null)
   const [expandedRoutes, setExpandedRoutes] = useState<Set<number>>(new Set())
   const [selectedJobId, setSelectedJobId] = useState<string | null>(null)
+  const [loadingDetails, setLoadingDetails] = useState(false)
   const [summaryStats, setSummaryStats] = useState({
     totalRoutes: 0,
     avgSpeed: 0,
@@ -87,16 +91,19 @@ export default function RouteAnalysisPage() {
 
   // Debug summary stats changes
   useEffect(() => {
-    console.log('Summary stats updated:', summaryStats)
+    // Removed debug logging
   }, [summaryStats])
 
   // Recalculate summary stats when optimization results change
   useEffect(() => {
     if (optimizationResults.length > 0) {
-      console.log('useEffect triggered - recalculating stats for', optimizationResults.length, 'results')
       calculateSummaryStats(optimizationResults)
     }
   }, [optimizationResults]) // Trigger when the array changes
+
+  useEffect(() => {
+    // Removed debug logging
+  }, [selectedResult]);
 
   const fetchOptimizationResults = async () => {
     try {
@@ -104,8 +111,6 @@ export default function RouteAnalysisPage() {
       const response = await fetch('/api/optimization-results')
       if (response.ok) {
         const data = await response.json()
-        console.log('Fetched optimization results:', data.results)
-        console.log('Sample result fields:', data.results?.[0] ? Object.keys(data.results[0]) : 'No results')
         setOptimizationResults(data.results || [])
       } else {
         setError('Failed to fetch optimization results')
@@ -121,12 +126,10 @@ export default function RouteAnalysisPage() {
   const calculateSummaryStats = async (results: any[]) => {
     // Prevent multiple simultaneous calculations
     if (isCalculatingRef.current) {
-      console.log('Already calculating stats, skipping...')
       return
     }
     
     isCalculatingRef.current = true
-    console.log('Calculating summary stats for', results.length, 'results')
     
     if (results.length === 0) {
       setSummaryStats({
@@ -155,28 +158,29 @@ export default function RouteAnalysisPage() {
 
     // Create a Set to track processed job_ids to avoid duplicates
     const processedJobIds = new Set()
-    let skippedCount = 0
-
-    console.log('Processing', results.length, 'optimization results')
 
     for (const result of results) {
       // Skip if we've already processed this job_id (same optimization result)
       if (processedJobIds.has(result.job_id)) {
-        console.log('Skipping duplicate job_id:', result.job_id, 'with id:', result.id)
-        skippedCount++
         continue
       }
       processedJobIds.add(result.job_id)
 
       try {
-        console.log('Fetching details for result:', result.job_id)
-        // Fetch the detailed result data
-        const detailResponse = await fetch(`/api/optimization-results?job_id=${encodeURIComponent(result.job_id)}`)
-        if (detailResponse.ok) {
-          const detailData = await detailResponse.json()
-          console.log('Detail data for', result.job_id, ':', detailData)
+        // Only fetch details if we don't have response_data already
+        let detailData
+        if (result.response_data) {
+          detailData = result
+        } else {
+          // Fetch the detailed result data only if needed
+          const detailResponse = await fetch(`/api/optimization-results?job_id=${encodeURIComponent(result.job_id)}`)
+          if (detailResponse.ok) {
+            detailData = await detailResponse.json()
+          }
+        }
+        
+        if (detailData?.response_data) {
           const kpis = calculateKPIs(detailData.response_data)
-          console.log('KPIs for', result.job_id, ':', kpis)
           
           if (kpis) {
             totalRoutes += kpis.routesCount
@@ -188,19 +192,12 @@ export default function RouteAnalysisPage() {
             totalWaitingTime += kpis.totalWaiting
             totalServiceTime += kpis.totalService || 0
             validResults++
-            console.log('Added to totals - routes:', kpis.routesCount, 'speed:', kpis.avgSpeed, 'fuel:', kpis.totalFuel, 'unassigned:', kpis.unassignedCount, 'stops:', kpis.totalStops, 'distance:', kpis.totalDistance, 'waiting:', kpis.totalWaiting, 'service:', kpis.totalService, 'running total routes:', totalRoutes)
-          } else {
-            console.log('No KPIs calculated for', result.job_id)
           }
-        } else {
-          console.log('Failed to fetch details for', result.job_id, 'Status:', detailResponse.status)
         }
       } catch (error) {
-        console.error('Error fetching result details for stats:', error)
+        console.error('Error processing result for stats:', error)
       }
     }
-
-    console.log('Final totals - routes:', totalRoutes, 'speed:', totalSpeed, 'fuel:', totalGallons, 'unassigned:', totalUnassigned, 'service:', totalServiceTime, 'valid results:', validResults, 'skipped duplicates:', skippedCount)
 
     const finalStats = {
       totalRoutes: totalRoutes,
@@ -213,13 +210,31 @@ export default function RouteAnalysisPage() {
       avgServiceTimePerRoute: totalRoutes > 0 && totalServiceTime > 0 && !isNaN(totalServiceTime) ? Math.round(totalServiceTime / totalRoutes) : 0
     }
     
-    console.log('Setting summary stats to:', finalStats)
     setSummaryStats(finalStats)
     isCalculatingRef.current = false
   }
 
   const handleViewResult = async (jobId: string) => {
     try {
+      setLoadingDetails(true)
+      
+      // Check if we already have the full data in optimizationResults
+      const existingResult = optimizationResults.find(r => r.job_id === jobId && r.response_data)
+      
+      if (existingResult) {
+        // Use existing data if available
+        const resultWithSharedUrl = { 
+          ...existingResult, 
+          title: existingResult.title || existingResult.title,
+          shared_url: existingResult.shared_url || existingResult.shared_url
+        }
+        setSelectedResult(resultWithSharedUrl)
+        setSelectedJobId(jobId)
+        setLoadingDetails(false)
+        return
+      }
+      
+      // Fetch from API if not available locally
       const response = await fetch(`/api/optimization-results?job_id=${encodeURIComponent(jobId)}`)
       if (response.ok) {
         const data = await response.json()
@@ -231,11 +246,6 @@ export default function RouteAnalysisPage() {
           title: summary?.title || data.title,
           shared_url: summary?.shared_url || data.shared_url
         }
-        console.log('Selected result data:', resultWithSharedUrl)
-        console.log('Shared URL available:', !!resultWithSharedUrl.shared_url)
-        console.log('Shared URL value:', resultWithSharedUrl.shared_url)
-        console.log('Summary shared_url:', summary?.shared_url)
-        console.log('Data shared_url:', data.shared_url)
         setSelectedResult(resultWithSharedUrl)
         setSelectedJobId(jobId)
       } else {
@@ -244,6 +254,8 @@ export default function RouteAnalysisPage() {
     } catch (error) {
       console.error('Error fetching result details:', error)
       setError('Failed to fetch result details')
+    } finally {
+      setLoadingDetails(false)
     }
   }
 
@@ -274,8 +286,6 @@ export default function RouteAnalysisPage() {
     if (!resultData?.result) return null
 
     const { summary, routes, unassigned } = resultData.result
-    
-    console.log('KPI calculation - summary.unassigned:', summary?.unassigned, 'unassigned array length:', unassigned?.length, 'totalService:', summary?.service)
     
     // Fuel delivery metrics
     const totalFuelDelivered = summary?.delivery || [0, 0]
@@ -446,16 +456,25 @@ export default function RouteAnalysisPage() {
 
   return (
     <WhiteLabelLayout>
-      <Container maxWidth="xl" sx={{ minHeight: '100vh', p: 0 }}>
-        <Box sx={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
+      <Box sx={{ display: 'flex', minHeight: '100vh' }}>
+        {/* Sidebar */}
+        <Sidebar currentPage="analysis" />
+        
+        {/* Main Content Area */}
+        <Box sx={{ 
+          flex: 1, 
+          display: 'flex', 
+          flexDirection: 'column', 
+          ml: 'var(--sidebar-width, 280px)',
+          transition: 'margin-left 0.3s ease'
+        }}>
           {/* Header */}
           <Box sx={{ p: 2, borderBottom: '1px solid #e0e0e0', backgroundColor: '#ffffff' }}>
-            <Box sx={{ maxHeight: '25px', height: '25px', display: 'flex', alignItems: 'center', gap: 2, justifyContent: 'space-between' }}>
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, justifyContent: 'space-between' }}>
               <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-                <HamburgerMenu currentPage="analysis" />
                 <img
-                  src="/company_logo.svg"
-                  alt="Diesel Direct Logo"
+                  src={companyLogo}
+                  alt={`${companyName} Logo`}
                   style={{
                     height: '25px',
                     width: 'auto',
@@ -699,148 +718,196 @@ export default function RouteAnalysisPage() {
                       </Typography>
                     </Box>
                   ) : (
-                    <>
-                      <TableContainer>
-                        <Table>
-                          <TableHead>
-                            <TableRow>
-                              <TableCell sx={{ fontWeight: 'bold' }}>Title</TableCell>
-                              <TableCell sx={{ fontWeight: 'bold' }}>Status</TableCell>
-                              <TableCell sx={{ fontWeight: 'bold' }}>Created</TableCell>
-                              <TableCell sx={{ fontWeight: 'bold' }}>Actions</TableCell>
-                            </TableRow>
-                          </TableHead>
-                          <TableBody>
-                            {optimizationResults.map((result) => (
-                              <TableRow 
-                                key={result.id}
-                                sx={{
-                                  backgroundColor: selectedJobId === result.job_id ? '#f0f8ff' : 'inherit',
-                                  '&:hover': {
-                                    backgroundColor: selectedJobId === result.job_id ? '#e6f3ff' : '#f5f5f5'
-                                  }
-                                }}
-                              >
-                                <TableCell>
-                                  {editingTitle === result.id ? (
-                                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                                      <input
-                                        type="text"
-                                        value={editingTitleValue}
-                                        onChange={(e) => setEditingTitleValue(e.target.value)}
-                                        style={{
-                                          flex: 1,
-                                          padding: '4px 8px',
-                                          border: '1px solid #ccc',
-                                          borderRadius: '4px',
-                                          fontSize: '14px'
-                                        }}
-                                        onKeyPress={(e) => {
-                                          if (e.key === 'Enter') {
-                                            handleSaveTitle(result)
-                                          }
-                                        }}
-                                        aria-label="Edit optimization title"
-                                        title="Edit optimization title"
-                                      />
-                                      <Button
-                                        size="small"
-                                        onClick={() => handleSaveTitle(result)}
-                                        sx={{ minWidth: 'auto', p: 0.5 }}
-                                      >
-                                        ✓
-                                      </Button>
-                                      <Button
-                                        size="small"
-                                        onClick={handleCancelEdit}
-                                        sx={{ minWidth: 'auto', p: 0.5 }}
-                                      >
-                                        ✕
-                                      </Button>
-                                    </Box>
-                                  ) : (
-                                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                                      <Typography 
-                                        variant="body2" 
-                                        sx={{ 
-                                          flex: 1,
-                                          cursor: 'pointer',
-                                          '&:hover': {
-                                            color: '#666'
-                                          }
-                                        }}
-                                        onClick={() => handleViewResult(result.job_id)}
-                                      >
-                                        {result.title}
-                                      </Typography>
-                                      <Button
-                                        size="small"
-                                        onClick={() => handleEditTitle(result)}
-                                        sx={{ minWidth: 'auto', p: 0.5, fontSize: '12px' }}
-                                      >
-                                        ✎
-                                      </Button>
-                                    </Box>
-                                  )}
-                                </TableCell>
-                                <TableCell>
-                                  <Chip
-                                    label={result.status}
-                                    color={result.status === 'completed' ? 'success' : 'warning'}
-                                    size="small"
-                                  />
-                                </TableCell>
-                                <TableCell>
-                                  <Typography variant="body2">
-                                    {formatDate(result.created_at)}
-                                  </Typography>
-                                </TableCell>
-                                <TableCell>
-                                  <Box sx={{ display: 'flex', gap: 1 }}>
-                                    {result.shared_url && (
-                                      <Button
-                                        variant="outlined"
-                                        size="small"
-                                        startIcon={<MapIcon />}
-                                        onClick={() => window.open(result.shared_url, '_blank')}
-                                        sx={{ textTransform: 'none' }}
-                                      >
-                                        Map
-                                      </Button>
-                                    )}
-                                    {isAdmin && (
-                                      <Button
-                                        variant="outlined"
-                                        size="small"
-                                        startIcon={<DeleteIcon />}
-                                        onClick={() => handleDeleteClick(result)}
-                                        sx={{ 
-                                          textTransform: 'none',
-                                          color: '#d32f2f',
-                                          borderColor: '#d32f2f',
-                                          '&:hover': {
-                                            borderColor: '#b71c1c',
-                                            backgroundColor: 'rgba(211, 47, 47, 0.04)'
-                                          }
-                                        }}
-                                      >
-                                        Delete
-                                      </Button>
-                                    )}
-                                  </Box>
-                                </TableCell>
+                    <Box sx={{ display: 'flex', width: '100%', height: '100%' }}>
+                      {/* Left: Summary Table and KPIs */}
+                      <Box sx={{ flex: 1, minWidth: 0 }}>
+                        <TableContainer>
+                          <Table>
+                            <TableHead>
+                              <TableRow>
+                                <TableCell sx={{ fontWeight: 'bold' }}>Title</TableCell>
+                                <TableCell sx={{ fontWeight: 'bold' }}>Status</TableCell>
+                                <TableCell sx={{ fontWeight: 'bold' }}>Solution Time</TableCell>
+                                <TableCell sx={{ fontWeight: 'bold' }}>Created</TableCell>
+                                <TableCell sx={{ fontWeight: 'bold' }}>Actions</TableCell>
                               </TableRow>
-                            ))}
-                          </TableBody>
-                        </Table>
-                      </TableContainer>
+                            </TableHead>
+                            <TableBody>
+                              {optimizationResults.map((result) => (
+                                <TableRow 
+                                  key={result.id}
+                                  sx={{
+                                    backgroundColor: selectedJobId === result.job_id ? '#f0f8ff' : 'inherit',
+                                    '&:hover': {
+                                      backgroundColor: selectedJobId === result.job_id ? '#e6f3ff' : '#f5f5f5'
+                                    }
+                                  }}
+                                  hover
+                                  onClick={() => handleViewResult(result.job_id)}
+                                  style={{ cursor: 'pointer' }}
+                                >
+                                  <TableCell>
+                                    {editingTitle === result.id ? (
+                                      <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                                        <input
+                                          type="text"
+                                          value={editingTitleValue}
+                                          onChange={(e) => setEditingTitleValue(e.target.value)}
+                                          style={{
+                                            flex: 1,
+                                            padding: '4px 8px',
+                                            border: '1px solid #ccc',
+                                            borderRadius: '4px',
+                                            fontSize: '14px'
+                                          }}
+                                          onKeyPress={(e) => {
+                                            if (e.key === 'Enter') {
+                                              handleSaveTitle(result)
+                                            }
+                                          }}
+                                          aria-label="Edit optimization title"
+                                          title="Edit optimization title"
+                                        />
+                                        <Button
+                                          size="small"
+                                          onClick={() => handleSaveTitle(result)}
+                                          sx={{ minWidth: 'auto', p: 0.5 }}
+                                        >
+                                          ✓
+                                        </Button>
+                                        <Button
+                                          size="small"
+                                          onClick={handleCancelEdit}
+                                          sx={{ minWidth: 'auto', p: 0.5 }}
+                                        >
+                                          ✕
+                                        </Button>
+                                      </Box>
+                                    ) : (
+                                      <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                                        <Typography 
+                                          variant="body2" 
+                                          sx={{ 
+                                            flex: 1,
+                                            cursor: 'pointer',
+                                            '&:hover': {
+                                              color: '#666'
+                                            }
+                                          }}
+                                          onClick={() => handleViewResult(result.job_id)}
+                                        >
+                                          {result.title}
+                                        </Typography>
+                                        <Button
+                                          size="small"
+                                          onClick={() => handleEditTitle(result)}
+                                          sx={{ minWidth: 'auto', p: 0.5 }}
+                                        >
+                                          <EditIcon sx={{ fontSize: 27 }} />
+                                        </Button>
+                                      </Box>
+                                    )}
+                                  </TableCell>
+                                  <TableCell>
+                                    <Chip
+                                      label={result.status}
+                                      color={result.status === 'completed' ? 'success' : 'warning'}
+                                      size="small"
+                                    />
+                                  </TableCell>
+                                  <TableCell>
+                                    <Typography variant="body2">
+                                      {result.solution_time ? `${result.solution_time.toFixed(2)}s` : 'N/A'}
+                                    </Typography>
+                                  </TableCell>
+                                  <TableCell>
+                                    <Typography variant="body2">
+                                      {formatDate(result.created_at)}
+                                    </Typography>
+                                  </TableCell>
+                                  <TableCell>
+                                    <Box sx={{ display: 'flex', gap: 1 }}>
+                                      {result.shared_url && (
+                                        <Button
+                                          variant="outlined"
+                                          size="small"
+                                          startIcon={<MapIcon />}
+                                          onClick={() => window.open(result.shared_url, '_blank')}
+                                          sx={{ textTransform: 'none' }}
+                                        >
+                                          Map
+                                        </Button>
+                                      )}
+                                      {isAdmin && (
+                                        <Button
+                                          variant="outlined"
+                                          size="small"
+                                          startIcon={<DeleteIcon />}
+                                          onClick={() => handleDeleteClick(result)}
+                                          sx={{ 
+                                            textTransform: 'none',
+                                            color: '#d32f2f',
+                                            borderColor: '#d32f2f',
+                                            '&:hover': {
+                                              borderColor: '#b71c1c',
+                                              backgroundColor: 'rgba(211, 47, 47, 0.04)'
+                                            }
+                                          }}
+                                        >
+                                          Delete
+                                        </Button>
+                                      )}
+                                    </Box>
+                                  </TableCell>
+                                </TableRow>
+                              ))}
+                            </TableBody>
+                          </Table>
+                        </TableContainer>
+                      </Box>
 
+                      {/* Right: Expandable Details Panel */}
                       {selectedResult && (
-                        <Box sx={{ mt: 4, p: 3, border: '1px solid #e0e0e0', borderRadius: 1 }}>
-                          <Typography variant="h6" sx={{ mb: 2, fontWeight: 'bold' }}>
-                            Optimization Result Details
-                          </Typography>
-                          
+                        <Box
+                          sx={{
+                            width: { xs: '100%', sm: 1000, md: 1200 },
+                            maxWidth: '90vw',
+                            minWidth: 640,
+                            boxShadow: 4,
+                            bgcolor: 'background.paper',
+                            borderLeft: '1px solid #e0e0e0',
+                            p: 3,
+                            position: 'relative',
+                            zIndex: 10,
+                            overflowY: 'auto',
+                            height: '100vh',
+                            transition: 'all 0.3s',
+                          }}
+                        >
+                          {/* Close button at top right */}
+                          <Button
+                            variant="outlined"
+                            size="small"
+                            onClick={() => {
+                              setSelectedResult(null)
+                              setSelectedJobId(null)
+                            }}
+                            sx={{ position: 'absolute', top: 8, right: 8, zIndex: 11 }}
+                          >
+                            Close
+                          </Button>
+
+                          {/* Loading state */}
+                          {loadingDetails ? (
+                            <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '200px' }}>
+                              <CircularProgress />
+                            </Box>
+                          ) : (
+                            <>
+                              {/* Details content */}
+                              <Typography variant="h6" sx={{ mb: 2, fontWeight: 'bold' }}>
+                                Optimization Result Details
+                              </Typography>
                           {/* Basic Information */}
                           <Grid container spacing={2} sx={{ mb: 3 }}>
                             <Grid item xs={12} md={6}>
@@ -883,17 +950,50 @@ export default function RouteAnalysisPage() {
                                 {selectedResult.response_data?.result?.routes?.length || 0}
                               </Typography>
                             </Grid>
+                            <Grid item xs={12} md={6}>
+                              <Typography variant="body2" sx={{ fontWeight: 'bold' }}>
+                                Solution Time:
+                              </Typography>
+                              <Typography variant="body2" sx={{ mb: 2 }}>
+                                {selectedResult.solution_time ? `${selectedResult.solution_time.toFixed(2)} seconds` : 'N/A'}
+                              </Typography>
+                            </Grid>
                           </Grid>
+
+                          {/* Route Details Table */}
+                          {selectedResult?.response_data?.result?.routes && (
+                            <Box sx={{ mt: 3 }}>
+                              <Typography variant="h6" sx={{ mb: 2, color: '#d36784', fontWeight: 'bold' }}>
+                                Route Details
+                              </Typography>
+                              <RouteSummaryTable
+                                routes={selectedResult.response_data.result.routes}
+                                expandedRoutes={expandedRoutes}
+                                onToggleRoute={(index) => {
+                                  setExpandedRoutes(prev => {
+                                    const newSet = new Set(prev);
+                                    if (newSet.has(index)) {
+                                      newSet.delete(index);
+                                    } else {
+                                      newSet.add(index);
+                                    }
+                                    return newSet;
+                                  });
+                                }}
+                                showSelection={false}
+                                maxHeight={400}
+                              />
+                            </Box>
+                          )}
 
                           {/* KPI Calculations */}
                           {(() => {
                             const kpis = calculateKPIs(selectedResult.response_data)
                             if (!kpis) return null
-
                             return (
                               <>
                                 {/* Fuel Delivery KPIs */}
-                                <Typography variant="h6" sx={{ mb: 2, mt: 3, color: '#d36784', fontWeight: 'bold' }}>
+                                <Typography variant="h6" sx={{ mb: 2, mt: 4, color: '#d36784', fontWeight: 'bold' }}>
                                   Fuel Delivery Metrics
                                 </Typography>
                                 <Grid container spacing={2} sx={{ mb: 3 }}>
@@ -960,54 +1060,7 @@ export default function RouteAnalysisPage() {
                                         {formatDuration(kpis.totalDuration)}
                                       </Typography>
                                       <Typography variant="caption" sx={{ color: '#666' }}>
-                                        Total Drive Time
-                                      </Typography>
-                                    </Box>
-                                  </Grid>
-                                  <Grid item xs={12} md={3}>
-                                    <Box sx={{ p: 2, bgcolor: '#f8f9fa', borderRadius: 1, textAlign: 'center' }}>
-                                      <Typography variant="h6" sx={{ color: '#d36784', fontWeight: 'bold' }}>
-                                        {kpis.avgSpeed.toFixed(1)}
-                                      </Typography>
-                                      <Typography variant="caption" sx={{ color: '#666' }}>
-                                        Avg Speed (km/h)
-                                      </Typography>
-                                    </Box>
-                                  </Grid>
-                                  <Grid item xs={12} md={3}>
-                                    <Box sx={{ p: 2, bgcolor: '#f8f9fa', borderRadius: 1, textAlign: 'center' }}>
-                                      <Typography variant="h6" sx={{ color: '#d36784', fontWeight: 'bold' }}>
-                                        {kpis.fuelEfficiency.toFixed(0)}
-                                      </Typography>
-                                      <Typography variant="caption" sx={{ color: '#666' }}>
-                                        Fuel Efficiency (m/gal)
-                                      </Typography>
-                                    </Box>
-                                  </Grid>
-                                </Grid>
-
-                                {/* Service Quality KPIs */}
-                                <Typography variant="h6" sx={{ mb: 2, mt: 3, color: '#d36784', fontWeight: 'bold' }}>
-                                  Service Quality
-                                </Typography>
-                                <Grid container spacing={2} sx={{ mb: 3 }}>
-                                  <Grid item xs={12} md={3}>
-                                    <Box sx={{ p: 2, bgcolor: '#f8f9fa', borderRadius: 1, textAlign: 'center' }}>
-                                      <Typography variant="h6" sx={{ color: kpis.unassignedCount === 0 ? '#4caf50' : '#f44336', fontWeight: 'bold' }}>
-                                        {kpis.unassignedCount}
-                                      </Typography>
-                                      <Typography variant="caption" sx={{ color: '#666' }}>
-                                        Unassigned Jobs
-                                      </Typography>
-                                    </Box>
-                                  </Grid>
-                                  <Grid item xs={12} md={3}>
-                                    <Box sx={{ p: 2, bgcolor: '#f8f9fa', borderRadius: 1, textAlign: 'center' }}>
-                                      <Typography variant="h6" sx={{ color: kpis.lateVisits === 0 ? '#4caf50' : '#f44336', fontWeight: 'bold' }}>
-                                        {kpis.lateVisits}
-                                      </Typography>
-                                      <Typography variant="caption" sx={{ color: '#666' }}>
-                                        Late Deliveries
+                                        Total Duration
                                       </Typography>
                                     </Box>
                                   </Grid>
@@ -1017,7 +1070,7 @@ export default function RouteAnalysisPage() {
                                         {formatDuration(kpis.totalService)}
                                       </Typography>
                                       <Typography variant="caption" sx={{ color: '#666' }}>
-                                        Total Service Time
+                                        Total Service
                                       </Typography>
                                     </Box>
                                   </Grid>
@@ -1027,7 +1080,7 @@ export default function RouteAnalysisPage() {
                                         {formatDuration(kpis.totalWaiting)}
                                       </Typography>
                                       <Typography variant="caption" sx={{ color: '#666' }}>
-                                        Total Waiting Time
+                                        Total Waiting
                                       </Typography>
                                     </Box>
                                   </Grid>
@@ -1035,47 +1088,11 @@ export default function RouteAnalysisPage() {
                               </>
                             )
                           })()}
-
-                          {/* Routes Table */}
-                          {selectedResult?.response_data?.result?.routes && (
-                            <Box sx={{ mt: 4 }}>
-                              <Typography variant="h6" sx={{ mb: 2, color: '#d36784', fontWeight: 'bold' }}>
-                                Route Details
-                              </Typography>
-                              <RouteSummaryTable
-                                routes={selectedResult.response_data.result.routes}
-                                expandedRoutes={expandedRoutes}
-                                onToggleRoute={(index) => {
-                                  setExpandedRoutes(prev => {
-                                    const newSet = new Set(prev);
-                                    if (newSet.has(index)) {
-                                      newSet.delete(index);
-                                    } else {
-                                      newSet.add(index);
-                                    }
-                                    return newSet;
-                                  });
-                                }}
-                                showSelection={false}
-                                maxHeight={400}
-                              />
-                            </Box>
+                            </>
                           )}
-
-                          <Button
-                            variant="outlined"
-                            size="small"
-                            onClick={() => {
-                              setSelectedResult(null)
-                              setSelectedJobId(null)
-                            }}
-                            sx={{ mt: 2 }}
-                          >
-                            Close Details
-                          </Button>
                         </Box>
                       )}
-                    </>
+                    </Box>
                   )}
                 </Paper>
               </Grid>
@@ -1090,21 +1107,19 @@ export default function RouteAnalysisPage() {
             px: 2,
             mt: '5px'
           }}>
-            <Container maxWidth="xl">
-              <Box sx={{ mt: 0, pt: 0, display: 'flex', alignItems: 'center', gap: 1 }}>
-                <img
-                  src="/company_logo.svg"
-                  alt="Diesel Direct Logo"
-                  style={{ height: '20px', width: 'auto', marginRight: '8px', verticalAlign: 'middle' }}
-                />
-                <Typography variant="caption" sx={{ color: '#999' }}>
-                  powered by NextBillion.ai | Version 1.0.0 | Last updated: {new Date().toLocaleDateString()}
-                </Typography>
-              </Box>
-            </Container>
+            <Box sx={{ mt: 0, pt: 0, display: 'flex', alignItems: 'center', gap: 1 }}>
+              <img
+                src={companyLogo}
+                alt={`${companyName} Logo`}
+                style={{ height: '20px', width: 'auto', marginRight: '8px', verticalAlign: 'middle' }}
+              />
+              <Typography variant="caption" sx={{ color: '#999' }}>
+                powered by NextBillion.ai | Version 1.0.0 | Last updated: {new Date().toLocaleDateString()}
+              </Typography>
+            </Box>
           </Box>
         </Box>
-      </Container>
+      </Box>
 
       {/* Delete Confirmation Dialog */}
       <Dialog
