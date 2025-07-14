@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import { Box, IconButton, Typography, Button, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions } from '@mui/material'
 import DeleteIcon from '@mui/icons-material/Delete'
+import StorageIcon from '@mui/icons-material/Storage'
 import { FileDropZone } from './file-drop-zone'
 import { DataTable } from './data-table'
 import { useInputStore } from '../../../models/input/store'
@@ -12,11 +13,15 @@ import AddIcon from '@mui/icons-material/Add';
 import EditIcon from '@mui/icons-material/Edit';
 import SaveIcon from '@mui/icons-material/Save';
 import CloseIcon from '@mui/icons-material/Close';
+import { useCallback } from 'react';
 
 export const InputVehicleUpload = () => {
   const store = useInputStore()
   const { vehicle } = store.inputCore
   const hasData = vehicle.rawData.rows.length > 0
+
+  // Check if CSV import is enabled
+  const enableCsvImport = process.env.NEXT_PUBLIC_ENABLE_CSV_IMPORT === 'true'
 
   const handleDataUpload = (header: string[], data: string[][]) => {
     store.inputCore.setRawData('vehicle', {
@@ -25,6 +30,29 @@ export const InputVehicleUpload = () => {
       attachedRows: [],
     })
   }
+
+  // Handler for database import for vehicles
+  const handleDatabaseVehiclesImported = useCallback(async () => {
+    // Fetch all vehicles from the backend
+    try {
+      const res = await fetch('/api/vehicles');
+      if (!res.ok) throw new Error('Failed to fetch vehicles');
+      const data = await res.json();
+      const vehicles = data.vehicles || [];
+      if (!vehicles.length) return;
+      const header = Object.keys(vehicles[0]);
+      const rows = vehicles.map((v: any) => header.map((h: string) => v[h] ?? ''));
+      store.inputCore.setRawData('vehicle', {
+        header,
+        rows,
+        attachedRows: [],
+      });
+    } catch (e) {
+      // Optionally show error
+      // eslint-disable-next-line no-console
+      console.error(e);
+    }
+  }, [store.inputCore]);
 
   const handleClearData = () => {
     store.inputCore.setRawData('vehicle', {
@@ -109,97 +137,106 @@ export const InputVehicleUpload = () => {
             fontSize: '16px',
             marginBottom: '13px',
             fontWeight: '500',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '8px',
           }}
         >
+          <StorageIcon color="primary" sx={{ fontSize: '20px' }} />
           Import Vehicle Fleet Data
         </h3>
       </Box>
-
-      {!hasData ? (
-        <div
-          style={{
-            border: '1px solid #e0e0e0',
-            borderRadius: '8px',
-            padding: '20px',
-            marginBottom: '20px',
-          }}
-        >
-          <FileDropZone
-            onDataUpload={handleDataUpload}
-            sampleLink="https://static.nextbillion.io/ncc/route-planner-v2/data/vehicle_sample_data.zip"
-          />
-        </div>
-      ) : (
-        <Box
-          sx={{
-            border: '1px solid #e0e0e0',
-            borderRadius: '8px',
-            padding: '20px',
-            marginBottom: '20px',
-            backgroundColor: '#f8f9fa',
-          }}
-        >
-          <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 2 }}>
-            <Typography variant="h6" sx={{ color: '#d36784', fontWeight: 'bold', display: 'flex', alignItems: 'center', gap: 1 }}>
-              <span style={{ fontSize: 22, lineHeight: 1, color: '#43a047' }}>✓</span> {vehicle.rawData.rows.length} records loaded
-            </Typography>
-          </Box>
-
-          {/* Batch editing controls */}
-          <Box sx={{ mt: 2, mb: 2, display: 'flex', gap: 2, alignItems: 'center', justifyContent: 'flex-end' }}>
-            <IconButton onClick={() => store.inputCore.resetMapping('vehicle')} color="primary" title="Reset Mapping">
-              <ReplayIcon />
-            </IconButton>
-            <IconButton onClick={() => store.inputCore.addAttachedColumn('vehicle')} color="primary" title="Add attribute">
-              <AddIcon />
-            </IconButton>
-            {!isEditing && (
-              <IconButton onClick={handleEdit} color="primary" title="Edit table">
-                <EditIcon />
+      {
+        !hasData ? (
+          <div
+            style={{
+              border: '1px solid #e0e0e0',
+              borderRadius: '8px',
+              padding: '20px',
+              marginBottom: '20px',
+            }}
+          >
+            <Button variant="contained" onClick={handleDatabaseVehiclesImported} sx={{ mb: 2 }}>
+              Import Vehicles from Database
+            </Button>
+            {/* CSV import panel - only show if enabled */}
+            {enableCsvImport && (
+              <FileDropZone
+                onDataUpload={handleDataUpload}
+                sampleLink="https://static.nextbillion.io/ncc/route-planner-v2/data/vehicle_sample_data.zip"
+              />
+            )}
+          </div>
+        ) : (
+          <Box
+            sx={{
+              border: '1px solid #e0e0e0',
+              borderRadius: '8px',
+              padding: '20px',
+              marginBottom: '20px',
+              backgroundColor: '#f8f9fa',
+            }}
+          >
+            <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 2 }}>
+              <Typography variant="h6" sx={{ color: '#d36784', fontWeight: 'bold', display: 'flex', alignItems: 'center', gap: 1 }}>
+                <span style={{ fontSize: 22, lineHeight: 1, color: '#43a047' }}>✓</span> {vehicle.rawData.rows.length} records loaded
+              </Typography>
+            </Box>
+            {/* Batch editing controls */}
+            <Box sx={{ mt: 2, mb: 2, display: 'flex', gap: 2, alignItems: 'center', justifyContent: 'flex-end' }}>
+              <IconButton onClick={() => store.inputCore.resetMapping('vehicle')} color="primary" title="Reset Mapping">
+                <ReplayIcon />
               </IconButton>
-            )}
-            {isEditing && (
-              <>
-                <IconButton onClick={handleSave} color="success" title="Save changes">
-                  <SaveIcon />
+              <IconButton onClick={() => store.inputCore.addAttachedColumn('vehicle')} color="primary" title="Add attribute">
+                <AddIcon />
+              </IconButton>
+              {!isEditing && (
+                <IconButton onClick={handleEdit} color="primary" title="Edit table">
+                  <EditIcon />
                 </IconButton>
-                <IconButton onClick={handleCancel} color="error" title="Cancel editing">
-                  <CloseIcon />
-                </IconButton>
-              </>
-            )}
-            <IconButton onClick={handleDelete} color="error" title="Delete imported data">
-              <DeleteIcon />
-            </IconButton>
+              )}
+              {isEditing && (
+                <>
+                  <IconButton onClick={handleSave} color="success" title="Save changes">
+                    <SaveIcon />
+                  </IconButton>
+                  <IconButton onClick={handleCancel} color="error" title="Cancel editing">
+                    <CloseIcon />
+                  </IconButton>
+                </>
+              )}
+              <IconButton onClick={handleDelete} color="error" title="Delete imported data">
+                <DeleteIcon />
+              </IconButton>
+            </Box>
+            {/* Delete confirmation dialog */}
+            <Dialog open={deleteDialogOpen} onClose={handleDeleteCancel}>
+              <DialogTitle>Are you sure?</DialogTitle>
+              <DialogContent>
+                <DialogContentText>
+                  This will delete all imported vehicle data. This action cannot be undone.
+                </DialogContentText>
+              </DialogContent>
+              <DialogActions>
+                <Button onClick={handleDeleteCancel} color="primary">Cancel</Button>
+                <Button onClick={handleDeleteConfirm} color="error" variant="contained">Confirm</Button>
+              </DialogActions>
+            </Dialog>
+            {/* Editable table */}
+            <DataMapperTable
+              inputType="vehicle"
+              isEditing={isEditing}
+              highlightCell={null}
+              onCellChange={handleCellChange}
+              onRepeatToAll={handleRepeatToAll}
+              onDeleteAttributeColumn={handleDeleteAttributeColumn}
+              rows={isEditing ? editRows : vehicle.rawData.rows}
+              attachedRows={isEditing ? editAttachedRows : vehicle.rawData.attachedRows}
+              header={vehicle.rawData.header}
+            />
           </Box>
-         {/* Delete confirmation dialog */}
-         <Dialog open={deleteDialogOpen} onClose={handleDeleteCancel}>
-           <DialogTitle>Are you sure?</DialogTitle>
-           <DialogContent>
-             <DialogContentText>
-               This will delete all imported vehicle data. This action cannot be undone.
-             </DialogContentText>
-           </DialogContent>
-           <DialogActions>
-             <Button onClick={handleDeleteCancel} color="primary">Cancel</Button>
-             <Button onClick={handleDeleteConfirm} color="error" variant="contained">Confirm</Button>
-           </DialogActions>
-         </Dialog>
-
-          {/* Editable table */}
-          <DataMapperTable
-            inputType="vehicle"
-            isEditing={isEditing}
-            highlightCell={null}
-            onCellChange={handleCellChange}
-            onRepeatToAll={handleRepeatToAll}
-            onDeleteAttributeColumn={handleDeleteAttributeColumn}
-            rows={isEditing ? editRows : vehicle.rawData.rows}
-            attachedRows={isEditing ? editAttachedRows : vehicle.rawData.attachedRows}
-            header={vehicle.rawData.header}
-          />
-        </Box>
-      )}
+        )
+      }
     </div>
   )
 } 

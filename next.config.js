@@ -42,6 +42,7 @@ const nextConfig = {
     NEXT_PUBLIC_VERSION: pkg.version,
     NEXT_PUBLIC_LAST_UPDATED: getLastCommitDate(),
     NEXT_PUBLIC_GIT_COMMIT: getGitCommit(),
+    NEXT_PUBLIC_ENABLE_CSV_IMPORT: process.env.NEXT_PUBLIC_ENABLE_CSV_IMPORT || 'false',
   },
   typescript: {
     ignoreBuildErrors: true,

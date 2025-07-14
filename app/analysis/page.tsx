@@ -743,7 +743,16 @@ export default function RouteAnalysisPage() {
                                     }
                                   }}
                                   hover
-                                  onClick={() => handleViewResult(result.job_id)}
+                                  onClick={() => {
+                                    // If the panel is already open for this result, close it
+                                    if (selectedJobId === result.job_id) {
+                                      setSelectedResult(null)
+                                      setSelectedJobId(null)
+                                    } else {
+                                      // Otherwise, open the panel for this result
+                                      handleViewResult(result.job_id)
+                                    }
+                                  }}
                                   style={{ cursor: 'pointer' }}
                                 >
                                   <TableCell>
@@ -794,7 +803,17 @@ export default function RouteAnalysisPage() {
                                               color: '#666'
                                             }
                                           }}
-                                          onClick={() => handleViewResult(result.job_id)}
+                                          onClick={(e) => {
+                                            e.stopPropagation() // Prevent row click from firing
+                                            // If the panel is already open for this result, close it
+                                            if (selectedJobId === result.job_id) {
+                                              setSelectedResult(null)
+                                              setSelectedJobId(null)
+                                            } else {
+                                              // Otherwise, open the panel for this result
+                                              handleViewResult(result.job_id)
+                                            }
+                                          }}
                                         >
                                           {result.title}
                                         </Typography>
@@ -877,10 +896,12 @@ export default function RouteAnalysisPage() {
                             bgcolor: 'background.paper',
                             borderLeft: '1px solid #e0e0e0',
                             p: 3,
-                            position: 'relative',
+                            position: 'fixed',
+                            top: 80, // Move panel up to start just below the header
+                            right: 0,
                             zIndex: 10,
                             overflowY: 'auto',
-                            height: '100vh',
+                            height: 'calc(100vh - 80px)', // Adjust height to account for top offset
                             transition: 'all 0.3s',
                           }}
                         >

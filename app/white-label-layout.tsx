@@ -10,12 +10,16 @@ interface WhiteLabelContextType {
   apiKey: string | null
   isLoading: boolean
   error: string | null
+  companyName: string
+  companyLogo: string
 }
 
 const WhiteLabelContext = createContext<WhiteLabelContextType>({
   apiKey: null,
   isLoading: true,
   error: null,
+  companyName: 'Route Planner',
+  companyLogo: '/company_logo.svg',
 })
 
 export function useWhiteLabelContext() {
@@ -49,6 +53,8 @@ export function WhiteLabelLayout({children}: WhiteLabelLayoutProps) {
   const [apiKey, setApiKey] = useState<string | null>(null)
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
+  const [companyName, setCompanyName] = useState('Route Planner')
+  const [companyLogo, setCompanyLogo] = useState('/company_logo.svg')
 
   useEffect(() => {
     // Fetch the API key from the config API route
@@ -75,6 +81,13 @@ export function WhiteLabelLayout({children}: WhiteLabelLayoutProps) {
 
         setApiKey(apiKey)
         setIsLoading(false)
+
+        // Fetch branding values
+        const companyName = config.COMPANY_NAME || 'Route Planner'
+        const companyLogo = config.COMPANY_LOGO || '/company_logo.svg'
+        setCompanyName(companyName)
+        setCompanyLogo(companyLogo)
+
       } catch (error) {
         console.error('Error fetching config:', error)
         // Don't show error, just continue without API key
@@ -128,7 +141,7 @@ export function WhiteLabelLayout({children}: WhiteLabelLayoutProps) {
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      <WhiteLabelContext.Provider value={{apiKey, isLoading, error}}>
+      <WhiteLabelContext.Provider value={{apiKey, isLoading, error, companyName, companyLogo}}>
         {children}
         {/* <Footer /> removed to prevent duplicate footers */}
       </WhiteLabelContext.Provider>

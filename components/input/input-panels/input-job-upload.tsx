@@ -13,12 +13,16 @@ import AddIcon from '@mui/icons-material/Add';
 import EditIcon from '@mui/icons-material/Edit';
 import SaveIcon from '@mui/icons-material/Save';
 import CloseIcon from '@mui/icons-material/Close';
+import { DatabaseDataManager } from '../database-data-manager';
 
 export const InputJobUpload = () => {
   const store = useInputStore()
   const useCase = useUseCase()
   const inputType = useCase === 'jobs' ? 'job' : 'shipment'
   const orderTypeLabel = useCase === 'jobs' ? 'Job' : 'Shipment'
+
+  // Check if CSV import is enabled
+  const enableCsvImport = process.env.NEXT_PUBLIC_ENABLE_CSV_IMPORT === 'true'
 
   const handleDataUpload = (header: string[], data: string[][]) => {
     store.inputCore.setRawData(inputType, {
@@ -102,6 +106,19 @@ export const InputJobUpload = () => {
     }
   }
 
+  // Handler for database import for jobs
+  const handleDatabaseJobsImported = (jobs: any[]) => {
+    // Convert jobs to the format expected by setRawData
+    if (!jobs || jobs.length === 0) return;
+    const header = Object.keys(jobs[0]);
+    const rows = jobs.map(job => header.map(h => job[h] ?? ''));
+    store.inputCore.setRawData(inputType, {
+      header,
+      rows,
+      attachedRows: [],
+    });
+  }
+
   return (
     <div style={{ padding: '20px' }}>
       <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 2 }}>
@@ -116,76 +133,82 @@ export const InputJobUpload = () => {
           Upload {orderTypeLabel} Data
         </h3>
       </Box>
-
-      {!hasData ? (
-        <div
-          style={{
-            border: '1px solid #e0e0e0',
-            borderRadius: '8px',
-            padding: '20px',
-            marginBottom: '20px',
-          }}
-        >
-          <FileDropZone onDataUpload={handleDataUpload} sampleLink={getSampleLink()} />
-        </div>
-      ) : (
-        <Box
-          sx={{
-            border: '1px solid #e0e0e0',
-            borderRadius: '8px',
-            padding: '20px',
-            marginBottom: '20px',
-            backgroundColor: '#f8f9fa',
-          }}
-        >
-          <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 2 }}>
-            <Typography variant="h6" sx={{ color: '#d36784', fontWeight: 'bold', display: 'flex', alignItems: 'center', gap: 1 }}>
-              <span style={{ fontSize: 22, lineHeight: 1, color: '#43a047' }}>✓</span> {currentData.rows.length} records loaded
-            </Typography>
-          </Box>
-
-          {/* Batch editing controls */}
-          <Box sx={{ mt: 2, mb: 2, display: 'flex', gap: 2, alignItems: 'center', justifyContent: 'flex-end' }}>
-            <IconButton onClick={() => store.inputCore.resetMapping(inputType)} color="primary" title="Reset Mapping">
-              <ReplayIcon />
-            </IconButton>
-            <IconButton onClick={() => store.inputCore.addAttachedColumn(inputType)} color="primary" title="Add attribute">
-              <AddIcon />
-            </IconButton>
-            {!isEditing && (
-              <IconButton onClick={handleEdit} color="primary" title="Edit table">
-                <EditIcon />
+      {
+        !hasData ? (
+          <div
+            style={{
+              border: '1px solid #e0e0e0',
+              borderRadius: '8px',
+              padding: '20px',
+              marginBottom: '20px',
+            }}
+          >
+            {/* Database import panel for jobs */}
+            {useCase === 'jobs' && (
+              <DatabaseDataManager onJobsImported={handleDatabaseJobsImported} />
+            )}
+            {/* CSV import panel - only show if enabled */}
+            {enableCsvImport && (
+              <FileDropZone onDataUpload={handleDataUpload} sampleLink={getSampleLink()} />
+            )}
+          </div>
+        ) : (
+          <Box
+            sx={{
+              border: '1px solid #e0e0e0',
+              borderRadius: '8px',
+              padding: '20px',
+              marginBottom: '20px',
+              backgroundColor: '#f8f9fa',
+            }}
+          >
+            <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 2 }}>
+              <Typography variant="h6" sx={{ color: '#d36784', fontWeight: 'bold', display: 'flex', alignItems: 'center', gap: 1 }}>
+                <span style={{ fontSize: 22, lineHeight: 1, color: '#43a047' }}>✓</span> {currentData.rows.length} records loaded
+              </Typography>
+            </Box>
+            {/* Batch editing controls */}
+            <Box sx={{ mt: 2, mb: 2, display: 'flex', gap: 2, alignItems: 'center', justifyContent: 'flex-end' }}>
+              <IconButton onClick={() => store.inputCore.resetMapping(inputType)} color="primary" title="Reset Mapping">
+                <ReplayIcon />
               </IconButton>
-            )}
-            {isEditing && (
-              <>
-                <IconButton onClick={handleSave} color="success" title="Save changes">
-                  <SaveIcon />
+              <IconButton onClick={() => store.inputCore.addAttachedColumn(inputType)} color="primary" title="Add attribute">
+                <AddIcon />
+              </IconButton>
+              {!isEditing && (
+                <IconButton onClick={handleEdit} color="primary" title="Edit table">
+                  <EditIcon />
                 </IconButton>
-                <IconButton onClick={handleCancel} color="error" title="Cancel editing">
-                  <CloseIcon />
-                </IconButton>
-              </>
-            )}
-            <IconButton onClick={handleClearData} color="error" title="Delete imported data">
-              <DeleteIcon />
-            </IconButton>
+              )}
+              {isEditing && (
+                <>
+                  <IconButton onClick={handleSave} color="success" title="Save changes">
+                    <SaveIcon />
+                  </IconButton>
+                  <IconButton onClick={handleCancel} color="error" title="Cancel editing">
+                    <CloseIcon />
+                  </IconButton>
+                </>
+              )}
+              <IconButton onClick={handleClearData} color="error" title="Delete imported data">
+                <DeleteIcon />
+              </IconButton>
+            </Box>
+            {/* Editable table */}
+            <DataMapperTable
+              inputType={inputType}
+              isEditing={isEditing}
+              highlightCell={null}
+              onCellChange={handleCellChange}
+              onRepeatToAll={handleRepeatToAll}
+              onDeleteAttributeColumn={handleDeleteAttributeColumn}
+              rows={isEditing ? editRows : currentData.rows}
+              attachedRows={isEditing ? editAttachedRows : currentData.attachedRows}
+              header={currentData.header}
+            />
           </Box>
-
-          {/* Editable table */}
-          <DataMapperTable
-            inputType={inputType}
-            isEditing={isEditing}
-            highlightCell={null}
-            onCellChange={handleCellChange}
-            onRepeatToAll={handleRepeatToAll}
-            onDeleteAttributeColumn={handleDeleteAttributeColumn}
-            rows={isEditing ? editRows : currentData.rows}
-            attachedRows={isEditing ? editAttachedRows : currentData.attachedRows}
-            header={currentData.header}
-          />
-        </Box>
-      )}
+        )
+      }
     </div>
   )
-} 
+}

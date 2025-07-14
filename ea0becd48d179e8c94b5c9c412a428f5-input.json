@@ -1,0 +1,911 @@
+{
+  "locations": {
+    "id": 30,
+    "description": "Locations SBRIVERTON 7/9/2025 12:00:00 AM",
+    "location": [
+      "34.170314,-118.366000",
+      "36.851311,-119.808196",
+      "36.070000,-119.010000",
+      "34.000518,-118.465844",
+      "36.324466,-119.645350",
+      "34.164752,-118.369174",
+      "34.430000,-119.720000",
+      "34.051050,-118.365001",
+      "34.210516,-118.492552",
+      "34.179242,-118.445256",
+      "34.193782,-118.552810",
+      "34.227038,-118.450103",
+      "34.216670,-118.595190",
+      "35.272328,-120.669939",
+      "34.050000,-118.460000",
+      "34.067664,-118.343870",
+      "33.983169,-118.186008",
+      "34.078820,-118.165690",
+      "34.164499,-118.627718",
+      "34.201347,-118.371148",
+      "34.048050,-118.347830",
+      "34.176401,-119.212366",
+      "34.039970,-118.258790",
+      "34.043084,-118.468869",
+      "34.002340,-118.469597",
+      "34.007308,-118.335088",
+      "34.023694,-118.493144",
+      "34.150221,-118.379813",
+      "34.194083,-118.386981",
+      "34.232670,-118.438690",
+      "34.292381,-118.450633",
+      "34.264067,-118.502124",
+      "34.222740,-118.497463",
+      "34.638098,-120.457491",
+      "34.061470,-118.383380",
+      "33.880000,-118.080000"
+    ]
+  },
+  "jobs": [
+    {
+      "id": 1,
+      "description": "SH126208,SH126217",
+      "location_index": 1,
+      "service": 2700,
+      "time_windows": [
+        [
+          1752678000,
+          1752681600
+        ]
+      ],
+      "delivery": [
+        122
+      ],
+      "metadata": {
+        "name": "Tat Fresno li LLC (DBA The Artist Tree Fresno Palm)",
+        "address": "C3899     ",
+        "ShipmentDesc": "STAFF SAMPLES\nSamples of Kanha's NEW Vegan Rosin Sours products as a treat for the staff to try firsthand. 100% strain specific Solventless Rosin and Nano fast-acting. Enjoy!\n\nIncludes 30 non-medicated variety packs for any staff who don't consume edibles."
+      }
+    },
+    {
+      "id": 2,
+      "description": "SH126693,SH126694,SH126695",
+      "location_index": 2,
+      "service": 2700,
+      "time_windows": [
+        [
+          1752688800,
+          1752706800
+        ]
+      ],
+      "delivery": [
+        69
+      ],
+      "metadata": {
+        "name": "Cannabis Express Inc (DBA Premium Blossom)",
+        "address": "C5371     ",
+        "ShipmentDesc": "Promo units to support \"Buy a Sour get a Classic\""
+      }
+    },
+    {
+      "id": 3,
+      "description": "SH126696,SH126697",
+      "location_index": 3,
+      "service": 2700,
+      "time_windows": [
+        [
+          1752681600,
+          1752714000
+        ]
+      ],
+      "delivery": [
+        107
+      ],
+      "metadata": {
+        "name": "CS GROUP OPERATION 2, INC. [Lincoln] (DBA Eaze)",
+        "address": "C4539     ",
+        "ShipmentDesc": "PO-78627"
+      }
+    },
+    {
+      "id": 4,
+      "description": "SH126698,SH126699,SH126700",
+      "location_index": 4,
+      "service": 2700,
+      "time_windows": [
+        [
+          1752685200,
+          1752710400
+        ]
+      ],
+      "delivery": [
+        136
+      ],
+      "metadata": {
+        "name": "HANFORD ERUDITE (DBA HerbNJoy)",
+        "address": "C3107     ",
+        "ShipmentDesc": "Promo units to support \"Buy a Rosin Sour get a Classic\" \n& \n\"Buy a MINI get a MINI\""
+      }
+    },
+    {
+      "id": 5,
+      "description": "SH126701,SH126702",
+      "location_index": 5,
+      "service": 2700,
+      "time_windows": [
+        [
+          1752688800,
+          1752706800
+        ]
+      ],
+      "delivery": [
+        99
+      ],
+      "metadata": {
+        "name": "RESOURCE REFERRAL SERVICES, INC. (DBA Project Cannabis North Hollywood)",
+        "address": "C0451     ",
+        "ShipmentDesc": "15 Classic for Buy Rosin sour get a  Classic $1.\n\nNano for Buy 2 get 1 Kanha Fridays"
+      }
+    },
+    {
+      "id": 6,
+      "description": "SH126703,SH126704,SH126705",
+      "location_index": 6,
+      "service": 2700,
+      "time_windows": [
+        [
+          1752678000,
+          1752710400
+        ]
+      ],
+      "delivery": [
+        61
+      ],
+      "metadata": {
+        "name": "Santa Barbara Collective, Inc. (DBA Santa Barbara Collective)",
+        "address": "C0307     ",
+        "ShipmentDesc": "Promo units to support \"Buy a Sour get a Classic\""
+      }
+    },
+    {
+      "id": 7,
+      "description": "SH126706,SH126707",
+      "location_index": 7,
+      "service": 2700,
+      "time_windows": [
+        [
+          1752681600,
+          1752710400
+        ]
+      ],
+      "delivery": [
+        51
+      ],
+      "metadata": {
+        "name": "THE RELIEF COLLECTIVE, INC. (DBA Eaze - Growcery)",
+        "address": "C0553     ",
+        "ShipmentDesc": "PO-78708"
+      }
+    },
+    {
+      "id": 8,
+      "description": "SH126708",
+      "location_index": 8,
+      "service": 2700,
+      "time_windows": [
+        [
+          1752678000,
+          1752681600
+        ]
+      ],
+      "delivery": [
+        34
+      ],
+      "metadata": {
+        "name": "Westside Caregivers Club, Inc. [Dosist] (DBA Eaze)",
+        "address": "C0826     ",
+        "ShipmentDesc": "PO-78439"
+      }
+    },
+    {
+      "id": 9,
+      "description": "SH126719,SH126720,SH126721",
+      "location_index": 9,
+      "service": 2700,
+      "time_windows": [
+        [
+          1752685200,
+          1752710400
+        ]
+      ],
+      "delivery": [
+        58
+      ],
+      "metadata": {
+        "name": "RED MOON, INC. (DBA Red Moon)",
+        "address": "C0449     ",
+        "ShipmentDesc": null
+      }
+    },
+    {
+      "id": 10,
+      "description": "SH126722,SH126723,SH126724",
+      "location_index": 10,
+      "service": 2700,
+      "time_windows": [
+        [
+          1752685200,
+          1752706800
+        ]
+      ],
+      "delivery": [
+        44
+      ],
+      "metadata": {
+        "name": "Revo's Finest, LLC (DBA Revo's Finest)",
+        "address": "C3977     ",
+        "ShipmentDesc": "Promo product to run BOGO deal"
+      }
+    },
+    {
+      "id": 11,
+      "description": "SH126725,SH126726",
+      "location_index": 11,
+      "service": 2700,
+      "time_windows": [
+        [
+          1752681600,
+          1752703200
+        ]
+      ],
+      "delivery": [
+        32
+      ],
+      "metadata": {
+        "name": "VVS PANORAMA LLC (DBA Erb and Arbor)",
+        "address": "C3387     ",
+        "ShipmentDesc": "Promo product for BOGO deal"
+      }
+    },
+    {
+      "id": 12,
+      "description": "SH126734,SH126735,SH126736",
+      "location_index": 12,
+      "service": 2700,
+      "time_windows": [
+        [
+          1752685200,
+          1752710400
+        ]
+      ],
+      "delivery": [
+        125
+      ],
+      "metadata": {
+        "name": "DC Collective (DBA DC Collective)",
+        "address": "C0493     ",
+        "ShipmentDesc": "Promo product for BOGO deal"
+      }
+    },
+    {
+      "id": 13,
+      "description": "SH126737,SH126738,SH126739",
+      "location_index": 13,
+      "service": 2700,
+      "time_windows": [
+        [
+          1752681600,
+          1752710400
+        ]
+      ],
+      "delivery": [
+        173
+      ],
+      "metadata": {
+        "name": "MOM SLO, LLC (DBA Megan's Organic Market)",
+        "address": "C0285     ",
+        "ShipmentDesc": "Promo units to support \"buy a Sour get a Classic\""
+      }
+    },
+    {
+      "id": 14,
+      "description": "SH126740,SH126741,SH126742",
+      "location_index": 14,
+      "service": 2700,
+      "time_windows": [
+        [
+          1752696000,
+          1752710400
+        ]
+      ],
+      "delivery": [
+        59
+      ],
+      "metadata": {
+        "name": "P 22 Co, LLC (DBA Brentwood Greens)",
+        "address": "C8346     ",
+        "ShipmentDesc": "Promo product for BOGO deal"
+      }
+    },
+    {
+      "id": 15,
+      "description": "SH126768,SH126807",
+      "location_index": 15,
+      "service": 2700,
+      "time_windows": [
+        [
+          1752681600,
+          1752710400
+        ]
+      ],
+      "delivery": [
+        30
+      ],
+      "metadata": {
+        "name": "La Brea Connection LLC (DBA Benzeen Co.)",
+        "address": "C4535     ",
+        "ShipmentDesc": "Kanha Sours Promotion\n10 Classic promo units designated for Buy 1 Kanha Sours, Get 1 Kanha Classics customer deals every day while supplies last\n\nKanha B2G1s for 710 and July Deals\n15 Classic promo units designated for Kanha B2G1 bundle deals for 710 and July deals while supplies last"
+      }
+    },
+    {
+      "id": 16,
+      "description": "SH126769,SH126808",
+      "location_index": 16,
+      "service": 2700,
+      "time_windows": [
+        [
+          1752685200,
+          1752710400
+        ]
+      ],
+      "delivery": [
+        26
+      ],
+      "metadata": {
+        "name": "FIREHOUSE HEALTH CARE INDUSTRIES, INC. (DBA Firehouse365)",
+        "address": "C1343     ",
+        "ShipmentDesc": "Kanha B2G1s for 710 and July Deals\nClassic promo units designated for Kanha B2G1 bundle deals for 710 holiday and July deals while supplies last"
+      }
+    },
+    {
+      "id": 17,
+      "description": "SH126770,SH126790,SH126832",
+      "location_index": 17,
+      "service": 2700,
+      "time_windows": [
+        [
+          1752685200,
+          1752710400
+        ]
+      ],
+      "delivery": [
+        108
+      ],
+      "metadata": {
+        "name": "NOVA GROW LABS, LLC (DBA The Chronic)",
+        "address": "C3875     ",
+        "ShipmentDesc": "Kanha Sours Promotion\n60 Classic promo units designated for Buy 1 Kanha Sours, Get 1 Kanha Classics customer deals every day while supplies last\n\nKanha B2G1s for 710 and July Deals\n15 Classic promo units designated for Kanha B2G1 bundle deals for 710 holiday and July deals while supplies last"
+      }
+    },
+    {
+      "id": 18,
+      "description": "SH126772,SH126792,SH126820",
+      "location_index": 18,
+      "service": 2700,
+      "time_windows": [
+        [
+          1752692400,
+          1752714000
+        ]
+      ],
+      "delivery": [
+        81
+      ],
+      "metadata": {
+        "name": "WEST VALLEY PATIENTS CENTER, INC. (DBA West Valley Patients Group)",
+        "address": "C0464     ",
+        "ShipmentDesc": "Promo product for BOGO deal"
+      }
+    },
+    {
+      "id": 19,
+      "description": "SH126773,SH126793,SH126821",
+      "location_index": 19,
+      "service": 2700,
+      "time_windows": [
+        [
+          1752688800,
+          1752706800
+        ]
+      ],
+      "delivery": [
+        74
+      ],
+      "metadata": {
+        "name": "Cana Roots (DBA Roots Sun Valley)",
+        "address": "C0417     ",
+        "ShipmentDesc": "Promo product for BOGO deal"
+      }
+    },
+    {
+      "id": 20,
+      "description": "SH126775,SH126794,SH126815",
+      "location_index": 20,
+      "service": 2700,
+      "time_windows": [
+        [
+          1752685200,
+          1752710400
+        ]
+      ],
+      "delivery": [
+        53
+      ],
+      "metadata": {
+        "name": "MID CITY CANNABIS CLUB, INC. (DBA La Brea Collective - Distru)",
+        "address": "C4063     ",
+        "ShipmentDesc": "Kanha B2G1s for 710 and July Deals\n20 Classic promo units designated for Kanha B2G1 bundle deals for 710 holiday and July deals while supplies last"
+      }
+    },
+    {
+      "id": 21,
+      "description": "SH126776,SH126795,SH126839",
+      "location_index": 21,
+      "service": 2700,
+      "time_windows": [
+        [
+          1752681600,
+          1752710400
+        ]
+      ],
+      "delivery": [
+        107
+      ],
+      "metadata": {
+        "name": "INNOVATIVE CONCEPTS INVESTMENTS GROUP (DBA Medical Recreational Delivery)",
+        "address": "C1527     ",
+        "ShipmentDesc": "Promo units to support \"Buy a Sour get a Classic\""
+      }
+    },
+    {
+      "id": 22,
+      "description": "SH126777,SH126796,SH126819",
+      "location_index": 22,
+      "service": 2700,
+      "time_windows": [
+        [
+          1752685200,
+          1752710400
+        ]
+      ],
+      "delivery": [
+        31
+      ],
+      "metadata": {
+        "name": "Green Qween LLC. (DBA Green Qween DTLA)",
+        "address": "C3827     ",
+        "ShipmentDesc": "Kanha B2G1s for 710 and July Deals\n15 Classic promo units designated for Kanha B2G1 bundle deals for 710 holiday and July deals while supplies last"
+      }
+    },
+    {
+      "id": 23,
+      "description": "SH126778,SH126797,SH126823",
+      "location_index": 23,
+      "service": 2700,
+      "time_windows": [
+        [
+          1752681600,
+          1752710400
+        ]
+      ],
+      "delivery": [
+        64
+      ],
+      "metadata": {
+        "name": "Peace And Love LLC (DBA Dr. Greenthumb's West LA)",
+        "address": "C4584     ",
+        "ShipmentDesc": "Kanha Sours Promotion\n45 Classic promo units designated for Buy 1 Kanha Sours, Get 1 Kanha Classics customer deals every day while supplies last\n\nKanha B2G1s for 710 and July Deals\n15 Classic promo units designated for Kanha B2G1 bundle deals for 710 holiday and July deals while supplies last"
+      }
+    },
+    {
+      "id": 24,
+      "description": "SH126779,SH126798,SH126824",
+      "location_index": 24,
+      "service": 2700,
+      "time_windows": [
+        [
+          1752685200,
+          1752710400
+        ]
+      ],
+      "delivery": [
+        60
+      ],
+      "metadata": {
+        "name": "CAC VENICE, LLC (DBA California Alternative Caregivers)",
+        "address": "C0568     ",
+        "ShipmentDesc": "Kanha Sours Promotion\n60 Classic promo units designated for Buy 1 Kanha Sours, Get 1 Kanha Classics customer deals every day while supplies last"
+      }
+    },
+    {
+      "id": 25,
+      "description": "SH126780,SH126825",
+      "location_index": 25,
+      "service": 2700,
+      "time_windows": [
+        [
+          1752696000,
+          1752699600
+        ]
+      ],
+      "delivery": [
+        45
+      ],
+      "metadata": {
+        "name": "GOOD TIMES CRENSHAW LLC (DBA Gorilla RX)",
+        "address": "C3340     ",
+        "ShipmentDesc": "Kanha B2G1s for 710 and July Deals\n20 Classic promo units designated for Kanha B2G1 bundle deals for 710 holiday and July Kanha deals while supplies last"
+      }
+    },
+    {
+      "id": 26,
+      "description": "SH126781,SH126799,SH126826",
+      "location_index": 26,
+      "service": 2700,
+      "time_windows": [
+        [
+          1752681600,
+          1752706800
+        ]
+      ],
+      "delivery": [
+        90
+      ],
+      "metadata": {
+        "name": "Cpc Compassion, Inc.(DBA Local Cannabis Company)",
+        "address": "C4142     ",
+        "ShipmentDesc": "Kanha Sours Promotion\n60 Classic promo units designated for Buy 1 Kanha Sours, Get 1 Kanha Classics customer deals every day while supplies last\n\nKanha B2G1s for 710 and July Deals\n15 Classic promo units designated for Kanha B2G1 bundle deals for 710 holiday and July Kanha deals while supplies last"
+      }
+    },
+    {
+      "id": 27,
+      "description": "SH126782,SH126828",
+      "location_index": 27,
+      "service": 2700,
+      "time_windows": [
+        [
+          1752685200,
+          1752710400
+        ]
+      ],
+      "delivery": [
+        64
+      ],
+      "metadata": {
+        "name": "CALVIN FRYE (DBA iLyfted Studio City)",
+        "address": "C0479     ",
+        "ShipmentDesc": null
+      }
+    },
+    {
+      "id": 28,
+      "description": "SH126783,SH126829",
+      "location_index": 28,
+      "service": 2700,
+      "time_windows": [
+        [
+          1752692400,
+          1752710400
+        ]
+      ],
+      "delivery": [
+        58
+      ],
+      "metadata": {
+        "name": "COMPASSION UNION, INC. (DBA iLyfted North Hollywood)",
+        "address": "C0489     ",
+        "ShipmentDesc": null
+      }
+    },
+    {
+      "id": 29,
+      "description": "SH126784,SH126830",
+      "location_index": 29,
+      "service": 2700,
+      "time_windows": [
+        [
+          1752685200,
+          1752710400
+        ]
+      ],
+      "delivery": [
+        58
+      ],
+      "metadata": {
+        "name": "PASSION BLVD LLC (DBA iLyfted Panorama City)",
+        "address": "C3519     ",
+        "ShipmentDesc": null
+      }
+    },
+    {
+      "id": 30,
+      "description": "SH126785,SH126831",
+      "location_index": 30,
+      "service": 2700,
+      "time_windows": [
+        [
+          1752681600,
+          1752706800
+        ]
+      ],
+      "delivery": [
+        58
+      ],
+      "metadata": {
+        "name": "San Fernando Retailer LLC (DBA iLyfted Sylmar)",
+        "address": "C5047     ",
+        "ShipmentDesc": null
+      }
+    },
+    {
+      "id": 31,
+      "description": "SH126786,SH126800,SH126840",
+      "location_index": 31,
+      "service": 2700,
+      "time_windows": [
+        [
+          1752681600,
+          1752710400
+        ]
+      ],
+      "delivery": [
+        116
+      ],
+      "metadata": {
+        "name": "Baltoro Investment Group, LLC (DBA Balboa Bud)",
+        "address": "C4690     ",
+        "ShipmentDesc": "Promo product to run BOGO deal"
+      }
+    },
+    {
+      "id": 32,
+      "description": "SH126787",
+      "location_index": 32,
+      "service": 2700,
+      "time_windows": [
+        [
+          1752688800,
+          1752710400
+        ]
+      ],
+      "delivery": [
+        14
+      ],
+      "metadata": {
+        "name": "Kush Alley, Inc (DBA K.U.S.H. ALLEY)",
+        "address": "C0512     ",
+        "ShipmentDesc": "Promo units for anniversary goodie bags"
+      }
+    },
+    {
+      "id": 33,
+      "description": "SH126801,SH126827",
+      "location_index": 21,
+      "service": 2700,
+      "time_windows": [
+        [
+          1752678000,
+          1752710400
+        ]
+      ],
+      "delivery": [
+        58
+      ],
+      "metadata": {
+        "name": "WESTSIDE PROFESSIONAL MANAGEMENT, LLC (DBA Wheelhouse)",
+        "address": "C0324     ",
+        "ShipmentDesc": "Staff Samples - NEW ROSIN SOURS!"
+      }
+    },
+    {
+      "id": 34,
+      "description": "SH126803,SH126844",
+      "location_index": 33,
+      "service": 2700,
+      "time_windows": [
+        [
+          1752678000,
+          1752710400
+        ]
+      ],
+      "delivery": [
+        172
+      ],
+      "metadata": {
+        "name": "SoCal's Choice Inc (DBA Elevate Lompoc)",
+        "address": "C0312     ",
+        "ShipmentDesc": "Staff Samples - NEW ROSIN SOURS!\nPlease distribute to your team as soon as possible as we will be visiting to discuss feedback with staff. Thank you!"
+      }
+    },
+    {
+      "id": 35,
+      "description": "SH126842",
+      "location_index": 34,
+      "service": 2700,
+      "time_windows": [
+        [
+          1752685200,
+          1752706800
+        ]
+      ],
+      "delivery": [
+        175
+      ],
+      "metadata": {
+        "name": "LA ERUDITE VENTURES (DBA Ohana Beverly Hills)",
+        "address": "C3566     ",
+        "ShipmentDesc": null
+      }
+    },
+    {
+      "id": 36,
+      "description": "SH126899,SH126900",
+      "location_index": 35,
+      "service": 2700,
+      "time_windows": [
+        [
+          1752681600,
+          1752706800
+        ]
+      ],
+      "delivery": [
+        122
+      ],
+      "metadata": {
+        "name": "Off the charts (DBA OTC Artesia LLC)",
+        "address": "C7700     ",
+        "ShipmentDesc": "Staff Samples - NEW ROSIN SOURS!"
+      }
+    }
+  ],
+  "vehicles": [
+    {
+      "id": "3",
+      "start_index": 0,
+      "end_index": 0,
+      "description": "96005A3",
+      "capacity": [
+        245760
+      ],
+      "time_window": [
+        1752670800,
+        1752710400
+      ],
+      "metadata": {
+        "LicensePlateNumber": "96005A3",
+        "VehicleID": "MQJ000032"
+      },
+      "drive_time_layover_config": {
+        "max_continuous_driving": 10800,
+        "layover_duration": 1800
+      },
+      "max_tasks": 8
+    },
+    {
+      "id": "4",
+      "start_index": 0,
+      "end_index": 0,
+      "description": "22318W2",
+      "capacity": [
+        245760
+      ],
+      "time_window": [
+        1752670800,
+        1752710400
+      ],
+      "metadata": {
+        "LicensePlateNumber": "22318W2",
+        "VehicleID": "MQJ000034"
+      },
+      "drive_time_layover_config": {
+        "max_continuous_driving": 10800,
+        "layover_duration": 1800
+      },
+      "max_tasks": 8
+    },
+    {
+      "id": "5",
+      "start_index": 0,
+      "end_index": 0,
+      "description": "16428D2",
+      "capacity": [
+        122880
+      ],
+      "time_window": [
+        1752670800,
+        1752710400
+      ],
+      "metadata": {
+        "LicensePlateNumber": "16428D2",
+        "VehicleID": "MQJ000035"
+      },
+      "drive_time_layover_config": {
+        "max_continuous_driving": 10800,
+        "layover_duration": 1800
+      },
+      "max_tasks": 8
+    },
+    {
+      "id": "281474986740071",
+      "start_index": 0,
+      "end_index": 0,
+      "description": "38690F2",
+      "capacity": [
+        143360
+      ],
+      "time_window": [
+        1752670800,
+        1752710400
+      ],
+      "metadata": {
+        "LicensePlateNumber": "38690F2",
+        "VehicleID": "MQJ000038"
+      },
+      "drive_time_layover_config": {
+        "max_continuous_driving": 10800,
+        "layover_duration": 1800
+      },
+      "max_tasks": 8
+    },
+    {
+      "id": "281474982698923",
+      "start_index": 0,
+      "end_index": 0,
+      "description": "46525C3",
+      "capacity": [
+        327680
+      ],
+      "time_window": [
+        1752670800,
+        1752710400
+      ],
+      "metadata": {
+        "LicensePlateNumber": "46525C3",
+        "VehicleID": "MQJ000055"
+      },
+      "drive_time_layover_config": {
+        "max_continuous_driving": 10800,
+        "layover_duration": 1800
+      },
+      "max_tasks": 8
+    },
+    {
+      "id": "281474989782906",
+      "start_index": 0,
+      "end_index": 0,
+      "description": "48908V2",
+      "capacity": [
+        245760
+      ],
+      "time_window": [
+        1752670800,
+        1752710400
+      ],
+      "metadata": {
+        "LicensePlateNumber": "48908V2",
+        "VehicleID": "MQJ000061"
+      },
+      "drive_time_layover_config": {
+        "max_continuous_driving": 10800,
+        "layover_duration": 1800
+      },
+      "max_tasks": 6
+    }
+  ],
+  "options": {
+    "objective": {
+      "custom": {
+        "type": "min",
+        "value": "vehicles"
+      }
+    },
+    "routing": {
+      "traffic_timestamp": 1752696100
+    }
+  }
+}
