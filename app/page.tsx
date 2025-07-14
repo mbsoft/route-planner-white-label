@@ -9,7 +9,7 @@ import { InputImportPage } from '../components/input/input-import-page'
 import { CollapsibleMap } from '../components/input/input-panels/input-map'
 import { MappingManagement } from '../components/input/mapping-management'
 import { PreferencesManagement } from '../components/input/preferences-management'
-import { HamburgerMenu } from '../components/common/hamburger-menu'
+import { Sidebar } from '../components/common/sidebar'
 import { useInputStore } from '../models/input/store'
 import { PreferencesInput } from '../components/input/input-panels/preferences-page'
 import { usePreferencesPersistence } from '../hooks/use-preferences-persistence'
@@ -333,12 +333,22 @@ export default function HomePage() {
 
   return (
     <WhiteLabelLayout>
-      <Container maxWidth="xl" sx={{ minHeight: '100vh', p: 0, backgroundColor: '#ffffff' }}>
-        <Box sx={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', backgroundColor: '#ffffff' }}>
+      <Box sx={{ display: 'flex', minHeight: '100vh' }}>
+        {/* Sidebar */}
+        <Sidebar currentPage="home" />
+        {/* Main Content Area */}
+        <Box sx={{ 
+          flex: 1, 
+          display: 'flex', 
+          flexDirection: 'column', 
+          ml: 'var(--sidebar-width, 280px)',
+          transition: 'margin-left 0.3s ease',
+          backgroundColor: '#ffffff' 
+        }}>
+          {/* Header */}
           <Box sx={{ p: 2, borderBottom: '1px solid #e0e0e0', backgroundColor: '#ffffff' }}>
-            <Box sx={{ maxHeight: '25px', height: '25px', display: 'flex', alignItems: 'center', gap: 2, justifyContent: 'space-between' }}>
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, justifyContent: 'space-between' }}>
               <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-                <HamburgerMenu currentPage="home" />
                 <img
                   src="/company_logo.svg"
                   alt="Diesel Direct Logo"
@@ -396,7 +406,12 @@ export default function HomePage() {
           </Box>
 
           {/* Main content area */}
-          <Box sx={{ flex: 1, backgroundColor: '#ffffff' }}>
+          <Box sx={{ 
+            flex: 1, 
+            backgroundColor: '#ffffff',
+            pb: 2, // Add bottom padding to ensure content doesn't get hidden behind footer
+            overflow: 'auto', // Allow scrolling if content is too long
+          }}>
             <MappingManagement />
             {isAdmin && <PreferencesManagement />}
             <InputImportPage
@@ -415,23 +430,24 @@ export default function HomePage() {
             backgroundColor: '#ffffff',
             py: 3,
             px: 2,
-            mt: '5px' // Add 5px margin above the footer
+            mt: '5px', // Add 5px margin above the footer
+            position: 'relative',
+            zIndex: 10, // Ensure footer is above content but below sticky elements
+            flexShrink: 0, // Prevent footer from shrinking
           }}>
-            <Container maxWidth="xl">
-              <Box sx={{ mt: 0, pt: 0, display: 'flex', alignItems: 'center', gap: 1 }}>
-                <img
-                  src="/company_logo.svg"
-                  alt="Diesel Direct Logo"
-                  style={{ height: '20px', width: 'auto', marginRight: '8px', verticalAlign: 'middle' }}
-                />
-                <Typography variant="caption" sx={{ color: '#999' }}>
-                  powered by NextBillion.ai | Version 1.0.0 | Last updated: {new Date().toLocaleDateString()}
-                </Typography>
-              </Box>
-            </Container>
+            <Box sx={{ mt: 0, pt: 0, display: 'flex', alignItems: 'center', gap: 1 }}>
+              <img
+                src="/company_logo.svg"
+                alt="Diesel Direct Logo"
+                style={{ height: '20px', width: 'auto', marginRight: '8px', verticalAlign: 'middle' }}
+              />
+              <Typography variant="caption" sx={{ color: '#999' }}>
+                powered by NextBillion.ai | Version 1.0.0 | Last updated: {new Date().toLocaleDateString()}
+              </Typography>
+            </Box>
           </Box>
         </Box>
-      </Container>
+      </Box>
     </WhiteLabelLayout>
   )
 } 
