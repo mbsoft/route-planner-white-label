@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { Box, IconButton, Typography, Button, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions } from '@mui/material'
+import { Box, IconButton, Typography, Button, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, CircularProgress, TextField } from '@mui/material'
 import DeleteIcon from '@mui/icons-material/Delete'
 import StorageIcon from '@mui/icons-material/Storage'
 import { FileDropZone } from './file-drop-zone'
@@ -19,6 +19,8 @@ export const InputVehicleUpload = () => {
   const store = useInputStore()
   const { vehicle } = store.inputCore
   const hasData = vehicle.rawData.rows.length > 0
+  const [loading, setLoading] = useState(false)
+  const [search, setSearch] = useState('')
 
   // Check if CSV import is enabled
   const enableCsvImport = process.env.NEXT_PUBLIC_ENABLE_CSV_IMPORT === 'true'
@@ -33,9 +35,10 @@ export const InputVehicleUpload = () => {
 
   // Handler for database import for vehicles
   const handleDatabaseVehiclesImported = useCallback(async () => {
-    // Fetch all vehicles from the backend
+    setLoading(true);
     try {
-      const res = await fetch('/api/vehicles');
+      const url = search ? `/api/vehicles?search=${encodeURIComponent(search)}` : '/api/vehicles';
+      const res = await fetch(url);
       if (!res.ok) throw new Error('Failed to fetch vehicles');
       const data = await res.json();
       const vehicles = data.vehicles || [];
@@ -51,8 +54,10 @@ export const InputVehicleUpload = () => {
       // Optionally show error
       // eslint-disable-next-line no-console
       console.error(e);
+    } finally {
+      setLoading(false);
     }
-  }, [store.inputCore]);
+  }, [store.inputCore, search]);
 
   const handleClearData = () => {
     store.inputCore.setRawData('vehicle', {
@@ -156,8 +161,17 @@ export const InputVehicleUpload = () => {
               marginBottom: '20px',
             }}
           >
-            <Button variant="contained" onClick={handleDatabaseVehiclesImported} sx={{ mb: 2 }}>
-              Import Vehicles from Database
+            <TextField
+              fullWidth
+              label="Search vehicle descriptions (optional)"
+              variant="outlined"
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              placeholder="Enter search term to filter vehicles..."
+              sx={{ mb: 2 }}
+            />
+            <Button variant="contained" onClick={handleDatabaseVehiclesImported} disabled={loading} sx={{ mb: 2 }}>
+              {loading ? <CircularProgress size={20} /> : 'Import Vehicles from Database'}
             </Button>
             {/* CSV import panel - only show if enabled */}
             {enableCsvImport && (

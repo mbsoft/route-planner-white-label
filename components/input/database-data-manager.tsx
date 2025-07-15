@@ -18,12 +18,13 @@ interface DatabaseDataManagerProps {
 export const DatabaseDataManager: React.FC<DatabaseDataManagerProps> = ({ onJobsImported }) => {
   const [start, setStart] = useState('');
   const [end, setEnd] = useState('');
+  const [search, setSearch] = useState('');
   const [jobs, setJobs] = useState<Job[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [recordCount, setRecordCount] = useState<number | null>(null);
 
-  // Fetch record count when start/end times change
+  // Fetch record count when start/end times or search change
   useEffect(() => {
     const fetchRecordCount = async () => {
       try {
@@ -34,6 +35,7 @@ export const DatabaseDataManager: React.FC<DatabaseDataManagerProps> = ({ onJobs
         const params = new URLSearchParams();
         if (startTimestamp) params.append('start', startTimestamp.toString());
         if (endTimestamp) params.append('end', endTimestamp.toString());
+        if (search.trim()) params.append('search', search.trim());
         if (params.toString()) url += '?' + params.toString();
         
         const res = await fetch(url);
@@ -49,7 +51,7 @@ export const DatabaseDataManager: React.FC<DatabaseDataManagerProps> = ({ onJobs
     // Debounce the API call
     const timeoutId = setTimeout(fetchRecordCount, 500);
     return () => clearTimeout(timeoutId);
-  }, [start, end]);
+  }, [start, end, search]);
 
   const handleImport = async () => {
     setLoading(true);
@@ -62,6 +64,7 @@ export const DatabaseDataManager: React.FC<DatabaseDataManagerProps> = ({ onJobs
       const params = new URLSearchParams();
       if (startTimestamp) params.append('start', startTimestamp.toString());
       if (endTimestamp) params.append('end', endTimestamp.toString());
+      if (search.trim()) params.append('search', search.trim());
       if (params.toString()) url += '?' + params.toString();
       
       const res = await fetch(url);
@@ -83,7 +86,7 @@ export const DatabaseDataManager: React.FC<DatabaseDataManagerProps> = ({ onJobs
         Import Jobs from Database
       </Typography>
       
-      <Box sx={{ display: 'flex', gap: 2, mb: 2, alignItems: 'flex-end' }}>
+      <Box sx={{ display: 'flex', gap: 2, mb: 2, alignItems: 'flex-end', flexWrap: 'wrap' }}>
         <TextField
           label="Start Time (optional)"
           type="datetime-local"
@@ -101,6 +104,16 @@ export const DatabaseDataManager: React.FC<DatabaseDataManagerProps> = ({ onJobs
           InputLabelProps={{ shrink: true }}
           size="small"
           helperText="Leave empty to import all records"
+        />
+        <TextField
+          label="Search Description (optional)"
+          type="text"
+          value={search}
+          onChange={e => setSearch(e.target.value)}
+          size="small"
+          placeholder="Enter search term..."
+          helperText="Case insensitive search in job descriptions"
+          sx={{ minWidth: 200 }}
         />
         <Button variant="contained" onClick={handleImport} disabled={loading}>
           {loading ? <CircularProgress size={20} /> : 'Import'}
