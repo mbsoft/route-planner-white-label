@@ -105,7 +105,7 @@ export const InputVehicleUpload = () => {
       store.inputCore.setRawData('vehicle', {
         header: combinedHeader,
         rows: editRows,
-        attachedRows: editAttachedRows,
+        attachedRows: [], // Clear attached rows since data is now in main rows
       })
       
       // If we have original vehicles (from database), save changes back to database
