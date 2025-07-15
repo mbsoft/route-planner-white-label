@@ -30,6 +30,13 @@ const AVOID_OPTIONS = [
   {label: 'None', value: 'none'},
 ]
 
+const HAZMAT_OPTIONS = [
+  {label: 'General Hazardous Materials', value: 'general'},
+  {label: 'Circumstantial Hazardous Materials', value: 'circumstantial'},
+  {label: 'Explosive Materials', value: 'explosive'},
+  {label: 'Harmful to Water', value: 'harmful_to_water'},
+]
+
 const validateTruckSize = (value: string) => {
   const regex = new RegExp(
     '^(\\s?)+\\d+(\\s?)+,(\\s?)+\\d+(\\s?)+,(\\s?)+\\d+(\\s?)+$',
@@ -44,6 +51,7 @@ export interface RoutingPreferences {
     truck_size?: string
     truck_weight?: number
     avoid?: string[]
+    hazmat_type?: string[]
   }
 }
 
@@ -115,6 +123,16 @@ export function RoutingPanel({ preferences, onPreferencesChange }: RoutingPanelP
       routing: {
         ...routing,
         avoid: value,
+      },
+    })
+  }
+
+  const setHazmatTypes = (value: string[]) => {
+    onPreferencesChange({
+      ...preferences,
+      routing: {
+        ...routing,
+        hazmat_type: value,
       },
     })
   }
@@ -204,6 +222,50 @@ export function RoutingPanel({ preferences, onPreferencesChange }: RoutingPanelP
             </>
           )}
         </Grid>
+
+        {/* Hazardous Material Types - Only show for truck mode */}
+        {routing.mode === 'truck' && (
+          <Grid container spacing={2} sx={{ mt: 1 }}>
+            <Grid item xs={12}>
+              <FormControl fullWidth size="small">
+                <InputLabel>Hazardous Material Types</InputLabel>
+                <Select
+                  multiple
+                  value={routing.hazmat_type || []}
+                  onChange={(e) => setHazmatTypes(typeof e.target.value === 'string' ? e.target.value.split(',') : e.target.value)}
+                  input={<OutlinedInput label="Hazardous Material Types" />}
+                  renderValue={(selected) => (
+                    <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
+                      {selected.map((value) => {
+                        const option = HAZMAT_OPTIONS.find(opt => opt.value === value)
+                        return (
+                          <Chip 
+                            key={value} 
+                            label={option?.label || value} 
+                            size="small"
+                            sx={{ 
+                              backgroundColor: 'rgba(255, 152, 0, 0.1)',
+                              color: '#ff9800',
+                              '& .MuiChip-deleteIcon': {
+                                color: '#ff9800',
+                              }
+                            }}
+                          />
+                        )
+                      })}
+                    </Box>
+                  )}
+                >
+                  {HAZMAT_OPTIONS.map((option) => (
+                    <MenuItem key={option.value} value={option.value}>
+                      {option.label}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+            </Grid>
+          </Grid>
+        )}
 
         <Grid container spacing={2} sx={{ mt: 1 }}>
           <Grid item xs={12}>

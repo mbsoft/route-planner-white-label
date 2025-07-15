@@ -711,6 +711,12 @@ export const InputImportPage = ({ currentStep, onStepChange, preferences, onPref
             }),
             ...(preferences?.routing?.mode === 'truck' && preferences?.routing?.truck_weight && {
               truck_weight: preferences.routing.truck_weight
+            }),
+            ...(preferences?.routing?.mode === 'truck' && preferences?.routing?.hazmat_type && preferences.routing.hazmat_type.length > 0 && {
+              hazmat_type: preferences.routing.hazmat_type
+            }),
+            ...(preferences?.routing?.avoid && preferences.routing.avoid.length > 0 && {
+              avoid: preferences.routing.avoid
             })
           }
         }

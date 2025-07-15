@@ -11,6 +11,7 @@ export interface PreferencesInput {
     truck_size?: string
     truck_weight?: number
     avoid?: string[]
+    hazmat_type?: string[]
   }
   constraints: {
     max_vehicle_overtime?: number
