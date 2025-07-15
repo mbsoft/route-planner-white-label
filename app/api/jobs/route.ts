@@ -87,18 +87,14 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ jobs: [] });
     }
 
-    const jobs = result.rows.map((row: any) => ({
-      id: row.id,
-      description: row.description,
-      location: row.location || '',
-      latitude: row.latitude,
-      longitude: row.longitude,
-      service: row.service,
-      delivery: row.delivery,
-      skills: row.skills,
-      time_window_start: row.time_window_start,
-      time_window_end: row.time_window_end
-    }));
+    const jobs = result.rows.map((row: any) => {
+      // Return all columns dynamically
+      const job: any = {};
+      for (const [key, value] of Object.entries(row)) {
+        job[key] = value;
+      }
+      return job;
+    });
 
     return NextResponse.json({ jobs });
 
@@ -123,30 +119,44 @@ export async function PUT(request: NextRequest) {
       );
     }
 
+    // Get current table schema to check for existing columns
+    const schemaResult = await turso.execute("PRAGMA table_info(jobs)");
+    const existingColumns = new Set(schemaResult.rows.map((row: any) => row.name));
+
     // Update each job in the database
     for (const job of jobs) {
       if (!job.id) {
         continue; // Skip jobs without ID
       }
 
-      const updateQuery = `
-        UPDATE jobs 
-        SET description = ?, location = ?, latitude = ?, longitude = ?, 
-            service = ?, delivery = ?, skills = ?, 
-            time_window_start = ?, time_window_end = ?
-        WHERE id = ?
-      `;
+      // Check for new columns and add them to the schema
+      for (const [key, value] of Object.entries(job)) {
+        if (key !== 'id' && !existingColumns.has(key)) {
+          // Determine column type based on value
+          let columnType = 'TEXT';
+          if (typeof value === 'number') {
+            columnType = value % 1 === 0 ? 'INTEGER' : 'REAL';
+          } else if (typeof value === 'boolean') {
+            columnType = 'INTEGER';
+          }
+          
+          try {
+            await turso.execute(`ALTER TABLE jobs ADD COLUMN ${key} ${columnType}`);
+            existingColumns.add(key);
+            console.log(`Added new column '${key}' to jobs table`);
+          } catch (error) {
+            console.error(`Failed to add column '${key}' to jobs table:`, error);
+          }
+        }
+      }
+
+      // Build dynamic UPDATE query with all available columns
+      const updateFields = Object.keys(job).filter(key => key !== 'id');
+      const setClause = updateFields.map(field => `${field} = ?`).join(', ');
+      const updateQuery = `UPDATE jobs SET ${setClause} WHERE id = ?`;
 
       const params = [
-        job.description || null,
-        job.location || null,
-        job.latitude || null,
-        job.longitude || null,
-        job.service || null,
-        job.delivery || null,
-        job.skills || null,
-        job.time_window_start || null,
-        job.time_window_end || null,
+        ...updateFields.map(field => job[field] || null),
         job.id
       ];
 

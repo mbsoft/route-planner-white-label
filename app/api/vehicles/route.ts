@@ -63,23 +63,14 @@ export async function GET(req: NextRequest) {
     
     const result = await turso.execute(query, params);
     
-    const vehicles = result.rows.map((row: any) => ({
-      id: row.id,
-      description: row.description,
-      start_location: row.start_location,
-      start_latitude: row.start_latitude,
-      start_longitude: row.start_longitude,
-      end_location: row.end_location,
-      end_latitude: row.end_latitude,
-      end_longitude: row.end_longitude,
-      time_window_start: row.time_window_start,
-      time_window_end: row.time_window_end,
-      capacity: row.capacity,
-      alternative_capacities: row.alternative_capacities,
-      skills: row.skills,
-      fixed_cost: row.fixed_cost,
-      max_tasks: row.max_tasks
-    }));
+    const vehicles = result.rows.map((row: any) => {
+      // Return all columns dynamically
+      const vehicle: any = {};
+      for (const [key, value] of Object.entries(row)) {
+        vehicle[key] = value;
+      }
+      return vehicle;
+    });
     
     return NextResponse.json({ vehicles });
   } catch (error) {
@@ -105,45 +96,46 @@ export async function PUT(req: NextRequest) {
       );
     }
     
+    // Get current table schema to check for existing columns
+    const schemaResult = await turso.execute("PRAGMA table_info(vehicles)");
+    const existingColumns = new Set(schemaResult.rows.map((row: any) => row.name));
+    
     const results = [];
     
     for (const vehicle of vehicles) {
       try {
-        // Update the vehicle in the database
-        const result = await turso.execute(`
-          UPDATE vehicles SET 
-            description = ?,
-            start_location = ?,
-            start_latitude = ?,
-            start_longitude = ?,
-            end_location = ?,
-            end_latitude = ?,
-            end_longitude = ?,
-            time_window_start = ?,
-            time_window_end = ?,
-            capacity = ?,
-            alternative_capacities = ?,
-            skills = ?,
-            fixed_cost = ?,
-            max_tasks = ?
-          WHERE id = ?
-        `, [
-          vehicle.description || null,
-          vehicle.start_location || null,
-          vehicle.start_latitude || null,
-          vehicle.start_longitude || null,
-          vehicle.end_location || null,
-          vehicle.end_latitude || null,
-          vehicle.end_longitude || null,
-          vehicle.time_window_start || null,
-          vehicle.time_window_end || null,
-          vehicle.capacity || null,
-          vehicle.alternative_capacities || null,
-          vehicle.skills || null,
-          vehicle.fixed_cost || null,
-          vehicle.max_tasks || null,
+        // Check for new columns and add them to the schema
+        for (const [key, value] of Object.entries(vehicle)) {
+          if (key !== 'id' && !existingColumns.has(key)) {
+            // Determine column type based on value
+            let columnType = 'TEXT';
+            if (typeof value === 'number') {
+              columnType = value % 1 === 0 ? 'INTEGER' : 'REAL';
+            } else if (typeof value === 'boolean') {
+              columnType = 'INTEGER';
+            }
+            
+            try {
+              await turso.execute(`ALTER TABLE vehicles ADD COLUMN ${key} ${columnType}`);
+              existingColumns.add(key);
+              console.log(`Added new column '${key}' to vehicles table`);
+            } catch (error) {
+              console.error(`Failed to add column '${key}' to vehicles table:`, error);
+            }
+          }
+        }
+
+        // Build dynamic UPDATE query with all available columns
+        const updateFields = Object.keys(vehicle).filter(key => key !== 'id');
+        const setClause = updateFields.map(field => `${field} = ?`).join(', ');
+        const updateQuery = `UPDATE vehicles SET ${setClause} WHERE id = ?`;
+
+        const params = [
+          ...updateFields.map(field => vehicle[field] || null),
           vehicle.id
-        ]);
+        ];
+
+        await turso.execute(updateQuery, params);
         
         results.push({
           id: vehicle.id,
