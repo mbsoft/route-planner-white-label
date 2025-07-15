@@ -89,4 +89,86 @@ export async function GET(req: NextRequest) {
       { status: 500 }
     );
   }
+}
+
+export async function PUT(req: NextRequest) {
+  try {
+    await ensureVehiclesTable();
+    
+    const body = await req.json();
+    const { vehicles } = body;
+    
+    if (!vehicles || !Array.isArray(vehicles)) {
+      return NextResponse.json(
+        { error: 'Invalid request body. Expected vehicles array.' },
+        { status: 400 }
+      );
+    }
+    
+    const results = [];
+    
+    for (const vehicle of vehicles) {
+      try {
+        // Update the vehicle in the database
+        const result = await turso.execute(`
+          UPDATE vehicles SET 
+            description = ?,
+            start_location = ?,
+            start_latitude = ?,
+            start_longitude = ?,
+            end_location = ?,
+            end_latitude = ?,
+            end_longitude = ?,
+            time_window_start = ?,
+            time_window_end = ?,
+            capacity = ?,
+            alternative_capacities = ?,
+            skills = ?,
+            fixed_cost = ?,
+            max_tasks = ?
+          WHERE id = ?
+        `, [
+          vehicle.description || null,
+          vehicle.start_location || null,
+          vehicle.start_latitude || null,
+          vehicle.start_longitude || null,
+          vehicle.end_location || null,
+          vehicle.end_latitude || null,
+          vehicle.end_longitude || null,
+          vehicle.time_window_start || null,
+          vehicle.time_window_end || null,
+          vehicle.capacity || null,
+          vehicle.alternative_capacities || null,
+          vehicle.skills || null,
+          vehicle.fixed_cost || null,
+          vehicle.max_tasks || null,
+          vehicle.id
+        ]);
+        
+        results.push({
+          id: vehicle.id,
+          success: true,
+          message: 'Vehicle updated successfully'
+        });
+      } catch (error) {
+        console.error(`Error updating vehicle ${vehicle.id}:`, error);
+        results.push({
+          id: vehicle.id,
+          success: false,
+          message: 'Failed to update vehicle'
+        });
+      }
+    }
+    
+    return NextResponse.json({ 
+      message: 'Vehicles update completed',
+      results 
+    });
+  } catch (error) {
+    console.error('Database error in PUT /api/vehicles:', error);
+    return NextResponse.json(
+      { error: 'Database connection failed. Please check your environment variables.' },
+      { status: 500 }
+    );
+  }
 } 

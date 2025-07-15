@@ -17,9 +17,12 @@ import { useCallback } from 'react';
 import { VehicleDatabaseManager } from '../database-data-manager';
 
 export const InputVehicleUpload = () => {
+  
   const store = useInputStore()
   const { vehicle } = store.inputCore
   const hasData = vehicle.rawData.rows.length > 0
+  const [isSaving, setIsSaving] = useState(false)
+  const [originalVehicles, setOriginalVehicles] = useState<any[]>([])
 
   // Check if CSV import is enabled
   const enableCsvImport = process.env.NEXT_PUBLIC_ENABLE_CSV_IMPORT === 'true'
@@ -30,6 +33,8 @@ export const InputVehicleUpload = () => {
       rows: data,
       attachedRows: [],
     })
+    // Clear original vehicles since this is CSV data, not database data
+    setOriginalVehicles([])
   }
 
   // Handler for database import for vehicles
@@ -43,6 +48,8 @@ export const InputVehicleUpload = () => {
       rows,
       attachedRows: [],
     });
+    // Store original vehicles for database updates
+    setOriginalVehicles(vehicles)
   }
 
   const handleClearData = () => {
@@ -67,21 +74,65 @@ export const InputVehicleUpload = () => {
   }
   // Cancel editing: discard changes
   const handleCancel = () => {
+    console.log('Cancel button clicked')
     setIsEditing(false)
     setEditRows([])
     setEditAttachedRows([])
   }
-  // Save editing: commit to store
-  const handleSave = () => {
-    store.inputCore.setRawData('vehicle', {
-      header: vehicle.rawData.header,
-      rows: editRows,
-      attachedRows: editAttachedRows,
-    })
-    setIsEditing(false)
-    setEditRows([])
-    setEditAttachedRows([])
+  // Save editing: commit to store and database if applicable
+  const handleSave = async () => {
+    
+    setIsSaving(true)
+    try {
+      // First update the local store
+      store.inputCore.setRawData('vehicle', {
+        header: vehicle.rawData.header,
+        rows: editRows,
+        attachedRows: editAttachedRows,
+      })
+      
+      // If we have original vehicles (from database), save changes back to database
+      if (originalVehicles.length > 0) {
+        // Convert edited rows back to vehicle objects
+        const updatedVehicles = editRows.map((row, index) => {
+          const vehicleObj: any = { id: originalVehicles[index].id }
+          vehicle.rawData.header.forEach((header: string, colIndex: number) => {
+            vehicleObj[header] = row[colIndex] || null
+          })
+          return vehicleObj
+        })
+        
+        // Send updates to database
+        const response = await fetch('/api/vehicles', {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ vehicles: updatedVehicles }),
+        })
+        
+        if (!response.ok) {
+          throw new Error('Failed to save changes to database')
+        }
+        
+        const result = await response.json()
+        
+        // Update original vehicles with the new data
+        setOriginalVehicles(updatedVehicles)
+      }
+      
+      setIsEditing(false)
+      setEditRows([])
+      setEditAttachedRows([])
+    } catch (error) {
+      console.error('Error saving changes:', error)
+      // You could show an error message to the user here
+    } finally {
+      setIsSaving(false)
+    }
   }
+
+
 
   // Cell change handler for editing
   const handleCellChange = (row: number, col: number, value: string) => {
@@ -118,6 +169,8 @@ export const InputVehicleUpload = () => {
       store.inputCore.deleteAttachedColumn('vehicle', colIndex)
     }
   }
+
+
 
   return (
     <div style={{ padding: '20px' }}>
@@ -170,6 +223,11 @@ export const InputVehicleUpload = () => {
             <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 2 }}>
               <Typography variant="h6" sx={{ color: '#d36784', fontWeight: 'bold', display: 'flex', alignItems: 'center', gap: 1 }}>
                 <span style={{ fontSize: 22, lineHeight: 1, color: '#43a047' }}>✓</span> {vehicle.rawData.rows.length} records loaded
+                {originalVehicles.length > 0 && (
+                  <span style={{ fontSize: '12px', color: '#666', fontWeight: 'normal' }}>
+                    (from database)
+                  </span>
+                )}
               </Typography>
             </Box>
             {/* Batch editing controls */}
@@ -181,16 +239,16 @@ export const InputVehicleUpload = () => {
                 <AddIcon />
               </IconButton>
               {!isEditing && (
-                <IconButton onClick={handleEdit} color="primary" title="Edit table">
+                <IconButton onClick={handleEdit} color="primary" title="Edit table" disabled={isSaving}>
                   <EditIcon />
                 </IconButton>
               )}
               {isEditing && (
                 <>
-                  <IconButton onClick={handleSave} color="success" title="Save changes">
-                    <SaveIcon />
+                  <IconButton onClick={handleSave} color="success" title="Save changes" disabled={isSaving}>
+                    {isSaving ? <CircularProgress size={20} /> : <SaveIcon />}
                   </IconButton>
-                  <IconButton onClick={handleCancel} color="error" title="Cancel editing">
+                  <IconButton onClick={handleCancel} color="error" title="Cancel editing" disabled={isSaving}>
                     <CloseIcon />
                   </IconButton>
                 </>
