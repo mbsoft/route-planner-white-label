@@ -193,7 +193,8 @@ export const InputVehicleUpload = () => {
     }
   }
 
-
+  // Debug logging for table rendering
+  console.log('Rendering table with header:', vehicle.rawData.header, 'attachedRows:', vehicle.rawData.attachedRows)
 
   return (
     <div style={{ padding: '20px' }}>
@@ -295,6 +296,7 @@ export const InputVehicleUpload = () => {
             </Dialog>
             {/* Editable table */}
             <DataMapperTable
+              key={`vehicle-table-${vehicle.rawData.header.length}-${vehicle.rawData.attachedRows.length}`}
               inputType="vehicle"
               isEditing={isEditing}
               highlightCell={null}
