@@ -17,7 +17,8 @@ import { useCallback } from 'react';
 import { VehicleDatabaseManager } from '../database-data-manager';
 
 export const InputVehicleUpload = () => {
-  console.log('InputVehicleUpload component rendering')
+  console.log('=== InputVehicleUpload component rendering ===')
+  alert('InputVehicleUpload component rendered!') // Temporary test
   
   const store = useInputStore()
   const { vehicle } = store.inputCore
@@ -71,6 +72,8 @@ export const InputVehicleUpload = () => {
 
   // Start editing: copy current data
   const handleEdit = () => {
+    console.log('=== EDIT BUTTON CLICKED ===')
+    alert('Edit button clicked!') // Temporary test
     console.log('Edit button clicked')
     setEditRows(vehicle.rawData.rows.map(row => [...row]))
     setEditAttachedRows(vehicle.rawData.attachedRows.map(row => [...row]))
@@ -85,6 +88,7 @@ export const InputVehicleUpload = () => {
   }
   // Save editing: commit to store and database if applicable
   const handleSave = async () => {
+    console.log('=== SAVE BUTTON CLICKED ===')
     alert('Save button clicked!') // Temporary test
     console.log('Save button clicked')
     console.log('originalVehicles.length:', originalVehicles.length)
