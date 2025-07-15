@@ -39,6 +39,9 @@ export const InputVehicleUpload = () => {
 
   // Handler for database import for vehicles
   const handleDatabaseVehiclesImported = (vehicles: any[]) => {
+    console.log('=== VEHICLE DATABASE IMPORT ===')
+    console.log('Received vehicles:', vehicles)
+    
     // Convert vehicles to the format expected by setRawData
     if (!vehicles || vehicles.length === 0) return;
     const header = Object.keys(vehicles[0]);
@@ -50,6 +53,7 @@ export const InputVehicleUpload = () => {
     });
     // Store original vehicles for database updates
     setOriginalVehicles(vehicles)
+    console.log('Set originalVehicles:', vehicles)
   }
 
   const handleClearData = () => {
@@ -81,6 +85,10 @@ export const InputVehicleUpload = () => {
   }
   // Save editing: commit to store and database if applicable
   const handleSave = async () => {
+    console.log('=== VEHICLE SAVE BUTTON CLICKED ===')
+    console.log('originalVehicles.length:', originalVehicles.length)
+    console.log('editRows:', editRows)
+    console.log('vehicle.rawData.header:', vehicle.rawData.header)
     
     setIsSaving(true)
     try {
@@ -93,6 +101,7 @@ export const InputVehicleUpload = () => {
       
       // If we have original vehicles (from database), save changes back to database
       if (originalVehicles.length > 0) {
+        console.log('Saving vehicles to database...')
         // Convert edited rows back to vehicle objects
         const updatedVehicles = editRows.map((row, index) => {
           const vehicleObj: any = { id: originalVehicles[index].id }
@@ -101,6 +110,8 @@ export const InputVehicleUpload = () => {
           })
           return vehicleObj
         })
+        
+        console.log('Updated vehicles to send:', updatedVehicles)
         
         // Send updates to database
         const response = await fetch('/api/vehicles', {
@@ -116,9 +127,12 @@ export const InputVehicleUpload = () => {
         }
         
         const result = await response.json()
+        console.log('Database update result:', result)
         
         // Update original vehicles with the new data
         setOriginalVehicles(updatedVehicles)
+      } else {
+        console.log('No original vehicles found - not saving to database')
       }
       
       setIsEditing(false)
