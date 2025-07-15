@@ -81,6 +81,7 @@ export const InputVehicleUpload = () => {
   }
   // Save editing: commit to store and database if applicable
   const handleSave = async () => {
+    alert('Save button clicked!') // Temporary test
     console.log('Save button clicked')
     console.log('originalVehicles.length:', originalVehicles.length)
     console.log('editRows:', editRows)
