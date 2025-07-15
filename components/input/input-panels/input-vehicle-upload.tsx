@@ -38,18 +38,32 @@ export const InputVehicleUpload = () => {
   }
 
   // Handler for database import for vehicles
-  const handleDatabaseVehiclesImported = (vehicles: any[]) => {
-    // Convert vehicles to the format expected by setRawData
+  const handleDatabaseVehiclesImported = async (vehicles: any[]) => {
+    console.log('=== VEHICLE DATABASE IMPORT ===')
+    console.log('Received vehicles:', vehicles)
     if (!vehicles || vehicles.length === 0) return;
-    const header = Object.keys(vehicles[0]);
+    // Fetch schema from API
+    let header: string[] = [];
+    try {
+      const schemaRes = await fetch('/api/vehicles/schema');
+      if (schemaRes.ok) {
+        const schemaData = await schemaRes.json();
+        header = schemaData.columns || Object.keys(vehicles[0]);
+      } else {
+        header = Object.keys(vehicles[0]);
+      }
+    } catch (e) {
+      header = Object.keys(vehicles[0]);
+    }
+    // Map each row to the full header
     const rows = vehicles.map(vehicle => header.map(h => vehicle[h] ?? ''));
     store.inputCore.setRawData('vehicle', {
       header,
       rows,
       attachedRows: [],
     });
-    // Store original vehicles for database updates
     setOriginalVehicles(vehicles)
+    console.log('Set originalVehicles:', vehicles)
   }
 
   const handleClearData = () => {
@@ -81,26 +95,42 @@ export const InputVehicleUpload = () => {
   }
   // Save editing: commit to store and database if applicable
   const handleSave = async () => {
+    console.log('=== VEHICLE SAVE BUTTON CLICKED ===')
+    console.log('originalVehicles.length:', originalVehicles.length)
+    console.log('editRows:', editRows)
+    console.log('editAttachedRows:', editAttachedRows)
+    console.log('vehicle.rawData.header:', vehicle.rawData.header)
     
     setIsSaving(true)
     try {
-      // First update the local store
+      // Create combined header that includes both original columns and attached columns
+      const combinedHeader = [
+        ...vehicle.rawData.header,
+        ...editAttachedRows[0]?.map((_, index) => `Attribute ${index + 1}`) || []
+      ]
+      
+      console.log('Combined header:', combinedHeader)
+      
+      // First update the local store with the combined header
       store.inputCore.setRawData('vehicle', {
-        header: vehicle.rawData.header,
+        header: combinedHeader,
         rows: editRows,
-        attachedRows: editAttachedRows,
+        attachedRows: [], // Clear attached rows since data is now in main rows
       })
       
       // If we have original vehicles (from database), save changes back to database
       if (originalVehicles.length > 0) {
-        // Convert edited rows back to vehicle objects
+        console.log('Saving vehicles to database...')
+        // Convert edited rows back to vehicle objects using the combined header
         const updatedVehicles = editRows.map((row, index) => {
           const vehicleObj: any = { id: originalVehicles[index].id }
-          vehicle.rawData.header.forEach((header: string, colIndex: number) => {
+          combinedHeader.forEach((header: string, colIndex: number) => {
             vehicleObj[header] = row[colIndex] || null
           })
           return vehicleObj
         })
+        
+        console.log('Updated vehicles to send:', updatedVehicles)
         
         // Send updates to database
         const response = await fetch('/api/vehicles', {
@@ -116,9 +146,12 @@ export const InputVehicleUpload = () => {
         }
         
         const result = await response.json()
+        console.log('Database update result:', result)
         
         // Update original vehicles with the new data
         setOriginalVehicles(updatedVehicles)
+      } else {
+        console.log('No original vehicles found - not saving to database')
       }
       
       setIsEditing(false)
@@ -170,7 +203,8 @@ export const InputVehicleUpload = () => {
     }
   }
 
-
+  // Debug logging for table rendering
+  console.log('Rendering table with header:', vehicle.rawData.header, 'attachedRows:', vehicle.rawData.attachedRows)
 
   return (
     <div style={{ padding: '20px' }}>
@@ -272,6 +306,7 @@ export const InputVehicleUpload = () => {
             </Dialog>
             {/* Editable table */}
             <DataMapperTable
+              key={`vehicle-table-${vehicle.rawData.header.length}-${vehicle.rawData.attachedRows.length}`}
               inputType="vehicle"
               isEditing={isEditing}
               highlightCell={null}

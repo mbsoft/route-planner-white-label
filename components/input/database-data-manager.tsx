@@ -96,7 +96,7 @@ export const DatabaseDataManager: React.FC<DatabaseDataManagerProps> = ({ onJobs
         Import Jobs from Database
       </Typography>
       
-      <Box sx={{ display: 'flex', gap: 2, mb: 2, alignItems: 'flex-end', flexWrap: 'wrap' }}>
+      <Box sx={{ display: 'flex', gap: 2, mb: 2, flexWrap: 'wrap' }}>
         <TextField
           label="Start Time (optional)"
           type="datetime-local"
@@ -125,9 +125,16 @@ export const DatabaseDataManager: React.FC<DatabaseDataManagerProps> = ({ onJobs
           helperText="Case insensitive search in job descriptions"
           sx={{ minWidth: 200 }}
         />
-        <Button variant="contained" onClick={handleImport} disabled={loading}>
-          {loading ? <CircularProgress size={20} /> : 'Import'}
-        </Button>
+        <Box sx={{ display: 'flex', alignItems: 'center', height: '56px' }}>
+          <Button 
+            variant="contained" 
+            onClick={handleImport} 
+            disabled={loading}
+            sx={{ mt: '-15px' }}
+          >
+            {loading ? <CircularProgress size={20} /> : 'Import'}
+          </Button>
+        </Box>
       </Box>
       
       {recordCount !== null && (
@@ -230,7 +237,7 @@ export const VehicleDatabaseManager: React.FC<VehicleDatabaseManagerProps> = ({ 
         Import Vehicles from Database
       </Typography>
       
-      <Box sx={{ display: 'flex', gap: 2, mb: 2, alignItems: 'flex-end', flexWrap: 'wrap' }}>
+      <Box sx={{ display: 'flex', gap: 2, mb: 2, flexWrap: 'wrap' }}>
         <TextField
           label="Search Description (optional)"
           type="text"
@@ -241,9 +248,16 @@ export const VehicleDatabaseManager: React.FC<VehicleDatabaseManagerProps> = ({ 
           helperText="Case insensitive search in vehicle descriptions"
           sx={{ minWidth: 200 }}
         />
-        <Button variant="contained" onClick={handleImport} disabled={loading}>
-          {loading ? <CircularProgress size={20} /> : 'Import'}
-        </Button>
+        <Box sx={{ display: 'flex', alignItems: 'center', height: '56px' }}>
+          <Button 
+            variant="contained" 
+            onClick={handleImport} 
+            disabled={loading}
+            sx={{ mt: '-15px' }}
+          >
+            {loading ? <CircularProgress size={20} /> : 'Import'}
+          </Button>
+        </Box>
       </Box>
       
       {recordCount !== null && (

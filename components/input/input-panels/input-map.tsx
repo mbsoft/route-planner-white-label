@@ -82,7 +82,6 @@ export const CollapsibleMap = ({ markers, routes, isVisible = false, onToggle }:
 
   // Convert markers to GeoJSON features
   const markerFeatures = useMemo(() => {
-    console.log('CollapsibleMap received markers:', markers)
     if (!markers || markers.length === 0) return []
     
     // Filter markers based on options

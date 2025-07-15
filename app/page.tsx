@@ -224,8 +224,6 @@ export default function HomePage() {
             description = row[descMapping.index]
           }
 
-          console.log(`Created vehicle marker: ${description} at ${lat}, ${lng}`)
-
           return {
             latitude: lat,
             longitude: lng,
