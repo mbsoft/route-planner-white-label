@@ -38,20 +38,30 @@ export const InputVehicleUpload = () => {
   }
 
   // Handler for database import for vehicles
-  const handleDatabaseVehiclesImported = (vehicles: any[]) => {
+  const handleDatabaseVehiclesImported = async (vehicles: any[]) => {
     console.log('=== VEHICLE DATABASE IMPORT ===')
     console.log('Received vehicles:', vehicles)
-    
-    // Convert vehicles to the format expected by setRawData
     if (!vehicles || vehicles.length === 0) return;
-    const header = Object.keys(vehicles[0]);
+    // Fetch schema from API
+    let header: string[] = [];
+    try {
+      const schemaRes = await fetch('/api/vehicles/schema');
+      if (schemaRes.ok) {
+        const schemaData = await schemaRes.json();
+        header = schemaData.columns || Object.keys(vehicles[0]);
+      } else {
+        header = Object.keys(vehicles[0]);
+      }
+    } catch (e) {
+      header = Object.keys(vehicles[0]);
+    }
+    // Map each row to the full header
     const rows = vehicles.map(vehicle => header.map(h => vehicle[h] ?? ''));
     store.inputCore.setRawData('vehicle', {
       header,
       rows,
       attachedRows: [],
     });
-    // Store original vehicles for database updates
     setOriginalVehicles(vehicles)
     console.log('Set originalVehicles:', vehicles)
   }

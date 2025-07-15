@@ -171,18 +171,29 @@ export const InputJobUpload = () => {
   }
 
   // Handler for database import for jobs
-  const handleDatabaseJobsImported = (jobs: any[]) => {
+  const handleDatabaseJobsImported = async (jobs: any[]) => {
     console.log('Database jobs imported:', jobs)
-    // Convert jobs to the format expected by setRawData
     if (!jobs || jobs.length === 0) return;
-    const header = Object.keys(jobs[0]);
+    // Fetch schema from API
+    let header: string[] = [];
+    try {
+      const schemaRes = await fetch('/api/jobs/schema');
+      if (schemaRes.ok) {
+        const schemaData = await schemaRes.json();
+        header = schemaData.columns || Object.keys(jobs[0]);
+      } else {
+        header = Object.keys(jobs[0]);
+      }
+    } catch (e) {
+      header = Object.keys(jobs[0]);
+    }
+    // Map each row to the full header
     const rows = jobs.map(job => header.map(h => job[h] ?? ''));
     store.inputCore.setRawData(inputType, {
       header,
       rows,
       attachedRows: [],
     });
-    // Store original jobs for database updates
     setOriginalJobs(jobs)
     console.log('Original jobs set:', jobs)
   }
