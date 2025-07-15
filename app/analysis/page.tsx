@@ -24,6 +24,9 @@ import {
   DialogTitle,
   DialogContent,
   DialogActions,
+  Menu,
+  MenuItem,
+  ListItemIcon,
 } from '@mui/material'
 import {
   Analytics as AnalyticsIcon,
@@ -35,6 +38,8 @@ import {
   Delete as DeleteIcon,
   Map as MapIcon,
   Edit as EditIcon,
+  Download as DownloadIcon,
+  GetApp as GetAppIcon,
 } from '@mui/icons-material'
 import { WhiteLabelLayout } from '../white-label-layout'
 import { Sidebar } from '../../components/common/sidebar'
@@ -58,6 +63,8 @@ export default function RouteAnalysisPage() {
   const [expandedRoutes, setExpandedRoutes] = useState<Set<number>>(new Set())
   const [selectedJobId, setSelectedJobId] = useState<string | null>(null)
   const [loadingDetails, setLoadingDetails] = useState(false)
+  const [downloadMenuAnchor, setDownloadMenuAnchor] = useState<null | HTMLElement>(null)
+  const [selectedResultForDownload, setSelectedResultForDownload] = useState<any>(null)
   const [summaryStats, setSummaryStats] = useState({
     totalRoutes: 0,
     avgSpeed: 0,
@@ -449,6 +456,136 @@ export default function RouteAnalysisPage() {
   const handleDeleteCancel = () => {
     setDeleteDialogOpen(false)
     setResultToDelete(null)
+  }
+
+  const handleDownloadClick = (event: React.MouseEvent<HTMLElement>, result: any) => {
+    event.stopPropagation()
+    setDownloadMenuAnchor(event.currentTarget)
+    setSelectedResultForDownload(result)
+  }
+
+  const handleDownloadMenuClose = () => {
+    setDownloadMenuAnchor(null)
+    setSelectedResultForDownload(null)
+  }
+
+  const handleDownloadCSV = async () => {
+    if (!selectedResultForDownload) return
+
+    try {
+      // Fetch the full result data if not already available
+      let resultData = selectedResultForDownload
+      if (!resultData.response_data) {
+        const response = await fetch(`/api/optimization-results?job_id=${encodeURIComponent(selectedResultForDownload.job_id)}`)
+        if (response.ok) {
+          resultData = await response.json()
+        } else {
+          throw new Error('Failed to fetch result data')
+        }
+      }
+
+      const routes = resultData.response_data?.result?.routes || []
+      if (routes.length === 0) {
+        alert('No routes found to download')
+        return
+      }
+
+      // Create a zip file with individual CSV files for each route
+      const JSZip = (await import('jszip')).default
+      const zip = new JSZip()
+
+      routes.forEach((route: any, index: number) => {
+        const vehicleId = route.vehicle || `vehicle_${index + 1}`
+        const steps = route.steps || []
+        
+        // Create CSV content for this route
+        const csvHeaders = ['Step', 'Location', 'Type', 'Arrival Time', 'Departure Time', 'Service Time', 'Waiting Time', 'Distance (km)', 'Duration (min)']
+        const csvRows = [csvHeaders]
+
+        steps.forEach((step: any, stepIndex: number) => {
+          const arrivalTime = step.arrival_time ? new Date(step.arrival_time * 1000).toLocaleString() : 'N/A'
+          const departureTime = step.departure_time ? new Date(step.departure_time * 1000).toLocaleString() : 'N/A'
+          const serviceTime = step.service_time ? (step.service_time / 60).toFixed(2) : '0'
+          const waitingTime = step.waiting_time ? (step.waiting_time / 60).toFixed(2) : '0'
+          const distance = step.distance ? (step.distance / 1000).toFixed(2) : '0'
+          const duration = step.duration ? (step.duration / 60).toFixed(2) : '0'
+
+          csvRows.push([
+            stepIndex + 1,
+            step.location?.name || step.location_id || 'Unknown',
+            step.type || 'Unknown',
+            arrivalTime,
+            departureTime,
+            serviceTime,
+            waitingTime,
+            distance,
+            duration
+          ])
+        })
+
+        // Convert to CSV string
+        const csvContent = csvRows.map(row => 
+          row.map(cell => `"${cell}"`).join(',')
+        ).join('\n')
+
+        // Add to zip with vehicle ID as filename
+        zip.file(`${vehicleId}.csv`, csvContent)
+      })
+
+      // Generate and download the zip file
+      const zipBlob = await zip.generateAsync({ type: 'blob' })
+      const url = URL.createObjectURL(zipBlob)
+      const link = document.createElement('a')
+      link.href = url
+      link.download = `${selectedResultForDownload.title || 'routes'}_${new Date().toISOString().split('T')[0]}.zip`
+      document.body.appendChild(link)
+      link.click()
+      document.body.removeChild(link)
+      URL.revokeObjectURL(url)
+
+    } catch (error) {
+      console.error('Error downloading CSV:', error)
+      alert('Failed to download CSV files')
+    } finally {
+      handleDownloadMenuClose()
+    }
+  }
+
+  const handleDownloadJSON = async () => {
+    if (!selectedResultForDownload) return
+
+    try {
+      // Fetch the full result data if not already available
+      let resultData = selectedResultForDownload
+      if (!resultData.response_data) {
+        const response = await fetch(`/api/optimization-results?job_id=${encodeURIComponent(selectedResultForDownload.job_id)}`)
+        if (response.ok) {
+          resultData = await response.json()
+        } else {
+          throw new Error('Failed to fetch result data')
+        }
+      }
+
+      // Create JSON content
+      const jsonContent = JSON.stringify(resultData.response_data, null, 2)
+      
+      // Create and download the JSON file
+      const blob = new Blob([jsonContent], { type: 'application/json' })
+      const url = URL.createObjectURL(blob)
+      const link = document.createElement('a')
+      link.href = url
+      link.download = `${selectedResultForDownload.title || 'routes'}_${new Date().toISOString().split('T')[0]}.json`
+      document.body.appendChild(link)
+      link.click()
+      document.body.removeChild(link)
+      URL.revokeObjectURL(url)
+
+    } catch (error) {
+      console.error('Error downloading JSON:', error)
+      alert('Failed to download JSON file')
+    } finally {
+      handleDownloadMenuClose()
+    }
   }
 
   const handleLogout = async () => {
@@ -885,6 +1022,15 @@ export default function RouteAnalysisPage() {
                                           Map
                                         </Button>
                                       )}
+                                      <Button
+                                        variant="outlined"
+                                        size="small"
+                                        startIcon={<DownloadIcon />}
+                                        onClick={(e) => handleDownloadClick(e, result)}
+                                        sx={{ textTransform: 'none' }}
+                                      >
+                                        Download
+                                      </Button>
                                       {isAdmin && (
                                         <Button
                                           variant="outlined"
@@ -917,9 +1063,9 @@ export default function RouteAnalysisPage() {
                       {selectedResult && (
                         <Box
                           sx={{
-                            width: { xs: '100%', sm: 1000, md: 1200 },
+                            width: { xs: '100%', sm: 750, md: 900 },
                             maxWidth: '90vw',
-                            minWidth: 640,
+                            minWidth: 480,
                             boxShadow: 4,
                             bgcolor: 'background.paper',
                             borderLeft: '1px solid #e0e0e0',
@@ -1201,6 +1347,34 @@ export default function RouteAnalysisPage() {
           </Box>
         </Box>
       </Box>
+
+      {/* Download Menu */}
+      <Menu
+        anchorEl={downloadMenuAnchor}
+        open={Boolean(downloadMenuAnchor)}
+        onClose={handleDownloadMenuClose}
+        anchorOrigin={{
+          vertical: 'bottom',
+          horizontal: 'left',
+        }}
+        transformOrigin={{
+          vertical: 'top',
+          horizontal: 'left',
+        }}
+      >
+        <MenuItem onClick={handleDownloadCSV}>
+          <ListItemIcon>
+            <GetAppIcon fontSize="small" />
+          </ListItemIcon>
+          Download as CSV (ZIP)
+        </MenuItem>
+        <MenuItem onClick={handleDownloadJSON}>
+          <ListItemIcon>
+            <GetAppIcon fontSize="small" />
+          </ListItemIcon>
+          Download as JSON
+        </MenuItem>
+      </Menu>
 
       {/* Delete Confirmation Dialog */}
       <Dialog
