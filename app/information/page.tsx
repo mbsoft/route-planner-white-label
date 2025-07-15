@@ -243,7 +243,7 @@ export default function InformationPage() {
                       <ListItem sx={{ py: 0.5 }}>
                         <ListItemText 
                           primary="• Replace default logo with your company logo"
-                          secondary="Update company_logo.svg in the public directory"
+                          secondary="Set COMPANY_LOGO environment variable or update company_logo.svg in the public directory"
                         />
                       </ListItem>
                       <ListItem sx={{ py: 0.5 }}>
@@ -264,7 +264,7 @@ export default function InformationPage() {
                       <strong>Implementation Steps:</strong>
                     </Typography>
                     <Box sx={{ bgcolor: '#f5f5f5', p: 2, borderRadius: 1, fontFamily: 'monospace', fontSize: '0.9rem' }}>
-                      1. Replace /public/company_logo.svg with your logo<br/>
+                      1. Set COMPANY_LOGO environment variable or replace /public/company_logo.svg with your logo<br/>
                       2. Update company name in environment variables<br/>
                       3. Customize theme colors in app/white-label-layout.tsx<br/>
                       4. Update favicon and meta tags
@@ -304,6 +304,12 @@ export default function InformationPage() {
                         <ListItemText 
                           primary="• USE_CASE"
                           secondary="Set to 'jobs' or 'shipments' based on your use case"
+                        />
+                      </ListItem>
+                      <ListItem sx={{ py: 0.5 }}>
+                        <ListItemText 
+                          primary="• COMPANY_LOGO"
+                          secondary="Path to your company logo (e.g., '/your-logo.svg' or full URL)"
                         />
                       </ListItem>
                     </List>

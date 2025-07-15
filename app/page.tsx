@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react'
 import { Container, Box, Typography, Button } from '@mui/material'
 import { Logout as LogoutIcon } from '@mui/icons-material'
 import { useRouter } from 'next/navigation'
-import { WhiteLabelLayout } from './white-label-layout'
+import { WhiteLabelLayout, useWhiteLabelContext } from './white-label-layout'
 import { InputImportPage } from '../components/input/input-import-page'
 import { CollapsibleMap } from '../components/input/input-panels/input-map'
 import { MappingManagement } from '../components/input/mapping-management'
@@ -39,6 +39,7 @@ export const dynamic = 'force-dynamic'
 
 export default function HomePage() {
   const router = useRouter()
+  const { companyLogo } = useWhiteLabelContext()
   const [markers, setMarkers] = useState<MapMarker[]>([])
   const [routes, setRoutes] = useState<RouteData[]>([])
   const [currentStep, setCurrentStep] = useState(0)
@@ -348,8 +349,8 @@ export default function HomePage() {
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, justifyContent: 'space-between' }}>
               <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
                 <img
-                  src="/company_logo.svg"
-                  alt="Diesel Direct Logo"
+                  src={companyLogo}
+                  alt="Company Logo"
                   style={{
                     height: '25px',
                     width: 'auto',
@@ -435,8 +436,8 @@ export default function HomePage() {
           }}>
             <Box sx={{ mt: 0, pt: 0, display: 'flex', alignItems: 'center', gap: 1 }}>
               <img
-                src="/company_logo.svg"
-                alt="Diesel Direct Logo"
+                src={companyLogo}
+                alt="Company Logo"
                 style={{ height: '20px', width: 'auto', marginRight: '8px', verticalAlign: 'middle' }}
               />
               <Typography variant="caption" sx={{ color: '#999' }}>
