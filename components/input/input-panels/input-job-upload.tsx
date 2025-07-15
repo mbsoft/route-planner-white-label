@@ -130,7 +130,7 @@ export const InputJobUpload = () => {
             fontWeight: '500',
           }}
         >
-          Upload {orderTypeLabel} Data
+          Import {orderTypeLabel} Data
         </h3>
       </Box>
       {

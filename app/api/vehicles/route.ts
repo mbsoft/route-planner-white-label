@@ -48,7 +48,20 @@ export async function GET(req: NextRequest) {
   try {
     await ensureVehiclesTable();
     
-    const result = await turso.execute('SELECT * FROM vehicles ORDER BY id LIMIT 1000');
+    const { searchParams } = new URL(req.url);
+    const search = searchParams.get('search');
+    
+    let query = 'SELECT * FROM vehicles';
+    let params: any[] = [];
+    
+    if (search) {
+      query += ' WHERE description LIKE ?';
+      params.push(`%${search}%`);
+    }
+    
+    query += ' ORDER BY id LIMIT 1000';
+    
+    const result = await turso.execute(query, params);
     
     const vehicles = result.rows.map((row: any) => ({
       id: row.id,

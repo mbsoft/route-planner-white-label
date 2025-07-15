@@ -31,29 +31,53 @@ export async function GET(request: NextRequest) {
     const { searchParams } = new URL(request.url);
     const startParam = searchParams.get('start');
     const endParam = searchParams.get('end');
+    const searchParam = searchParams.get('search');
 
     let query = 'SELECT * FROM jobs';
     let params: any[] = [];
+    let whereConditions: string[] = [];
 
-    // If start and end parameters are provided, filter by time window
+    // Build time window conditions
+    let timeWindowCondition = '';
     if (startParam && endParam) {
       const startTime = unixToSqliteDateTime(parseInt(startParam));
       const endTime = unixToSqliteDateTime(parseInt(endParam));
       
-      query = `
-        SELECT * FROM jobs 
-        WHERE (
-          (time_window_start >= ? AND time_window_start <= ?) OR
-          (time_window_end >= ? AND time_window_end <= ?) OR
-          (time_window_start <= ? AND time_window_end >= ?) OR
-          (time_window_start = '' OR time_window_start IS NULL OR time_window_end = '' OR time_window_end IS NULL)
-        )
-        ORDER BY time_window_start ASC
-        LIMIT 1000
+      timeWindowCondition = `
+        (time_window_start >= ? AND time_window_start <= ?) OR
+        (time_window_end >= ? AND time_window_end <= ?) OR
+        (time_window_start <= ? AND time_window_end >= ?) OR
+        (time_window_start = '' OR time_window_start IS NULL OR time_window_end = '' OR time_window_end IS NULL)
       `;
-      params = [startTime, endTime, startTime, endTime, startTime, endTime];
+      params.push(startTime, endTime, startTime, endTime, startTime, endTime);
+    }
+
+    // Build search conditions
+    let searchCondition = '';
+    if (searchParam && searchParam.trim()) {
+      // Simple substring matching - case insensitive
+      searchCondition = 'LOWER(description) LIKE ?';
+      const searchTerm = searchParam.toLowerCase();
+      params.push(`%${searchTerm}%`);
+    }
+
+    // Combine conditions
+    if (timeWindowCondition && searchCondition) {
+      // Both time window and search filters: records must match time window AND search
+      whereConditions.push(`(${timeWindowCondition}) AND (${searchCondition})`);
+    } else if (timeWindowCondition) {
+      // Only time window filter
+      whereConditions.push(timeWindowCondition);
+    } else if (searchCondition) {
+      // Only search filter
+      whereConditions.push(searchCondition);
+    }
+    // If neither, no conditions (returns all records)
+
+    // Build the final query
+    if (whereConditions.length > 0) {
+      query = `SELECT * FROM jobs WHERE ${whereConditions.join(' AND ')} ORDER BY time_window_start ASC LIMIT 1000`;
     } else {
-      // If no time parameters, return all jobs
       query = 'SELECT * FROM jobs ORDER BY time_window_start ASC LIMIT 1000';
     }
 

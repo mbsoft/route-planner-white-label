@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { Box, IconButton, Typography, Button, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions } from '@mui/material'
+import { Box, IconButton, Typography, Button, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, CircularProgress, TextField } from '@mui/material'
 import DeleteIcon from '@mui/icons-material/Delete'
 import StorageIcon from '@mui/icons-material/Storage'
 import { FileDropZone } from './file-drop-zone'
@@ -14,6 +14,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import SaveIcon from '@mui/icons-material/Save';
 import CloseIcon from '@mui/icons-material/Close';
 import { useCallback } from 'react';
+import { VehicleDatabaseManager } from '../database-data-manager';
 
 export const InputVehicleUpload = () => {
   const store = useInputStore()
@@ -32,27 +33,17 @@ export const InputVehicleUpload = () => {
   }
 
   // Handler for database import for vehicles
-  const handleDatabaseVehiclesImported = useCallback(async () => {
-    // Fetch all vehicles from the backend
-    try {
-      const res = await fetch('/api/vehicles');
-      if (!res.ok) throw new Error('Failed to fetch vehicles');
-      const data = await res.json();
-      const vehicles = data.vehicles || [];
-      if (!vehicles.length) return;
-      const header = Object.keys(vehicles[0]);
-      const rows = vehicles.map((v: any) => header.map((h: string) => v[h] ?? ''));
-      store.inputCore.setRawData('vehicle', {
-        header,
-        rows,
-        attachedRows: [],
-      });
-    } catch (e) {
-      // Optionally show error
-      // eslint-disable-next-line no-console
-      console.error(e);
-    }
-  }, [store.inputCore]);
+  const handleDatabaseVehiclesImported = (vehicles: any[]) => {
+    // Convert vehicles to the format expected by setRawData
+    if (!vehicles || vehicles.length === 0) return;
+    const header = Object.keys(vehicles[0]);
+    const rows = vehicles.map(vehicle => header.map(h => vehicle[h] ?? ''));
+    store.inputCore.setRawData('vehicle', {
+      header,
+      rows,
+      attachedRows: [],
+    });
+  }
 
   const handleClearData = () => {
     store.inputCore.setRawData('vehicle', {
@@ -142,8 +133,7 @@ export const InputVehicleUpload = () => {
             gap: '8px',
           }}
         >
-          <StorageIcon color="primary" sx={{ fontSize: '20px' }} />
-          Import Vehicle Fleet Data
+          Import Vehicle Data
         </h3>
       </Box>
       {
@@ -156,9 +146,9 @@ export const InputVehicleUpload = () => {
               marginBottom: '20px',
             }}
           >
-            <Button variant="contained" onClick={handleDatabaseVehiclesImported} sx={{ mb: 2 }}>
-              Import Vehicles from Database
-            </Button>
+            <VehicleDatabaseManager
+              onVehiclesImported={handleDatabaseVehiclesImported}
+            />
             {/* CSV import panel - only show if enabled */}
             {enableCsvImport && (
               <FileDropZone
