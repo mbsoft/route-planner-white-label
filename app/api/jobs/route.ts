@@ -33,6 +33,10 @@ export async function GET(request: NextRequest) {
     const endParam = searchParams.get('end');
     const searchParam = searchParams.get('search');
 
+    // Debug: Check current table schema
+    const schemaResult = await turso.execute("PRAGMA table_info(jobs)");
+    console.log('Current jobs table schema:', schemaResult.rows);
+
     let query = 'SELECT * FROM jobs';
     let params: any[] = [];
     let whereConditions: string[] = [];
@@ -81,7 +85,12 @@ export async function GET(request: NextRequest) {
       query = 'SELECT * FROM jobs ORDER BY time_window_start ASC LIMIT 1000';
     }
 
+    console.log('Executing query:', query);
+    console.log('Query parameters:', params);
+
     const result = await turso.execute(query, params);
+    
+    console.log('Raw database result:', result.rows);
     
     if (!result.rows || result.rows.length === 0) {
       return NextResponse.json({ jobs: [] });
@@ -93,8 +102,11 @@ export async function GET(request: NextRequest) {
       for (const [key, value] of Object.entries(row)) {
         job[key] = value;
       }
+      console.log('Processed job:', job);
       return job;
     });
+
+    console.log('Final jobs array:', jobs);
 
     return NextResponse.json({ jobs });
 
@@ -112,6 +124,8 @@ export async function PUT(request: NextRequest) {
     const body = await request.json();
     const { jobs } = body;
 
+    console.log('PUT /api/jobs - Received jobs:', jobs);
+
     if (!jobs || !Array.isArray(jobs)) {
       return NextResponse.json(
         { error: 'Invalid request body. Expected jobs array.' },
@@ -122,12 +136,15 @@ export async function PUT(request: NextRequest) {
     // Get current table schema to check for existing columns
     const schemaResult = await turso.execute("PRAGMA table_info(jobs)");
     const existingColumns = new Set(schemaResult.rows.map((row: any) => row.name));
+    console.log('Existing columns before update:', Array.from(existingColumns));
 
     // Update each job in the database
     for (const job of jobs) {
       if (!job.id) {
         continue; // Skip jobs without ID
       }
+
+      console.log(`Processing job ${job.id}:`, job);
 
       // Check for new columns and add them to the schema
       for (const [key, value] of Object.entries(job)) {
@@ -160,7 +177,18 @@ export async function PUT(request: NextRequest) {
         job.id
       ];
 
+      console.log(`Executing update query for job ${job.id}:`, updateQuery);
+      console.log(`Update parameters:`, params);
+
       await turso.execute(updateQuery, params);
+      console.log(`Successfully updated job ${job.id}`);
+    }
+
+    // Verify the data was saved by checking one job
+    if (jobs.length > 0) {
+      const verifyJob = jobs[0];
+      const verifyResult = await turso.execute('SELECT * FROM jobs WHERE id = ?', [verifyJob.id]);
+      console.log('Verification - job after save:', verifyResult.rows[0]);
     }
 
     return NextResponse.json({ 

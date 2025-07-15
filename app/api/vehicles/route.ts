@@ -51,6 +51,10 @@ export async function GET(req: NextRequest) {
     const { searchParams } = new URL(req.url);
     const search = searchParams.get('search');
     
+    // Debug: Check current table schema
+    const schemaResult = await turso.execute("PRAGMA table_info(vehicles)");
+    console.log('Current vehicles table schema:', schemaResult.rows);
+    
     let query = 'SELECT * FROM vehicles';
     let params: any[] = [];
     
@@ -61,7 +65,12 @@ export async function GET(req: NextRequest) {
     
     query += ' ORDER BY id LIMIT 1000';
     
+    console.log('Executing vehicles query:', query);
+    console.log('Vehicles query parameters:', params);
+    
     const result = await turso.execute(query, params);
+    
+    console.log('Raw vehicles database result:', result.rows);
     
     const vehicles = result.rows.map((row: any) => {
       // Return all columns dynamically
@@ -69,8 +78,11 @@ export async function GET(req: NextRequest) {
       for (const [key, value] of Object.entries(row)) {
         vehicle[key] = value;
       }
+      console.log('Processed vehicle:', vehicle);
       return vehicle;
     });
+    
+    console.log('Final vehicles array:', vehicles);
     
     return NextResponse.json({ vehicles });
   } catch (error) {
@@ -89,6 +101,8 @@ export async function PUT(req: NextRequest) {
     const body = await req.json();
     const { vehicles } = body;
     
+    console.log('PUT /api/vehicles - Received vehicles:', vehicles);
+    
     if (!vehicles || !Array.isArray(vehicles)) {
       return NextResponse.json(
         { error: 'Invalid request body. Expected vehicles array.' },
@@ -99,11 +113,14 @@ export async function PUT(req: NextRequest) {
     // Get current table schema to check for existing columns
     const schemaResult = await turso.execute("PRAGMA table_info(vehicles)");
     const existingColumns = new Set(schemaResult.rows.map((row: any) => row.name));
+    console.log('Existing columns before update:', Array.from(existingColumns));
     
     const results = [];
     
     for (const vehicle of vehicles) {
       try {
+        console.log(`Processing vehicle ${vehicle.id}:`, vehicle);
+        
         // Check for new columns and add them to the schema
         for (const [key, value] of Object.entries(vehicle)) {
           if (key !== 'id' && !existingColumns.has(key)) {
@@ -135,7 +152,11 @@ export async function PUT(req: NextRequest) {
           vehicle.id
         ];
 
+        console.log(`Executing update query for vehicle ${vehicle.id}:`, updateQuery);
+        console.log(`Update parameters:`, params);
+
         await turso.execute(updateQuery, params);
+        console.log(`Successfully updated vehicle ${vehicle.id}`);
         
         results.push({
           id: vehicle.id,
@@ -150,6 +171,13 @@ export async function PUT(req: NextRequest) {
           message: 'Failed to update vehicle'
         });
       }
+    }
+    
+    // Verify the data was saved by checking one vehicle
+    if (vehicles.length > 0) {
+      const verifyVehicle = vehicles[0];
+      const verifyResult = await turso.execute('SELECT * FROM vehicles WHERE id = ?', [verifyVehicle.id]);
+      console.log('Verification - vehicle after save:', verifyResult.rows[0]);
     }
     
     return NextResponse.json({ 
