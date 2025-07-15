@@ -38,6 +38,7 @@ export const InputVehicleUpload = () => {
 
   // Handler for database import for vehicles
   const handleDatabaseVehiclesImported = (vehicles: any[]) => {
+    console.log('Database vehicles imported:', vehicles)
     // Convert vehicles to the format expected by setRawData
     if (!vehicles || vehicles.length === 0) return;
     const header = Object.keys(vehicles[0]);
@@ -49,6 +50,7 @@ export const InputVehicleUpload = () => {
     });
     // Store original vehicles for database updates
     setOriginalVehicles(vehicles)
+    console.log('Original vehicles set:', vehicles)
   }
 
   const handleClearData = () => {
@@ -79,6 +81,10 @@ export const InputVehicleUpload = () => {
   }
   // Save editing: commit to store and database if applicable
   const handleSave = async () => {
+    console.log('Save button clicked')
+    console.log('originalVehicles.length:', originalVehicles.length)
+    console.log('editRows:', editRows)
+    
     setIsSaving(true)
     try {
       // First update the local store
@@ -90,6 +96,7 @@ export const InputVehicleUpload = () => {
       
       // If we have original vehicles (from database), save changes back to database
       if (originalVehicles.length > 0) {
+        console.log('Saving to database...')
         // Convert edited rows back to vehicle objects
         const updatedVehicles = editRows.map((row, index) => {
           const vehicleObj: any = { id: originalVehicles[index].id }
@@ -98,6 +105,8 @@ export const InputVehicleUpload = () => {
           })
           return vehicleObj
         })
+        
+        console.log('Updated vehicles to send:', updatedVehicles)
         
         // Send updates to database
         const response = await fetch('/api/vehicles', {
@@ -117,6 +126,8 @@ export const InputVehicleUpload = () => {
         
         // Update original vehicles with the new data
         setOriginalVehicles(updatedVehicles)
+      } else {
+        console.log('No original vehicles found - not saving to database')
       }
       
       setIsEditing(false)

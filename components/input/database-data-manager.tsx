@@ -198,6 +198,7 @@ export const VehicleDatabaseManager: React.FC<VehicleDatabaseManagerProps> = ({ 
   }, [search]);
 
   const handleImport = async () => {
+    console.log('VehicleDatabaseManager: Import button clicked')
     setLoading(true);
     setError(null);
     try {
@@ -206,12 +207,16 @@ export const VehicleDatabaseManager: React.FC<VehicleDatabaseManagerProps> = ({ 
         url += `?search=${encodeURIComponent(search.trim())}`;
       }
       
+      console.log('VehicleDatabaseManager: Fetching from URL:', url)
       const res = await fetch(url);
       if (!res.ok) throw new Error('Failed to fetch vehicles');
       const data = await res.json();
+      console.log('VehicleDatabaseManager: Received data:', data)
       setVehicles(data.vehicles || []);
+      console.log('VehicleDatabaseManager: Calling onVehiclesImported with:', data.vehicles || [])
       onVehiclesImported(data.vehicles || []);
     } catch (e: any) {
+      console.error('VehicleDatabaseManager: Error:', e)
       setError(e.message || 'Unknown error');
     } finally {
       setLoading(false);
