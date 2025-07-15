@@ -31,10 +31,15 @@ const AVOID_OPTIONS = [
 ]
 
 const HAZMAT_OPTIONS = [
-  {label: 'General Hazardous Materials', value: 'general'},
-  {label: 'Circumstantial Hazardous Materials', value: 'circumstantial'},
-  {label: 'Explosive Materials', value: 'explosive'},
-  {label: 'Harmful to Water', value: 'harmful_to_water'},
+  {label: 'Class 1 (Explosives)', value: 'class_1', internalValues: ['circumstantial', 'general', 'explosive']},
+  {label: 'Class 2 (Gas)', value: 'class_2', internalValues: ['circumstantial', 'general', 'explosive']},
+  {label: 'Class 3 (Flammable Liquid)', value: 'class_3', internalValues: ['circumstantial', 'general', 'explosive', 'harmful_to_water']},
+  {label: 'Class 4 (Flammable Gas)', value: 'class_4', internalValues: ['circumstantial', 'general', 'explosive', 'harmful_to_water']},
+  {label: 'Class 5 (Organic)', value: 'class_5', internalValues: ['circumstantial', 'general', 'explosive', 'harmful_to_water']},
+  {label: 'Class 6 (Toxic)', value: 'class_6', internalValues: ['circumstantial', 'general', 'harmful_to_water']},
+  {label: 'Class 7 (Radioactive)', value: 'class_7', internalValues: ['circumstantial', 'general', 'harmful_to_water']},
+  {label: 'Class 8 (Corrosive)', value: 'class_8', internalValues: ['circumstantial', 'general', 'harmful_to_water']},
+  {label: 'Class 9 (Other)', value: 'class_9', internalValues: ['circumstantial', 'general', 'harmful_to_water']},
 ]
 
 const validateTruckSize = (value: string) => {
@@ -52,6 +57,7 @@ export interface RoutingPreferences {
     truck_weight?: number
     avoid?: string[]
     hazmat_type?: string[]
+    selected_hazmat_class?: string // Store the selected class for UI purposes
   }
 }
 
@@ -127,17 +133,43 @@ export function RoutingPanel({ preferences, onPreferencesChange }: RoutingPanelP
     })
   }
 
-  const setHazmatTypes = (value: string[]) => {
+  const setHazmatTypes = (value: string | string[]) => {
+    // Handle single selection - if it's a string, convert to array
+    const selectedValues = Array.isArray(value) ? value : [value]
+    
+    // If no values selected, clear the setting
+    if (selectedValues.length === 0) {
+      onPreferencesChange({
+        ...preferences,
+        routing: {
+          ...routing,
+          hazmat_type: undefined,
+          selected_hazmat_class: undefined,
+        },
+      })
+      return
+    }
+    
+    // Take only the first selected value (single selection)
+    const selectedValue = selectedValues[0]
+    
+    // Map selected hazard class to its internal values
+    const option = HAZMAT_OPTIONS.find(opt => opt.value === selectedValue)
+    const internalValues = option?.internalValues || []
+    
     onPreferencesChange({
       ...preferences,
       routing: {
         ...routing,
-        hazmat_type: value,
+        hazmat_type: internalValues,
+        selected_hazmat_class: selectedValue,
       },
     })
   }
 
   const isTruckSizeValid = !routing.truck_size || validateTruckSize(routing.truck_size)
+
+
 
   return (
     <PreferencesPanel
@@ -223,52 +255,8 @@ export function RoutingPanel({ preferences, onPreferencesChange }: RoutingPanelP
           )}
         </Grid>
 
-        {/* Hazardous Material Types - Only show for truck mode */}
-        {routing.mode === 'truck' && (
-          <Grid container spacing={2} sx={{ mt: 1 }}>
-            <Grid item xs={12}>
-              <FormControl fullWidth size="small">
-                <InputLabel>Hazardous Material Types</InputLabel>
-                <Select
-                  multiple
-                  value={routing.hazmat_type || []}
-                  onChange={(e) => setHazmatTypes(typeof e.target.value === 'string' ? e.target.value.split(',') : e.target.value)}
-                  input={<OutlinedInput label="Hazardous Material Types" />}
-                  renderValue={(selected) => (
-                    <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
-                      {selected.map((value) => {
-                        const option = HAZMAT_OPTIONS.find(opt => opt.value === value)
-                        return (
-                          <Chip 
-                            key={value} 
-                            label={option?.label || value} 
-                            size="small"
-                            sx={{ 
-                              backgroundColor: 'rgba(255, 152, 0, 0.1)',
-                              color: '#ff9800',
-                              '& .MuiChip-deleteIcon': {
-                                color: '#ff9800',
-                              }
-                            }}
-                          />
-                        )
-                      })}
-                    </Box>
-                  )}
-                >
-                  {HAZMAT_OPTIONS.map((option) => (
-                    <MenuItem key={option.value} value={option.value}>
-                      {option.label}
-                    </MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
-            </Grid>
-          </Grid>
-        )}
-
         <Grid container spacing={2} sx={{ mt: 1 }}>
-          <Grid item xs={12}>
+          <Grid item xs={6}>
             <FormControl fullWidth size="small">
               <InputLabel>Route Avoidances</InputLabel>
               <Select
@@ -306,6 +294,37 @@ export function RoutingPanel({ preferences, onPreferencesChange }: RoutingPanelP
               </Select>
             </FormControl>
           </Grid>
+          
+          {/* Hazardous Material Types - Only show for truck mode */}
+          {routing.mode === 'truck' && (
+            <Grid item xs={6}>
+              <FormControl fullWidth size="small">
+                <InputLabel>Hazardous Material Types</InputLabel>
+                <Select
+                  value={routing.selected_hazmat_class || ''}
+                  onChange={(e) => setHazmatTypes(e.target.value)}
+                  input={<OutlinedInput label="Hazardous Material Types" />}
+                  displayEmpty
+                  renderValue={(selected: string) => {
+                    if (!selected) {
+                      return <span style={{ color: '#999' }}>Select hazard class...</span>
+                    }
+                    const option = HAZMAT_OPTIONS.find(opt => opt.value === selected)
+                    return option?.label || selected
+                  }}
+                >
+                  <MenuItem value="">
+                    <em>Clear selection</em>
+                  </MenuItem>
+                  {HAZMAT_OPTIONS.map((option) => (
+                    <MenuItem key={option.value} value={option.value}>
+                      {option.label}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+            </Grid>
+          )}
         </Grid>
       </Box>
     </PreferencesPanel>
