@@ -16,6 +16,7 @@ import {
   IconButton
 } from '@mui/material'
 import { Visibility, VisibilityOff, Login as LoginIcon } from '@mui/icons-material'
+import { WhiteLabelLayout, useWhiteLabelContext } from '../white-label-layout'
 
 // Create a simple theme for the login page
 const theme = createTheme({
@@ -36,13 +37,14 @@ const theme = createTheme({
   },
 })
 
-export default function LoginPage() {
+function LoginPageContent() {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [showPassword, setShowPassword] = useState(false)
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
   const router = useRouter()
+  const { companyLogo } = useWhiteLabelContext()
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -73,9 +75,7 @@ export default function LoginPage() {
   }
 
   return (
-    <ThemeProvider theme={theme}>
-      <CssBaseline />
-      <Container maxWidth="sm">
+    <Container maxWidth="sm">
         <Box
           sx={{
             minHeight: '100vh',
@@ -96,7 +96,7 @@ export default function LoginPage() {
           >
             <Box sx={{ textAlign: 'center', mb: 3 }}>
               <img 
-                src="/company_logo.svg" 
+                src={companyLogo} 
                 alt="Company Logo" 
                 style={{ height: 60, marginBottom: 16 }}
               />
@@ -172,6 +172,13 @@ export default function LoginPage() {
           </Paper>
         </Box>
       </Container>
-    </ThemeProvider>
+  )
+}
+
+export default function LoginPage() {
+  return (
+    <WhiteLabelLayout>
+      <LoginPageContent />
+    </WhiteLabelLayout>
   )
 } 
