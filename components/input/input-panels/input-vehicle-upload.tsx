@@ -133,8 +133,7 @@ export const InputVehicleUpload = () => {
             gap: '8px',
           }}
         >
-          <StorageIcon color="primary" sx={{ fontSize: '20px' }} />
-          Import Vehicle Fleet Data
+          Import Vehicle Data
         </h3>
       </Box>
       {
