@@ -913,85 +913,8 @@ export const InputImportPage = ({ currentStep, onStepChange, preferences, onPref
           </Box>
         )
       case 1:
-        // Jobs/Shipments step: show drag-drop if no data, otherwise show summary, icons, and mapping table
-        if (store.inputCore[inputType].rawData.rows.length === 0) {
-          return <InputOrderPanel />;
-        }
-        return (
-          <Box sx={{ border: '1px solid #e0e0e0', borderRadius: '12px', background: '#fff', p: 4, mb: 2 }}>
-            <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 1 }}>
-              <Typography variant="h5" sx={{ color: '#B54A6A', fontWeight: 'bold' }}>
-                ✓ {orderTypeLabel} Data Imported
-              </Typography>
-              <Typography variant="body2" sx={{ color: '#666' }}>
-                {store.inputCore[inputType].rawData.rows.length} records loaded
-              </Typography>
-            </Box>
-            {/* Icon toolbar and mapping table are rendered here */}
-            <Box sx={{ mt: 2, mb: 2, display: 'flex', gap: 2, alignItems: 'center', justifyContent: 'flex-end' }}>
-              <IconButton onClick={() => store.inputCore.resetMapping(inputType)} color="primary" title="Reset Mapping">
-                <ReplayIcon />
-              </IconButton>
-              <IconButton onClick={() => store.inputCore.addAttachedColumn(inputType)} color="primary" title="Add attribute">
-                <AddIcon />
-              </IconButton>
-              {!isEditing && (
-                <IconButton onClick={handleEdit} color="primary" title="Edit table">
-                  <EditIcon />
-                </IconButton>
-              )}
-              {isEditing && (
-                <>
-                  <IconButton onClick={handleSave} color="success" title="Save changes">
-                    <SaveIcon />
-                  </IconButton>
-                  <IconButton onClick={handleCancel} color="error" title="Cancel editing">
-                    <CloseIcon />
-                  </IconButton>
-                </>
-              )}
-              <IconButton onClick={handleDelete} color="error" title="Delete imported data">
-                <DeleteIcon />
-              </IconButton>
-            </Box>
-            {/* Delete confirmation dialog */}
-            <Dialog open={deleteDialogOpen} onClose={handleDeleteCancel}>
-              <DialogTitle>Are you sure?</DialogTitle>
-              <DialogContent>
-                <DialogContentText>
-                  This will delete all imported data. This action cannot be undone.
-                </DialogContentText>
-              </DialogContent>
-              <DialogActions>
-                <Button onClick={handleDeleteCancel} color="primary">Cancel</Button>
-                <Button onClick={handleDeleteConfirm} color="error" variant="contained">Confirm</Button>
-              </DialogActions>
-            </Dialog>
-            <Box sx={{ mt: 4, position: 'relative' }}>
-              <ErrorPanel
-                errors={store.inputCore.errors[inputType]}
-                style={{
-                  position: 'absolute',
-                  top: '65px',
-                  right: '120px',
-                  zIndex: 100,
-                }}
-                onItemHover={() => {}}
-              />
-              <DataMapperTable
-                inputType={inputType}
-                isEditing={isEditing}
-                highlightCell={null}
-                onCellChange={handleCellChange}
-                onRepeatToAll={handleRepeatToAll}
-                onDeleteAttributeColumn={handleDeleteAttributeColumn}
-                rows={isEditing ? editRows : store.inputCore[inputType].rawData.rows}
-                attachedRows={isEditing ? editAttachedRows : store.inputCore[inputType].rawData.attachedRows}
-                header={store.inputCore[inputType].rawData.header}
-              />
-            </Box>
-          </Box>
-        );
+        // Jobs/Shipments step: always show the InputOrderPanel to handle database saves properly
+        return <InputOrderPanel />;
       case 2:
         return <InputVehiclePanel />
       case 3:
