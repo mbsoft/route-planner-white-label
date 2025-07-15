@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { Box, IconButton, Typography } from '@mui/material'
+import { Box, IconButton, Typography, CircularProgress } from '@mui/material'
 import DeleteIcon from '@mui/icons-material/Delete'
 import { FileDropZone } from './file-drop-zone'
 import { DataTable } from './data-table'
@@ -30,6 +30,8 @@ export const InputJobUpload = () => {
       rows: data,
       attachedRows: [],
     })
+    // Clear original jobs since this is CSV data, not database data
+    setOriginalJobs([])
   }
 
   const getSampleLink = () => {
@@ -53,6 +55,8 @@ export const InputJobUpload = () => {
   const [isEditing, setIsEditing] = useState(false)
   const [editRows, setEditRows] = useState<string[][]>([])
   const [editAttachedRows, setEditAttachedRows] = useState<string[][]>([])
+  const [isSaving, setIsSaving] = useState(false)
+  const [originalJobs, setOriginalJobs] = useState<any[]>([])
 
   // Start editing: copy current data
   const handleEdit = () => {
@@ -66,16 +70,56 @@ export const InputJobUpload = () => {
     setEditRows([])
     setEditAttachedRows([])
   }
-  // Save editing: commit to store
-  const handleSave = () => {
-    store.inputCore.setRawData(inputType, {
-      header: currentData.header,
-      rows: editRows,
-      attachedRows: editAttachedRows,
-    })
-    setIsEditing(false)
-    setEditRows([])
-    setEditAttachedRows([])
+  // Save editing: commit to store and database if applicable
+  const handleSave = async () => {
+    setIsSaving(true)
+    try {
+      // First update the local store
+      store.inputCore.setRawData(inputType, {
+        header: currentData.header,
+        rows: editRows,
+        attachedRows: editAttachedRows,
+      })
+      
+      // If we have original jobs (from database), save changes back to database
+      if (originalJobs.length > 0) {
+        // Convert edited rows back to job objects
+        const updatedJobs = editRows.map((row, index) => {
+          const jobObj: any = { id: originalJobs[index].id }
+          currentData.header.forEach((header: string, colIndex: number) => {
+            jobObj[header] = row[colIndex] || null
+          })
+          return jobObj
+        })
+        
+        // Send updates to database
+        const response = await fetch('/api/jobs', {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ jobs: updatedJobs }),
+        })
+        
+        if (!response.ok) {
+          throw new Error('Failed to save changes to database')
+        }
+        
+        const result = await response.json()
+        
+        // Update original jobs with the new data
+        setOriginalJobs(updatedJobs)
+      }
+      
+      setIsEditing(false)
+      setEditRows([])
+      setEditAttachedRows([])
+    } catch (error) {
+      console.error('Error saving changes:', error)
+      // You could show an error message to the user here
+    } finally {
+      setIsSaving(false)
+    }
   }
 
   // Cell change handler for editing
@@ -117,6 +161,8 @@ export const InputJobUpload = () => {
       rows,
       attachedRows: [],
     });
+    // Store original jobs for database updates
+    setOriginalJobs(jobs)
   }
 
   return (
@@ -165,6 +211,11 @@ export const InputJobUpload = () => {
             <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 2 }}>
               <Typography variant="h6" sx={{ color: '#d36784', fontWeight: 'bold', display: 'flex', alignItems: 'center', gap: 1 }}>
                 <span style={{ fontSize: 22, lineHeight: 1, color: '#43a047' }}>✓</span> {currentData.rows.length} records loaded
+                {originalJobs.length > 0 && (
+                  <span style={{ fontSize: '12px', color: '#666', fontWeight: 'normal' }}>
+                    (from database)
+                  </span>
+                )}
               </Typography>
             </Box>
             {/* Batch editing controls */}
@@ -176,16 +227,16 @@ export const InputJobUpload = () => {
                 <AddIcon />
               </IconButton>
               {!isEditing && (
-                <IconButton onClick={handleEdit} color="primary" title="Edit table">
+                <IconButton onClick={handleEdit} color="primary" title="Edit table" disabled={isSaving}>
                   <EditIcon />
                 </IconButton>
               )}
               {isEditing && (
                 <>
-                  <IconButton onClick={handleSave} color="success" title="Save changes">
-                    <SaveIcon />
+                  <IconButton onClick={handleSave} color="success" title="Save changes" disabled={isSaving}>
+                    {isSaving ? <CircularProgress size={20} /> : <SaveIcon />}
                   </IconButton>
-                  <IconButton onClick={handleCancel} color="error" title="Cancel editing">
+                  <IconButton onClick={handleCancel} color="error" title="Cancel editing" disabled={isSaving}>
                     <CloseIcon />
                   </IconButton>
                 </>

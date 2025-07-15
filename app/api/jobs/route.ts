@@ -109,4 +109,60 @@ export async function GET(request: NextRequest) {
       { status: 500 }
     );
   }
+}
+
+export async function PUT(request: NextRequest) {
+  try {
+    const body = await request.json();
+    const { jobs } = body;
+
+    if (!jobs || !Array.isArray(jobs)) {
+      return NextResponse.json(
+        { error: 'Invalid request body. Expected jobs array.' },
+        { status: 400 }
+      );
+    }
+
+    // Update each job in the database
+    for (const job of jobs) {
+      if (!job.id) {
+        continue; // Skip jobs without ID
+      }
+
+      const updateQuery = `
+        UPDATE jobs 
+        SET description = ?, location = ?, latitude = ?, longitude = ?, 
+            service = ?, delivery = ?, skills = ?, 
+            time_window_start = ?, time_window_end = ?
+        WHERE id = ?
+      `;
+
+      const params = [
+        job.description || null,
+        job.location || null,
+        job.latitude || null,
+        job.longitude || null,
+        job.service || null,
+        job.delivery || null,
+        job.skills || null,
+        job.time_window_start || null,
+        job.time_window_end || null,
+        job.id
+      ];
+
+      await turso.execute(updateQuery, params);
+    }
+
+    return NextResponse.json({ 
+      success: true, 
+      message: `Updated ${jobs.length} job(s)` 
+    });
+
+  } catch (error) {
+    console.error('Error updating jobs:', error);
+    return NextResponse.json(
+      { error: 'Failed to update jobs' },
+      { status: 500 }
+    );
+  }
 } 
