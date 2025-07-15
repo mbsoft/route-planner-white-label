@@ -10,6 +10,7 @@ export interface PreferencesInput {
     traffic_timestamps?: string // Changed from number to string for datetime-local input
     truck_size?: string
     truck_weight?: number
+    avoid?: string[]
   }
   constraints: {
     max_vehicle_overtime?: number

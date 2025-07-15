@@ -6,6 +6,12 @@ import {
   ToggleButtonGroup,
   ToggleButton,
   InputAdornment,
+  MenuItem,
+  Chip,
+  OutlinedInput,
+  Select,
+  FormControl,
+  InputLabel,
 } from '@mui/material'
 import DirectionsIcon from '@mui/icons-material/Directions'
 import {PreferencesPanel} from './preferences-panel'
@@ -13,6 +19,15 @@ import {PreferencesPanel} from './preferences-panel'
 const ROUTING_MODE_OPTIONS = [
   {label: 'Truck', value: 'truck'},
   {label: 'Car', value: 'car'},
+]
+
+const AVOID_OPTIONS = [
+  {label: 'Toll Roads', value: 'toll'},
+  {label: 'Highways', value: 'highway'},
+  {label: 'Bounding Box', value: 'bbox'},
+  {label: 'Left Turns', value: 'left_turn'},
+  {label: 'Right Turns', value: 'right_turn'},
+  {label: 'None', value: 'none'},
 ]
 
 const validateTruckSize = (value: string) => {
@@ -28,6 +43,7 @@ export interface RoutingPreferences {
     traffic_timestamps?: string // Changed from number to string for datetime-local input
     truck_size?: string
     truck_weight?: number
+    avoid?: string[]
   }
 }
 
@@ -89,6 +105,16 @@ export function RoutingPanel({ preferences, onPreferencesChange }: RoutingPanelP
       routing: {
         ...routing,
         truck_weight: value,
+      },
+    })
+  }
+
+  const setAvoids = (value: string[]) => {
+    onPreferencesChange({
+      ...preferences,
+      routing: {
+        ...routing,
+        avoid: value,
       },
     })
   }
@@ -177,6 +203,47 @@ export function RoutingPanel({ preferences, onPreferencesChange }: RoutingPanelP
               </Grid>
             </>
           )}
+        </Grid>
+
+        <Grid container spacing={2} sx={{ mt: 1 }}>
+          <Grid item xs={12}>
+            <FormControl fullWidth size="small">
+              <InputLabel>Route Avoidances</InputLabel>
+              <Select
+                multiple
+                value={routing.avoid || []}
+                onChange={(e) => setAvoids(typeof e.target.value === 'string' ? e.target.value.split(',') : e.target.value)}
+                input={<OutlinedInput label="Route Avoidances" />}
+                renderValue={(selected) => (
+                  <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
+                    {selected.map((value) => {
+                      const option = AVOID_OPTIONS.find(opt => opt.value === value)
+                      return (
+                        <Chip 
+                          key={value} 
+                          label={option?.label || value} 
+                          size="small"
+                          sx={{ 
+                            backgroundColor: 'rgba(211, 103, 132, 0.1)',
+                            color: '#d36784',
+                            '& .MuiChip-deleteIcon': {
+                              color: '#d36784',
+                            }
+                          }}
+                        />
+                      )
+                    })}
+                  </Box>
+                )}
+              >
+                {AVOID_OPTIONS.map((option) => (
+                  <MenuItem key={option.value} value={option.value}>
+                    {option.label}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+          </Grid>
         </Grid>
       </Box>
     </PreferencesPanel>
