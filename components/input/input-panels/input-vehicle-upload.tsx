@@ -17,8 +17,6 @@ import { useCallback } from 'react';
 import { VehicleDatabaseManager } from '../database-data-manager';
 
 export const InputVehicleUpload = () => {
-  console.log('=== InputVehicleUpload component rendering ===')
-  alert('InputVehicleUpload component rendered!') // Temporary test
   
   const store = useInputStore()
   const { vehicle } = store.inputCore
@@ -41,7 +39,6 @@ export const InputVehicleUpload = () => {
 
   // Handler for database import for vehicles
   const handleDatabaseVehiclesImported = (vehicles: any[]) => {
-    console.log('Database vehicles imported:', vehicles)
     // Convert vehicles to the format expected by setRawData
     if (!vehicles || vehicles.length === 0) return;
     const header = Object.keys(vehicles[0]);
@@ -53,7 +50,6 @@ export const InputVehicleUpload = () => {
     });
     // Store original vehicles for database updates
     setOriginalVehicles(vehicles)
-    console.log('Original vehicles set:', vehicles)
   }
 
   const handleClearData = () => {
@@ -72,9 +68,6 @@ export const InputVehicleUpload = () => {
 
   // Start editing: copy current data
   const handleEdit = () => {
-    console.log('=== EDIT BUTTON CLICKED ===')
-    alert('Edit button clicked!') // Temporary test
-    console.log('Edit button clicked')
     setEditRows(vehicle.rawData.rows.map(row => [...row]))
     setEditAttachedRows(vehicle.rawData.attachedRows.map(row => [...row]))
     setIsEditing(true)
@@ -88,11 +81,6 @@ export const InputVehicleUpload = () => {
   }
   // Save editing: commit to store and database if applicable
   const handleSave = async () => {
-    console.log('=== SAVE BUTTON CLICKED ===')
-    alert('Save button clicked!') // Temporary test
-    console.log('Save button clicked')
-    console.log('originalVehicles.length:', originalVehicles.length)
-    console.log('editRows:', editRows)
     
     setIsSaving(true)
     try {
@@ -105,7 +93,6 @@ export const InputVehicleUpload = () => {
       
       // If we have original vehicles (from database), save changes back to database
       if (originalVehicles.length > 0) {
-        console.log('Saving to database...')
         // Convert edited rows back to vehicle objects
         const updatedVehicles = editRows.map((row, index) => {
           const vehicleObj: any = { id: originalVehicles[index].id }
@@ -114,8 +101,6 @@ export const InputVehicleUpload = () => {
           })
           return vehicleObj
         })
-        
-        console.log('Updated vehicles to send:', updatedVehicles)
         
         // Send updates to database
         const response = await fetch('/api/vehicles', {
@@ -131,12 +116,9 @@ export const InputVehicleUpload = () => {
         }
         
         const result = await response.json()
-        console.log('Database update result:', result)
         
         // Update original vehicles with the new data
         setOriginalVehicles(updatedVehicles)
-      } else {
-        console.log('No original vehicles found - not saving to database')
       }
       
       setIsEditing(false)
@@ -150,9 +132,7 @@ export const InputVehicleUpload = () => {
     }
   }
 
-  console.log('handleSave function defined:', typeof handleSave)
-  console.log('isEditing:', isEditing)
-  console.log('hasData:', hasData)
+
 
   // Cell change handler for editing
   const handleCellChange = (row: number, col: number, value: string) => {
@@ -190,7 +170,7 @@ export const InputVehicleUpload = () => {
     }
   }
 
-  console.log('About to render component, isEditing:', isEditing, 'hasData:', hasData)
+
 
   return (
     <div style={{ padding: '20px' }}>
