@@ -72,6 +72,10 @@ export const InputJobUpload = () => {
   }
   // Save editing: commit to store and database if applicable
   const handleSave = async () => {
+    console.log('=== JOBS SAVE BUTTON CLICKED ===')
+    console.log('originalJobs.length:', originalJobs.length)
+    console.log('editRows:', editRows)
+    
     setIsSaving(true)
     try {
       // First update the local store
@@ -83,6 +87,7 @@ export const InputJobUpload = () => {
       
       // If we have original jobs (from database), save changes back to database
       if (originalJobs.length > 0) {
+        console.log('Saving jobs to database...')
         // Convert edited rows back to job objects
         const updatedJobs = editRows.map((row, index) => {
           const jobObj: any = { id: originalJobs[index].id }
@@ -91,6 +96,8 @@ export const InputJobUpload = () => {
           })
           return jobObj
         })
+        
+        console.log('Updated jobs to send:', updatedJobs)
         
         // Send updates to database
         const response = await fetch('/api/jobs', {
@@ -106,9 +113,12 @@ export const InputJobUpload = () => {
         }
         
         const result = await response.json()
+        console.log('Database update result:', result)
         
         // Update original jobs with the new data
         setOriginalJobs(updatedJobs)
+      } else {
+        console.log('No original jobs found - not saving to database')
       }
       
       setIsEditing(false)
@@ -152,6 +162,7 @@ export const InputJobUpload = () => {
 
   // Handler for database import for jobs
   const handleDatabaseJobsImported = (jobs: any[]) => {
+    console.log('Database jobs imported:', jobs)
     // Convert jobs to the format expected by setRawData
     if (!jobs || jobs.length === 0) return;
     const header = Object.keys(jobs[0]);
@@ -163,6 +174,7 @@ export const InputJobUpload = () => {
     });
     // Store original jobs for database updates
     setOriginalJobs(jobs)
+    console.log('Original jobs set:', jobs)
   }
 
   return (
