@@ -17,6 +17,8 @@ import { useCallback } from 'react';
 import { VehicleDatabaseManager } from '../database-data-manager';
 
 export const InputVehicleUpload = () => {
+  console.log('InputVehicleUpload component rendering')
+  
   const store = useInputStore()
   const { vehicle } = store.inputCore
   const hasData = vehicle.rawData.rows.length > 0
@@ -69,12 +71,14 @@ export const InputVehicleUpload = () => {
 
   // Start editing: copy current data
   const handleEdit = () => {
+    console.log('Edit button clicked')
     setEditRows(vehicle.rawData.rows.map(row => [...row]))
     setEditAttachedRows(vehicle.rawData.attachedRows.map(row => [...row]))
     setIsEditing(true)
   }
   // Cancel editing: discard changes
   const handleCancel = () => {
+    console.log('Cancel button clicked')
     setIsEditing(false)
     setEditRows([])
     setEditAttachedRows([])
@@ -142,6 +146,10 @@ export const InputVehicleUpload = () => {
     }
   }
 
+  console.log('handleSave function defined:', typeof handleSave)
+  console.log('isEditing:', isEditing)
+  console.log('hasData:', hasData)
+
   // Cell change handler for editing
   const handleCellChange = (row: number, col: number, value: string) => {
     setEditRows(prev => {
@@ -177,6 +185,8 @@ export const InputVehicleUpload = () => {
       store.inputCore.deleteAttachedColumn('vehicle', colIndex)
     }
   }
+
+  console.log('About to render component, isEditing:', isEditing, 'hasData:', hasData)
 
   return (
     <div style={{ padding: '20px' }}>
