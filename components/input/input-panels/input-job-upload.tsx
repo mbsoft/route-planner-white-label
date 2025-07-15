@@ -72,15 +72,25 @@ export const InputJobUpload = () => {
   }
   // Save editing: commit to store and database if applicable
   const handleSave = async () => {
-    console.log('=== JOBS SAVE BUTTON CLICKED ===')
+    console.log('=== JOB SAVE BUTTON CLICKED ===')
     console.log('originalJobs.length:', originalJobs.length)
     console.log('editRows:', editRows)
+    console.log('editAttachedRows:', editAttachedRows)
+    console.log('currentData.header:', currentData.header)
     
     setIsSaving(true)
     try {
-      // First update the local store
+      // Create combined header that includes both original columns and attached columns
+      const combinedHeader = [
+        ...currentData.header,
+        ...editAttachedRows[0]?.map((_, index) => `Attribute ${index + 1}`) || []
+      ]
+      
+      console.log('Combined header:', combinedHeader)
+      
+      // First update the local store with the combined header
       store.inputCore.setRawData(inputType, {
-        header: currentData.header,
+        header: combinedHeader,
         rows: editRows,
         attachedRows: editAttachedRows,
       })
@@ -88,10 +98,10 @@ export const InputJobUpload = () => {
       // If we have original jobs (from database), save changes back to database
       if (originalJobs.length > 0) {
         console.log('Saving jobs to database...')
-        // Convert edited rows back to job objects
+        // Convert edited rows back to job objects using the combined header
         const updatedJobs = editRows.map((row, index) => {
           const jobObj: any = { id: originalJobs[index].id }
-          currentData.header.forEach((header: string, colIndex: number) => {
+          combinedHeader.forEach((header: string, colIndex: number) => {
             jobObj[header] = row[colIndex] || null
           })
           return jobObj

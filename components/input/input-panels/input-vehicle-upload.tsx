@@ -88,13 +88,22 @@ export const InputVehicleUpload = () => {
     console.log('=== VEHICLE SAVE BUTTON CLICKED ===')
     console.log('originalVehicles.length:', originalVehicles.length)
     console.log('editRows:', editRows)
+    console.log('editAttachedRows:', editAttachedRows)
     console.log('vehicle.rawData.header:', vehicle.rawData.header)
     
     setIsSaving(true)
     try {
-      // First update the local store
+      // Create combined header that includes both original columns and attached columns
+      const combinedHeader = [
+        ...vehicle.rawData.header,
+        ...editAttachedRows[0]?.map((_, index) => `Attribute ${index + 1}`) || []
+      ]
+      
+      console.log('Combined header:', combinedHeader)
+      
+      // First update the local store with the combined header
       store.inputCore.setRawData('vehicle', {
-        header: vehicle.rawData.header,
+        header: combinedHeader,
         rows: editRows,
         attachedRows: editAttachedRows,
       })
@@ -102,10 +111,10 @@ export const InputVehicleUpload = () => {
       // If we have original vehicles (from database), save changes back to database
       if (originalVehicles.length > 0) {
         console.log('Saving vehicles to database...')
-        // Convert edited rows back to vehicle objects
+        // Convert edited rows back to vehicle objects using the combined header
         const updatedVehicles = editRows.map((row, index) => {
           const vehicleObj: any = { id: originalVehicles[index].id }
-          vehicle.rawData.header.forEach((header: string, colIndex: number) => {
+          combinedHeader.forEach((header: string, colIndex: number) => {
             vehicleObj[header] = row[colIndex] || null
           })
           return vehicleObj
