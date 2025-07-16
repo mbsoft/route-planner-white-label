@@ -31,25 +31,25 @@ export const InputImportStepper: React.FC<InputImportStepperProps> = ({
   const steps = [
     {
       label: 'Preferences',
-      icon: <TuneIcon fontSize="small" />,
+      icon: <TuneIcon sx={{ fontSize: 20 }} />,
       description: 'Configure optimization settings',
       isCompleted: true, // Preferences step is always considered complete
     },
     {
       label: orderTypeLabel,
-      icon: <AssignmentIcon fontSize="small" />,
+      icon: <AssignmentIcon sx={{ fontSize: 20 }} />,
       description: 'Import and map job data',
       isCompleted: hasJobsData && hasJobsMapping,
     },
     {
       label: 'Vehicles',
-      icon: <LocalShippingIcon fontSize="small" />,
+      icon: <LocalShippingIcon sx={{ fontSize: 20 }} />,
       description: 'Import and map vehicle data',
       isCompleted: hasVehiclesData && hasVehiclesMapping,
     },
     {
       label: 'Review & Run',
-      icon: <PlayArrowIcon fontSize="small" />,
+      icon: <PlayArrowIcon sx={{ fontSize: 20 }} />,
       description: 'Review data and start optimization',
       isCompleted: false, // This step is never "completed" as it's the final step
     },
@@ -168,10 +168,15 @@ export const InputImportStepper: React.FC<InputImportStepperProps> = ({
               },
             }}
           >
-            <ListItemIcon sx={{ minWidth: 40 }}>
+            <ListItemIcon sx={{ minWidth: 40, display: 'flex', alignItems: 'center' }}>
               <Box sx={{ 
                 color: idx <= currentStep ? companyColor : '#ccc',
-                opacity: idx <= currentStep ? 1 : 0.5
+                opacity: idx <= currentStep ? 1 : 0.5,
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                width: 24,
+                height: 24
               }}>
                 {step.icon}
               </Box>
