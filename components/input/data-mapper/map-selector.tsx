@@ -80,7 +80,7 @@ export function MapSelector({ index, inputType, headerName }: MapSelectorProps) 
           }}
           endIcon={<ArrowDropDownIcon sx={{ fontSize: 20, color: '#666' }} />}
         >
-          <Typography variant="body2" sx={{ fontSize: '12px' }}>
+          <Typography variant="body2" sx={{ fontSize: '14px' }}>
             {currentOption?.label || 'Select field'}
           </Typography>
         </Button>

@@ -216,11 +216,17 @@ export function DataMapperTable(props: DataMapperTableProps) {
             }}
           >
             <Checkbox
-              size="medium"
+              size="large"
               checked={allSelected}
               indeterminate={!allSelected && someSelected}
               onChange={e => setAllRowsSelected(inputType, e.target.checked)}
               inputProps={{ 'aria-label': 'Select all rows' }}
+              sx={{
+                '& .MuiSvgIcon-root': {
+                  fontSize: 24,
+                },
+                padding: '4px',
+              }}
             />
           </Box>
           {innerColumns.map((column, index) => (
@@ -274,7 +280,7 @@ export function DataMapperTable(props: DataMapperTableProps) {
                   borderLeft: '1px solid #e0e0e0',
                 },
                 fontFamily: 'monospace',
-                fontSize: '12px',
+                fontSize: '14px',
                 color: '#666',
                 fontWeight: '500',
                 textAlign: 'left',
@@ -310,10 +316,16 @@ export function DataMapperTable(props: DataMapperTableProps) {
               }}
             >
               <Checkbox
-                size="medium"
+                size="large"
                 checked={!!selection[rowIndex]}
                 onChange={e => setRowSelected(inputType, rowIndex, e.target.checked)}
                 inputProps={{ 'aria-label': `Select row ${rowIndex + 1}` }}
+                sx={{
+                  '& .MuiSvgIcon-root': {
+                    fontSize: 24,
+                  },
+                  padding: '4px',
+                }}
               />
             </Box>
             {innerColumns.map((column, colIndex) => (
@@ -434,7 +446,7 @@ export function MapperTableHeader(props: {
           />
         )}
         {isEditing && (
-          <Typography variant="body2" sx={{ fontSize: '12px' }}>
+          <Typography variant="body2" sx={{ fontSize: '14px' }}>
             {headerName}
           </Typography>
         )}
