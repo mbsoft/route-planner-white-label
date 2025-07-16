@@ -1268,7 +1268,7 @@ export default function RouteAnalysisPage() {
                           {/* Route Details Table */}
                           {selectedResult?.response_data?.result?.routes && (
                             <Box sx={{ mt: 3 }}>
-                              <Typography variant="h6" sx={{ mb: 2, color: 'companyColor', fontWeight: 'bold' }}>
+                              <Typography variant="h6" sx={{ mb: 2, color: companyColor, fontWeight: 'bold' }}>
                                 Route Details
                               </Typography>
                               <RouteSummaryTable
@@ -1298,13 +1298,13 @@ export default function RouteAnalysisPage() {
                             return (
                               <>
                                 {/* Fuel Delivery KPIs */}
-                                <Typography variant="h6" sx={{ mb: 2, mt: 4, color: 'companyColor', fontWeight: 'bold' }}>
+                                <Typography variant="h6" sx={{ mb: 2, mt: 4, color: companyColor, fontWeight: 'bold' }}>
                                   Fuel Delivery Metrics
                                 </Typography>
                                 <Grid container spacing={2} sx={{ mb: 3 }}>
                                   <Grid item xs={12} md={2}>
                                     <Box sx={{ p: 2, bgcolor: '#f8f9fa', borderRadius: 1, textAlign: 'center' }}>
-                                      <Typography variant="h6" sx={{ color: 'companyColor', fontWeight: 'bold' }}>
+                                      <Typography variant="h6" sx={{ color: companyColor, fontWeight: 'bold' }}>
                                         {kpis.ulsdClearDelivered.toLocaleString()}
                                       </Typography>
                                       <Typography variant="caption" sx={{ color: '#666' }}>
@@ -1314,7 +1314,7 @@ export default function RouteAnalysisPage() {
                                   </Grid>
                                   <Grid item xs={12} md={2}>
                                     <Box sx={{ p: 2, bgcolor: '#f8f9fa', borderRadius: 1, textAlign: 'center' }}>
-                                      <Typography variant="h6" sx={{ color: 'companyColor', fontWeight: 'bold' }}>
+                                      <Typography variant="h6" sx={{ color: companyColor, fontWeight: 'bold' }}>
                                         {kpis.ulsdDyedDelivered.toLocaleString()}
                                       </Typography>
                                       <Typography variant="caption" sx={{ color: '#666' }}>
@@ -1324,7 +1324,7 @@ export default function RouteAnalysisPage() {
                                   </Grid>
                                   <Grid item xs={12} md={2}>
                                     <Box sx={{ p: 2, bgcolor: '#f8f9fa', borderRadius: 1, textAlign: 'center' }}>
-                                      <Typography variant="h6" sx={{ color: 'companyColor', fontWeight: 'bold' }}>
+                                      <Typography variant="h6" sx={{ color: companyColor, fontWeight: 'bold' }}>
                                         {kpis.unlDelivered.toLocaleString()}
                                       </Typography>
                                       <Typography variant="caption" sx={{ color: '#666' }}>
@@ -1334,7 +1334,7 @@ export default function RouteAnalysisPage() {
                                   </Grid>
                                   <Grid item xs={12} md={2}>
                                     <Box sx={{ p: 2, bgcolor: '#f8f9fa', borderRadius: 1, textAlign: 'center' }}>
-                                      <Typography variant="h6" sx={{ color: 'companyColor', fontWeight: 'bold' }}>
+                                      <Typography variant="h6" sx={{ color: companyColor, fontWeight: 'bold' }}>
                                         {kpis.gasUnlPreDelivered.toLocaleString()}
                                       </Typography>
                                       <Typography variant="caption" sx={{ color: '#666' }}>
@@ -1344,7 +1344,7 @@ export default function RouteAnalysisPage() {
                                   </Grid>
                                   <Grid item xs={12} md={2}>
                                     <Box sx={{ p: 2, bgcolor: '#f8f9fa', borderRadius: 1, textAlign: 'center' }}>
-                                      <Typography variant="h6" sx={{ color: 'companyColor', fontWeight: 'bold' }}>
+                                      <Typography variant="h6" sx={{ color: companyColor, fontWeight: 'bold' }}>
                                         {kpis.rec90Delivered.toLocaleString()}
                                       </Typography>
                                       <Typography variant="caption" sx={{ color: '#666' }}>
@@ -1354,7 +1354,7 @@ export default function RouteAnalysisPage() {
                                   </Grid>
                                   <Grid item xs={12} md={2}>
                                     <Box sx={{ p: 2, bgcolor: '#f8f9fa', borderRadius: 1, textAlign: 'center' }}>
-                                      <Typography variant="h6" sx={{ color: 'companyColor', fontWeight: 'bold' }}>
+                                      <Typography variant="h6" sx={{ color: companyColor, fontWeight: 'bold' }}>
                                         {kpis.totalFuel.toLocaleString()}
                                       </Typography>
                                       <Typography variant="caption" sx={{ color: '#666' }}>
@@ -1366,7 +1366,7 @@ export default function RouteAnalysisPage() {
                                 <Grid container spacing={2} sx={{ mb: 3 }}>
                                   <Grid item xs={12} md={3}>
                                     <Box sx={{ p: 2, bgcolor: '#f8f9fa', borderRadius: 1, textAlign: 'center' }}>
-                                      <Typography variant="h6" sx={{ color: 'companyColor', fontWeight: 'bold' }}>
+                                      <Typography variant="h6" sx={{ color: companyColor, fontWeight: 'bold' }}>
                                         {kpis.avgFuelPerRoute.toFixed(0)}
                                       </Typography>
                                       <Typography variant="caption" sx={{ color: '#666' }}>
@@ -1377,13 +1377,13 @@ export default function RouteAnalysisPage() {
                                 </Grid>
 
                                 {/* Operational Efficiency KPIs */}
-                                <Typography variant="h6" sx={{ mb: 2, mt: 3, color: 'companyColor', fontWeight: 'bold' }}>
+                                <Typography variant="h6" sx={{ mb: 2, mt: 3, color: companyColor, fontWeight: 'bold' }}>
                                   Operational Efficiency
                                 </Typography>
                                 <Grid container spacing={2} sx={{ mb: 3 }}>
                                   <Grid item xs={12} md={3}>
                                     <Box sx={{ p: 2, bgcolor: '#f8f9fa', borderRadius: 1, textAlign: 'center' }}>
-                                      <Typography variant="h6" sx={{ color: 'companyColor', fontWeight: 'bold' }}>
+                                      <Typography variant="h6" sx={{ color: companyColor, fontWeight: 'bold' }}>
                                         {formatDistance(kpis.totalDistance)}
                                       </Typography>
                                       <Typography variant="caption" sx={{ color: '#666' }}>
@@ -1393,7 +1393,7 @@ export default function RouteAnalysisPage() {
                                   </Grid>
                                   <Grid item xs={12} md={3}>
                                     <Box sx={{ p: 2, bgcolor: '#f8f9fa', borderRadius: 1, textAlign: 'center' }}>
-                                      <Typography variant="h6" sx={{ color: 'companyColor', fontWeight: 'bold' }}>
+                                      <Typography variant="h6" sx={{ color: companyColor, fontWeight: 'bold' }}>
                                         {formatDuration(kpis.totalDuration)}
                                       </Typography>
                                       <Typography variant="caption" sx={{ color: '#666' }}>
@@ -1403,7 +1403,7 @@ export default function RouteAnalysisPage() {
                                   </Grid>
                                   <Grid item xs={12} md={3}>
                                     <Box sx={{ p: 2, bgcolor: '#f8f9fa', borderRadius: 1, textAlign: 'center' }}>
-                                      <Typography variant="h6" sx={{ color: 'companyColor', fontWeight: 'bold' }}>
+                                      <Typography variant="h6" sx={{ color: companyColor, fontWeight: 'bold' }}>
                                         {formatDuration(kpis.totalService)}
                                       </Typography>
                                       <Typography variant="caption" sx={{ color: '#666' }}>
@@ -1413,7 +1413,7 @@ export default function RouteAnalysisPage() {
                                   </Grid>
                                   <Grid item xs={12} md={3}>
                                     <Box sx={{ p: 2, bgcolor: '#f8f9fa', borderRadius: 1, textAlign: 'center' }}>
-                                      <Typography variant="h6" sx={{ color: 'companyColor', fontWeight: 'bold' }}>
+                                      <Typography variant="h6" sx={{ color: companyColor, fontWeight: 'bold' }}>
                                         {formatDuration(kpis.totalWaiting)}
                                       </Typography>
                                       <Typography variant="caption" sx={{ color: '#666' }}>
