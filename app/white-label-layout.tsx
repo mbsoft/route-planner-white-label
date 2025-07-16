@@ -3,6 +3,7 @@
 import React, {createContext, useContext, useEffect, useState} from 'react'
 import {ThemeProvider, createTheme} from '@mui/material/styles'
 import CssBaseline from '@mui/material/CssBaseline'
+import { buildThemeFromConfig, parseThemeConfigFromAPI, ThemeConfig } from '../utils/theme-builder'
 
 // Create a context for the API key
 interface WhiteLabelContextType {
@@ -12,6 +13,26 @@ interface WhiteLabelContextType {
   companyName: string
   companyLogo: string
   companyColor: string
+  themeConfig: ThemeConfig
+}
+
+const defaultThemeConfig: ThemeConfig = {
+  primaryColor: '#D36784',
+  secondaryColor: '#dc004e',
+  backgroundColor: '#ffffff',
+  paperColor: '#ffffff',
+  textPrimary: '#000000',
+  textSecondary: '#666666',
+  errorColor: '#d32f2f',
+  warningColor: '#ed6c02',
+  infoColor: '#0288d1',
+  successColor: '#2e7d32',
+  fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
+  fontSizeSmall: '0.875rem',
+  fontSizeMedium: '1rem',
+  fontSizeLarge: '1.25rem',
+  borderRadius: '4px',
+  spacingUnit: 8,
 }
 
 const WhiteLabelContext = createContext<WhiteLabelContextType>({
@@ -21,6 +42,7 @@ const WhiteLabelContext = createContext<WhiteLabelContextType>({
   companyName: 'Route Planner',
   companyLogo: '/company_logo.svg',
   companyColor: '#D36784',
+  themeConfig: defaultThemeConfig,
 })
 
 export function useWhiteLabelContext() {
@@ -38,25 +60,10 @@ export function WhiteLabelLayout({children}: WhiteLabelLayoutProps) {
   const [companyName, setCompanyName] = useState('Route Planner')
   const [companyLogo, setCompanyLogo] = useState('/company_logo.svg')
   const [companyColor, setCompanyColor] = useState('#D36784')
+  const [themeConfig, setThemeConfig] = useState<ThemeConfig>(defaultThemeConfig)
 
-  // Create a dynamic theme based on company color
-  const theme = createTheme({
-    palette: {
-      primary: {
-        main: companyColor, // Use the company color as primary
-        light: companyColor + '1A', // Add transparency for light variant
-        dark: companyColor + 'CC', // Add transparency for dark variant
-        contrastText: '#ffffff',
-      },
-      secondary: {
-        main: '#dc004e',
-      },
-      background: {
-        default: '#ffffff',
-        paper: '#ffffff',
-      },
-    },
-  })
+  // Create a dynamic theme based on theme configuration
+  const theme = buildThemeFromConfig(themeConfig)
 
   useEffect(() => {
     // Fetch configuration from both public and protected endpoints
@@ -78,6 +85,10 @@ export function WhiteLabelLayout({children}: WhiteLabelLayoutProps) {
         setCompanyName(companyName)
         setCompanyLogo(companyLogo)
         setCompanyColor(companyColor)
+
+        // Parse and set theme configuration
+        const parsedThemeConfig = parseThemeConfigFromAPI(publicConfig)
+        setThemeConfig(parsedThemeConfig)
 
         // Then, fetch API key from protected config endpoint
         const protectedResponse = await fetch('/api/config/full')
@@ -157,7 +168,7 @@ export function WhiteLabelLayout({children}: WhiteLabelLayoutProps) {
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      <WhiteLabelContext.Provider value={{apiKey, isLoading, error, companyName, companyLogo, companyColor}}>
+      <WhiteLabelContext.Provider value={{apiKey, isLoading, error, companyName, companyLogo, companyColor, themeConfig}}>
         {children}
       </WhiteLabelContext.Provider>
     </ThemeProvider>

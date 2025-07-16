@@ -352,7 +352,7 @@ export default function HomePage() {
                   src={companyLogo}
                   alt="Company Logo"
                   style={{
-                    height: '25px',
+                    height: '60px',
                     width: 'auto',
                     borderRadius: '4px'
                   }}
