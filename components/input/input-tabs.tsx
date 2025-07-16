@@ -5,12 +5,14 @@ import { Box, Button, Typography } from '@mui/material'
 import { useInputStore } from '../../models/input/store'
 import { InputType } from '../../models/input/input-core'
 import { useUseCase } from '../../utils/use-case'
+import { useWhiteLabelContext } from '../../app/white-label-layout'
 
 export const InputTabs = () => {
   const store = useInputStore()
   const { activeTab, setActiveTab } = store.inputCore
   const { job, vehicle, shipment } = store.inputCore
   const useCase = useUseCase()
+  const { companyColor } = useWhiteLabelContext()
 
   const hasJobData = job.rawData.rows.length > 0
   const hasVehicleData = vehicle.rawData.rows.length > 0
@@ -50,9 +52,9 @@ export const InputTabs = () => {
               py: 2,
               px: 3,
               borderRadius: 0,
-              borderBottom: isActive ? '2px solid #d36784' : '2px solid transparent',
+              borderBottom: isActive ? `2px solid ${companyColor}` : '2px solid transparent',
               backgroundColor: isActive ? '#fff' : 'transparent',
-              color: isActive ? '#d36784' : '#666',
+              color: isActive ? companyColor : '#666',
               fontWeight: isActive ? 'bold' : 'normal',
               textTransform: 'none',
               fontSize: '14px',
@@ -66,7 +68,7 @@ export const InputTabs = () => {
               {dataCount > 0 && (
                 <Box
                   sx={{
-                    backgroundColor: isActive ? '#d36784' : '#999',
+                    backgroundColor: isActive ? companyColor : '#999',
                     color: 'white',
                     borderRadius: '50%',
                     width: '20px',

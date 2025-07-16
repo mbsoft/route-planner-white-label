@@ -5,6 +5,7 @@ import AssignmentIcon from '@mui/icons-material/Assignment';
 import LocalShippingIcon from '@mui/icons-material/LocalShipping';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import { useUseCase } from '../../utils/use-case';
+import { useWhiteLabelContext } from '../../app/white-label-layout';
 
 interface InputImportStepperProps {
   currentStep: number;
@@ -24,30 +25,31 @@ export const InputImportStepper: React.FC<InputImportStepperProps> = ({
   hasVehiclesMapping = false
 }) => {
   const useCase = useUseCase();
+  const { companyColor } = useWhiteLabelContext();
   const orderTypeLabel = useCase === 'jobs' ? 'Jobs' : 'Shipments';
 
   const steps = [
     {
       label: 'Preferences',
-      icon: <TuneIcon fontSize="small" />,
+      icon: <TuneIcon sx={{ fontSize: 20 }} />,
       description: 'Configure optimization settings',
       isCompleted: true, // Preferences step is always considered complete
     },
     {
       label: orderTypeLabel,
-      icon: <AssignmentIcon fontSize="small" />,
+      icon: <AssignmentIcon sx={{ fontSize: 20 }} />,
       description: 'Import and map job data',
       isCompleted: hasJobsData && hasJobsMapping,
     },
     {
       label: 'Vehicles',
-      icon: <LocalShippingIcon fontSize="small" />,
+      icon: <LocalShippingIcon sx={{ fontSize: 20 }} />,
       description: 'Import and map vehicle data',
       isCompleted: hasVehiclesData && hasVehiclesMapping,
     },
     {
       label: 'Review & Run',
-      icon: <PlayArrowIcon fontSize="small" />,
+      icon: <PlayArrowIcon sx={{ fontSize: 20 }} />,
       description: 'Review data and start optimization',
       isCompleted: false, // This step is never "completed" as it's the final step
     },
@@ -89,6 +91,10 @@ export const InputImportStepper: React.FC<InputImportStepperProps> = ({
             size="small"
             color="primary"
             variant="filled"
+            sx={{
+              backgroundColor: companyColor,
+              color: '#ffffff',
+            }}
           />
         </Box>
         <Typography variant="caption" sx={{ color: '#888', display: 'block' }}>
@@ -113,7 +119,21 @@ export const InputImportStepper: React.FC<InputImportStepperProps> = ({
                 sx={{ 
                   cursor: 'pointer',
                   fontSize: '11px',
-                  height: '24px'
+                  height: '24px',
+                  ...(idx === currentStep && {
+                    backgroundColor: companyColor,
+                    color: '#ffffff',
+                    '&:hover': {
+                      backgroundColor: companyColor,
+                    }
+                  }),
+                  ...(idx < currentStep && {
+                    backgroundColor: '#4caf50',
+                    color: '#ffffff',
+                    '&:hover': {
+                      backgroundColor: '#4caf50',
+                    }
+                  })
                 }}
               />
               {idx < steps.length - 1 && (
@@ -135,8 +155,8 @@ export const InputImportStepper: React.FC<InputImportStepperProps> = ({
             onClick={() => onStepChange(idx)}
             sx={{
               mb: 1,
-              bgcolor: currentStep === idx ? 'rgba(211, 103, 132, 0.10)' : 'transparent',
-              border: currentStep === idx ? '1px solid rgba(211, 103, 132, 1)' : 'none',
+              bgcolor: currentStep === idx ? `${companyColor}1A` : 'transparent',
+              border: currentStep === idx ? `1px solid ${companyColor}` : 'none',
               borderWidth: currentStep === idx ? '1px 1px 1px 4px' : 'none',
               borderRadius: '0px 8px 8px 0px',
               width: currentStep === idx ? '97%' : '100%',
@@ -144,14 +164,19 @@ export const InputImportStepper: React.FC<InputImportStepperProps> = ({
               paddingBottom: '7px',
               cursor: 'pointer',
               '&:hover': {
-                bgcolor: idx <= currentStep ? 'rgba(211, 103, 132, 0.05)' : 'rgba(0, 0, 0, 0.04)',
+                bgcolor: idx <= currentStep ? `${companyColor}0D` : 'rgba(0, 0, 0, 0.04)',
               },
             }}
           >
-            <ListItemIcon sx={{ minWidth: 40 }}>
+            <ListItemIcon sx={{ minWidth: 40, display: 'flex', alignItems: 'center' }}>
               <Box sx={{ 
-                color: idx <= currentStep ? 'primary.main' : '#ccc',
-                opacity: idx <= currentStep ? 1 : 0.5
+                color: idx <= currentStep ? companyColor : '#ccc',
+                opacity: idx <= currentStep ? 1 : 0.5,
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                width: 24,
+                height: 24
               }}>
                 {step.icon}
               </Box>

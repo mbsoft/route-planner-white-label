@@ -19,6 +19,7 @@ import MapIcon from '@mui/icons-material/Map'
 import { polylineToGeoJSON } from '../../../utils/polyline-decoder'
 import MapOptionsControls from './map-options-controls'
 import styles from './input-map.module.scss'
+import { useWhiteLabelContext } from '../../../app/white-label-layout'
 
 // TypeScript global declaration for NextBillion
 declare global {
@@ -68,8 +69,7 @@ export const CollapsibleMap = ({ markers, routes, isVisible = false, onToggle }:
   const [isMapReady, setIsMapReady] = useState(false)
   const mapRef = useRef<any>(null)
   const { viewMap } = useMap()
-
-  const apiKey = process.env.NEXTBILLION_API_KEY
+  const { apiKey } = useWhiteLabelContext()
   const mapStyleUrl = apiKey
     ? `https://api.nextbillion.io/tt/style/1/style/22.2.1-9?map=2/basic_street-dark&key=${apiKey}`
     : ''
@@ -245,9 +245,9 @@ export const CollapsibleMap = ({ markers, routes, isVisible = false, onToggle }:
     return (
       <Box className={styles.collapsibleRoot}>
         <Box className={styles.toggleButton} onClick={handleToggle}>
-          <MapIcon sx={{ mr: 1 }} />
+          <MapIcon sx={{ mr: 1, fontSize: 20, color: '#666' }} />
           <Typography variant="body2">Map View</Typography>
-          {isExpanded ? <ExpandLessIcon /> : <ExpandMoreIcon />}
+          {isExpanded ? <ExpandLessIcon sx={{ fontSize: 20 }} /> : <ExpandMoreIcon sx={{ fontSize: 20 }} />}
         </Box>
         <Collapse in={isExpanded} timeout={300}>
           <Box className={styles.errorContainer}>
@@ -264,12 +264,12 @@ export const CollapsibleMap = ({ markers, routes, isVisible = false, onToggle }:
   return (
     <Box className={styles.collapsibleRoot}>
       <Box className={styles.toggleButton} onClick={handleToggle}>
-        <MapIcon sx={{ mr: 1 }} />
+        <MapIcon sx={{ mr: 1, fontSize: 20, color: '#666' }} />
         <Typography variant="body2">
           Map View {markers && markers.length > 0 && `(${markers.length} locations)`}
           {routes && routes.length > 0 && ` • ${routes.length} routes`}
         </Typography>
-        {isExpanded ? <ExpandLessIcon /> : <ExpandMoreIcon />}
+        {isExpanded ? <ExpandLessIcon sx={{ fontSize: 20 }} /> : <ExpandMoreIcon sx={{ fontSize: 20 }} />}
       </Box>
       
       <Collapse in={isExpanded} timeout={300}>

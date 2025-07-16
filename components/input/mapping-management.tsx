@@ -5,10 +5,12 @@ import { Box, Chip } from '@mui/material'
 import { useMappingPersistence } from '../../hooks/input/use-mapping-persistence'
 import { usePreferencesPersistence } from '../../hooks/use-preferences-persistence'
 import { InputType } from '../../models/input/input-core'
+import { useWhiteLabelContext } from '../../app/white-label-layout'
 
 export const MappingManagement: React.FC = () => {
   const { hasMapping } = useMappingPersistence()
   const { status: preferencesStatus, checkPreferencesStatus } = usePreferencesPersistence()
+  const { companyColor } = useWhiteLabelContext()
 
   // State for mapping status
   const [mappingStatus, setMappingStatus] = useState({
@@ -78,7 +80,7 @@ export const MappingManagement: React.FC = () => {
         size="small"
         sx={{
           '&.MuiChip-colorPrimary': {
-            backgroundColor: '#d36784',
+            backgroundColor: companyColor,
             color: '#ffffff',
           }
         }}
@@ -89,7 +91,7 @@ export const MappingManagement: React.FC = () => {
         size="small"
         sx={{
           '&.MuiChip-colorPrimary': {
-            backgroundColor: '#d36784',
+            backgroundColor: companyColor,
             color: '#ffffff',
           }
         }}
@@ -100,7 +102,7 @@ export const MappingManagement: React.FC = () => {
         size="small"
         sx={{
           '&.MuiChip-colorPrimary': {
-            backgroundColor: '#d36784',
+            backgroundColor: companyColor,
             color: '#ffffff',
           }
         }}
@@ -111,7 +113,7 @@ export const MappingManagement: React.FC = () => {
         size="small"
         sx={{
           '&.MuiChip-colorPrimary': {
-            backgroundColor: '#d36784',
+            backgroundColor: companyColor,
             color: '#ffffff',
           }
         }}

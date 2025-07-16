@@ -159,7 +159,7 @@ export function DataMapperCell({
               step="60"
               style={{
                 flex: 1,
-                fontSize: '12px',
+                fontSize: '14px',
                 padding: '4px',
                 border: '1px solid #ccc',
                 borderRadius: '4px',
@@ -177,7 +177,7 @@ export function DataMapperCell({
               aria-label="Edit cell value"
               style={{
                 flex: 1,
-                fontSize: '12px',
+                fontSize: '14px',
                 padding: '0',
                 border: 'none',
                 outline: 'none',
@@ -202,7 +202,7 @@ export function DataMapperCell({
         <Box sx={{ flex: 1, display: 'flex', alignItems: 'center' }}>
           <Box
             sx={{
-              fontSize: '12px',
+              fontSize: '14px',
               color: '#333',
               overflow: 'hidden',
               textOverflow: 'ellipsis',

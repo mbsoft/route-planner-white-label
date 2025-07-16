@@ -23,7 +23,7 @@ import { useWhiteLabelContext } from '../white-label-layout'
 
 export default function InformationPage() {
   const router = useRouter()
-  const { companyName, companyLogo } = useWhiteLabelContext()
+  const { companyName, companyLogo, companyColor } = useWhiteLabelContext()
 
   const handleLogout = async () => {
     try {
@@ -78,7 +78,7 @@ export default function InformationPage() {
           </Box>
           <Box sx={{ flex: 1, backgroundColor: '#ffffff', p: 3, overflow: 'auto' }}>
             {/* Application Overview */}
-            <Typography variant="h4" sx={{ fontWeight: 'bold', mb: 3, color: '#d36784' }}>
+            <Typography variant="h4" sx={{ fontWeight: 'bold', mb: 3, color: companyColor }}>
               Route Planning & Optimization Platform
             </Typography>
             
@@ -92,7 +92,7 @@ export default function InformationPage() {
               <Grid item xs={12} md={6} lg={4}>
                 <Card sx={{ height: '100%', border: '1px solid #e0e0e0' }}>
                   <CardHeader
-                    avatar={<RouteIcon sx={{ color: '#d36784' }} />}
+                    avatar={<RouteIcon sx={{ color: companyColor }} />}
                     title="Route Optimization"
                     titleTypographyProps={{ variant: 'h6', fontWeight: 'bold' }}
                   />
@@ -133,7 +133,7 @@ export default function InformationPage() {
               <Grid item xs={12} md={6} lg={4}>
                 <Card sx={{ height: '100%', border: '1px solid #e0e0e0' }}>
                   <CardHeader
-                    avatar={<UploadIcon sx={{ color: '#d36784' }} />}
+                    avatar={<UploadIcon sx={{ color: companyColor }} />}
                     title="Data Import & Management"
                     titleTypographyProps={{ variant: 'h6', fontWeight: 'bold' }}
                   />
@@ -174,7 +174,7 @@ export default function InformationPage() {
               <Grid item xs={12} md={6} lg={4}>
                 <Card sx={{ height: '100%', border: '1px solid #e0e0e0' }}>
                   <CardHeader
-                    avatar={<AnalyticsIcon sx={{ color: '#d36784' }} />}
+                    avatar={<AnalyticsIcon sx={{ color: companyColor }} />}
                     title="Analytics & Reporting"
                     titleTypographyProps={{ variant: 'h6', fontWeight: 'bold' }}
                   />
@@ -214,7 +214,7 @@ export default function InformationPage() {
             </Grid>
 
             {/* White Label Customization Section */}
-            <Typography variant="h5" sx={{ fontWeight: 'bold', mb: 3, mt: 4, color: '#d36784' }}>
+            <Typography variant="h5" sx={{ fontWeight: 'bold', mb: 3, mt: 4, color: companyColor }}>
               White Label Customization Guide
             </Typography>
 
@@ -229,7 +229,7 @@ export default function InformationPage() {
                 <Accordion sx={{ border: '1px solid #e0e0e0' }}>
                   <AccordionSummary expandIcon={<ExpandMoreIcon />}>
                     <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-                      <PaletteIcon sx={{ color: '#d36784' }} />
+                      <PaletteIcon sx={{ color: companyColor }} />
                       <Typography variant="h6" sx={{ fontWeight: 'bold' }}>
                         Branding & Visual Customization
                       </Typography>
@@ -277,7 +277,7 @@ export default function InformationPage() {
                 <Accordion sx={{ border: '1px solid #e0e0e0' }}>
                   <AccordionSummary expandIcon={<ExpandMoreIcon />}>
                     <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-                      <SettingsIcon sx={{ color: '#d36784' }} />
+                      <SettingsIcon sx={{ color: companyColor }} />
                       <Typography variant="h6" sx={{ fontWeight: 'bold' }}>
                         Configuration & Environment
                       </Typography>
@@ -331,7 +331,7 @@ export default function InformationPage() {
                 <Accordion sx={{ border: '1px solid #e0e0e0' }}>
                   <AccordionSummary expandIcon={<ExpandMoreIcon />}>
                     <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-                      <CodeIcon sx={{ color: '#d36784' }} />
+                      <CodeIcon sx={{ color: companyColor }} />
                       <Typography variant="h6" sx={{ fontWeight: 'bold' }}>
                         Feature Customization
                       </Typography>
@@ -375,7 +375,7 @@ export default function InformationPage() {
                 <Accordion sx={{ border: '1px solid #e0e0e0' }}>
                   <AccordionSummary expandIcon={<ExpandMoreIcon />}>
                     <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-                      <StorageIcon sx={{ color: '#d36784' }} />
+                      <StorageIcon sx={{ color: companyColor }} />
                       <Typography variant="h6" sx={{ fontWeight: 'bold' }}>
                         Database Integration
                       </Typography>
@@ -421,7 +421,7 @@ export default function InformationPage() {
             </Grid>
 
             {/* Getting Started Section */}
-            <Typography variant="h5" sx={{ fontWeight: 'bold', mb: 3, mt: 4, color: '#d36784' }}>
+            <Typography variant="h5" sx={{ fontWeight: 'bold', mb: 3, mt: 4, color: companyColor }}>
               Getting Started
             </Typography>
 
@@ -559,7 +559,7 @@ export default function InformationPage() {
             </Grid>
 
             {/* Support & Documentation */}
-            <Typography variant="h5" sx={{ fontWeight: 'bold', mb: 3, mt: 4, color: '#d36784' }}>
+            <Typography variant="h5" sx={{ fontWeight: 'bold', mb: 3, mt: 4, color: companyColor }}>
               Support & Documentation
             </Typography>
 
@@ -579,7 +579,7 @@ export default function InformationPage() {
                               href="https://docs.nextbillion.ai/optimization/route-optimization-api" 
                               target="_blank" 
                               rel="noopener noreferrer"
-                              style={{ color: '#d36784', textDecoration: 'none' }}
+                              style={{ color: companyColor, textDecoration: 'none' }}
                             >
                               • API Documentation
                             </a>
@@ -594,7 +594,7 @@ export default function InformationPage() {
                               href="https://github.com/mbsoft/route-planner-white-label/blob/main/DOCUMENTATION.md#database-schema" 
                               target="_blank" 
                               rel="noopener noreferrer"
-                              style={{ color: '#d36784', textDecoration: 'none' }}
+                              style={{ color: companyColor, textDecoration: 'none' }}
                             >
                               • Data Format Specifications
                             </a>
@@ -609,7 +609,7 @@ export default function InformationPage() {
                               href="https://github.com/mbsoft/route-planner-white-label/blob/main/docs/DEPLOYMENT_QUICKSTART.md" 
                               target="_blank" 
                               rel="noopener noreferrer"
-                              style={{ color: '#d36784', textDecoration: 'none' }}
+                              style={{ color: companyColor, textDecoration: 'none' }}
                             >
                               • White Label Guide
                             </a>
@@ -677,9 +677,9 @@ export default function InformationPage() {
               <img
                 src={companyLogo}
                 alt={`${companyName} Logo`}
-                style={{ height: '20px', width: 'auto', marginRight: '8px', verticalAlign: 'middle' }}
+                style={{ height: '40px', width: 'auto', marginRight: '8px', verticalAlign: 'middle' }}
               />
-              <Typography variant="caption" sx={{ color: '#999' }}>
+              <Typography variant="body2" sx={{ color: '#999', fontSize: '14px' }}>
                 powered by NextBillion.ai | Version 1.0.0 | Last updated: {new Date().toLocaleDateString()}
               </Typography>
             </Box>

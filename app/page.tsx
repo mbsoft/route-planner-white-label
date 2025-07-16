@@ -39,7 +39,7 @@ export const dynamic = 'force-dynamic'
 
 export default function HomePage() {
   const router = useRouter()
-  const { companyLogo } = useWhiteLabelContext()
+  const { companyLogo, companyColor } = useWhiteLabelContext()
   const [markers, setMarkers] = useState<MapMarker[]>([])
   const [routes, setRoutes] = useState<RouteData[]>([])
   const [currentStep, setCurrentStep] = useState(0)
@@ -352,7 +352,7 @@ export default function HomePage() {
                   src={companyLogo}
                   alt="Company Logo"
                   style={{
-                    height: '25px',
+                    height: '60px',
                     width: 'auto',
                     borderRadius: '4px'
                   }}
@@ -370,7 +370,7 @@ export default function HomePage() {
                   <Typography
                     variant="caption"
                     sx={{
-                      backgroundColor: '#d36784',
+                      backgroundColor: companyColor,
                       color: 'white',
                       px: 1,
                       py: 0.5,
@@ -438,9 +438,9 @@ export default function HomePage() {
               <img
                 src={companyLogo}
                 alt="Company Logo"
-                style={{ height: '20px', width: 'auto', marginRight: '8px', verticalAlign: 'middle' }}
+                style={{ height: '40px', width: 'auto', marginRight: '8px', verticalAlign: 'middle' }}
               />
-              <Typography variant="caption" sx={{ color: '#999' }}>
+              <Typography variant="body2" sx={{ color: '#999', fontSize: '14px' }}>
                 powered by NextBillion.ai | Version 1.0.0 | Last updated: {new Date().toLocaleDateString()}
               </Typography>
             </Box>

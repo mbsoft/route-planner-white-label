@@ -1,17 +1,16 @@
 import React from 'react'
 import {Box, Typography} from '@mui/material'
+import { useWhiteLabelContext } from '../../../app/white-label-layout'
 
-export function PreferencesPanel({
-  icon,
-  title,
-  description,
-  children,
-}: {
+interface PreferencesPanelProps {
   icon: React.ReactNode
   title: string
   description: string
   children: React.ReactNode
-}) {
+}
+
+export function PreferencesPanel({ icon, title, description, children }: PreferencesPanelProps) {
+  const { companyColor } = useWhiteLabelContext()
   return (
     <Box
       sx={{
@@ -28,12 +27,12 @@ export function PreferencesPanel({
             width: 40,
             height: 40,
             borderRadius: '50%',
-            bgcolor: 'rgba(211, 103, 132, 0.1)',
+            bgcolor: `${companyColor}1A`,
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
             mr: '12px',
-            color: '#d36784',
+            color: companyColor,
             fontSize: '12px',
           }}
         >
@@ -41,7 +40,7 @@ export function PreferencesPanel({
             style: {
               width: '28px',
               height: '28px',
-              color: '#d36784',
+              color: companyColor,
             },
           })}
         </Box>

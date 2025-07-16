@@ -102,18 +102,32 @@ export const DatabaseDataManager: React.FC<DatabaseDataManagerProps> = ({ onJobs
           type="datetime-local"
           value={start}
           onChange={e => setStart(e.target.value)}
-          InputLabelProps={{ shrink: true }}
+          InputLabelProps={{ 
+            shrink: true,
+            sx: { fontSize: '14px' }
+          }}
           size="small"
           helperText="Leave empty to import all records"
+          FormHelperTextProps={{ sx: { fontSize: '13px' } }}
+          inputProps={{
+            style: { fontSize: '14px' }
+          }}
         />
         <TextField
           label="End Time (optional)"
           type="datetime-local"
           value={end}
           onChange={e => setEnd(e.target.value)}
-          InputLabelProps={{ shrink: true }}
+          InputLabelProps={{ 
+            shrink: true,
+            sx: { fontSize: '14px' }
+          }}
           size="small"
           helperText="Leave empty to import all records"
+          FormHelperTextProps={{ sx: { fontSize: '13px' } }}
+          inputProps={{
+            style: { fontSize: '14px' }
+          }}
         />
         <TextField
           label="Search Description (optional)"
@@ -123,6 +137,11 @@ export const DatabaseDataManager: React.FC<DatabaseDataManagerProps> = ({ onJobs
           size="small"
           placeholder="Enter search term..."
           helperText="Case insensitive search in job descriptions"
+          InputLabelProps={{ sx: { fontSize: '14px' } }}
+          FormHelperTextProps={{ sx: { fontSize: '13px' } }}
+          inputProps={{
+            style: { fontSize: '14px' }
+          }}
           sx={{ minWidth: 200 }}
         />
         <Box sx={{ display: 'flex', alignItems: 'center', height: '56px' }}>
@@ -138,7 +157,7 @@ export const DatabaseDataManager: React.FC<DatabaseDataManagerProps> = ({ onJobs
       </Box>
       
       {recordCount !== null && (
-        <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
+        <Typography variant="body1" color="text.secondary" sx={{ mb: 2, fontSize: '14px' }}>
           {recordCount} record{recordCount !== 1 ? 's' : ''} will be imported
         </Typography>
       )}
@@ -246,6 +265,11 @@ export const VehicleDatabaseManager: React.FC<VehicleDatabaseManagerProps> = ({ 
           size="small"
           placeholder="Enter search term..."
           helperText="Case insensitive search in vehicle descriptions"
+          InputLabelProps={{ sx: { fontSize: '14px' } }}
+          FormHelperTextProps={{ sx: { fontSize: '13px' } }}
+          inputProps={{
+            style: { fontSize: '14px' }
+          }}
           sx={{ minWidth: 200 }}
         />
         <Box sx={{ display: 'flex', alignItems: 'center', height: '56px' }}>
@@ -261,7 +285,7 @@ export const VehicleDatabaseManager: React.FC<VehicleDatabaseManagerProps> = ({ 
       </Box>
       
       {recordCount !== null && (
-        <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
+        <Typography variant="body1" color="text.secondary" sx={{ mb: 2, fontSize: '14px' }}>
           {recordCount} record{recordCount !== 1 ? 's' : ''} will be imported
         </Typography>
       )}

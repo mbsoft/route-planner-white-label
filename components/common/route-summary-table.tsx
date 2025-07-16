@@ -24,6 +24,7 @@ import UploadIcon from '@mui/icons-material/Upload'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 import ExpandLessIcon from '@mui/icons-material/ExpandLess'
 // Removed timeline imports
+import { useWhiteLabelContext } from '../../app/white-label-layout'
 
 // Route Summary Table Component
 interface RouteSummaryTableProps {
@@ -49,6 +50,8 @@ export const RouteSummaryTable: React.FC<RouteSummaryTableProps> = ({
   showSelection = true,
   maxHeight = 600
 }) => {
+  const { companyColor, apiKey } = useWhiteLabelContext()
+
   const formatDuration = (seconds: number) => {
     const hours = Math.floor(seconds / 3600)
     const minutes = Math.floor((seconds % 3600) / 60)
@@ -85,7 +88,7 @@ export const RouteSummaryTable: React.FC<RouteSummaryTableProps> = ({
     const iconStyle = {
       width: '20px',
       height: '20px',
-      color: '#d36784',
+      color: companyColor,
     }
     
     switch (type) {
@@ -108,7 +111,6 @@ export const RouteSummaryTable: React.FC<RouteSummaryTableProps> = ({
   const [geocodeCache, setGeocodeCache] = useState<{ [key: string]: string }>({})
   const [loadingGeocode, setLoadingGeocode] = useState<{ [key: string]: boolean }>({})
   const [pendingGeocodes, setPendingGeocodes] = useState<Set<string>>(new Set())
-  const apiKey = process.env.NEXTBILLION_API_KEY || ''
 
   // Helper to fetch and cache reverse geocode with rate limiting
   const fetchGeocode = async (lat: number, lng: number) => {
@@ -186,11 +188,11 @@ export const RouteSummaryTable: React.FC<RouteSummaryTableProps> = ({
 
   return (
     <TableContainer component={Paper} sx={{ mt: 2, maxHeight }}>
-      <Table stickyHeader>
+      <Table stickyHeader sx={{ tableLayout: 'fixed' }}>
         <TableHead>
           <TableRow>
             {showSelection && (
-              <TableCell sx={{ width: 50 }}>
+              <TableCell sx={{ width: 50, minWidth: 50 }}>
                 <Checkbox
                   checked={selectedRoutes.size === routes.length && routes.length > 0}
                   indeterminate={selectedRoutes.size > 0 && selectedRoutes.size < routes.length}
@@ -204,16 +206,16 @@ export const RouteSummaryTable: React.FC<RouteSummaryTableProps> = ({
                 />
               </TableCell>
             )}
-            <TableCell sx={{ width: 50 }}></TableCell>
-            <TableCell><strong>Vehicle</strong></TableCell>
-            <TableCell><strong>Description</strong></TableCell>
-            <TableCell><strong>Start Time</strong></TableCell>
-            <TableCell><strong>End Time</strong></TableCell>
-            <TableCell><strong>Stops</strong></TableCell>
-            <TableCell><strong>Distance</strong></TableCell>
-            <TableCell><strong>Drive Time</strong></TableCell>
-            <TableCell><strong>Fuel Delivery</strong></TableCell>
-            <TableCell><strong>% Full at Departure</strong></TableCell>
+            <TableCell sx={{ width: 50, minWidth: 50 }}></TableCell>
+            <TableCell sx={{ width: 120, minWidth: 120 }}><strong>Vehicle</strong></TableCell>
+            <TableCell sx={{ width: 150, minWidth: 150 }}><strong>Description</strong></TableCell>
+            <TableCell sx={{ width: 100, minWidth: 100 }}><strong>Start</strong></TableCell>
+            <TableCell sx={{ width: 100, minWidth: 100 }}><strong>End</strong></TableCell>
+            <TableCell sx={{ width: 80, minWidth: 80 }}><strong>Stops</strong></TableCell>
+            <TableCell sx={{ width: 100, minWidth: 100 }}><strong>Distance</strong></TableCell>
+            <TableCell sx={{ width: 100, minWidth: 100 }}><strong>Drive</strong></TableCell>
+            <TableCell sx={{ width: 120, minWidth: 120 }}><strong>Delivery</strong></TableCell>
+            <TableCell sx={{ width: 140, minWidth: 140 }}><strong>Departure</strong></TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -243,70 +245,65 @@ export const RouteSummaryTable: React.FC<RouteSummaryTableProps> = ({
                   </IconButton>
                 </TableCell>
                 <TableCell onClick={() => handleToggleRoute(routeIndex)}>
-                  <Typography variant="body2" sx={{ fontWeight: 'bold' }}>
+                  <Typography variant="body2" sx={{ fontWeight: 'bold', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
                     {route.vehicle}
                   </Typography>
                 </TableCell>
                 <TableCell onClick={() => handleToggleRoute(routeIndex)}>
-                  <Typography variant="body2">
+                  <Typography variant="body2" sx={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
                     {route.description || 'No description'}
                   </Typography>
                 </TableCell>
                 <TableCell onClick={() => handleToggleRoute(routeIndex)}>
-                  <Typography variant="body2">
+                  <Typography variant="body2" sx={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
                     {getRouteStartTime(route)}
                   </Typography>
                 </TableCell>
                 <TableCell onClick={() => handleToggleRoute(routeIndex)}>
-                  <Typography variant="body2">
+                  <Typography variant="body2" sx={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
                     {getRouteEndTime(route)}
                   </Typography>
                 </TableCell>
                 <TableCell onClick={() => handleToggleRoute(routeIndex)}>
-                  <Typography variant="body2">
+                  <Typography variant="body2" sx={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
                     {route.steps ? route.steps.length - 2 : 0} stops
                   </Typography>
                 </TableCell>
                 <TableCell onClick={() => handleToggleRoute(routeIndex)}>
-                  <Typography variant="body2">
+                  <Typography variant="body2" sx={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
                     {formatDistance(route.distance || 0)}
                   </Typography>
                 </TableCell>
                 <TableCell onClick={() => handleToggleRoute(routeIndex)}>
-                  <Typography variant="body2">
+                  <Typography variant="body2" sx={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
                     {formatDuration(route.duration || 0)}
                   </Typography>
                 </TableCell>
                 <TableCell onClick={() => handleToggleRoute(routeIndex)}>
                   {route.delivery && route.delivery.length >= 2 ? (
-                    <Box>
-                      <Typography variant="caption" sx={{ display: 'block', color: '#666' }}>
+                    <Box sx={{ overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                      <Typography variant="caption" sx={{ display: 'block', color: '#666', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
                         ULSD Clear: {route.delivery[0]} gal
                       </Typography>
-                      <Typography variant="caption" sx={{ display: 'block', color: '#666' }}>
+                      <Typography variant="caption" sx={{ display: 'block', color: '#666', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
                         ULSD Dyed: {route.delivery[1]} gal
                       </Typography>
-                      <Typography variant="caption" sx={{ display: 'block', color: '#666' }}>
-                        UNL: {route.delivery[2]} gal
-                      </Typography>
-                      <Typography variant="caption" sx={{ display: 'block', color: '#666' }}>
-                        GAS UNL PRE: {route.delivery[3]} gal
-                      </Typography>
-                      <Typography variant="caption" sx={{ display: 'block', color: '#666' }}>
-                        REC 90 GAS: {route.delivery[4]} gal
-                      </Typography>
-                      <Typography variant="caption" sx={{ display: 'block', fontWeight: 'bold', color: '#d36784' }}>
+                      <Typography variant="caption" sx={{ display: 'block', fontWeight: 'bold', color: companyColor, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
                         Total: {route.delivery[0] + route.delivery[1] + route.delivery[2] + route.delivery[3] + route.delivery[4]} gal
                       </Typography>
                     </Box>
                   ) : route.delivery && route.delivery.length > 0 ? (
-                    route.delivery.join(', ')
+                    <Typography variant="body2" sx={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                      {route.delivery.join(', ')}
+                    </Typography>
                   ) : (
-                    '-'
+                    <Typography variant="body2" sx={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                      -
+                    </Typography>
                   )}
                 </TableCell>
                 <TableCell onClick={() => handleToggleRoute(routeIndex)}>
-                  <Typography variant="body2">
+                  <Typography variant="body2" sx={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
                     {(() => {
                       const startLoad = route.steps && route.steps[0] && route.steps[0].load;
                       const capacity = route.capacity;
@@ -331,30 +328,31 @@ export const RouteSummaryTable: React.FC<RouteSummaryTableProps> = ({
                         Route Details
                       </Typography>
                       
-                      <Table size="small">
+                      <TableContainer sx={{ maxHeight: 300, overflow: 'auto' }}>
+                        <Table size="small" sx={{ tableLayout: 'fixed' }}>
                           <TableHead>
                             <TableRow>
-                              <TableCell><strong>Type</strong></TableCell>
-                              <TableCell><strong>Description</strong></TableCell>
-                              <TableCell><strong>Location</strong></TableCell>
-                              <TableCell><strong>Arrival</strong></TableCell>
-                              <TableCell><strong>Service</strong></TableCell>
-                              <TableCell><strong>Fuel Delivery</strong></TableCell>
+                              <TableCell sx={{ width: '80px', minWidth: '80px' }}><strong>Type</strong></TableCell>
+                              <TableCell sx={{ width: '200px', minWidth: '200px' }}><strong>Description</strong></TableCell>
+                              <TableCell sx={{ width: '250px', minWidth: '250px' }}><strong>Location</strong></TableCell>
+                              <TableCell sx={{ width: '80px', minWidth: '80px' }}><strong>Arrival</strong></TableCell>
+                              <TableCell sx={{ width: '80px', minWidth: '80px' }}><strong>Service</strong></TableCell>
+                              <TableCell sx={{ width: '150px', minWidth: '150px' }}><strong>Fuel Delivery</strong></TableCell>
                             </TableRow>
                           </TableHead>
                           <TableBody>
                             {route.steps && route.steps.map((step: any, stepIndex: number) => (
                               <TableRow key={stepIndex}>
-                                <TableCell>
+                                <TableCell sx={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
                                   <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
                                     {getStepTypeIcon(step.type)}
                                     {step.type !== 'job' && <span>{step.type?.toUpperCase() || 'N/A'}</span>}
                                   </Box>
                                 </TableCell>
-                                <TableCell>
+                                <TableCell sx={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
                                   {step.description || 'N/A'}
                                 </TableCell>
-                                <TableCell>
+                                <TableCell sx={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
                                   {step.location && step.location.length === 2 ? (
                                     geocodeCache[`${step.location[0].toFixed(6)},${step.location[1].toFixed(6)}`]
                                       ? geocodeCache[`${step.location[0].toFixed(6)},${step.location[1].toFixed(6)}`]
@@ -363,16 +361,16 @@ export const RouteSummaryTable: React.FC<RouteSummaryTableProps> = ({
                                         : `${step.location[0].toFixed(4)}, ${step.location[1].toFixed(4)}`
                                   ) : (step.id || 'N/A')}
                                 </TableCell>
-                                <TableCell>
+                                <TableCell sx={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
                                   {step.arrival ? 
                                     new Date(step.arrival * 1000).toLocaleTimeString(undefined, { hour: '2-digit', minute: '2-digit', hour12: false }) : 
                                     'N/A'
                                   }
                                 </TableCell>
-                                <TableCell>
+                                <TableCell sx={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
                                   {step.service ? formatDuration(step.service) : '-'}
                                 </TableCell>
-                                <TableCell>
+                                <TableCell sx={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
                                   {step.load && step.load.length >= 2 ? (
                                     <Box>
                                       <Typography variant="caption" sx={{ display: 'block', color: '#666' }}>
@@ -381,7 +379,7 @@ export const RouteSummaryTable: React.FC<RouteSummaryTableProps> = ({
                                       <Typography variant="caption" sx={{ display: 'block', color: '#666' }}>
                                         ULSD Dyed: {step.load[1]} gal
                                       </Typography>
-                                      <Typography variant="caption" sx={{ display: 'block', fontWeight: 'bold', color: '#d36784' }}>
+                                      <Typography variant="caption" sx={{ display: 'block', fontWeight: 'bold', color: companyColor }}>
                                         Total: {step.load[0] + step.load[1]} gal
                                       </Typography>
                                     </Box>
@@ -395,6 +393,7 @@ export const RouteSummaryTable: React.FC<RouteSummaryTableProps> = ({
                             ))}
                           </TableBody>
                         </Table>
+                      </TableContainer>
                     </Box>
                   </Collapse>
                 </TableCell>

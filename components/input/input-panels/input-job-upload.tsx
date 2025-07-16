@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { Box, IconButton, Typography, CircularProgress } from '@mui/material'
+import { Box, IconButton, Typography, CircularProgress, Button, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions } from '@mui/material'
 import DeleteIcon from '@mui/icons-material/Delete'
 import { FileDropZone } from './file-drop-zone'
 import { DataTable } from './data-table'
@@ -14,12 +14,14 @@ import EditIcon from '@mui/icons-material/Edit';
 import SaveIcon from '@mui/icons-material/Save';
 import CloseIcon from '@mui/icons-material/Close';
 import { DatabaseDataManager } from '../database-data-manager';
+import { useWhiteLabelContext } from '../../../app/white-label-layout'
 
 export const InputJobUpload = () => {
   const store = useInputStore()
   const useCase = useUseCase()
   const inputType = useCase === 'jobs' ? 'job' : 'shipment'
   const orderTypeLabel = useCase === 'jobs' ? 'Job' : 'Shipment'
+  const { companyColor } = useWhiteLabelContext()
 
   // Check if CSV import is enabled
   const enableCsvImport = process.env.NEXT_PUBLIC_ENABLE_CSV_IMPORT === 'true'
@@ -43,13 +45,13 @@ export const InputJobUpload = () => {
   const currentData = store.inputCore[inputType].rawData
   const hasData = currentData.rows.length > 0
 
-  const handleClearData = () => {
-    store.inputCore.setRawData(inputType, {
-      header: [],
-      rows: [],
-      attachedRows: [],
-    })
-  }
+  // Handler for delete with confirmation
+  const handleDelete = () => setDeleteDialogOpen(true);
+  const handleDeleteConfirm = () => {
+    store.inputCore.setRawData(inputType, { header: [], rows: [], attachedRows: [] });
+    setDeleteDialogOpen(false);
+  };
+  const handleDeleteCancel = () => setDeleteDialogOpen(false);
 
   // Batch editing state
   const [isEditing, setIsEditing] = useState(false)
@@ -57,6 +59,7 @@ export const InputJobUpload = () => {
   const [editAttachedRows, setEditAttachedRows] = useState<string[][]>([])
   const [isSaving, setIsSaving] = useState(false)
   const [originalJobs, setOriginalJobs] = useState<any[]>([])
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false)
 
   // Start editing: copy current data
   const handleEdit = () => {
@@ -242,7 +245,7 @@ export const InputJobUpload = () => {
             }}
           >
             <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 2 }}>
-              <Typography variant="h6" sx={{ color: '#d36784', fontWeight: 'bold', display: 'flex', alignItems: 'center', gap: 1 }}>
+              <Typography variant="h6" sx={{ color: companyColor, fontWeight: 'bold', display: 'flex', alignItems: 'center', gap: 1 }}>
                 <span style={{ fontSize: 22, lineHeight: 1, color: '#43a047' }}>✓</span> {currentData.rows.length} records loaded
                 {originalJobs.length > 0 && (
                   <span style={{ fontSize: '12px', color: '#666', fontWeight: 'normal' }}>
@@ -254,28 +257,28 @@ export const InputJobUpload = () => {
             {/* Batch editing controls */}
             <Box sx={{ mt: 2, mb: 2, display: 'flex', gap: 2, alignItems: 'center', justifyContent: 'flex-end' }}>
               <IconButton onClick={() => store.inputCore.resetMapping(inputType)} color="primary" title="Reset Mapping">
-                <ReplayIcon />
+                <ReplayIcon sx={{ fontSize: 20 }} />
               </IconButton>
               <IconButton onClick={() => store.inputCore.addAttachedColumn(inputType)} color="primary" title="Add attribute">
-                <AddIcon />
+                <AddIcon sx={{ fontSize: 20 }} />
               </IconButton>
               {!isEditing && (
                 <IconButton onClick={handleEdit} color="primary" title="Edit table" disabled={isSaving}>
-                  <EditIcon />
+                  <EditIcon sx={{ fontSize: 20 }} />
                 </IconButton>
               )}
               {isEditing && (
                 <>
                   <IconButton onClick={handleSave} color="success" title="Save changes" disabled={isSaving}>
-                    {isSaving ? <CircularProgress size={20} /> : <SaveIcon />}
+                    {isSaving ? <CircularProgress size={20} /> : <SaveIcon sx={{ fontSize: 20 }} />}
                   </IconButton>
                   <IconButton onClick={handleCancel} color="error" title="Cancel editing" disabled={isSaving}>
-                    <CloseIcon />
+                    <CloseIcon sx={{ fontSize: 20 }} />
                   </IconButton>
                 </>
               )}
-              <IconButton onClick={handleClearData} color="error" title="Delete imported data">
-                <DeleteIcon />
+              <IconButton onClick={handleDelete} color="error" title="Delete imported data">
+                <DeleteIcon sx={{ fontSize: 20 }} />
               </IconButton>
             </Box>
             {/* Editable table */}
@@ -293,6 +296,27 @@ export const InputJobUpload = () => {
           </Box>
         )
       }
+      <Dialog
+        open={deleteDialogOpen}
+        onClose={handleDeleteCancel}
+        aria-labelledby="delete-dialog-title"
+        aria-describedby="delete-dialog-description"
+      >
+        <DialogTitle id="delete-dialog-title">Confirm Deletion</DialogTitle>
+        <DialogContent>
+          <DialogContentText id="delete-dialog-description">
+            Are you sure you want to delete all imported {orderTypeLabel} data? This action cannot be undone.
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleDeleteCancel} color="primary">
+            Cancel
+          </Button>
+          <Button onClick={handleDeleteConfirm} color="error" variant="contained">
+            Delete
+          </Button>
+        </DialogActions>
+      </Dialog>
     </div>
   )
 }

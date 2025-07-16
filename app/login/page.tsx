@@ -17,25 +17,26 @@ import {
 } from '@mui/material'
 import { Visibility, VisibilityOff, Login as LoginIcon } from '@mui/icons-material'
 import { WhiteLabelLayout, useWhiteLabelContext } from '../white-label-layout'
+import { buildThemeFromConfig, parseThemeConfigFromAPI, ThemeConfig } from '../../utils/theme-builder'
 
-// Create a simple theme for the login page
-const theme = createTheme({
-  palette: {
-    primary: {
-      main: '#d36784', // Light pink/mauve for buttons and badges
-      light: '#E0859A',
-      dark: '#B54A6A',
-      contrastText: '#ffffff',
-    },
-    secondary: {
-      main: '#dc004e',
-    },
-    background: {
-      default: '#ffffff',
-      paper: '#ffffff',
-    },
-  },
-})
+const defaultThemeConfig: ThemeConfig = {
+  primaryColor: '#D36784',
+  secondaryColor: '#dc004e',
+  backgroundColor: '#ffffff',
+  paperColor: '#ffffff',
+  textPrimary: '#000000',
+  textSecondary: '#666666',
+  errorColor: '#d32f2f',
+  warningColor: '#ed6c02',
+  infoColor: '#0288d1',
+  successColor: '#2e7d32',
+  fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
+  fontSizeSmall: '0.875rem',
+  fontSizeMedium: '1rem',
+  fontSizeLarge: '1.25rem',
+  borderRadius: '4px',
+  spacingUnit: 8,
+}
 
 function LoginPageContent() {
   const [username, setUsername] = useState('')
@@ -43,8 +44,30 @@ function LoginPageContent() {
   const [showPassword, setShowPassword] = useState(false)
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
+  const [themeConfig, setThemeConfig] = useState<ThemeConfig>(defaultThemeConfig)
   const router = useRouter()
-  const { companyLogo } = useWhiteLabelContext()
+  const { companyLogo, companyColor, companyName } = useWhiteLabelContext()
+
+  // Create a dynamic theme based on theme configuration
+  const theme = buildThemeFromConfig(themeConfig)
+
+  // Fetch theme configuration on mount
+  React.useEffect(() => {
+    const fetchThemeConfig = async () => {
+      try {
+        const response = await fetch('/api/config')
+        if (response.ok) {
+          const config = await response.json()
+          const parsedThemeConfig = parseThemeConfigFromAPI(config)
+          setThemeConfig(parsedThemeConfig)
+        }
+      } catch (error) {
+        console.error('Error fetching theme config:', error)
+      }
+    }
+
+    fetchThemeConfig()
+  }, [])
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -98,10 +121,10 @@ function LoginPageContent() {
               <img 
                 src={companyLogo} 
                 alt="Company Logo" 
-                style={{ height: 60, marginBottom: 16 }}
+                style={{ height: 160, marginBottom: 16 }}
               />
               <Typography variant="h4" component="h1" gutterBottom>
-                NextBillion.ai PoC
+                {companyName}
               </Typography>
               <Typography variant="body2" color="text.secondary">
                 Sign in to access the route planning system
@@ -166,7 +189,7 @@ function LoginPageContent() {
               </Button>
             </form>
 
-            <Typography variant="body2" color="text.secondary" sx={{ textAlign: 'center', mt: 2 }}>
+            <Typography variant="body1" color="text.secondary" sx={{ textAlign: 'center', mt: 2, fontSize: '16px' }}>
               Powered by NextBillion.ai
             </Typography>
           </Paper>

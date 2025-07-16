@@ -78,9 +78,9 @@ export function MapSelector({ index, inputType, headerName }: MapSelectorProps) 
               backgroundColor: 'rgba(0, 0, 0, 0.04)',
             },
           }}
-          endIcon={<ArrowDropDownIcon sx={{ fontSize: '16px', color: '#666' }} />}
+          endIcon={<ArrowDropDownIcon sx={{ fontSize: 20, color: '#666' }} />}
         >
-          <Typography variant="body2" sx={{ fontSize: '12px' }}>
+          <Typography variant="body2" sx={{ fontSize: '14px' }}>
             {currentOption?.label || 'Select field'}
           </Typography>
         </Button>
@@ -97,7 +97,7 @@ export function MapSelector({ index, inputType, headerName }: MapSelectorProps) 
               },
             }}
           >
-            <CloseOutlinedIcon sx={{ fontSize: '12px' }} />
+            <CloseOutlinedIcon sx={{ fontSize: 16 }} />
           </IconButton>
         )}
       </Box>

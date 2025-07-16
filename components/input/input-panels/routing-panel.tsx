@@ -15,6 +15,7 @@ import {
 } from '@mui/material'
 import DirectionsIcon from '@mui/icons-material/Directions'
 import {PreferencesPanel} from './preferences-panel'
+import { useWhiteLabelContext } from '../../../app/white-label-layout'
 
 const ROUTING_MODE_OPTIONS = [
   {label: 'Truck', value: 'truck'},
@@ -68,6 +69,7 @@ interface RoutingPanelProps {
 
 export function RoutingPanel({ preferences, onPreferencesChange }: RoutingPanelProps) {
   const { routing } = preferences
+  const { companyColor } = useWhiteLabelContext()
 
   const setTransportMode = (value: string) => {
     if (value === 'truck') {
@@ -173,7 +175,7 @@ export function RoutingPanel({ preferences, onPreferencesChange }: RoutingPanelP
 
   return (
     <PreferencesPanel
-      icon={<DirectionsIcon sx={{ color: '#d36784' }} />}
+      icon={<DirectionsIcon sx={{ color: companyColor }} />}
       title="Routing Configuration"
       description=""
     >
@@ -194,13 +196,13 @@ export function RoutingPanel({ preferences, onPreferencesChange }: RoutingPanelP
                 color: 'text.secondary',
                 border: '1px solid #e0e0e0',
                 '&.Mui-selected': {
-                  border: '1px solid #d36784',
+                  border: '1px solid companyColor',
                   backgroundColor: 'transparent',
-                  color: '#d36784',
+                  color: 'companyColor',
                 },
                 '&:hover': {
-                  border: '1px solid #d36784',
-                  color: '#d36784',
+                  border: '1px solid companyColor',
+                  color: 'companyColor',
                 },
               }}
             >
@@ -274,10 +276,10 @@ export function RoutingPanel({ preferences, onPreferencesChange }: RoutingPanelP
                           label={option?.label || value} 
                           size="small"
                           sx={{ 
-                            backgroundColor: 'rgba(211, 103, 132, 0.1)',
-                            color: '#d36784',
+                            backgroundColor: `${companyColor}1A`,
+                            color: companyColor,
                             '& .MuiChip-deleteIcon': {
-                              color: '#d36784',
+                              color: companyColor,
                             }
                           }}
                         />

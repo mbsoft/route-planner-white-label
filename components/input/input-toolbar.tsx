@@ -2,6 +2,7 @@
 
 import {useState} from 'react'
 import {InputOption} from '../../models/input/input-phrase'
+import { useWhiteLabelContext } from '../../app/white-label-layout'
 
 interface InputToolbarProps {
   currentPhase: InputOption
@@ -10,6 +11,7 @@ interface InputToolbarProps {
 
 export default function InputToolbar({currentPhase, onPhaseChange}: InputToolbarProps) {
   const [isDebugMode, setIsDebugMode] = useState(false)
+  const { companyColor } = useWhiteLabelContext()
 
   const phases = [
     {key: InputOption.PREFERENCE, label: 'Preferences'},
@@ -41,7 +43,7 @@ export default function InputToolbar({currentPhase, onPhaseChange}: InputToolbar
               padding: '8px 16px',
               border: 'none',
               borderRadius: '4px',
-              backgroundColor: currentPhase === phase.key ? '#d36784' : '#f5f5f5',
+              backgroundColor: currentPhase === phase.key ? companyColor : '#f5f5f5',
               color: currentPhase === phase.key ? 'white' : '#333',
               cursor: 'pointer',
               fontSize: '14px'

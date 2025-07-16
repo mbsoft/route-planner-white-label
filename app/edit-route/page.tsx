@@ -24,7 +24,7 @@ import { useWhiteLabelContext } from '../white-label-layout'
 export default function EditRoutePage() {
   const router = useRouter()
   const searchParams = useSearchParams()
-  const { companyName, companyLogo } = useWhiteLabelContext()
+  const { companyName, companyLogo, companyColor } = useWhiteLabelContext()
   
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
@@ -137,7 +137,7 @@ export default function EditRoutePage() {
               </Box>
             ) : routeData ? (
               <Box>
-                <Typography variant="h5" sx={{ mb: 3, fontWeight: 'bold', color: '#d36784' }}>
+                <Typography variant="h5" sx={{ mb: 3, fontWeight: 'bold', color: companyColor }}>
                   Edit Route: {routeData.title || routeData.job_id}
                 </Typography>
                 
@@ -146,7 +146,7 @@ export default function EditRoutePage() {
                 </Typography>
                 
                 <Box sx={{ mb: 3 }}>
-                  <Typography variant="h6" sx={{ mb: 2, color: '#d36784' }}>
+                  <Typography variant="h6" sx={{ mb: 2, color: companyColor }}>
                     Planned Features:
                   </Typography>
                   <ul>

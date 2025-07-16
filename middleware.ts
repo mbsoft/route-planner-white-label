@@ -14,6 +14,11 @@ export function middleware(request: NextRequest) {
     return NextResponse.next()
   }
 
+  // Allow access to public config API route (needed for branding on login page)
+  if (pathname === '/api/config') {
+    return NextResponse.next()
+  }
+
   // Allow access to optimization results API routes
   if (pathname.startsWith('/api/optimization-results')) {
     return NextResponse.next()
@@ -39,11 +44,12 @@ export const config = {
      * - api/jobs (jobs API routes)
      * - api/vehicles (vehicles API routes)
      * - api/optimization-results (optimization results API routes)
+     * - api/config (public config API route)
      * - _next/static (static files)
      * - _next/image (image optimization files)
      * - favicon.ico (favicon file)
      * - public files (images, etc.)
      */
-    '/((?!api/auth|api/jobs|api/vehicles|api/optimization-results|_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)',
+    '/((?!api/auth|api/jobs|api/vehicles|api/optimization-results|api/config|_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)',
   ],
 } 

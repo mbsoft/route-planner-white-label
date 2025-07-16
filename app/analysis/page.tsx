@@ -40,6 +40,12 @@ import {
   Edit as EditIcon,
   Download as DownloadIcon,
   GetApp as GetAppIcon,
+  LocalGasStation as LocalGasStationIcon,
+  Cancel as CancelIcon,
+  Stop as StopIcon,
+  Straighten as StraightenIcon,
+  AccessTime as AccessTimeIcon,
+  Build as BuildIcon,
 } from '@mui/icons-material'
 import { WhiteLabelLayout } from '../white-label-layout'
 import { Sidebar } from '../../components/common/sidebar'
@@ -51,7 +57,7 @@ import { useWhiteLabelContext } from '../white-label-layout'
 export default function RouteAnalysisPage() {
   const router = useRouter()
   const { isAdmin } = useAuth()
-  const { companyName, companyLogo } = useWhiteLabelContext()
+  const { companyName, companyLogo, companyColor } = useWhiteLabelContext()
   const [optimizationResults, setOptimizationResults] = useState<any[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
@@ -644,7 +650,7 @@ export default function RouteAnalysisPage() {
                   <Typography
                     variant="caption"
                     sx={{
-                      backgroundColor: '#d36784',
+                      backgroundColor: companyColor,
                       color: 'white',
                       px: 1,
                       py: 0.5,
@@ -695,146 +701,250 @@ export default function RouteAnalysisPage() {
 
               {/* Analysis Cards */}
               <Grid item xs={12} md={6} lg={3}>
-                <Card sx={{ height: '100%' }}>
-                  <CardHeader
-                    avatar={<SpeedIcon sx={{ color: '#ff9800' }} />}
-                    title="Average Speed"
-                    titleTypographyProps={{ variant: 'h6' }}
-                  />
-                  <CardContent>
-                    <Typography variant="h3" sx={{ fontWeight: 'bold', color: '#ff9800' }}>
+                <Card sx={{ height: '100%', p: 3 }}>
+                  <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
+                    <Box sx={{ 
+                      display: 'flex', 
+                      alignItems: 'center', 
+                      justifyContent: 'center',
+                      width: 48,
+                      height: 48,
+                      backgroundColor: '#ff9800',
+                      borderRadius: '50%',
+                      color: 'white',
+                      mr: 2
+                    }}>
+                      <SpeedIcon sx={{ fontSize: 24 }} />
+                    </Box>
+                    <Typography variant="body1" sx={{ color: '#666', fontWeight: 'bold' }}>
+                      Average Speed
+                    </Typography>
+                  </Box>
+                  <Box sx={{ display: 'flex', alignItems: 'baseline', gap: 1 }}>
+                    <Typography variant="h1" sx={{ fontWeight: 'bold', color: '#ff9800', fontSize: '2.5rem' }}>
                       {summaryStats.avgSpeed}
                     </Typography>
-                    <Typography variant="body2" sx={{ color: '#666', mt: 1 }}>
-                      km/h average speed
+                    <Typography variant="body2" sx={{ color: '#666' }}>
+                      km/h
                     </Typography>
-                  </CardContent>
+                  </Box>
                 </Card>
               </Grid>
 
               <Grid item xs={12} md={6} lg={3}>
-                <Card sx={{ height: '100%' }}>
-                  <CardHeader
-                    avatar={<RouteIcon sx={{ color: '#2196f3' }} />}
-                    title="Total Routes"
-                    titleTypographyProps={{ variant: 'h6' }}
-                  />
-                  <CardContent>
-                    <Typography variant="h3" sx={{ fontWeight: 'bold', color: '#2196f3' }}>
+                <Card sx={{ height: '100%', p: 3 }}>
+                  <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
+                    <Box sx={{ 
+                      display: 'flex', 
+                      alignItems: 'center', 
+                      justifyContent: 'center',
+                      width: 48,
+                      height: 48,
+                      backgroundColor: '#2196f3',
+                      borderRadius: '50%',
+                      color: 'white',
+                      mr: 2
+                    }}>
+                      <RouteIcon sx={{ fontSize: 24 }} />
+                    </Box>
+                    <Typography variant="body1" sx={{ color: '#666', fontWeight: 'bold' }}>
+                      Total Routes
+                    </Typography>
+                  </Box>
+                  <Box sx={{ display: 'flex', alignItems: 'baseline', gap: 1 }}>
+                    <Typography variant="h1" sx={{ fontWeight: 'bold', color: '#2196f3', fontSize: '2.5rem' }}>
                       {summaryStats.totalRoutes}
                     </Typography>
-                    <Typography variant="body2" sx={{ color: '#666', mt: 1 }}>
+                    <Typography variant="body2" sx={{ color: '#666' }}>
                       Optimization plans
                     </Typography>
-                  </CardContent>
+                  </Box>
                 </Card>
               </Grid>
 
               <Grid item xs={12} md={6} lg={3}>
-                <Card sx={{ height: '100%' }}>
-                  <CardHeader
-                    avatar={<AnalyticsIcon sx={{ color: '#9c27b0' }} />}
-                    title="Avg Gallons/Route"
-                    titleTypographyProps={{ variant: 'h6' }}
-                  />
-                  <CardContent>
-                    <Typography variant="h3" sx={{ fontWeight: 'bold', color: '#9c27b0' }}>
+                <Card sx={{ height: '100%', p: 3 }}>
+                  <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
+                    <Box sx={{ 
+                      display: 'flex', 
+                      alignItems: 'center', 
+                      justifyContent: 'center',
+                      width: 48,
+                      height: 48,
+                      backgroundColor: '#9c27b0',
+                      borderRadius: '50%',
+                      color: 'white',
+                      mr: 2
+                    }}>
+                      <LocalGasStationIcon sx={{ fontSize: 24 }} />
+                    </Box>
+                    <Typography variant="body1" sx={{ color: '#666', fontWeight: 'bold' }}>
+                      Average Gallons/Route
+                    </Typography>
+                  </Box>
+                  <Box sx={{ display: 'flex', alignItems: 'baseline', gap: 1 }}>
+                    <Typography variant="h1" sx={{ fontWeight: 'bold', color: '#9c27b0', fontSize: '2.5rem' }}>
                       {summaryStats.avgGallonsPerRoute.toLocaleString()}
                     </Typography>
-                    <Typography variant="body2" sx={{ color: '#666', mt: 1 }}>
-                      Average gallons per route
+                    <Typography variant="body2" sx={{ color: '#666' }}>
+                      gallons
                     </Typography>
-                  </CardContent>
+                  </Box>
                 </Card>
               </Grid>
 
               <Grid item xs={12} md={6} lg={3}>
-                <Card sx={{ height: '100%' }}>
-                  <CardHeader
-                    avatar={<AnalyticsIcon sx={{ color: '#f44336' }} />}
-                    title="Unassigned Jobs"
-                    titleTypographyProps={{ variant: 'h6' }}
-                  />
-                  <CardContent>
-                    <Typography variant="h3" sx={{ fontWeight: 'bold', color: '#f44336' }}>
+                <Card sx={{ height: '100%', p: 3 }}>
+                  <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
+                    <Box sx={{ 
+                      display: 'flex', 
+                      alignItems: 'center', 
+                      justifyContent: 'center',
+                      width: 48,
+                      height: 48,
+                      backgroundColor: '#f44336',
+                      borderRadius: '50%',
+                      color: 'white',
+                      mr: 2
+                    }}>
+                      <CancelIcon sx={{ fontSize: 24 }} />
+                    </Box>
+                    <Typography variant="body1" sx={{ color: '#666', fontWeight: 'bold' }}>
+                      Unassigned Jobs
+                    </Typography>
+                  </Box>
+                  <Box sx={{ display: 'flex', alignItems: 'baseline', gap: 1 }}>
+                    <Typography variant="h1" sx={{ fontWeight: 'bold', color: '#f44336', fontSize: '2.5rem' }}>
                       {summaryStats.totalUnassignedJobs}
                     </Typography>
-                    <Typography variant="body2" sx={{ color: '#666', mt: 1 }}>
-                      Total unassigned jobs
+                    <Typography variant="body2" sx={{ color: '#666' }}>
+                      jobs
                     </Typography>
-                  </CardContent>
+                  </Box>
                 </Card>
               </Grid>
 
               <Grid item xs={12} md={6} lg={3}>
-                <Card sx={{ height: '100%' }}>
-                  <CardHeader
-                    avatar={<AnalyticsIcon sx={{ color: '#4caf50' }} />}
-                    title="Avg Stops/Route"
-                    titleTypographyProps={{ variant: 'h6' }}
-                  />
-                  <CardContent>
-                    <Typography variant="h3" sx={{ fontWeight: 'bold', color: '#4caf50' }}>
+                <Card sx={{ height: '100%', p: 3 }}>
+                  <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
+                    <Box sx={{ 
+                      display: 'flex', 
+                      alignItems: 'center', 
+                      justifyContent: 'center',
+                      width: 48,
+                      height: 48,
+                      backgroundColor: '#4caf50',
+                      borderRadius: '50%',
+                      color: 'white',
+                      mr: 2
+                    }}>
+                      <StopIcon sx={{ fontSize: 24 }} />
+                    </Box>
+                    <Typography variant="body1" sx={{ color: '#666', fontWeight: 'bold' }}>
+                      Average Stops/Route
+                    </Typography>
+                  </Box>
+                  <Box sx={{ display: 'flex', alignItems: 'baseline', gap: 1 }}>
+                    <Typography variant="h1" sx={{ fontWeight: 'bold', color: '#4caf50', fontSize: '2.5rem' }}>
                       {summaryStats.avgStopsPerRoute}
                     </Typography>
-                    <Typography variant="body2" sx={{ color: '#666', mt: 1 }}>
-                      Average stops per route
+                    <Typography variant="body2" sx={{ color: '#666' }}>
+                      stops
                     </Typography>
-                  </CardContent>
+                  </Box>
                 </Card>
               </Grid>
 
               <Grid item xs={12} md={6} lg={3}>
-                <Card sx={{ height: '100%' }}>
-                  <CardHeader
-                    avatar={<AnalyticsIcon sx={{ color: '#ff5722' }} />}
-                    title="Avg Distance/Route"
-                    titleTypographyProps={{ variant: 'h6' }}
-                  />
-                  <CardContent>
-                    <Typography variant="h3" sx={{ fontWeight: 'bold', color: '#ff5722' }}>
+                <Card sx={{ height: '100%', p: 3 }}>
+                  <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
+                    <Box sx={{ 
+                      display: 'flex', 
+                      alignItems: 'center', 
+                      justifyContent: 'center',
+                      width: 48,
+                      height: 48,
+                      backgroundColor: '#ff5722',
+                      borderRadius: '50%',
+                      color: 'white',
+                      mr: 2
+                    }}>
+                      <StraightenIcon sx={{ fontSize: 24 }} />
+                    </Box>
+                    <Typography variant="body1" sx={{ color: '#666', fontWeight: 'bold' }}>
+                      Average Distance/Route
+                    </Typography>
+                  </Box>
+                  <Box sx={{ display: 'flex', alignItems: 'baseline', gap: 1 }}>
+                    <Typography variant="h1" sx={{ fontWeight: 'bold', color: '#ff5722', fontSize: '2.5rem' }}>
                       {formatDistance(summaryStats.avgDistancePerRoute)}
                     </Typography>
-                    <Typography variant="body2" sx={{ color: '#666', mt: 1 }}>
-                      Average distance per route
+                    <Typography variant="body2" sx={{ color: '#666' }}>
+                      km
                     </Typography>
-                  </CardContent>
+                  </Box>
                 </Card>
               </Grid>
 
               <Grid item xs={12} md={6} lg={3}>
-                <Card sx={{ height: '100%' }}>
-                  <CardHeader
-                    avatar={<AnalyticsIcon sx={{ color: '#795548' }} />}
-                    title="Total Waiting Time"
-                    titleTypographyProps={{ variant: 'h6' }}
-                  />
-                  <CardContent>
-                    <Typography variant="h3" sx={{ fontWeight: 'bold', color: '#795548' }}>
+                <Card sx={{ height: '100%', p: 3 }}>
+                  <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
+                    <Box sx={{ 
+                      display: 'flex', 
+                      alignItems: 'center', 
+                      justifyContent: 'center',
+                      width: 48,
+                      height: 48,
+                      backgroundColor: '#795548',
+                      borderRadius: '50%',
+                      color: 'white',
+                      mr: 2
+                    }}>
+                      <AccessTimeIcon sx={{ fontSize: 24 }} />
+                    </Box>
+                    <Typography variant="body1" sx={{ color: '#666', fontWeight: 'bold' }}>
+                      Total Waiting Time
+                    </Typography>
+                  </Box>
+                  <Box sx={{ display: 'flex', alignItems: 'baseline', gap: 1 }}>
+                    <Typography variant="h1" sx={{ fontWeight: 'bold', color: '#795548', fontSize: '2.5rem' }}>
                       {formatDuration(summaryStats.totalWaitingTime)}
                     </Typography>
-                    <Typography variant="body2" sx={{ color: '#666', mt: 1 }}>
-                      Total waiting time
+                    <Typography variant="body2" sx={{ color: '#666' }}>
+                      time
                     </Typography>
-                  </CardContent>
+                  </Box>
                 </Card>
               </Grid>
 
               <Grid item xs={12} md={6} lg={3}>
-                <Card sx={{ height: '100%' }}>
-                  <CardHeader
-                    avatar={<AnalyticsIcon sx={{ color: '#607d8b' }} />}
-                    title="Avg Service Time/Route"
-                    titleTypographyProps={{ variant: 'h6' }}
-                  />
-                  <CardContent>
-                    <Typography variant="h3" sx={{ fontWeight: 'bold', color: '#607d8b' }}>
+                <Card sx={{ height: '100%', p: 3 }}>
+                  <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
+                    <Box sx={{ 
+                      display: 'flex', 
+                      alignItems: 'center', 
+                      justifyContent: 'center',
+                      width: 48,
+                      height: 48,
+                      backgroundColor: '#607d8b',
+                      borderRadius: '50%',
+                      color: 'white',
+                      mr: 2
+                    }}>
+                      <BuildIcon sx={{ fontSize: 24 }} />
+                    </Box>
+                    <Typography variant="body1" sx={{ color: '#666', fontWeight: 'bold' }}>
+                      Average Service Time/Route
+                    </Typography>
+                  </Box>
+                  <Box sx={{ display: 'flex', alignItems: 'baseline', gap: 1 }}>
+                    <Typography variant="h1" sx={{ fontWeight: 'bold', color: '#607d8b', fontSize: '2.5rem' }}>
                       {formatDuration(summaryStats.avgServiceTimePerRoute)}
                     </Typography>
-                    <Typography variant="body2" sx={{ color: '#666', mt: 1 }}>
-                      Average service time per route
+                    <Typography variant="body2" sx={{ color: '#666' }}>
+                      time
                     </Typography>
-                  </CardContent>
+                  </Box>
                 </Card>
               </Grid>
 
@@ -842,7 +952,7 @@ export default function RouteAnalysisPage() {
               <Grid item xs={12}>
                 <Paper sx={{ p: 3 }}>
                   <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mb: 3 }}>
-                    <HistoryIcon sx={{ fontSize: 32, color: '#d36784' }} />
+                    <HistoryIcon sx={{ fontSize: 32, color: companyColor }} />
                     <Typography variant="h5" sx={{ fontWeight: 'bold' }}>
                       Optimization History
                     </Typography>
@@ -1087,7 +1197,17 @@ export default function RouteAnalysisPage() {
                               setSelectedResult(null)
                               setSelectedJobId(null)
                             }}
-                            sx={{ position: 'absolute', top: 8, right: 8, zIndex: 11 }}
+                            sx={{ 
+                              position: 'absolute', 
+                              top: 8, 
+                              right: 8, 
+                              zIndex: 11,
+                              minWidth: '80px',
+                              px: 2,
+                              py: 1,
+                              fontSize: '0.875rem',
+                              textTransform: 'none'
+                            }}
                           >
                             Close
                           </Button>
@@ -1158,7 +1278,7 @@ export default function RouteAnalysisPage() {
                           {/* Route Details Table */}
                           {selectedResult?.response_data?.result?.routes && (
                             <Box sx={{ mt: 3 }}>
-                              <Typography variant="h6" sx={{ mb: 2, color: '#d36784', fontWeight: 'bold' }}>
+                              <Typography variant="h6" sx={{ mb: 2, color: companyColor, fontWeight: 'bold' }}>
                                 Route Details
                               </Typography>
                               <RouteSummaryTable
@@ -1188,66 +1308,66 @@ export default function RouteAnalysisPage() {
                             return (
                               <>
                                 {/* Fuel Delivery KPIs */}
-                                <Typography variant="h6" sx={{ mb: 2, mt: 4, color: '#d36784', fontWeight: 'bold' }}>
+                                <Typography variant="h6" sx={{ mb: 2, mt: 4, color: companyColor, fontWeight: 'bold' }}>
                                   Fuel Delivery Metrics
                                 </Typography>
                                 <Grid container spacing={2} sx={{ mb: 3 }}>
                                   <Grid item xs={12} md={2}>
                                     <Box sx={{ p: 2, bgcolor: '#f8f9fa', borderRadius: 1, textAlign: 'center' }}>
-                                      <Typography variant="h6" sx={{ color: '#d36784', fontWeight: 'bold' }}>
+                                      <Typography variant="h6" sx={{ color: companyColor, fontWeight: 'bold' }}>
                                         {kpis.ulsdClearDelivered.toLocaleString()}
                                       </Typography>
-                                      <Typography variant="caption" sx={{ color: '#666' }}>
+                                      <Typography variant="body1" sx={{ color: '#666' }}>
                                         ULSD Clear (gal)
                                       </Typography>
                                     </Box>
                                   </Grid>
                                   <Grid item xs={12} md={2}>
                                     <Box sx={{ p: 2, bgcolor: '#f8f9fa', borderRadius: 1, textAlign: 'center' }}>
-                                      <Typography variant="h6" sx={{ color: '#d36784', fontWeight: 'bold' }}>
+                                      <Typography variant="h6" sx={{ color: companyColor, fontWeight: 'bold' }}>
                                         {kpis.ulsdDyedDelivered.toLocaleString()}
                                       </Typography>
-                                      <Typography variant="caption" sx={{ color: '#666' }}>
+                                      <Typography variant="body1" sx={{ color: '#666' }}>
                                         ULSD Dyed (gal)
                                       </Typography>
                                     </Box>
                                   </Grid>
                                   <Grid item xs={12} md={2}>
                                     <Box sx={{ p: 2, bgcolor: '#f8f9fa', borderRadius: 1, textAlign: 'center' }}>
-                                      <Typography variant="h6" sx={{ color: '#d36784', fontWeight: 'bold' }}>
+                                      <Typography variant="h6" sx={{ color: companyColor, fontWeight: 'bold' }}>
                                         {kpis.unlDelivered.toLocaleString()}
                                       </Typography>
-                                      <Typography variant="caption" sx={{ color: '#666' }}>
+                                      <Typography variant="body1" sx={{ color: '#666' }}>
                                         UNL (gal)
                                       </Typography>
                                     </Box>
                                   </Grid>
                                   <Grid item xs={12} md={2}>
                                     <Box sx={{ p: 2, bgcolor: '#f8f9fa', borderRadius: 1, textAlign: 'center' }}>
-                                      <Typography variant="h6" sx={{ color: '#d36784', fontWeight: 'bold' }}>
+                                      <Typography variant="h6" sx={{ color: companyColor, fontWeight: 'bold' }}>
                                         {kpis.gasUnlPreDelivered.toLocaleString()}
                                       </Typography>
-                                      <Typography variant="caption" sx={{ color: '#666' }}>
+                                      <Typography variant="body1" sx={{ color: '#666' }}>
                                         GAS UNL PRE (gal)
                                       </Typography>
                                     </Box>
                                   </Grid>
                                   <Grid item xs={12} md={2}>
                                     <Box sx={{ p: 2, bgcolor: '#f8f9fa', borderRadius: 1, textAlign: 'center' }}>
-                                      <Typography variant="h6" sx={{ color: '#d36784', fontWeight: 'bold' }}>
+                                      <Typography variant="h6" sx={{ color: companyColor, fontWeight: 'bold' }}>
                                         {kpis.rec90Delivered.toLocaleString()}
                                       </Typography>
-                                      <Typography variant="caption" sx={{ color: '#666' }}>
+                                      <Typography variant="body1" sx={{ color: '#666' }}>
                                         REC 90 (gal)
                                       </Typography>
                                     </Box>
                                   </Grid>
                                   <Grid item xs={12} md={2}>
                                     <Box sx={{ p: 2, bgcolor: '#f8f9fa', borderRadius: 1, textAlign: 'center' }}>
-                                      <Typography variant="h6" sx={{ color: '#d36784', fontWeight: 'bold' }}>
+                                      <Typography variant="h6" sx={{ color: companyColor, fontWeight: 'bold' }}>
                                         {kpis.totalFuel.toLocaleString()}
                                       </Typography>
-                                      <Typography variant="caption" sx={{ color: '#666' }}>
+                                      <Typography variant="body1" sx={{ color: '#666' }}>
                                         Total Fuel (gal)
                                       </Typography>
                                     </Box>
@@ -1256,10 +1376,10 @@ export default function RouteAnalysisPage() {
                                 <Grid container spacing={2} sx={{ mb: 3 }}>
                                   <Grid item xs={12} md={3}>
                                     <Box sx={{ p: 2, bgcolor: '#f8f9fa', borderRadius: 1, textAlign: 'center' }}>
-                                      <Typography variant="h6" sx={{ color: '#d36784', fontWeight: 'bold' }}>
+                                      <Typography variant="h6" sx={{ color: companyColor, fontWeight: 'bold' }}>
                                         {kpis.avgFuelPerRoute.toFixed(0)}
                                       </Typography>
-                                      <Typography variant="caption" sx={{ color: '#666' }}>
+                                      <Typography variant="body1" sx={{ color: '#666' }}>
                                         Avg per Route (gal)
                                       </Typography>
                                     </Box>
@@ -1267,46 +1387,46 @@ export default function RouteAnalysisPage() {
                                 </Grid>
 
                                 {/* Operational Efficiency KPIs */}
-                                <Typography variant="h6" sx={{ mb: 2, mt: 3, color: '#d36784', fontWeight: 'bold' }}>
+                                <Typography variant="h6" sx={{ mb: 2, mt: 3, color: companyColor, fontWeight: 'bold' }}>
                                   Operational Efficiency
                                 </Typography>
                                 <Grid container spacing={2} sx={{ mb: 3 }}>
                                   <Grid item xs={12} md={3}>
                                     <Box sx={{ p: 2, bgcolor: '#f8f9fa', borderRadius: 1, textAlign: 'center' }}>
-                                      <Typography variant="h6" sx={{ color: '#d36784', fontWeight: 'bold' }}>
+                                      <Typography variant="h6" sx={{ color: companyColor, fontWeight: 'bold' }}>
                                         {formatDistance(kpis.totalDistance)}
                                       </Typography>
-                                      <Typography variant="caption" sx={{ color: '#666' }}>
+                                      <Typography variant="body1" sx={{ color: '#666' }}>
                                         Total Distance
                                       </Typography>
                                     </Box>
                                   </Grid>
                                   <Grid item xs={12} md={3}>
                                     <Box sx={{ p: 2, bgcolor: '#f8f9fa', borderRadius: 1, textAlign: 'center' }}>
-                                      <Typography variant="h6" sx={{ color: '#d36784', fontWeight: 'bold' }}>
+                                      <Typography variant="h6" sx={{ color: companyColor, fontWeight: 'bold' }}>
                                         {formatDuration(kpis.totalDuration)}
                                       </Typography>
-                                      <Typography variant="caption" sx={{ color: '#666' }}>
+                                      <Typography variant="body1" sx={{ color: '#666' }}>
                                         Total Duration
                                       </Typography>
                                     </Box>
                                   </Grid>
                                   <Grid item xs={12} md={3}>
                                     <Box sx={{ p: 2, bgcolor: '#f8f9fa', borderRadius: 1, textAlign: 'center' }}>
-                                      <Typography variant="h6" sx={{ color: '#d36784', fontWeight: 'bold' }}>
+                                      <Typography variant="h6" sx={{ color: companyColor, fontWeight: 'bold' }}>
                                         {formatDuration(kpis.totalService)}
                                       </Typography>
-                                      <Typography variant="caption" sx={{ color: '#666' }}>
+                                      <Typography variant="body1" sx={{ color: '#666' }}>
                                         Total Service
                                       </Typography>
                                     </Box>
                                   </Grid>
                                   <Grid item xs={12} md={3}>
                                     <Box sx={{ p: 2, bgcolor: '#f8f9fa', borderRadius: 1, textAlign: 'center' }}>
-                                      <Typography variant="h6" sx={{ color: '#d36784', fontWeight: 'bold' }}>
+                                      <Typography variant="h6" sx={{ color: companyColor, fontWeight: 'bold' }}>
                                         {formatDuration(kpis.totalWaiting)}
                                       </Typography>
-                                      <Typography variant="caption" sx={{ color: '#666' }}>
+                                      <Typography variant="body1" sx={{ color: '#666' }}>
                                         Total Waiting
                                       </Typography>
                                     </Box>
@@ -1338,9 +1458,9 @@ export default function RouteAnalysisPage() {
               <img
                 src={companyLogo}
                 alt={`${companyName} Logo`}
-                style={{ height: '20px', width: 'auto', marginRight: '8px', verticalAlign: 'middle' }}
+                style={{ height: '40px', width: 'auto', marginRight: '8px', verticalAlign: 'middle' }}
               />
-              <Typography variant="caption" sx={{ color: '#999' }}>
+              <Typography variant="body2" sx={{ color: '#999', fontSize: '14px' }}>
                 powered by NextBillion.ai | Version 1.0.0 | Last updated: {new Date().toLocaleDateString()}
               </Typography>
             </Box>

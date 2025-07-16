@@ -42,6 +42,18 @@ ADMIN_PASSWORD=your_secure_admin_password_here
 USER_USERNAME=user
 USER_PASSWORD=your_secure_user_password_here
 
+# Company Branding
+COMPANY_NAME=Your Company Name
+COMPANY_LOGO=/path/to/logo.svg
+COMPANY_COLOR=#D36784
+
+# Theme Customization (Optional)
+# See docs/THEME_CUSTOMIZATION.md for complete customization guide
+THEME_PRIMARY_COLOR=#1976d2
+THEME_SECONDARY_COLOR=#42a5f5
+THEME_FONT_FAMILY="Inter", sans-serif
+THEME_BORDER_RADIUS=8px
+
 # CSV Import Configuration
 # Set to 'true' to show CSV file upload panels alongside database import
 # Set to 'false' or leave unset to only show database import
@@ -173,8 +185,11 @@ NEXT_PUBLIC_ENABLE_CSV_IMPORT=true
 
 When disabled (default), only the database import option is available, providing a cleaner interface focused on database-driven workflows.
 
-### Branding
+### Branding & Theme Customization
 - Update colors and styling in the Material-UI theme
+- Comprehensive theme customization via environment variables
+- Customize colors, typography, spacing, and component styling
+- See `docs/THEME_CUSTOMIZATION.md` for detailed customization guide
 - Modify the layout component for custom branding
 - Replace logos and assets as needed
 
