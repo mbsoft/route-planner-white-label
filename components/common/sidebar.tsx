@@ -122,7 +122,11 @@ export const Sidebar: React.FC<SidebarProps> = ({ currentPage = 'home' }) => {
             onClick={toggleExpanded}
             sx={{ 
               ml: isExpanded ? 1 : 'auto',
-              mr: isExpanded ? 0 : 'auto'
+              mr: isExpanded ? 0 : 'auto',
+              backgroundColor: '#f5f5f5',
+              '&:hover': {
+                backgroundColor: '#e0e0e0'
+              }
             }}
           >
             {isExpanded ? <ChevronLeftIcon /> : <ChevronRightIcon />}
@@ -161,12 +165,22 @@ export const Sidebar: React.FC<SidebarProps> = ({ currentPage = 'home' }) => {
               >
                 <ListItemIcon 
                   sx={{ 
-                    color: item.isActive ? companyColor : '#666666',
                     minWidth: isExpanded ? 40 : 0,
                     justifyContent: 'center'
                   }}
                 >
-                  {item.icon}
+                  <Box sx={{ 
+                    display: 'flex', 
+                    alignItems: 'center', 
+                    justifyContent: 'center',
+                    width: 32,
+                    height: 32,
+                    backgroundColor: item.isActive ? companyColor : '#f5f5f5',
+                    borderRadius: '50%',
+                    color: item.isActive ? 'white' : '#666666'
+                  }}>
+                    {item.icon}
+                  </Box>
                 </ListItemIcon>
                 <Collapse in={isExpanded} orientation="horizontal">
                   <ListItemText 
