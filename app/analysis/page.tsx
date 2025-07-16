@@ -40,6 +40,12 @@ import {
   Edit as EditIcon,
   Download as DownloadIcon,
   GetApp as GetAppIcon,
+  LocalGasStation as LocalGasStationIcon,
+  Cancel as CancelIcon,
+  Stop as StopIcon,
+  Straighten as StraightenIcon,
+  AccessTime as AccessTimeIcon,
+  Build as BuildIcon,
 } from '@mui/icons-material'
 import { WhiteLabelLayout } from '../white-label-layout'
 import { Sidebar } from '../../components/common/sidebar'
@@ -733,7 +739,7 @@ export default function RouteAnalysisPage() {
               <Grid item xs={12} md={6} lg={3}>
                 <Card sx={{ height: '100%' }}>
                   <CardHeader
-                    avatar={<AnalyticsIcon sx={{ color: '#9c27b0' }} />}
+                    avatar={<LocalGasStationIcon sx={{ color: '#9c27b0' }} />}
                     title="Avg Gallons/Route"
                     titleTypographyProps={{ variant: 'h6' }}
                   />
@@ -751,7 +757,7 @@ export default function RouteAnalysisPage() {
               <Grid item xs={12} md={6} lg={3}>
                 <Card sx={{ height: '100%' }}>
                   <CardHeader
-                    avatar={<AnalyticsIcon sx={{ color: '#f44336' }} />}
+                    avatar={<CancelIcon sx={{ color: '#f44336' }} />}
                     title="Unassigned Jobs"
                     titleTypographyProps={{ variant: 'h6' }}
                   />
@@ -769,7 +775,7 @@ export default function RouteAnalysisPage() {
               <Grid item xs={12} md={6} lg={3}>
                 <Card sx={{ height: '100%' }}>
                   <CardHeader
-                    avatar={<AnalyticsIcon sx={{ color: '#4caf50' }} />}
+                    avatar={<StopIcon sx={{ color: '#4caf50' }} />}
                     title="Avg Stops/Route"
                     titleTypographyProps={{ variant: 'h6' }}
                   />
@@ -787,7 +793,7 @@ export default function RouteAnalysisPage() {
               <Grid item xs={12} md={6} lg={3}>
                 <Card sx={{ height: '100%' }}>
                   <CardHeader
-                    avatar={<AnalyticsIcon sx={{ color: '#ff5722' }} />}
+                    avatar={<StraightenIcon sx={{ color: '#ff5722' }} />}
                     title="Avg Distance/Route"
                     titleTypographyProps={{ variant: 'h6' }}
                   />
@@ -805,7 +811,7 @@ export default function RouteAnalysisPage() {
               <Grid item xs={12} md={6} lg={3}>
                 <Card sx={{ height: '100%' }}>
                   <CardHeader
-                    avatar={<AnalyticsIcon sx={{ color: '#795548' }} />}
+                    avatar={<AccessTimeIcon sx={{ color: '#795548' }} />}
                     title="Total Waiting Time"
                     titleTypographyProps={{ variant: 'h6' }}
                   />
@@ -823,7 +829,7 @@ export default function RouteAnalysisPage() {
               <Grid item xs={12} md={6} lg={3}>
                 <Card sx={{ height: '100%' }}>
                   <CardHeader
-                    avatar={<AnalyticsIcon sx={{ color: '#607d8b' }} />}
+                    avatar={<BuildIcon sx={{ color: '#607d8b' }} />}
                     title="Avg Service Time/Route"
                     titleTypographyProps={{ variant: 'h6' }}
                   />
