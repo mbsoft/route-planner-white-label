@@ -1,0 +1,168 @@
+{
+  "navigation": {
+    "routePlanner": "Route Planner",
+    "routeAnalysis": "Route Analysis",
+    "information": "Information",
+    "logout": "Logout",
+    "admin": "ADMIN"
+  },
+  "header": {
+    "planManageMonitor": "Plan, manage and monitor your routes",
+    "routePlanAnalysis": "Route Plan Analysis",
+    "informationDocumentation": "Information & Documentation",
+    "editRoute": "Edit Route"
+  },
+  "sidebar": {
+    "collapseSidebar": "Collapse sidebar",
+    "expandSidebar": "Expand sidebar"
+  },
+  "footer": {
+    "poweredBy": "powered by NextBillion.ai",
+    "version": "Version 1.0.0",
+    "lastUpdated": "Last updated"
+  },
+  "loading": {
+    "loadingRoutePlanner": "Loading Route Planner...",
+    "checkingApiConfig": "Checking API configuration..."
+  },
+  "buttons": {
+    "import": "Import",
+    "save": "Save",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "edit": "Edit",
+    "close": "Close",
+    "confirm": "Confirm",
+    "back": "Back",
+    "next": "Next",
+    "reset": "Reset",
+    "add": "Add",
+    "clear": "Clear"
+  },
+  "dataImport": {
+    "importJobsFromDatabase": "Import Jobs from Database",
+    "importVehiclesFromDatabase": "Import Vehicles from Database",
+    "startTimeOptional": "Start Time (optional)",
+    "endTimeOptional": "End Time (optional)",
+    "searchDescriptionOptional": "Search Description (optional)",
+    "enterSearchTerm": "Enter search term...",
+    "leaveEmptyToImportAll": "Leave empty to import all records",
+    "caseInsensitiveSearch": "Case insensitive search in job descriptions",
+    "caseInsensitiveSearchVehicles": "Case insensitive search in vehicle descriptions",
+    "recordsWillBeImported": "records will be imported",
+    "recordWillBeImported": "record will be imported",
+    "importJobData": "Import Job Data",
+    "importVehicleData": "Import Vehicle Data",
+    "recordsLoaded": "records loaded",
+    "fromDatabase": "(from database)",
+    "selectField": "Select field",
+    "addAttribute": "Add attribute",
+    "editTable": "Edit table",
+    "saveChanges": "Save changes",
+    "cancelEditing": "Cancel editing",
+    "deleteImportedData": "Delete imported data",
+    "resetMapping": "Reset Mapping",
+    "confirmDeletion": "Confirm Deletion",
+    "deleteConfirmation": "Are you sure you want to delete all imported {type} data? This action cannot be undone.",
+    "areYouSure": "Are you sure?",
+    "deleteConfirmationGeneric": "This will delete all imported data. This action cannot be undone."
+  },
+  "table": {
+    "selectAllRows": "Select all rows",
+    "selectRow": "Select row",
+    "vehicle": "Vehicle",
+    "description": "Description",
+    "start": "Start",
+    "end": "End",
+    "stops": "Stops",
+    "distance": "Distance",
+    "drive": "Drive",
+    "delivery": "Delivery",
+    "departure": "Departure",
+    "id": "ID",
+    "startLocation": "Start Location",
+    "endLocation": "End Location",
+    "serviceTime": "Service Time"
+  },
+  "analysis": {
+    "optimizationResults": "Optimization Results",
+    "noResults": "No optimization results found",
+    "viewResult": "View Result",
+    "editTitle": "Edit Title",
+    "deleteResult": "Delete Result",
+    "downloadResults": "Download Results",
+    "shareResults": "Share Results",
+    "optimizationHistory": "Optimization History",
+    "jobId": "Job ID",
+    "title": "Title",
+    "status": "Status",
+    "createdAt": "Created At",
+    "actions": "Actions",
+    "completed": "Completed",
+    "failed": "Failed",
+    "pending": "Pending",
+    "routeDetails": "Route Details",
+    "routeSummary": "Route Summary",
+    "stepDetails": "Step Details",
+    "totalDistance": "Total Distance",
+    "totalTime": "Total Time",
+    "totalStops": "Total Stops",
+    "vehicleUtilization": "Vehicle Utilization",
+    "capacityUtilization": "Capacity Utilization",
+    "timeUtilization": "Time Utilization"
+  },
+  "map": {
+    "mapView": "Map View",
+    "showJobMarkers": "Jobs/Shipments",
+    "showVehicleMarkers": "Vehicles",
+    "showRoutes": "Routes"
+  },
+  "preferences": {
+    "preferences": "Preferences",
+    "saveMapping": "Save Mapping",
+    "clearPreferences": "Clear Preferences",
+    "routingOptions": "Routing Options",
+    "avoidOptions": "Avoid Options",
+    "hazmatTypes": "Hazardous Material Types",
+    "truckMode": "Truck Mode",
+    "carMode": "Car Mode",
+    "bikeMode": "Bike Mode",
+    "footMode": "Foot Mode"
+  },
+  "hazmatTypes": {
+    "explosives": "Explosives",
+    "gases": "Gases",
+    "flammableLiquids": "Flammable Liquids",
+    "flammableSolids": "Flammable Solids",
+    "oxidizingSubstances": "Oxidizing Substances",
+    "toxicSubstances": "Toxic Substances",
+    "radioactiveMaterials": "Radioactive Materials",
+    "corrosiveSubstances": "Corrosive Substances",
+    "miscellaneous": "Miscellaneous"
+  },
+  "avoidOptions": {
+    "highways": "Highways",
+    "tolls": "Tolls",
+    "ferries": "Ferries",
+    "indoor": "Indoor",
+    "dirtRoads": "Dirt Roads"
+  },
+  "errors": {
+    "failedToFetch": "Failed to fetch data",
+    "failedToSave": "Failed to save changes",
+    "failedToDelete": "Failed to delete",
+    "unknownError": "Unknown error occurred",
+    "networkError": "Network error",
+    "validationError": "Validation error"
+  },
+  "success": {
+    "changesSaved": "Changes saved successfully",
+    "dataDeleted": "Data deleted successfully",
+    "optimizationComplete": "Optimization completed successfully"
+  },
+  "language": {
+    "english": "English",
+    "spanish": "Español",
+    "selectLanguage": "Select Language"
+  }
+} 

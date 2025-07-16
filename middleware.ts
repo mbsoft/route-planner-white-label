@@ -1,7 +1,15 @@
 import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
+import createMiddleware from 'next-intl/middleware'
+import { locales, defaultLocale } from './i18n'
 
-export function middleware(request: NextRequest) {
+const intlMiddleware = createMiddleware({
+  locales,
+  defaultLocale,
+  localePrefix: 'always'
+})
+
+export default function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl
 
   // Allow access to login page and auth API routes
@@ -32,24 +40,10 @@ export function middleware(request: NextRequest) {
     return NextResponse.redirect(new URL('/login', request.url))
   }
 
-  // Allow access to protected routes
-  return NextResponse.next()
+  // Handle internationalization
+  return intlMiddleware(request)
 }
 
 export const config = {
-  matcher: [
-    /*
-     * Match all request paths except for the ones starting with:
-     * - api/auth (auth API routes)
-     * - api/jobs (jobs API routes)
-     * - api/vehicles (vehicles API routes)
-     * - api/optimization-results (optimization results API routes)
-     * - api/config (public config API route)
-     * - _next/static (static files)
-     * - _next/image (image optimization files)
-     * - favicon.ico (favicon file)
-     * - public files (images, etc.)
-     */
-    '/((?!api/auth|api/jobs|api/vehicles|api/optimization-results|api/config|_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)',
-  ],
+  matcher: ['/((?!api|_next|.*\\..*).*)']
 } 

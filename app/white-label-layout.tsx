@@ -3,6 +3,7 @@
 import React, {createContext, useContext, useEffect, useState} from 'react'
 import {ThemeProvider, createTheme} from '@mui/material/styles'
 import CssBaseline from '@mui/material/CssBaseline'
+import { useTranslations } from 'next-intl'
 import { buildThemeFromConfig, parseThemeConfigFromAPI, ThemeConfig } from '../utils/theme-builder'
 
 // Create a context for the API key
@@ -54,6 +55,7 @@ interface WhiteLabelLayoutProps {
 }
 
 export function WhiteLabelLayout({children}: WhiteLabelLayoutProps) {
+  const t = useTranslations()
   const [apiKey, setApiKey] = useState<string | null>(null)
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
@@ -130,17 +132,17 @@ export function WhiteLabelLayout({children}: WhiteLabelLayoutProps) {
     return (
       <ThemeProvider theme={theme}>
         <CssBaseline />
-        <div style={{
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-          height: '100vh',
-          fontSize: '18px'
-        }}>
-          Loading Route Planner...
-          <br />
-          <small>Checking API configuration...</small>
-        </div>
+                  <div style={{
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            height: '100vh',
+            fontSize: '18px'
+          }}>
+            {t('loading.loadingRoutePlanner')}
+            <br />
+            <small>{t('loading.checkingApiConfig')}</small>
+          </div>
       </ThemeProvider>
     )
   }
