@@ -247,7 +247,7 @@ export const CollapsibleMap = ({ markers, routes, isVisible = false, onToggle }:
         <Box className={styles.toggleButton} onClick={handleToggle}>
           <MapIcon sx={{ mr: 1 }} />
           <Typography variant="body2">Map View</Typography>
-          {isExpanded ? <ExpandLessIcon /> : <ExpandMoreIcon />}
+          {isExpanded ? <ExpandLessIcon sx={{ fontSize: 20 }} /> : <ExpandMoreIcon sx={{ fontSize: 20 }} />}
         </Box>
         <Collapse in={isExpanded} timeout={300}>
           <Box className={styles.errorContainer}>
@@ -269,7 +269,7 @@ export const CollapsibleMap = ({ markers, routes, isVisible = false, onToggle }:
           Map View {markers && markers.length > 0 && `(${markers.length} locations)`}
           {routes && routes.length > 0 && ` • ${routes.length} routes`}
         </Typography>
-        {isExpanded ? <ExpandLessIcon /> : <ExpandMoreIcon />}
+        {isExpanded ? <ExpandLessIcon sx={{ fontSize: 20 }} /> : <ExpandMoreIcon sx={{ fontSize: 20 }} />}
       </Box>
       
       <Collapse in={isExpanded} timeout={300}>
