@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { Box, IconButton, Typography, CircularProgress } from '@mui/material'
+import { Box, IconButton, Typography, CircularProgress, Button, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions } from '@mui/material'
 import DeleteIcon from '@mui/icons-material/Delete'
 import { FileDropZone } from './file-drop-zone'
 import { DataTable } from './data-table'
@@ -45,13 +45,13 @@ export const InputJobUpload = () => {
   const currentData = store.inputCore[inputType].rawData
   const hasData = currentData.rows.length > 0
 
-  const handleClearData = () => {
-    store.inputCore.setRawData(inputType, {
-      header: [],
-      rows: [],
-      attachedRows: [],
-    })
-  }
+  // Handler for delete with confirmation
+  const handleDelete = () => setDeleteDialogOpen(true);
+  const handleDeleteConfirm = () => {
+    store.inputCore.setRawData(inputType, { header: [], rows: [], attachedRows: [] });
+    setDeleteDialogOpen(false);
+  };
+  const handleDeleteCancel = () => setDeleteDialogOpen(false);
 
   // Batch editing state
   const [isEditing, setIsEditing] = useState(false)
@@ -59,6 +59,7 @@ export const InputJobUpload = () => {
   const [editAttachedRows, setEditAttachedRows] = useState<string[][]>([])
   const [isSaving, setIsSaving] = useState(false)
   const [originalJobs, setOriginalJobs] = useState<any[]>([])
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false)
 
   // Start editing: copy current data
   const handleEdit = () => {
@@ -276,7 +277,7 @@ export const InputJobUpload = () => {
                   </IconButton>
                 </>
               )}
-              <IconButton onClick={handleClearData} color="error" title="Delete imported data">
+              <IconButton onClick={handleDelete} color="error" title="Delete imported data">
                 <DeleteIcon sx={{ fontSize: 20 }} />
               </IconButton>
             </Box>
@@ -295,6 +296,27 @@ export const InputJobUpload = () => {
           </Box>
         )
       }
+      <Dialog
+        open={deleteDialogOpen}
+        onClose={handleDeleteCancel}
+        aria-labelledby="delete-dialog-title"
+        aria-describedby="delete-dialog-description"
+      >
+        <DialogTitle id="delete-dialog-title">Confirm Deletion</DialogTitle>
+        <DialogContent>
+          <DialogContentText id="delete-dialog-description">
+            Are you sure you want to delete all imported {orderTypeLabel} data? This action cannot be undone.
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleDeleteCancel} color="primary">
+            Cancel
+          </Button>
+          <Button onClick={handleDeleteConfirm} color="error" variant="contained">
+            Delete
+          </Button>
+        </DialogActions>
+      </Dialog>
     </div>
   )
 }
