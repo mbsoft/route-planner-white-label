@@ -216,7 +216,7 @@ export function DataMapperTable(props: DataMapperTableProps) {
             }}
           >
             <Checkbox
-              size="small"
+              size="medium"
               checked={allSelected}
               indeterminate={!allSelected && someSelected}
               onChange={e => setAllRowsSelected(inputType, e.target.checked)}
@@ -310,7 +310,7 @@ export function DataMapperTable(props: DataMapperTableProps) {
               }}
             >
               <Checkbox
-                size="small"
+                size="medium"
                 checked={!!selection[rowIndex]}
                 onChange={e => setRowSelected(inputType, rowIndex, e.target.checked)}
                 inputProps={{ 'aria-label': `Select row ${rowIndex + 1}` }}
@@ -454,7 +454,7 @@ export function MapperTableHeader(props: {
                 }
               }}
             >
-              <DeleteOutline sx={{ fontSize: '16px' }} />
+              <DeleteOutline sx={{ fontSize: 18 }} />
             </IconButton>
           </Tooltip>
         </Box>

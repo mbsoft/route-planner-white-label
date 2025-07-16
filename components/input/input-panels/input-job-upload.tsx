@@ -256,28 +256,28 @@ export const InputJobUpload = () => {
             {/* Batch editing controls */}
             <Box sx={{ mt: 2, mb: 2, display: 'flex', gap: 2, alignItems: 'center', justifyContent: 'flex-end' }}>
               <IconButton onClick={() => store.inputCore.resetMapping(inputType)} color="primary" title="Reset Mapping">
-                <ReplayIcon />
+                <ReplayIcon sx={{ fontSize: 20 }} />
               </IconButton>
               <IconButton onClick={() => store.inputCore.addAttachedColumn(inputType)} color="primary" title="Add attribute">
-                <AddIcon />
+                <AddIcon sx={{ fontSize: 20 }} />
               </IconButton>
               {!isEditing && (
                 <IconButton onClick={handleEdit} color="primary" title="Edit table" disabled={isSaving}>
-                  <EditIcon />
+                  <EditIcon sx={{ fontSize: 20 }} />
                 </IconButton>
               )}
               {isEditing && (
                 <>
                   <IconButton onClick={handleSave} color="success" title="Save changes" disabled={isSaving}>
-                    {isSaving ? <CircularProgress size={20} /> : <SaveIcon />}
+                    {isSaving ? <CircularProgress size={20} /> : <SaveIcon sx={{ fontSize: 20 }} />}
                   </IconButton>
                   <IconButton onClick={handleCancel} color="error" title="Cancel editing" disabled={isSaving}>
-                    <CloseIcon />
+                    <CloseIcon sx={{ fontSize: 20 }} />
                   </IconButton>
                 </>
               )}
               <IconButton onClick={handleClearData} color="error" title="Delete imported data">
-                <DeleteIcon />
+                <DeleteIcon sx={{ fontSize: 20 }} />
               </IconButton>
             </Box>
             {/* Editable table */}
