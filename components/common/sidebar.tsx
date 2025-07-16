@@ -24,7 +24,7 @@ import {
   Storage as StorageIcon,
 } from '@mui/icons-material'
 import { useRouter } from 'next/navigation'
-import { useTranslations } from 'next-intl'
+
 import { useWhiteLabelContext } from '../../app/white-label-layout'
 
 interface SidebarProps {
@@ -32,7 +32,6 @@ interface SidebarProps {
 }
 
 export const Sidebar: React.FC<SidebarProps> = ({ currentPage = 'home' }) => {
-  const t = useTranslations()
   // Read initial state from localStorage
   const [isExpanded, setIsExpanded] = useState(() => {
     if (typeof window !== 'undefined') {
@@ -67,19 +66,19 @@ export const Sidebar: React.FC<SidebarProps> = ({ currentPage = 'home' }) => {
 
   const menuItems = [
     {
-      text: t('navigation.routePlanner'),
+      text: 'Route Planner',
       icon: <RouteIcon />,
       path: '/',
       isActive: currentPage === 'home',
     },
     {
-      text: t('navigation.routeAnalysis'),
+      text: 'Route Analysis',
       icon: <AnalyticsIcon />,
       path: '/analysis',
       isActive: currentPage === 'analysis',
     },
     {
-      text: t('navigation.information'),
+      text: 'Information',
       icon: <InfoIcon />,
       path: '/information',
       isActive: currentPage === 'information',
@@ -119,7 +118,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ currentPage = 'home' }) => {
           </Typography>
         </Collapse>
         
-        <Tooltip title={isExpanded ? t('sidebar.collapseSidebar') : t('sidebar.expandSidebar')} placement="right">
+        <Tooltip title={isExpanded ? "Collapse sidebar" : "Expand sidebar"} placement="right">
           <IconButton 
             onClick={toggleExpanded}
             sx={{ 

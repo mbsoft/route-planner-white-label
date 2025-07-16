@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Box, Button, TextField, Typography, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, CircularProgress } from '@mui/material';
 import StorageIcon from '@mui/icons-material/Storage';
 import dayjs from 'dayjs';
-import { useTranslations } from 'next-intl';
+
 
 interface Job {
   id: string;
@@ -29,7 +29,6 @@ interface VehicleDatabaseManagerProps {
 }
 
 export const DatabaseDataManager: React.FC<DatabaseDataManagerProps> = ({ onJobsImported }) => {
-  const t = useTranslations()
   const [start, setStart] = useState('');
   const [end, setEnd] = useState('');
   const [search, setSearch] = useState('');
@@ -97,12 +96,12 @@ export const DatabaseDataManager: React.FC<DatabaseDataManagerProps> = ({ onJobs
     <Paper sx={{ p: 3, mb: 2 }}>
       <Typography variant="h6" sx={{ mb: 2, display: 'flex', alignItems: 'center', gap: 1 }}>
         <StorageIcon color="primary" />
-        {t('dataImport.importJobsFromDatabase')}
+        Import Jobs from Database
       </Typography>
       
       <Box sx={{ display: 'flex', gap: 2, mb: 2, flexWrap: 'wrap' }}>
         <TextField
-          label={t('dataImport.startTimeOptional')}
+          label="Start Time (Optional)"
           type="datetime-local"
           value={start}
           onChange={e => setStart(e.target.value)}
@@ -111,14 +110,14 @@ export const DatabaseDataManager: React.FC<DatabaseDataManagerProps> = ({ onJobs
             sx: { fontSize: '14px' }
           }}
           size="small"
-          helperText={t('dataImport.leaveEmptyToImportAll')}
+          helperText="Leave empty to import all"
           FormHelperTextProps={{ sx: { fontSize: '13px' } }}
           inputProps={{
             style: { fontSize: '14px' }
           }}
         />
         <TextField
-          label={t('dataImport.endTimeOptional')}
+          label="End Time (Optional)"
           type="datetime-local"
           value={end}
           onChange={e => setEnd(e.target.value)}
@@ -127,20 +126,20 @@ export const DatabaseDataManager: React.FC<DatabaseDataManagerProps> = ({ onJobs
             sx: { fontSize: '14px' }
           }}
           size="small"
-          helperText={t('dataImport.leaveEmptyToImportAll')}
+          helperText="Leave empty to import all"
           FormHelperTextProps={{ sx: { fontSize: '13px' } }}
           inputProps={{
             style: { fontSize: '14px' }
           }}
         />
         <TextField
-          label={t('dataImport.searchDescriptionOptional')}
+          label="Search Description (Optional)"
           type="text"
           value={search}
           onChange={e => setSearch(e.target.value)}
           size="small"
-          placeholder={t('dataImport.enterSearchTerm')}
-          helperText={t('dataImport.caseInsensitiveSearch')}
+          placeholder="Enter search term"
+          helperText="Case insensitive search"
           InputLabelProps={{ sx: { fontSize: '14px' } }}
           FormHelperTextProps={{ sx: { fontSize: '13px' } }}
           inputProps={{
@@ -155,14 +154,14 @@ export const DatabaseDataManager: React.FC<DatabaseDataManagerProps> = ({ onJobs
             disabled={loading}
             sx={{ mt: '-15px' }}
           >
-            {loading ? <CircularProgress size={20} /> : t('buttons.import')}
+            {loading ? <CircularProgress size={20} /> : 'Import'}
           </Button>
         </Box>
       </Box>
       
       {recordCount !== null && (
         <Typography variant="body1" color="text.secondary" sx={{ mb: 2, fontSize: '14px' }}>
-          {recordCount} {recordCount !== 1 ? t('dataImport.recordsWillBeImported') : t('dataImport.recordWillBeImported')}
+          {recordCount} {recordCount !== 1 ? 'records will be imported' : 'record will be imported'}
         </Typography>
       )}
       
@@ -173,10 +172,10 @@ export const DatabaseDataManager: React.FC<DatabaseDataManagerProps> = ({ onJobs
           <Table size="small">
             <TableHead>
               <TableRow>
-                <TableCell>{t('table.id')}</TableCell>
-                <TableCell>{t('table.description')}</TableCell>
-                <TableCell>{t('table.start')}</TableCell>
-                <TableCell>{t('table.end')}</TableCell>
+                <TableCell>ID</TableCell>
+                <TableCell>Description</TableCell>
+                <TableCell>Start</TableCell>
+                <TableCell>End</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -197,7 +196,6 @@ export const DatabaseDataManager: React.FC<DatabaseDataManagerProps> = ({ onJobs
 };
 
 export const VehicleDatabaseManager: React.FC<VehicleDatabaseManagerProps> = ({ onVehiclesImported }) => {
-  const t = useTranslations()
   const [search, setSearch] = useState('');
   const [vehicles, setVehicles] = useState<Vehicle[]>([]);
   const [loading, setLoading] = useState(false);
@@ -258,18 +256,18 @@ export const VehicleDatabaseManager: React.FC<VehicleDatabaseManagerProps> = ({ 
     <Paper sx={{ p: 3, mb: 2 }}>
       <Typography variant="h6" sx={{ mb: 2, display: 'flex', alignItems: 'center', gap: 1 }}>
         <StorageIcon color="primary" />
-        {t('dataImport.importVehiclesFromDatabase')}
+        Import Vehicles from Database
       </Typography>
       
       <Box sx={{ display: 'flex', gap: 2, mb: 2, flexWrap: 'wrap' }}>
         <TextField
-          label={t('dataImport.searchDescriptionOptional')}
+          label="Search Description (Optional)"
           type="text"
           value={search}
           onChange={e => setSearch(e.target.value)}
           size="small"
-          placeholder={t('dataImport.enterSearchTerm')}
-          helperText={t('dataImport.caseInsensitiveSearchVehicles')}
+          placeholder="Enter search term"
+          helperText="Case insensitive search for vehicles"
           InputLabelProps={{ sx: { fontSize: '14px' } }}
           FormHelperTextProps={{ sx: { fontSize: '13px' } }}
           inputProps={{
@@ -284,14 +282,14 @@ export const VehicleDatabaseManager: React.FC<VehicleDatabaseManagerProps> = ({ 
             disabled={loading}
             sx={{ mt: '-15px' }}
           >
-            {loading ? <CircularProgress size={20} /> : t('buttons.import')}
+            {loading ? <CircularProgress size={20} /> : 'Import'}
           </Button>
         </Box>
       </Box>
       
       {recordCount !== null && (
         <Typography variant="body1" color="text.secondary" sx={{ mb: 2, fontSize: '14px' }}>
-          {recordCount} {recordCount !== 1 ? t('dataImport.recordsWillBeImported') : t('dataImport.recordWillBeImported')}
+          {recordCount} {recordCount !== 1 ? 'records will be imported' : 'record will be imported'}
         </Typography>
       )}
       
@@ -302,10 +300,10 @@ export const VehicleDatabaseManager: React.FC<VehicleDatabaseManagerProps> = ({ 
           <Table size="small">
             <TableHead>
               <TableRow>
-                <TableCell>{t('table.id')}</TableCell>
-                <TableCell>{t('table.description')}</TableCell>
-                <TableCell>{t('table.startLocation')}</TableCell>
-                <TableCell>{t('table.endLocation')}</TableCell>
+                <TableCell>ID</TableCell>
+                <TableCell>Description</TableCell>
+                <TableCell>Start Location</TableCell>
+                <TableCell>End Location</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
