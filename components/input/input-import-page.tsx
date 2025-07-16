@@ -33,6 +33,7 @@ import DialogContentText from '@mui/material/DialogContentText';
 import DialogActions from '@mui/material/DialogActions';
 import { usePreferencesPersistence } from '../../hooks/use-preferences-persistence'
 import { RouteSummaryTable } from '../common/route-summary-table'
+import { useWhiteLabelContext } from '../../app/white-label-layout'
 
 // Types for optimization API
 interface OptimizationMvrpOrderJobV2 {
@@ -499,6 +500,7 @@ export const InputImportPage = ({ currentStep, onStepChange, preferences, onPref
   const useCase = useUseCase()
   const inputType = useCase === 'jobs' ? 'job' : 'shipment'
   const orderTypeLabel = useCase === 'jobs' ? 'Jobs' : 'Shipments'
+  const { apiKey } = useWhiteLabelContext()
 
   // Local editing state for jobs mapping
   const [isEditing, setIsEditing] = React.useState(false)
@@ -656,7 +658,6 @@ export const InputImportPage = ({ currentStep, onStepChange, preferences, onPref
         throw new Error('Please select at least one vehicle to optimize');
       }
       
-      const apiKey = process.env.NEXTBILLION_API_KEY
       if (!apiKey) {
         throw new Error('NEXTBILLION_API_KEY environment variable is required')
       }

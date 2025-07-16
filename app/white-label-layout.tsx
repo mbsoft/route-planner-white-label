@@ -60,23 +60,43 @@ export function WhiteLabelLayout({children}: WhiteLabelLayoutProps) {
   })
 
   useEffect(() => {
-    // Fetch the API key from the config API route
+    // Fetch configuration from both public and protected endpoints
     const fetchConfig = async () => {
       try {
-        const response = await fetch('/api/config')
-        if (!response.ok) {
-          throw new Error('Failed to fetch configuration')
+        // First, fetch branding info from public config endpoint
+        const publicResponse = await fetch('/api/config')
+        if (!publicResponse.ok) {
+          throw new Error('Failed to fetch public configuration')
         }
         
-        const config = await response.json()
-        console.log('Config from API:', config)
+        const publicConfig = await publicResponse.json()
+        console.log('Public config from API:', publicConfig)
         
-        const apiKey = config.NEXTBILLION_API_KEY
+        // Set branding values from public config
+        const companyName = publicConfig.COMPANY_NAME || 'Route Planner'
+        const companyLogo = publicConfig.COMPANY_LOGO || '/company_logo.svg'
+        const companyColor = publicConfig.COMPANY_COLOR || '#D36784'
+        setCompanyName(companyName)
+        setCompanyLogo(companyLogo)
+        setCompanyColor(companyColor)
+
+        // Then, fetch API key from protected config endpoint
+        const protectedResponse = await fetch('/api/config/full')
+        if (!protectedResponse.ok) {
+          console.warn('Failed to fetch protected configuration - API key not available')
+          setApiKey(null)
+          setIsLoading(false)
+          return
+        }
+        
+        const protectedConfig = await protectedResponse.json()
+        console.log('Protected config from API:', protectedConfig)
+        
+        const apiKey = protectedConfig.NEXTBILLION_API_KEY
         console.log('API Key from API:', apiKey)
 
         if (!apiKey) {
           console.warn('NEXTBILLION_API_KEY not found in environment variables')
-          // Don't set error, just continue without API key for now
           setApiKey(null)
           setIsLoading(false)
           return
@@ -84,14 +104,6 @@ export function WhiteLabelLayout({children}: WhiteLabelLayoutProps) {
 
         setApiKey(apiKey)
         setIsLoading(false)
-
-        // Fetch branding values
-        const companyName = config.COMPANY_NAME || 'Route Planner'
-        const companyLogo = config.COMPANY_LOGO || '/company_logo.svg'
-        const companyColor = config.COMPANY_COLOR || '#D36784'
-        setCompanyName(companyName)
-        setCompanyLogo(companyLogo)
-        setCompanyColor(companyColor)
 
       } catch (error) {
         console.error('Error fetching config:', error)

@@ -19,6 +19,7 @@ import MapIcon from '@mui/icons-material/Map'
 import { polylineToGeoJSON } from '../../../utils/polyline-decoder'
 import MapOptionsControls from './map-options-controls'
 import styles from './input-map.module.scss'
+import { useWhiteLabelContext } from '../../../app/white-label-layout'
 
 // TypeScript global declaration for NextBillion
 declare global {
@@ -68,8 +69,7 @@ export const CollapsibleMap = ({ markers, routes, isVisible = false, onToggle }:
   const [isMapReady, setIsMapReady] = useState(false)
   const mapRef = useRef<any>(null)
   const { viewMap } = useMap()
-
-  const apiKey = process.env.NEXTBILLION_API_KEY
+  const { apiKey } = useWhiteLabelContext()
   const mapStyleUrl = apiKey
     ? `https://api.nextbillion.io/tt/style/1/style/22.2.1-9?map=2/basic_street-dark&key=${apiKey}`
     : ''

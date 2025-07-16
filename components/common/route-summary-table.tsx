@@ -50,7 +50,7 @@ export const RouteSummaryTable: React.FC<RouteSummaryTableProps> = ({
   showSelection = true,
   maxHeight = 600
 }) => {
-  const { companyColor } = useWhiteLabelContext()
+  const { companyColor, apiKey } = useWhiteLabelContext()
 
   const formatDuration = (seconds: number) => {
     const hours = Math.floor(seconds / 3600)
@@ -111,7 +111,6 @@ export const RouteSummaryTable: React.FC<RouteSummaryTableProps> = ({
   const [geocodeCache, setGeocodeCache] = useState<{ [key: string]: string }>({})
   const [loadingGeocode, setLoadingGeocode] = useState<{ [key: string]: boolean }>({})
   const [pendingGeocodes, setPendingGeocodes] = useState<Set<string>>(new Set())
-  const apiKey = process.env.NEXTBILLION_API_KEY || ''
 
   // Helper to fetch and cache reverse geocode with rate limiting
   const fetchGeocode = async (lat: number, lng: number) => {
