@@ -679,7 +679,7 @@ export default function InformationPage() {
                 alt={`${companyName} Logo`}
                 style={{ height: '40px', width: 'auto', marginRight: '8px', verticalAlign: 'middle' }}
               />
-              <Typography variant="caption" sx={{ color: '#999' }}>
+              <Typography variant="body2" sx={{ color: '#999', fontSize: '14px' }}>
                 powered by NextBillion.ai | Version 1.0.0 | Last updated: {new Date().toLocaleDateString()}
               </Typography>
             </Box>

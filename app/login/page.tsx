@@ -189,7 +189,7 @@ function LoginPageContent() {
               </Button>
             </form>
 
-            <Typography variant="body2" color="text.secondary" sx={{ textAlign: 'center', mt: 2 }}>
+            <Typography variant="body1" color="text.secondary" sx={{ textAlign: 'center', mt: 2, fontSize: '16px' }}>
               Powered by NextBillion.ai
             </Typography>
           </Paper>
