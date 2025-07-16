@@ -122,7 +122,10 @@ export const Sidebar: React.FC<SidebarProps> = ({ currentPage = 'home' }) => {
             onClick={toggleExpanded}
             sx={{ 
               ml: isExpanded ? 1 : 'auto',
-              mr: isExpanded ? 0 : 'auto'
+              mr: isExpanded ? 0 : 'auto',
+              '& .MuiSvgIcon-root': {
+                fontSize: '20px'
+              }
             }}
           >
             {isExpanded ? <ChevronLeftIcon /> : <ChevronRightIcon />}
@@ -163,7 +166,10 @@ export const Sidebar: React.FC<SidebarProps> = ({ currentPage = 'home' }) => {
                   sx={{ 
                     color: item.isActive ? companyColor : '#666666',
                     minWidth: isExpanded ? 40 : 0,
-                    justifyContent: 'center'
+                    justifyContent: 'center',
+                    '& .MuiSvgIcon-root': {
+                      fontSize: '24px'
+                    }
                   }}
                 >
                   {item.icon}
