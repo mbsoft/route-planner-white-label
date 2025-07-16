@@ -720,8 +720,11 @@ export default function RouteAnalysisPage() {
                   <Typography variant="h1" sx={{ fontWeight: 'bold', color: '#ff9800', mb: 1, fontSize: '2.5rem' }}>
                     {summaryStats.avgSpeed}
                   </Typography>
-                  <Typography variant="body1" sx={{ color: '#666' }}>
-                    km/h average speed
+                  <Typography variant="body1" sx={{ color: '#666', fontWeight: 'bold', mb: 0.5 }}>
+                    Average Speed
+                  </Typography>
+                  <Typography variant="body2" sx={{ color: '#666' }}>
+                    km/h
                   </Typography>
                 </Card>
               </Grid>
@@ -746,7 +749,10 @@ export default function RouteAnalysisPage() {
                   <Typography variant="h1" sx={{ fontWeight: 'bold', color: '#2196f3', mb: 1, fontSize: '2.5rem' }}>
                     {summaryStats.totalRoutes}
                   </Typography>
-                  <Typography variant="body1" sx={{ color: '#666' }}>
+                  <Typography variant="body1" sx={{ color: '#666', fontWeight: 'bold', mb: 0.5 }}>
+                    Total Routes
+                  </Typography>
+                  <Typography variant="body2" sx={{ color: '#666' }}>
                     Optimization plans
                   </Typography>
                 </Card>
@@ -772,8 +778,11 @@ export default function RouteAnalysisPage() {
                   <Typography variant="h1" sx={{ fontWeight: 'bold', color: '#9c27b0', mb: 1, fontSize: '2.5rem' }}>
                     {summaryStats.avgGallonsPerRoute.toLocaleString()}
                   </Typography>
-                  <Typography variant="body1" sx={{ color: '#666' }}>
-                    Average gallons per route
+                  <Typography variant="body1" sx={{ color: '#666', fontWeight: 'bold', mb: 0.5 }}>
+                    Average Gallons/Route
+                  </Typography>
+                  <Typography variant="body2" sx={{ color: '#666' }}>
+                    gallons
                   </Typography>
                 </Card>
               </Grid>
@@ -798,8 +807,11 @@ export default function RouteAnalysisPage() {
                   <Typography variant="h1" sx={{ fontWeight: 'bold', color: '#f44336', mb: 1, fontSize: '2.5rem' }}>
                     {summaryStats.totalUnassignedJobs}
                   </Typography>
-                  <Typography variant="body1" sx={{ color: '#666' }}>
-                    Total unassigned jobs
+                  <Typography variant="body1" sx={{ color: '#666', fontWeight: 'bold', mb: 0.5 }}>
+                    Unassigned Jobs
+                  </Typography>
+                  <Typography variant="body2" sx={{ color: '#666' }}>
+                    jobs
                   </Typography>
                 </Card>
               </Grid>
@@ -824,8 +836,11 @@ export default function RouteAnalysisPage() {
                   <Typography variant="h1" sx={{ fontWeight: 'bold', color: '#4caf50', mb: 1, fontSize: '2.5rem' }}>
                     {summaryStats.avgStopsPerRoute}
                   </Typography>
-                  <Typography variant="body1" sx={{ color: '#666' }}>
-                    Average stops per route
+                  <Typography variant="body1" sx={{ color: '#666', fontWeight: 'bold', mb: 0.5 }}>
+                    Average Stops/Route
+                  </Typography>
+                  <Typography variant="body2" sx={{ color: '#666' }}>
+                    stops
                   </Typography>
                 </Card>
               </Grid>
@@ -850,8 +865,11 @@ export default function RouteAnalysisPage() {
                   <Typography variant="h1" sx={{ fontWeight: 'bold', color: '#ff5722', mb: 1, fontSize: '2.5rem' }}>
                     {formatDistance(summaryStats.avgDistancePerRoute)}
                   </Typography>
-                  <Typography variant="body1" sx={{ color: '#666' }}>
-                    Average distance per route
+                  <Typography variant="body1" sx={{ color: '#666', fontWeight: 'bold', mb: 0.5 }}>
+                    Average Distance/Route
+                  </Typography>
+                  <Typography variant="body2" sx={{ color: '#666' }}>
+                    km
                   </Typography>
                 </Card>
               </Grid>
@@ -876,8 +894,11 @@ export default function RouteAnalysisPage() {
                   <Typography variant="h1" sx={{ fontWeight: 'bold', color: '#795548', mb: 1, fontSize: '2.5rem' }}>
                     {formatDuration(summaryStats.totalWaitingTime)}
                   </Typography>
-                  <Typography variant="body1" sx={{ color: '#666' }}>
-                    Total waiting time
+                  <Typography variant="body1" sx={{ color: '#666', fontWeight: 'bold', mb: 0.5 }}>
+                    Total Waiting Time
+                  </Typography>
+                  <Typography variant="body2" sx={{ color: '#666' }}>
+                    time
                   </Typography>
                 </Card>
               </Grid>
@@ -902,8 +923,11 @@ export default function RouteAnalysisPage() {
                   <Typography variant="h1" sx={{ fontWeight: 'bold', color: '#607d8b', mb: 1, fontSize: '2.5rem' }}>
                     {formatDuration(summaryStats.avgServiceTimePerRoute)}
                   </Typography>
-                  <Typography variant="body1" sx={{ color: '#666' }}>
-                    Average service time per route
+                  <Typography variant="body1" sx={{ color: '#666', fontWeight: 'bold', mb: 0.5 }}>
+                    Average Service Time/Route
+                  </Typography>
+                  <Typography variant="body2" sx={{ color: '#666' }}>
+                    time
                   </Typography>
                 </Card>
               </Grid>
