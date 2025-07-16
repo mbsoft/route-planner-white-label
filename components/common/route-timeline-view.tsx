@@ -11,6 +11,7 @@ import DownloadIcon from '@mui/icons-material/Download';
 import UploadIcon from '@mui/icons-material/Upload';
 import FlagIcon from '@mui/icons-material/Flag';
 import LocalShippingIcon from '@mui/icons-material/LocalShipping';
+import { useWhiteLabelContext } from '../../app/white-label-layout'
 
 // Types for timeline data
 interface TimelineStep {
@@ -52,10 +53,11 @@ const formatTime = (timestamp: number) => {
 
 // Get step type icon
 const getStepTypeIcon = (type: string) => {
+  const { companyColor } = useWhiteLabelContext();
   const iconStyle = {
     width: '20px',
     height: '20px',
-    color: '#d36784',
+    color: companyColor,
   };
   switch (type) {
     case 'start':

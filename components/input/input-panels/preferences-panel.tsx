@@ -27,12 +27,12 @@ export function PreferencesPanel({ icon, title, description, children }: Prefere
             width: 40,
             height: 40,
             borderRadius: '50%',
-            bgcolor: 'rgba(211, 103, 132, 0.1)',
+            bgcolor: `${companyColor}1A`,
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
             mr: '12px',
-            color: 'companyColor',
+            color: companyColor,
             fontSize: '12px',
           }}
         >
@@ -40,7 +40,7 @@ export function PreferencesPanel({ icon, title, description, children }: Prefere
             style: {
               width: '28px',
               height: '28px',
-              color: 'companyColor',
+              color: companyColor,
             },
           })}
         </Box>

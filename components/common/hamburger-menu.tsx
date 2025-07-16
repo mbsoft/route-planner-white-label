@@ -22,22 +22,24 @@ import {
   Info as InfoIcon,
 } from '@mui/icons-material'
 import { useRouter } from 'next/navigation'
+import { useWhiteLabelContext } from '../../app/white-label-layout'
 
 interface HamburgerMenuProps {
   currentPage?: string
 }
 
 export const HamburgerMenu: React.FC<HamburgerMenuProps> = ({ currentPage = 'home' }) => {
-  const [drawerOpen, setDrawerOpen] = useState(false)
+  const [isOpen, setIsOpen] = useState(false)
   const router = useRouter()
+  const { companyName, companyColor } = useWhiteLabelContext()
 
   const handleDrawerToggle = () => {
-    setDrawerOpen(!drawerOpen)
+    setIsOpen(!isOpen)
   }
 
   const handleNavigation = (path: string) => {
     router.push(path)
-    setDrawerOpen(false)
+    setIsOpen(false)
   }
 
   const menuItems = [
@@ -75,7 +77,7 @@ export const HamburgerMenu: React.FC<HamburgerMenuProps> = ({ currentPage = 'hom
 
       <Drawer
         anchor="left"
-        open={drawerOpen}
+        open={isOpen}
         onClose={handleDrawerToggle}
         sx={{
           '& .MuiDrawer-paper': {
@@ -85,8 +87,8 @@ export const HamburgerMenu: React.FC<HamburgerMenuProps> = ({ currentPage = 'hom
         }}
       >
         <Box sx={{ p: 2, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-          <Typography variant="h6" sx={{ fontWeight: 'bold', color: '#d36784' }}>
-            The Service Company
+          <Typography variant="h6" sx={{ fontWeight: 'bold', color: companyColor }}>
+            {companyName}
           </Typography>
           <IconButton onClick={handleDrawerToggle}>
             <CloseIcon />
@@ -102,15 +104,20 @@ export const HamburgerMenu: React.FC<HamburgerMenuProps> = ({ currentPage = 'hom
                 onClick={() => handleNavigation(item.path)}
                 selected={item.isActive}
                 sx={{
+                  minHeight: 48,
+                  px: 3,
                   '&.Mui-selected': {
-                    backgroundColor: 'rgba(211, 103, 132, 0.08)',
+                    backgroundColor: `${companyColor}14`,
                     '&:hover': {
-                      backgroundColor: 'rgba(211, 103, 132, 0.12)',
+                      backgroundColor: `${companyColor}1F`,
                     },
+                  },
+                  '&:hover': {
+                    backgroundColor: 'rgba(0, 0, 0, 0.04)',
                   },
                 }}
               >
-                <ListItemIcon sx={{ color: item.isActive ? '#d36784' : '#666666' }}>
+                <ListItemIcon sx={{ color: item.isActive ? companyColor : '#666666' }}>
                   {item.icon}
                 </ListItemIcon>
                 <ListItemText 
@@ -118,7 +125,7 @@ export const HamburgerMenu: React.FC<HamburgerMenuProps> = ({ currentPage = 'hom
                   sx={{
                     '& .MuiListItemText-primary': {
                       fontWeight: item.isActive ? 'bold' : 'normal',
-                      color: item.isActive ? '#d36784' : '#000000',
+                      color: item.isActive ? companyColor : '#000000',
                     },
                   }}
                 />

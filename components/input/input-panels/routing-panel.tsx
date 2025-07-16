@@ -276,10 +276,10 @@ export function RoutingPanel({ preferences, onPreferencesChange }: RoutingPanelP
                           label={option?.label || value} 
                           size="small"
                           sx={{ 
-                            backgroundColor: 'rgba(211, 103, 132, 0.1)',
-                            color: 'companyColor',
+                            backgroundColor: `${companyColor}1A`,
+                            color: companyColor,
                             '& .MuiChip-deleteIcon': {
-                              color: 'companyColor',
+                              color: companyColor,
                             }
                           }}
                         />

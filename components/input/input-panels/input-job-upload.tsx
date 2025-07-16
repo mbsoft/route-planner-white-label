@@ -14,12 +14,14 @@ import EditIcon from '@mui/icons-material/Edit';
 import SaveIcon from '@mui/icons-material/Save';
 import CloseIcon from '@mui/icons-material/Close';
 import { DatabaseDataManager } from '../database-data-manager';
+import { useWhiteLabelContext } from '../../../app/white-label-layout'
 
 export const InputJobUpload = () => {
   const store = useInputStore()
   const useCase = useUseCase()
   const inputType = useCase === 'jobs' ? 'job' : 'shipment'
   const orderTypeLabel = useCase === 'jobs' ? 'Job' : 'Shipment'
+  const { companyColor } = useWhiteLabelContext()
 
   // Check if CSV import is enabled
   const enableCsvImport = process.env.NEXT_PUBLIC_ENABLE_CSV_IMPORT === 'true'
@@ -242,7 +244,7 @@ export const InputJobUpload = () => {
             }}
           >
             <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 2 }}>
-              <Typography variant="h6" sx={{ color: '#d36784', fontWeight: 'bold', display: 'flex', alignItems: 'center', gap: 1 }}>
+              <Typography variant="h6" sx={{ color: companyColor, fontWeight: 'bold', display: 'flex', alignItems: 'center', gap: 1 }}>
                 <span style={{ fontSize: 22, lineHeight: 1, color: '#43a047' }}>✓</span> {currentData.rows.length} records loaded
                 {originalJobs.length > 0 && (
                   <span style={{ fontSize: '12px', color: '#666', fontWeight: 'normal' }}>

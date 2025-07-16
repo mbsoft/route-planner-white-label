@@ -15,6 +15,7 @@ import SaveIcon from '@mui/icons-material/Save';
 import CloseIcon from '@mui/icons-material/Close';
 import { useCallback } from 'react';
 import { VehicleDatabaseManager } from '../database-data-manager';
+import { useWhiteLabelContext } from '../../../app/white-label-layout'
 
 export const InputVehicleUpload = () => {
   
@@ -23,6 +24,7 @@ export const InputVehicleUpload = () => {
   const hasData = vehicle.rawData.rows.length > 0
   const [isSaving, setIsSaving] = useState(false)
   const [originalVehicles, setOriginalVehicles] = useState<any[]>([])
+  const { companyColor } = useWhiteLabelContext()
 
   // Check if CSV import is enabled
   const enableCsvImport = process.env.NEXT_PUBLIC_ENABLE_CSV_IMPORT === 'true'
@@ -255,7 +257,7 @@ export const InputVehicleUpload = () => {
             }}
           >
             <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 2 }}>
-              <Typography variant="h6" sx={{ color: '#d36784', fontWeight: 'bold', display: 'flex', alignItems: 'center', gap: 1 }}>
+              <Typography variant="h6" sx={{ color: companyColor, fontWeight: 'bold', display: 'flex', alignItems: 'center', gap: 1 }}>
                 <span style={{ fontSize: 22, lineHeight: 1, color: '#43a047' }}>✓</span> {vehicle.rawData.rows.length} records loaded
                 {originalVehicles.length > 0 && (
                   <span style={{ fontSize: '12px', color: '#666', fontWeight: 'normal' }}>
