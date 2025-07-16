@@ -6,5 +6,6 @@ export async function GET() {
     USE_CASE: process.env.USE_CASE || 'jobs',
     COMPANY_NAME: process.env.COMPANY_NAME || 'Route Planner',
     COMPANY_LOGO: process.env.COMPANY_LOGO || '/company_logo.svg',
+    COMPANY_COLOR: process.env.COMPANY_COLOR || '#D36784',
   })
 } 

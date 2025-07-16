@@ -12,6 +12,7 @@ interface WhiteLabelContextType {
   error: string | null
   companyName: string
   companyLogo: string
+  companyColor: string
 }
 
 const WhiteLabelContext = createContext<WhiteLabelContextType>({
@@ -20,30 +21,12 @@ const WhiteLabelContext = createContext<WhiteLabelContextType>({
   error: null,
   companyName: 'Route Planner',
   companyLogo: '/company_logo.svg',
+  companyColor: '#D36784',
 })
 
 export function useWhiteLabelContext() {
   return useContext(WhiteLabelContext)
 }
-
-// Create a custom theme
-const theme = createTheme({
-  palette: {
-    primary: {
-      main: '#d36784', // Light pink/mauve for buttons and badges
-      light: '#E0859A',
-      dark: '#B54A6A',
-      contrastText: '#ffffff',
-    },
-    secondary: {
-      main: '#dc004e',
-    },
-    background: {
-      default: '#ffffff',
-      paper: '#ffffff',
-    },
-  },
-})
 
 interface WhiteLabelLayoutProps {
   children: React.ReactNode
@@ -55,6 +38,26 @@ export function WhiteLabelLayout({children}: WhiteLabelLayoutProps) {
   const [error, setError] = useState<string | null>(null)
   const [companyName, setCompanyName] = useState('Route Planner')
   const [companyLogo, setCompanyLogo] = useState('/company_logo.svg')
+  const [companyColor, setCompanyColor] = useState('#D36784')
+
+  // Create a dynamic theme based on company color
+  const theme = createTheme({
+    palette: {
+      primary: {
+        main: companyColor, // Use the company color as primary
+        light: companyColor + '1A', // Add transparency for light variant
+        dark: companyColor + 'CC', // Add transparency for dark variant
+        contrastText: '#ffffff',
+      },
+      secondary: {
+        main: '#dc004e',
+      },
+      background: {
+        default: '#ffffff',
+        paper: '#ffffff',
+      },
+    },
+  })
 
   useEffect(() => {
     // Fetch the API key from the config API route
@@ -85,8 +88,10 @@ export function WhiteLabelLayout({children}: WhiteLabelLayoutProps) {
         // Fetch branding values
         const companyName = config.COMPANY_NAME || 'Route Planner'
         const companyLogo = config.COMPANY_LOGO || '/company_logo.svg'
+        const companyColor = config.COMPANY_COLOR || '#D36784'
         setCompanyName(companyName)
         setCompanyLogo(companyLogo)
+        setCompanyColor(companyColor)
 
       } catch (error) {
         console.error('Error fetching config:', error)
@@ -141,7 +146,7 @@ export function WhiteLabelLayout({children}: WhiteLabelLayoutProps) {
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      <WhiteLabelContext.Provider value={{apiKey, isLoading, error, companyName, companyLogo}}>
+      <WhiteLabelContext.Provider value={{apiKey, isLoading, error, companyName, companyLogo, companyColor}}>
         {children}
         {/* <Footer /> removed to prevent duplicate footers */}
       </WhiteLabelContext.Provider>

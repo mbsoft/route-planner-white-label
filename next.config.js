@@ -45,6 +45,7 @@ const nextConfig = {
     NEXT_PUBLIC_ENABLE_CSV_IMPORT: process.env.NEXT_PUBLIC_ENABLE_CSV_IMPORT || 'false',
     COMPANY_LOGO: process.env.COMPANY_LOGO || '/image_example.png',
     COMPANY_NAME: process.env.COMPANY_NAME || 'The Service Company',
+    COMPANY_COLOR: process.env.COMPANY_COLOR || '#D36784',
   },
   typescript: {
     ignoreBuildErrors: true,

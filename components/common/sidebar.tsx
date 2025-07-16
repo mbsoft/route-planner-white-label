@@ -40,7 +40,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ currentPage = 'home' }) => {
     return true
   })
   const router = useRouter()
-  const { companyName } = useWhiteLabelContext()
+  const { companyName, companyColor } = useWhiteLabelContext()
 
   // Save state to localStorage whenever it changes
   React.useEffect(() => {
@@ -112,7 +112,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ currentPage = 'home' }) => {
         }}
       >
         <Collapse in={isExpanded} orientation="horizontal">
-          <Typography variant="h6" sx={{ fontWeight: 'bold', color: '#d36784' }}>
+          <Typography variant="h6" sx={{ fontWeight: 'bold', color: companyColor }}>
             {companyName}
           </Typography>
         </Collapse>
@@ -149,9 +149,9 @@ export const Sidebar: React.FC<SidebarProps> = ({ currentPage = 'home' }) => {
                   justifyContent: isExpanded ? 'initial' : 'center',
                   px: isExpanded ? 3 : 2,
                   '&.Mui-selected': {
-                    backgroundColor: 'rgba(211, 103, 132, 0.08)',
+                    backgroundColor: `${companyColor}14`, // 8% opacity
                     '&:hover': {
-                      backgroundColor: 'rgba(211, 103, 132, 0.12)',
+                      backgroundColor: `${companyColor}1F`, // 12% opacity
                     },
                   },
                   '&:hover': {
@@ -161,7 +161,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ currentPage = 'home' }) => {
               >
                 <ListItemIcon 
                   sx={{ 
-                    color: item.isActive ? '#d36784' : 'inherit',
+                    color: item.isActive ? companyColor : 'inherit',
                     minWidth: isExpanded ? 40 : 0,
                     justifyContent: 'center'
                   }}
@@ -174,7 +174,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ currentPage = 'home' }) => {
                     sx={{
                       '& .MuiListItemText-primary': {
                         fontWeight: item.isActive ? 'bold' : 'normal',
-                        color: item.isActive ? '#d36784' : 'inherit',
+                        color: item.isActive ? companyColor : 'inherit',
                       },
                     }}
                   />

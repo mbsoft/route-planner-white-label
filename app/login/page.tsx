@@ -18,25 +18,6 @@ import {
 import { Visibility, VisibilityOff, Login as LoginIcon } from '@mui/icons-material'
 import { WhiteLabelLayout, useWhiteLabelContext } from '../white-label-layout'
 
-// Create a simple theme for the login page
-const theme = createTheme({
-  palette: {
-    primary: {
-      main: '#d36784', // Light pink/mauve for buttons and badges
-      light: '#E0859A',
-      dark: '#B54A6A',
-      contrastText: '#ffffff',
-    },
-    secondary: {
-      main: '#dc004e',
-    },
-    background: {
-      default: '#ffffff',
-      paper: '#ffffff',
-    },
-  },
-})
-
 function LoginPageContent() {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
@@ -44,7 +25,26 @@ function LoginPageContent() {
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
   const router = useRouter()
-  const { companyLogo } = useWhiteLabelContext()
+  const { companyLogo, companyColor } = useWhiteLabelContext()
+
+  // Create a dynamic theme based on company color
+  const theme = createTheme({
+    palette: {
+      primary: {
+        main: companyColor, // Use the company color as primary
+        light: companyColor + '1A', // Add transparency for light variant
+        dark: companyColor + 'CC', // Add transparency for dark variant
+        contrastText: '#ffffff',
+      },
+      secondary: {
+        main: '#dc004e',
+      },
+      background: {
+        default: '#ffffff',
+        paper: '#ffffff',
+      },
+    },
+  })
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
