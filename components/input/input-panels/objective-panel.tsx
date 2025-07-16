@@ -9,6 +9,7 @@ import {
 import FlagIcon from '@mui/icons-material/Flag'
 import TrackChangesIcon from '@mui/icons-material/TrackChanges'
 import {PreferencesPanel} from './preferences-panel'
+import { useWhiteLabelContext } from '../../../app/white-label-layout'
 
 const TRAVEL_COST_OPTIONS = [
   {label: 'Duration', value: 'duration'},
@@ -49,6 +50,7 @@ interface ObjectivePanelProps {
 
 export function ObjectivePanel({ preferences, onPreferencesChange }: ObjectivePanelProps) {
   const { objective } = preferences
+  const { companyColor } = useWhiteLabelContext()
 
   const setTravelCost = (value: string) => {
     onPreferencesChange({
@@ -111,7 +113,7 @@ export function ObjectivePanel({ preferences, onPreferencesChange }: ObjectivePa
 
   return (
     <PreferencesPanel
-      icon={<FlagIcon sx={{ mr: 1, color: '#d36784' }} />}
+      icon={<FlagIcon sx={{ mr: 1, color: companyColor }} />}
       title="Set Your Objective"
       description=""
     >

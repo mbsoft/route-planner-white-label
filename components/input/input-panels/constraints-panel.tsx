@@ -7,6 +7,7 @@ import {
 } from '@mui/material'
 import GavelIcon from '@mui/icons-material/Gavel'
 import {PreferencesPanel} from './preferences-panel'
+import { useWhiteLabelContext } from '../../../app/white-label-layout'
 
 export interface ConstraintsPreferences {
   constraints: {
@@ -23,6 +24,7 @@ interface ConstraintsPanelProps {
 
 export function ConstraintsPanel({ preferences, onPreferencesChange }: ConstraintsPanelProps) {
   const { constraints } = preferences
+  const { companyColor } = useWhiteLabelContext()
 
   const setMaxOvertime = (value: number) => {
     onPreferencesChange({
@@ -56,7 +58,7 @@ export function ConstraintsPanel({ preferences, onPreferencesChange }: Constrain
 
   return (
     <PreferencesPanel
-      icon={<GavelIcon sx={{ color: '#d36784' }} />}
+      icon={<GavelIcon sx={{ color: companyColor }} />}
       title="Specify Constraints"
       description=""
     >

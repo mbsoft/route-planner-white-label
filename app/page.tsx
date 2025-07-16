@@ -39,7 +39,7 @@ export const dynamic = 'force-dynamic'
 
 export default function HomePage() {
   const router = useRouter()
-  const { companyLogo } = useWhiteLabelContext()
+  const { companyLogo, companyColor } = useWhiteLabelContext()
   const [markers, setMarkers] = useState<MapMarker[]>([])
   const [routes, setRoutes] = useState<RouteData[]>([])
   const [currentStep, setCurrentStep] = useState(0)
@@ -370,7 +370,7 @@ export default function HomePage() {
                   <Typography
                     variant="caption"
                     sx={{
-                      backgroundColor: '#d36784',
+                      backgroundColor: 'companyColor',
                       color: 'white',
                       px: 1,
                       py: 0.5,

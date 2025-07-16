@@ -24,6 +24,7 @@ import UploadIcon from '@mui/icons-material/Upload'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 import ExpandLessIcon from '@mui/icons-material/ExpandLess'
 // Removed timeline imports
+import { useWhiteLabelContext } from '../../app/white-label-layout'
 
 // Route Summary Table Component
 interface RouteSummaryTableProps {
@@ -49,6 +50,8 @@ export const RouteSummaryTable: React.FC<RouteSummaryTableProps> = ({
   showSelection = true,
   maxHeight = 600
 }) => {
+  const { companyColor } = useWhiteLabelContext()
+
   const formatDuration = (seconds: number) => {
     const hours = Math.floor(seconds / 3600)
     const minutes = Math.floor((seconds % 3600) / 60)
@@ -85,7 +88,7 @@ export const RouteSummaryTable: React.FC<RouteSummaryTableProps> = ({
     const iconStyle = {
       width: '20px',
       height: '20px',
-      color: '#d36784',
+      color: companyColor,
     }
     
     switch (type) {
@@ -295,7 +298,7 @@ export const RouteSummaryTable: React.FC<RouteSummaryTableProps> = ({
                       <Typography variant="caption" sx={{ display: 'block', color: '#666' }}>
                         REC 90 GAS: {route.delivery[4]} gal
                       </Typography>
-                      <Typography variant="caption" sx={{ display: 'block', fontWeight: 'bold', color: '#d36784' }}>
+                      <Typography variant="caption" sx={{ display: 'block', fontWeight: 'bold', color: companyColor }}>
                         Total: {route.delivery[0] + route.delivery[1] + route.delivery[2] + route.delivery[3] + route.delivery[4]} gal
                       </Typography>
                     </Box>
@@ -381,7 +384,7 @@ export const RouteSummaryTable: React.FC<RouteSummaryTableProps> = ({
                                       <Typography variant="caption" sx={{ display: 'block', color: '#666' }}>
                                         ULSD Dyed: {step.load[1]} gal
                                       </Typography>
-                                      <Typography variant="caption" sx={{ display: 'block', fontWeight: 'bold', color: '#d36784' }}>
+                                      <Typography variant="caption" sx={{ display: 'block', fontWeight: 'bold', color: companyColor }}>
                                         Total: {step.load[0] + step.load[1]} gal
                                       </Typography>
                                     </Box>
