@@ -370,7 +370,7 @@ export default function HomePage() {
                   <Typography
                     variant="caption"
                     sx={{
-                      backgroundColor: 'companyColor',
+                      backgroundColor: companyColor,
                       color: 'white',
                       px: 1,
                       py: 0.5,
