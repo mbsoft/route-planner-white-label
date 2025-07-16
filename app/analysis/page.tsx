@@ -1197,7 +1197,17 @@ export default function RouteAnalysisPage() {
                               setSelectedResult(null)
                               setSelectedJobId(null)
                             }}
-                            sx={{ position: 'absolute', top: 8, right: 8, zIndex: 11 }}
+                            sx={{ 
+                              position: 'absolute', 
+                              top: 8, 
+                              right: 8, 
+                              zIndex: 11,
+                              minWidth: '80px',
+                              px: 2,
+                              py: 1,
+                              fontSize: '0.875rem',
+                              textTransform: 'none'
+                            }}
                           >
                             Close
                           </Button>
