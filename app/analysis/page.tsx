@@ -1307,7 +1307,7 @@ export default function RouteAnalysisPage() {
                                       <Typography variant="h6" sx={{ color: companyColor, fontWeight: 'bold' }}>
                                         {kpis.ulsdClearDelivered.toLocaleString()}
                                       </Typography>
-                                      <Typography variant="caption" sx={{ color: '#666' }}>
+                                      <Typography variant="body1" sx={{ color: '#666' }}>
                                         ULSD Clear (gal)
                                       </Typography>
                                     </Box>
@@ -1317,7 +1317,7 @@ export default function RouteAnalysisPage() {
                                       <Typography variant="h6" sx={{ color: companyColor, fontWeight: 'bold' }}>
                                         {kpis.ulsdDyedDelivered.toLocaleString()}
                                       </Typography>
-                                      <Typography variant="caption" sx={{ color: '#666' }}>
+                                      <Typography variant="body1" sx={{ color: '#666' }}>
                                         ULSD Dyed (gal)
                                       </Typography>
                                     </Box>
@@ -1327,7 +1327,7 @@ export default function RouteAnalysisPage() {
                                       <Typography variant="h6" sx={{ color: companyColor, fontWeight: 'bold' }}>
                                         {kpis.unlDelivered.toLocaleString()}
                                       </Typography>
-                                      <Typography variant="caption" sx={{ color: '#666' }}>
+                                      <Typography variant="body1" sx={{ color: '#666' }}>
                                         UNL (gal)
                                       </Typography>
                                     </Box>
@@ -1337,7 +1337,7 @@ export default function RouteAnalysisPage() {
                                       <Typography variant="h6" sx={{ color: companyColor, fontWeight: 'bold' }}>
                                         {kpis.gasUnlPreDelivered.toLocaleString()}
                                       </Typography>
-                                      <Typography variant="caption" sx={{ color: '#666' }}>
+                                      <Typography variant="body1" sx={{ color: '#666' }}>
                                         GAS UNL PRE (gal)
                                       </Typography>
                                     </Box>
@@ -1347,7 +1347,7 @@ export default function RouteAnalysisPage() {
                                       <Typography variant="h6" sx={{ color: companyColor, fontWeight: 'bold' }}>
                                         {kpis.rec90Delivered.toLocaleString()}
                                       </Typography>
-                                      <Typography variant="caption" sx={{ color: '#666' }}>
+                                      <Typography variant="body1" sx={{ color: '#666' }}>
                                         REC 90 (gal)
                                       </Typography>
                                     </Box>
@@ -1357,7 +1357,7 @@ export default function RouteAnalysisPage() {
                                       <Typography variant="h6" sx={{ color: companyColor, fontWeight: 'bold' }}>
                                         {kpis.totalFuel.toLocaleString()}
                                       </Typography>
-                                      <Typography variant="caption" sx={{ color: '#666' }}>
+                                      <Typography variant="body1" sx={{ color: '#666' }}>
                                         Total Fuel (gal)
                                       </Typography>
                                     </Box>
@@ -1369,7 +1369,7 @@ export default function RouteAnalysisPage() {
                                       <Typography variant="h6" sx={{ color: companyColor, fontWeight: 'bold' }}>
                                         {kpis.avgFuelPerRoute.toFixed(0)}
                                       </Typography>
-                                      <Typography variant="caption" sx={{ color: '#666' }}>
+                                      <Typography variant="body1" sx={{ color: '#666' }}>
                                         Avg per Route (gal)
                                       </Typography>
                                     </Box>
@@ -1386,7 +1386,7 @@ export default function RouteAnalysisPage() {
                                       <Typography variant="h6" sx={{ color: companyColor, fontWeight: 'bold' }}>
                                         {formatDistance(kpis.totalDistance)}
                                       </Typography>
-                                      <Typography variant="caption" sx={{ color: '#666' }}>
+                                      <Typography variant="body1" sx={{ color: '#666' }}>
                                         Total Distance
                                       </Typography>
                                     </Box>
@@ -1396,7 +1396,7 @@ export default function RouteAnalysisPage() {
                                       <Typography variant="h6" sx={{ color: companyColor, fontWeight: 'bold' }}>
                                         {formatDuration(kpis.totalDuration)}
                                       </Typography>
-                                      <Typography variant="caption" sx={{ color: '#666' }}>
+                                      <Typography variant="body1" sx={{ color: '#666' }}>
                                         Total Duration
                                       </Typography>
                                     </Box>
@@ -1406,7 +1406,7 @@ export default function RouteAnalysisPage() {
                                       <Typography variant="h6" sx={{ color: companyColor, fontWeight: 'bold' }}>
                                         {formatDuration(kpis.totalService)}
                                       </Typography>
-                                      <Typography variant="caption" sx={{ color: '#666' }}>
+                                      <Typography variant="body1" sx={{ color: '#666' }}>
                                         Total Service
                                       </Typography>
                                     </Box>
@@ -1416,7 +1416,7 @@ export default function RouteAnalysisPage() {
                                       <Typography variant="h6" sx={{ color: companyColor, fontWeight: 'bold' }}>
                                         {formatDuration(kpis.totalWaiting)}
                                       </Typography>
-                                      <Typography variant="caption" sx={{ color: '#666' }}>
+                                      <Typography variant="body1" sx={{ color: '#666' }}>
                                         Total Waiting
                                       </Typography>
                                     </Box>
