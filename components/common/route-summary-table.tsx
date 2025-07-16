@@ -333,30 +333,31 @@ export const RouteSummaryTable: React.FC<RouteSummaryTableProps> = ({
                         Route Details
                       </Typography>
                       
-                      <Table size="small">
+                      <TableContainer sx={{ maxHeight: 300, overflow: 'auto' }}>
+                        <Table size="small" sx={{ tableLayout: 'fixed' }}>
                           <TableHead>
                             <TableRow>
-                              <TableCell><strong>Type</strong></TableCell>
-                              <TableCell><strong>Description</strong></TableCell>
-                              <TableCell><strong>Location</strong></TableCell>
-                              <TableCell><strong>Arrival</strong></TableCell>
-                              <TableCell><strong>Service</strong></TableCell>
-                              <TableCell><strong>Fuel Delivery</strong></TableCell>
+                              <TableCell sx={{ width: '80px', minWidth: '80px' }}><strong>Type</strong></TableCell>
+                              <TableCell sx={{ width: '200px', minWidth: '200px' }}><strong>Description</strong></TableCell>
+                              <TableCell sx={{ width: '250px', minWidth: '250px' }}><strong>Location</strong></TableCell>
+                              <TableCell sx={{ width: '80px', minWidth: '80px' }}><strong>Arrival</strong></TableCell>
+                              <TableCell sx={{ width: '80px', minWidth: '80px' }}><strong>Service</strong></TableCell>
+                              <TableCell sx={{ width: '150px', minWidth: '150px' }}><strong>Fuel Delivery</strong></TableCell>
                             </TableRow>
                           </TableHead>
                           <TableBody>
                             {route.steps && route.steps.map((step: any, stepIndex: number) => (
                               <TableRow key={stepIndex}>
-                                <TableCell>
+                                <TableCell sx={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
                                   <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
                                     {getStepTypeIcon(step.type)}
                                     {step.type !== 'job' && <span>{step.type?.toUpperCase() || 'N/A'}</span>}
                                   </Box>
                                 </TableCell>
-                                <TableCell>
+                                <TableCell sx={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
                                   {step.description || 'N/A'}
                                 </TableCell>
-                                <TableCell>
+                                <TableCell sx={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
                                   {step.location && step.location.length === 2 ? (
                                     geocodeCache[`${step.location[0].toFixed(6)},${step.location[1].toFixed(6)}`]
                                       ? geocodeCache[`${step.location[0].toFixed(6)},${step.location[1].toFixed(6)}`]
@@ -365,16 +366,16 @@ export const RouteSummaryTable: React.FC<RouteSummaryTableProps> = ({
                                         : `${step.location[0].toFixed(4)}, ${step.location[1].toFixed(4)}`
                                   ) : (step.id || 'N/A')}
                                 </TableCell>
-                                <TableCell>
+                                <TableCell sx={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
                                   {step.arrival ? 
                                     new Date(step.arrival * 1000).toLocaleTimeString(undefined, { hour: '2-digit', minute: '2-digit', hour12: false }) : 
                                     'N/A'
                                   }
                                 </TableCell>
-                                <TableCell>
+                                <TableCell sx={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
                                   {step.service ? formatDuration(step.service) : '-'}
                                 </TableCell>
-                                <TableCell>
+                                <TableCell sx={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
                                   {step.load && step.load.length >= 2 ? (
                                     <Box>
                                       <Typography variant="caption" sx={{ display: 'block', color: '#666' }}>
@@ -397,6 +398,7 @@ export const RouteSummaryTable: React.FC<RouteSummaryTableProps> = ({
                             ))}
                           </TableBody>
                         </Table>
+                      </TableContainer>
                     </Box>
                   </Collapse>
                 </TableCell>
