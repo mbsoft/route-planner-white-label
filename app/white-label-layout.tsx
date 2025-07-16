@@ -3,7 +3,6 @@
 import React, {createContext, useContext, useEffect, useState} from 'react'
 import {ThemeProvider, createTheme} from '@mui/material/styles'
 import CssBaseline from '@mui/material/CssBaseline'
-import Footer from '../components/Footer'
 
 // Create a context for the API key
 interface WhiteLabelContextType {
@@ -160,7 +159,6 @@ export function WhiteLabelLayout({children}: WhiteLabelLayoutProps) {
       <CssBaseline />
       <WhiteLabelContext.Provider value={{apiKey, isLoading, error, companyName, companyLogo, companyColor}}>
         {children}
-        {/* <Footer /> removed to prevent duplicate footers */}
       </WhiteLabelContext.Provider>
     </ThemeProvider>
   )
