@@ -438,7 +438,7 @@ export default function HomePage() {
               <img
                 src={companyLogo}
                 alt="Company Logo"
-                style={{ height: '20px', width: 'auto', marginRight: '8px', verticalAlign: 'middle' }}
+                style={{ height: '40px', width: 'auto', marginRight: '8px', verticalAlign: 'middle' }}
               />
               <Typography variant="caption" sx={{ color: '#999' }}>
                 powered by NextBillion.ai | Version 1.0.0 | Last updated: {new Date().toLocaleDateString()}

@@ -25,7 +25,7 @@ function LoginPageContent() {
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
   const router = useRouter()
-  const { companyLogo, companyColor } = useWhiteLabelContext()
+  const { companyLogo, companyColor, companyName } = useWhiteLabelContext()
 
   // Create a dynamic theme based on company color
   const theme = createTheme({
@@ -98,10 +98,10 @@ function LoginPageContent() {
               <img 
                 src={companyLogo} 
                 alt="Company Logo" 
-                style={{ height: 60, marginBottom: 16 }}
+                style={{ height: 160, marginBottom: 16 }}
               />
               <Typography variant="h4" component="h1" gutterBottom>
-                NextBillion.ai PoC
+                {companyName}
               </Typography>
               <Typography variant="body2" color="text.secondary">
                 Sign in to access the route planning system

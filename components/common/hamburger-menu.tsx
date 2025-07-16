@@ -86,7 +86,7 @@ export const HamburgerMenu: React.FC<HamburgerMenuProps> = ({ currentPage = 'hom
       >
         <Box sx={{ p: 2, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
           <Typography variant="h6" sx={{ fontWeight: 'bold', color: '#d36784' }}>
-            Diesel Direct
+            The Service Company
           </Typography>
           <IconButton onClick={handleDrawerToggle}>
             <CloseIcon />
