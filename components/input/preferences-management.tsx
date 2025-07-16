@@ -15,6 +15,7 @@ import { usePreferencesPersistence } from '../../hooks/use-preferences-persisten
 import { useInputStore } from '../../models/input/store'
 import { mappingPersistence } from '../../utils/mapping-persistence'
 import { useAuth } from '../../hooks/use-auth'
+import { useWhiteLabelContext } from '../../app/white-label-layout'
 
 export const PreferencesManagement: React.FC = () => {
   const { status, clearPreferences, checkPreferencesStatus } = usePreferencesPersistence()
@@ -24,6 +25,7 @@ export const PreferencesManagement: React.FC = () => {
   const { hasPreferences, loading } = status
   const store = useInputStore()
   const { isAdmin } = useAuth()
+  const { companyColor } = useWhiteLabelContext()
 
   // Refresh preferences status on mount and after clearing (only on client side)
   useEffect(() => {
@@ -71,10 +73,25 @@ export const PreferencesManagement: React.FC = () => {
         <Button
           variant="outlined"
           color="primary"
-          size="small"
           onClick={() => setSaveDialogOpen(true)}
           disabled={saving}
           startIcon={saving ? <CircularProgress size={16} /> : null}
+          sx={{
+            minWidth: '140px',
+            padding: '8px 16px',
+            fontSize: '14px',
+            textTransform: 'none',
+            borderColor: companyColor,
+            color: companyColor,
+            '&:hover': {
+              borderColor: companyColor,
+              backgroundColor: `${companyColor}0A`,
+            },
+            '&:disabled': {
+              borderColor: '#ccc',
+              color: '#ccc',
+            }
+          }}
         >
           Save Mappings
         </Button>
@@ -83,9 +100,24 @@ export const PreferencesManagement: React.FC = () => {
         <Button
           variant="outlined"
           color="error"
-          size="small"
           onClick={() => setClearDialogOpen(true)}
           disabled={loading}
+          sx={{
+            minWidth: '140px',
+            padding: '8px 16px',
+            fontSize: '14px',
+            textTransform: 'none',
+            borderColor: '#d32f2f',
+            color: '#d32f2f',
+            '&:hover': {
+              borderColor: '#d32f2f',
+              backgroundColor: '#d32f2f0A',
+            },
+            '&:disabled': {
+              borderColor: '#ccc',
+              color: '#ccc',
+            }
+          }}
         >
           Clear Preferences
         </Button>
