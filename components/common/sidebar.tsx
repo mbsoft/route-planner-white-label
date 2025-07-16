@@ -161,7 +161,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ currentPage = 'home' }) => {
               >
                 <ListItemIcon 
                   sx={{ 
-                    color: item.isActive ? companyColor : 'inherit',
+                    color: item.isActive ? companyColor : '#666666',
                     minWidth: isExpanded ? 40 : 0,
                     justifyContent: 'center'
                   }}

@@ -110,7 +110,7 @@ export const HamburgerMenu: React.FC<HamburgerMenuProps> = ({ currentPage = 'hom
                   },
                 }}
               >
-                <ListItemIcon sx={{ color: item.isActive ? '#d36784' : 'inherit' }}>
+                <ListItemIcon sx={{ color: item.isActive ? '#d36784' : '#666666' }}>
                   {item.icon}
                 </ListItemIcon>
                 <ListItemText 
@@ -118,7 +118,7 @@ export const HamburgerMenu: React.FC<HamburgerMenuProps> = ({ currentPage = 'hom
                   sx={{
                     '& .MuiListItemText-primary': {
                       fontWeight: item.isActive ? 'bold' : 'normal',
-                      color: item.isActive ? '#d36784' : 'inherit',
+                      color: item.isActive ? '#d36784' : '#000000',
                     },
                   }}
                 />

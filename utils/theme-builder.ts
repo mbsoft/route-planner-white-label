@@ -34,6 +34,30 @@ export function buildThemeFromConfig(config: ThemeConfig): Theme {
         dark: config.primaryColor + 'CC', // 80% opacity
         contrastText: '#ffffff',
       },
+      success: {
+        main: config.successColor,
+        light: config.successColor + '1A',
+        dark: config.successColor + 'CC',
+        contrastText: '#ffffff',
+      },
+      warning: {
+        main: config.warningColor,
+        light: config.warningColor + '1A',
+        dark: config.warningColor + 'CC',
+        contrastText: '#ffffff',
+      },
+      error: {
+        main: config.errorColor,
+        light: config.errorColor + '1A',
+        dark: config.errorColor + 'CC',
+        contrastText: '#ffffff',
+      },
+      info: {
+        main: config.infoColor,
+        light: config.infoColor + '1A',
+        dark: config.infoColor + 'CC',
+        contrastText: '#ffffff',
+      },
       secondary: {
         main: config.secondaryColor,
         light: config.secondaryColor + '1A',
@@ -48,26 +72,7 @@ export function buildThemeFromConfig(config: ThemeConfig): Theme {
         primary: config.textPrimary,
         secondary: config.textSecondary,
       },
-      error: {
-        main: config.errorColor,
-        light: config.errorColor + '1A',
-        dark: config.errorColor + 'CC',
-      },
-      warning: {
-        main: config.warningColor,
-        light: config.warningColor + '1A',
-        dark: config.warningColor + 'CC',
-      },
-      info: {
-        main: config.infoColor,
-        light: config.infoColor + '1A',
-        dark: config.infoColor + 'CC',
-      },
-      success: {
-        main: config.successColor,
-        light: config.successColor + '1A',
-        dark: config.successColor + 'CC',
-      },
+
     },
     typography: {
       fontFamily: config.fontFamily,
@@ -150,10 +155,13 @@ export function buildThemeFromConfig(config: ThemeConfig): Theme {
             borderRadius: parseInt(config.borderRadius.replace('px', '')) || 4,
           },
           label: {
-            color: config.textPrimary,
+            color: 'inherit',
             fontSize: '0.875rem',
             fontWeight: 400,
           },
+        },
+        defaultProps: {
+          color: 'primary',
         },
       },
       MuiListItemText: {
