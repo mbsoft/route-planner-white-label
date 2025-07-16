@@ -724,7 +724,7 @@ export default function RouteAnalysisPage() {
                     <Typography variant="h3" sx={{ fontWeight: 'bold', color: '#ff9800' }}>
                       {summaryStats.avgSpeed}
                     </Typography>
-                    <Typography variant="body2" sx={{ color: '#666', mt: 1 }}>
+                    <Typography variant="body1" sx={{ color: '#666', mt: 1 }}>
                       km/h average speed
                     </Typography>
                   </CardContent>
@@ -755,7 +755,7 @@ export default function RouteAnalysisPage() {
                     <Typography variant="h3" sx={{ fontWeight: 'bold', color: '#2196f3' }}>
                       {summaryStats.totalRoutes}
                     </Typography>
-                    <Typography variant="body2" sx={{ color: '#666', mt: 1 }}>
+                    <Typography variant="body1" sx={{ color: '#666', mt: 1 }}>
                       Optimization plans
                     </Typography>
                   </CardContent>
@@ -786,7 +786,7 @@ export default function RouteAnalysisPage() {
                     <Typography variant="h3" sx={{ fontWeight: 'bold', color: '#9c27b0' }}>
                       {summaryStats.avgGallonsPerRoute.toLocaleString()}
                     </Typography>
-                    <Typography variant="body2" sx={{ color: '#666', mt: 1 }}>
+                    <Typography variant="body1" sx={{ color: '#666', mt: 1 }}>
                       Average gallons per route
                     </Typography>
                   </CardContent>
@@ -817,7 +817,7 @@ export default function RouteAnalysisPage() {
                     <Typography variant="h3" sx={{ fontWeight: 'bold', color: '#f44336' }}>
                       {summaryStats.totalUnassignedJobs}
                     </Typography>
-                    <Typography variant="body2" sx={{ color: '#666', mt: 1 }}>
+                    <Typography variant="body1" sx={{ color: '#666', mt: 1 }}>
                       Total unassigned jobs
                     </Typography>
                   </CardContent>
@@ -848,7 +848,7 @@ export default function RouteAnalysisPage() {
                     <Typography variant="h3" sx={{ fontWeight: 'bold', color: '#4caf50' }}>
                       {summaryStats.avgStopsPerRoute}
                     </Typography>
-                    <Typography variant="body2" sx={{ color: '#666', mt: 1 }}>
+                    <Typography variant="body1" sx={{ color: '#666', mt: 1 }}>
                       Average stops per route
                     </Typography>
                   </CardContent>
@@ -879,7 +879,7 @@ export default function RouteAnalysisPage() {
                     <Typography variant="h3" sx={{ fontWeight: 'bold', color: '#ff5722' }}>
                       {formatDistance(summaryStats.avgDistancePerRoute)}
                     </Typography>
-                    <Typography variant="body2" sx={{ color: '#666', mt: 1 }}>
+                    <Typography variant="body1" sx={{ color: '#666', mt: 1 }}>
                       Average distance per route
                     </Typography>
                   </CardContent>
@@ -910,7 +910,7 @@ export default function RouteAnalysisPage() {
                     <Typography variant="h3" sx={{ fontWeight: 'bold', color: '#795548' }}>
                       {formatDuration(summaryStats.totalWaitingTime)}
                     </Typography>
-                    <Typography variant="body2" sx={{ color: '#666', mt: 1 }}>
+                    <Typography variant="body1" sx={{ color: '#666', mt: 1 }}>
                       Total waiting time
                     </Typography>
                   </CardContent>
@@ -941,7 +941,7 @@ export default function RouteAnalysisPage() {
                     <Typography variant="h3" sx={{ fontWeight: 'bold', color: '#607d8b' }}>
                       {formatDuration(summaryStats.avgServiceTimePerRoute)}
                     </Typography>
-                    <Typography variant="body2" sx={{ color: '#666', mt: 1 }}>
+                    <Typography variant="body1" sx={{ color: '#666', mt: 1 }}>
                       Average service time per route
                     </Typography>
                   </CardContent>
