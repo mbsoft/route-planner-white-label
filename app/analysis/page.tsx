@@ -703,7 +703,20 @@ export default function RouteAnalysisPage() {
               <Grid item xs={12} md={6} lg={3}>
                 <Card sx={{ height: '100%' }}>
                   <CardHeader
-                    avatar={<SpeedIcon sx={{ color: '#ff9800' }} />}
+                    avatar={
+                      <Box sx={{ 
+                        display: 'flex', 
+                        alignItems: 'center', 
+                        justifyContent: 'center',
+                        width: 40,
+                        height: 40,
+                        backgroundColor: '#ff9800',
+                        borderRadius: '50%',
+                        color: 'white'
+                      }}>
+                        <SpeedIcon />
+                      </Box>
+                    }
                     title="Average Speed"
                     titleTypographyProps={{ variant: 'h6' }}
                   />
@@ -721,7 +734,20 @@ export default function RouteAnalysisPage() {
               <Grid item xs={12} md={6} lg={3}>
                 <Card sx={{ height: '100%' }}>
                   <CardHeader
-                    avatar={<RouteIcon sx={{ color: '#2196f3' }} />}
+                    avatar={
+                      <Box sx={{ 
+                        display: 'flex', 
+                        alignItems: 'center', 
+                        justifyContent: 'center',
+                        width: 40,
+                        height: 40,
+                        backgroundColor: '#2196f3',
+                        borderRadius: '50%',
+                        color: 'white'
+                      }}>
+                        <RouteIcon />
+                      </Box>
+                    }
                     title="Total Routes"
                     titleTypographyProps={{ variant: 'h6' }}
                   />
@@ -739,7 +765,20 @@ export default function RouteAnalysisPage() {
               <Grid item xs={12} md={6} lg={3}>
                 <Card sx={{ height: '100%' }}>
                   <CardHeader
-                    avatar={<LocalGasStationIcon sx={{ color: '#9c27b0' }} />}
+                    avatar={
+                      <Box sx={{ 
+                        display: 'flex', 
+                        alignItems: 'center', 
+                        justifyContent: 'center',
+                        width: 40,
+                        height: 40,
+                        backgroundColor: '#9c27b0',
+                        borderRadius: '50%',
+                        color: 'white'
+                      }}>
+                        <LocalGasStationIcon />
+                      </Box>
+                    }
                     title="Avg Gallons/Route"
                     titleTypographyProps={{ variant: 'h6' }}
                   />
@@ -757,7 +796,20 @@ export default function RouteAnalysisPage() {
               <Grid item xs={12} md={6} lg={3}>
                 <Card sx={{ height: '100%' }}>
                   <CardHeader
-                    avatar={<CancelIcon sx={{ color: '#f44336' }} />}
+                    avatar={
+                      <Box sx={{ 
+                        display: 'flex', 
+                        alignItems: 'center', 
+                        justifyContent: 'center',
+                        width: 40,
+                        height: 40,
+                        backgroundColor: '#f44336',
+                        borderRadius: '50%',
+                        color: 'white'
+                      }}>
+                        <CancelIcon />
+                      </Box>
+                    }
                     title="Unassigned Jobs"
                     titleTypographyProps={{ variant: 'h6' }}
                   />
@@ -775,7 +827,20 @@ export default function RouteAnalysisPage() {
               <Grid item xs={12} md={6} lg={3}>
                 <Card sx={{ height: '100%' }}>
                   <CardHeader
-                    avatar={<StopIcon sx={{ color: '#4caf50' }} />}
+                    avatar={
+                      <Box sx={{ 
+                        display: 'flex', 
+                        alignItems: 'center', 
+                        justifyContent: 'center',
+                        width: 40,
+                        height: 40,
+                        backgroundColor: '#4caf50',
+                        borderRadius: '50%',
+                        color: 'white'
+                      }}>
+                        <StopIcon />
+                      </Box>
+                    }
                     title="Avg Stops/Route"
                     titleTypographyProps={{ variant: 'h6' }}
                   />
@@ -793,7 +858,20 @@ export default function RouteAnalysisPage() {
               <Grid item xs={12} md={6} lg={3}>
                 <Card sx={{ height: '100%' }}>
                   <CardHeader
-                    avatar={<StraightenIcon sx={{ color: '#ff5722' }} />}
+                    avatar={
+                      <Box sx={{ 
+                        display: 'flex', 
+                        alignItems: 'center', 
+                        justifyContent: 'center',
+                        width: 40,
+                        height: 40,
+                        backgroundColor: '#ff5722',
+                        borderRadius: '50%',
+                        color: 'white'
+                      }}>
+                        <StraightenIcon />
+                      </Box>
+                    }
                     title="Avg Distance/Route"
                     titleTypographyProps={{ variant: 'h6' }}
                   />
@@ -811,7 +889,20 @@ export default function RouteAnalysisPage() {
               <Grid item xs={12} md={6} lg={3}>
                 <Card sx={{ height: '100%' }}>
                   <CardHeader
-                    avatar={<AccessTimeIcon sx={{ color: '#795548' }} />}
+                    avatar={
+                      <Box sx={{ 
+                        display: 'flex', 
+                        alignItems: 'center', 
+                        justifyContent: 'center',
+                        width: 40,
+                        height: 40,
+                        backgroundColor: '#795548',
+                        borderRadius: '50%',
+                        color: 'white'
+                      }}>
+                        <AccessTimeIcon />
+                      </Box>
+                    }
                     title="Total Waiting Time"
                     titleTypographyProps={{ variant: 'h6' }}
                   />
@@ -829,7 +920,20 @@ export default function RouteAnalysisPage() {
               <Grid item xs={12} md={6} lg={3}>
                 <Card sx={{ height: '100%' }}>
                   <CardHeader
-                    avatar={<BuildIcon sx={{ color: '#607d8b' }} />}
+                    avatar={
+                      <Box sx={{ 
+                        display: 'flex', 
+                        alignItems: 'center', 
+                        justifyContent: 'center',
+                        width: 40,
+                        height: 40,
+                        backgroundColor: '#607d8b',
+                        borderRadius: '50%',
+                        color: 'white'
+                      }}>
+                        <BuildIcon />
+                      </Box>
+                    }
                     title="Avg Service Time/Route"
                     titleTypographyProps={{ variant: 'h6' }}
                   />
