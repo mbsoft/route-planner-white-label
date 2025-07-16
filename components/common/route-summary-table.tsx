@@ -188,11 +188,11 @@ export const RouteSummaryTable: React.FC<RouteSummaryTableProps> = ({
 
   return (
     <TableContainer component={Paper} sx={{ mt: 2, maxHeight }}>
-      <Table stickyHeader>
+      <Table stickyHeader sx={{ tableLayout: 'fixed' }}>
         <TableHead>
           <TableRow>
             {showSelection && (
-              <TableCell sx={{ width: 50 }}>
+              <TableCell sx={{ width: 50, minWidth: 50 }}>
                 <Checkbox
                   checked={selectedRoutes.size === routes.length && routes.length > 0}
                   indeterminate={selectedRoutes.size > 0 && selectedRoutes.size < routes.length}
@@ -206,16 +206,16 @@ export const RouteSummaryTable: React.FC<RouteSummaryTableProps> = ({
                 />
               </TableCell>
             )}
-            <TableCell sx={{ width: 50 }}></TableCell>
-            <TableCell><strong>Vehicle</strong></TableCell>
-            <TableCell><strong>Description</strong></TableCell>
-            <TableCell><strong>Start Time</strong></TableCell>
-            <TableCell><strong>End Time</strong></TableCell>
-            <TableCell><strong>Stops</strong></TableCell>
-            <TableCell><strong>Distance</strong></TableCell>
-            <TableCell><strong>Drive Time</strong></TableCell>
-            <TableCell><strong>Fuel Delivery</strong></TableCell>
-            <TableCell><strong>% Full at Departure</strong></TableCell>
+            <TableCell sx={{ width: 50, minWidth: 50 }}></TableCell>
+            <TableCell sx={{ width: 120, minWidth: 120 }}><strong>Vehicle</strong></TableCell>
+            <TableCell sx={{ width: 150, minWidth: 150 }}><strong>Description</strong></TableCell>
+            <TableCell sx={{ width: 100, minWidth: 100 }}><strong>Start</strong></TableCell>
+            <TableCell sx={{ width: 100, minWidth: 100 }}><strong>End</strong></TableCell>
+            <TableCell sx={{ width: 80, minWidth: 80 }}><strong>Stops</strong></TableCell>
+            <TableCell sx={{ width: 100, minWidth: 100 }}><strong>Distance</strong></TableCell>
+            <TableCell sx={{ width: 100, minWidth: 100 }}><strong>Drive</strong></TableCell>
+            <TableCell sx={{ width: 120, minWidth: 120 }}><strong>Delivery</strong></TableCell>
+            <TableCell sx={{ width: 140, minWidth: 140 }}><strong>Departure</strong></TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -245,70 +245,65 @@ export const RouteSummaryTable: React.FC<RouteSummaryTableProps> = ({
                   </IconButton>
                 </TableCell>
                 <TableCell onClick={() => handleToggleRoute(routeIndex)}>
-                  <Typography variant="body2" sx={{ fontWeight: 'bold' }}>
+                  <Typography variant="body2" sx={{ fontWeight: 'bold', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
                     {route.vehicle}
                   </Typography>
                 </TableCell>
                 <TableCell onClick={() => handleToggleRoute(routeIndex)}>
-                  <Typography variant="body2">
+                  <Typography variant="body2" sx={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
                     {route.description || 'No description'}
                   </Typography>
                 </TableCell>
                 <TableCell onClick={() => handleToggleRoute(routeIndex)}>
-                  <Typography variant="body2">
+                  <Typography variant="body2" sx={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
                     {getRouteStartTime(route)}
                   </Typography>
                 </TableCell>
                 <TableCell onClick={() => handleToggleRoute(routeIndex)}>
-                  <Typography variant="body2">
+                  <Typography variant="body2" sx={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
                     {getRouteEndTime(route)}
                   </Typography>
                 </TableCell>
                 <TableCell onClick={() => handleToggleRoute(routeIndex)}>
-                  <Typography variant="body2">
+                  <Typography variant="body2" sx={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
                     {route.steps ? route.steps.length - 2 : 0} stops
                   </Typography>
                 </TableCell>
                 <TableCell onClick={() => handleToggleRoute(routeIndex)}>
-                  <Typography variant="body2">
+                  <Typography variant="body2" sx={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
                     {formatDistance(route.distance || 0)}
                   </Typography>
                 </TableCell>
                 <TableCell onClick={() => handleToggleRoute(routeIndex)}>
-                  <Typography variant="body2">
+                  <Typography variant="body2" sx={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
                     {formatDuration(route.duration || 0)}
                   </Typography>
                 </TableCell>
                 <TableCell onClick={() => handleToggleRoute(routeIndex)}>
                   {route.delivery && route.delivery.length >= 2 ? (
-                    <Box>
-                      <Typography variant="caption" sx={{ display: 'block', color: '#666' }}>
+                    <Box sx={{ overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                      <Typography variant="caption" sx={{ display: 'block', color: '#666', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
                         ULSD Clear: {route.delivery[0]} gal
                       </Typography>
-                      <Typography variant="caption" sx={{ display: 'block', color: '#666' }}>
+                      <Typography variant="caption" sx={{ display: 'block', color: '#666', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
                         ULSD Dyed: {route.delivery[1]} gal
                       </Typography>
-                      <Typography variant="caption" sx={{ display: 'block', color: '#666' }}>
-                        UNL: {route.delivery[2]} gal
-                      </Typography>
-                      <Typography variant="caption" sx={{ display: 'block', color: '#666' }}>
-                        GAS UNL PRE: {route.delivery[3]} gal
-                      </Typography>
-                      <Typography variant="caption" sx={{ display: 'block', color: '#666' }}>
-                        REC 90 GAS: {route.delivery[4]} gal
-                      </Typography>
-                      <Typography variant="caption" sx={{ display: 'block', fontWeight: 'bold', color: companyColor }}>
+                      <Typography variant="caption" sx={{ display: 'block', fontWeight: 'bold', color: companyColor, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
                         Total: {route.delivery[0] + route.delivery[1] + route.delivery[2] + route.delivery[3] + route.delivery[4]} gal
                       </Typography>
                     </Box>
                   ) : route.delivery && route.delivery.length > 0 ? (
-                    route.delivery.join(', ')
+                    <Typography variant="body2" sx={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                      {route.delivery.join(', ')}
+                    </Typography>
                   ) : (
-                    '-'
+                    <Typography variant="body2" sx={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                      -
+                    </Typography>
                   )}
                 </TableCell>
                 <TableCell onClick={() => handleToggleRoute(routeIndex)}>
-                  <Typography variant="body2">
+                  <Typography variant="body2" sx={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
                     {(() => {
                       const startLoad = route.steps && route.steps[0] && route.steps[0].load;
                       const capacity = route.capacity;
