@@ -1,0 +1,168 @@
+{
+  "navigation": {
+    "routePlanner": "Planificador de Rutas",
+    "routeAnalysis": "Análisis de Rutas",
+    "information": "Información",
+    "logout": "Cerrar Sesión",
+    "admin": "ADMIN"
+  },
+  "header": {
+    "planManageMonitor": "Planifica, gestiona y monitorea tus rutas",
+    "routePlanAnalysis": "Análisis de Plan de Ruta",
+    "informationDocumentation": "Información y Documentación",
+    "editRoute": "Editar Ruta"
+  },
+  "sidebar": {
+    "collapseSidebar": "Contraer barra lateral",
+    "expandSidebar": "Expandir barra lateral"
+  },
+  "footer": {
+    "poweredBy": "impulsado por NextBillion.ai",
+    "version": "Versión 1.0.0",
+    "lastUpdated": "Última actualización"
+  },
+  "loading": {
+    "loadingRoutePlanner": "Cargando Planificador de Rutas...",
+    "checkingApiConfig": "Verificando configuración de API..."
+  },
+  "buttons": {
+    "import": "Importar",
+    "save": "Guardar",
+    "cancel": "Cancelar",
+    "delete": "Eliminar",
+    "edit": "Editar",
+    "close": "Cerrar",
+    "confirm": "Confirmar",
+    "back": "Atrás",
+    "next": "Siguiente",
+    "reset": "Restablecer",
+    "add": "Agregar",
+    "clear": "Limpiar"
+  },
+  "dataImport": {
+    "importJobsFromDatabase": "Importar Trabajos desde Base de Datos",
+    "importVehiclesFromDatabase": "Importar Vehículos desde Base de Datos",
+    "startTimeOptional": "Hora de Inicio (opcional)",
+    "endTimeOptional": "Hora de Fin (opcional)",
+    "searchDescriptionOptional": "Buscar Descripción (opcional)",
+    "enterSearchTerm": "Ingrese término de búsqueda...",
+    "leaveEmptyToImportAll": "Dejar vacío para importar todos los registros",
+    "caseInsensitiveSearch": "Búsqueda insensible a mayúsculas en descripciones de trabajos",
+    "caseInsensitiveSearchVehicles": "Búsqueda insensible a mayúsculas en descripciones de vehículos",
+    "recordsWillBeImported": "registros serán importados",
+    "recordWillBeImported": "registro será importado",
+    "importJobData": "Importar Datos de Trabajos",
+    "importVehicleData": "Importar Datos de Vehículos",
+    "recordsLoaded": "registros cargados",
+    "fromDatabase": "(desde base de datos)",
+    "selectField": "Seleccionar campo",
+    "addAttribute": "Agregar atributo",
+    "editTable": "Editar tabla",
+    "saveChanges": "Guardar cambios",
+    "cancelEditing": "Cancelar edición",
+    "deleteImportedData": "Eliminar datos importados",
+    "resetMapping": "Restablecer Mapeo",
+    "confirmDeletion": "Confirmar Eliminación",
+    "deleteConfirmation": "¿Está seguro de que desea eliminar todos los datos de {type} importados? Esta acción no se puede deshacer.",
+    "areYouSure": "¿Está seguro?",
+    "deleteConfirmationGeneric": "Esto eliminará todos los datos importados. Esta acción no se puede deshacer."
+  },
+  "table": {
+    "selectAllRows": "Seleccionar todas las filas",
+    "selectRow": "Seleccionar fila",
+    "vehicle": "Vehículo",
+    "description": "Descripción",
+    "start": "Inicio",
+    "end": "Fin",
+    "stops": "Paradas",
+    "distance": "Distancia",
+    "drive": "Conducir",
+    "delivery": "Entrega",
+    "departure": "Salida",
+    "id": "ID",
+    "startLocation": "Ubicación de Inicio",
+    "endLocation": "Ubicación de Fin",
+    "serviceTime": "Tiempo de Servicio"
+  },
+  "analysis": {
+    "optimizationResults": "Resultados de Optimización",
+    "noResults": "No se encontraron resultados de optimización",
+    "viewResult": "Ver Resultado",
+    "editTitle": "Editar Título",
+    "deleteResult": "Eliminar Resultado",
+    "downloadResults": "Descargar Resultados",
+    "shareResults": "Compartir Resultados",
+    "optimizationHistory": "Historial de Optimización",
+    "jobId": "ID de Trabajo",
+    "title": "Título",
+    "status": "Estado",
+    "createdAt": "Creado En",
+    "actions": "Acciones",
+    "completed": "Completado",
+    "failed": "Fallido",
+    "pending": "Pendiente",
+    "routeDetails": "Detalles de Ruta",
+    "routeSummary": "Resumen de Ruta",
+    "stepDetails": "Detalles de Paso",
+    "totalDistance": "Distancia Total",
+    "totalTime": "Tiempo Total",
+    "totalStops": "Paradas Totales",
+    "vehicleUtilization": "Utilización de Vehículo",
+    "capacityUtilization": "Utilización de Capacidad",
+    "timeUtilization": "Utilización de Tiempo"
+  },
+  "map": {
+    "mapView": "Vista de Mapa",
+    "showJobMarkers": "Trabajos/Envíos",
+    "showVehicleMarkers": "Vehículos",
+    "showRoutes": "Rutas"
+  },
+  "preferences": {
+    "preferences": "Preferencias",
+    "saveMapping": "Guardar Mapeo",
+    "clearPreferences": "Limpiar Preferencias",
+    "routingOptions": "Opciones de Enrutamiento",
+    "avoidOptions": "Opciones de Evitar",
+    "hazmatTypes": "Tipos de Materiales Peligrosos",
+    "truckMode": "Modo Camión",
+    "carMode": "Modo Auto",
+    "bikeMode": "Modo Bicicleta",
+    "footMode": "Modo Peatón"
+  },
+  "hazmatTypes": {
+    "explosives": "Explosivos",
+    "gases": "Gases",
+    "flammableLiquids": "Líquidos Inflamables",
+    "flammableSolids": "Sólidos Inflamables",
+    "oxidizingSubstances": "Sustancias Oxidantes",
+    "toxicSubstances": "Sustancias Tóxicas",
+    "radioactiveMaterials": "Materiales Radiactivos",
+    "corrosiveSubstances": "Sustancias Corrosivas",
+    "miscellaneous": "Misceláneos"
+  },
+  "avoidOptions": {
+    "highways": "Autopistas",
+    "tolls": "Peajes",
+    "ferries": "Ferries",
+    "indoor": "Interior",
+    "dirtRoads": "Caminos de Tierra"
+  },
+  "errors": {
+    "failedToFetch": "Error al obtener datos",
+    "failedToSave": "Error al guardar cambios",
+    "failedToDelete": "Error al eliminar",
+    "unknownError": "Error desconocido",
+    "networkError": "Error de red",
+    "validationError": "Error de validación"
+  },
+  "success": {
+    "changesSaved": "Cambios guardados exitosamente",
+    "dataDeleted": "Datos eliminados exitosamente",
+    "optimizationComplete": "Optimización completada exitosamente"
+  },
+  "language": {
+    "english": "English",
+    "spanish": "Español",
+    "selectLanguage": "Seleccionar Idioma"
+  }
+} 

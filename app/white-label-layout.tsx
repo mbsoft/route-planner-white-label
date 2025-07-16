@@ -3,6 +3,7 @@
 import React, {createContext, useContext, useEffect, useState} from 'react'
 import {ThemeProvider, createTheme} from '@mui/material/styles'
 import CssBaseline from '@mui/material/CssBaseline'
+
 import { buildThemeFromConfig, parseThemeConfigFromAPI, ThemeConfig } from '../utils/theme-builder'
 
 // Create a context for the API key
@@ -130,17 +131,17 @@ export function WhiteLabelLayout({children}: WhiteLabelLayoutProps) {
     return (
       <ThemeProvider theme={theme}>
         <CssBaseline />
-        <div style={{
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-          height: '100vh',
-          fontSize: '18px'
-        }}>
-          Loading Route Planner...
-          <br />
-          <small>Checking API configuration...</small>
-        </div>
+                  <div style={{
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            height: '100vh',
+            fontSize: '18px'
+          }}>
+            Loading Route Planner...
+            <br />
+            <small>Checking API configuration...</small>
+          </div>
       </ThemeProvider>
     )
   }

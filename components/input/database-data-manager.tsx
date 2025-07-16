@@ -3,6 +3,7 @@ import { Box, Button, TextField, Typography, Paper, Table, TableBody, TableCell,
 import StorageIcon from '@mui/icons-material/Storage';
 import dayjs from 'dayjs';
 
+
 interface Job {
   id: string;
   description: string;
@@ -14,6 +15,8 @@ interface Job {
 interface Vehicle {
   id: string;
   description: string;
+  start_location: string;
+  end_location: string;
   [key: string]: any;
 }
 
@@ -98,7 +101,7 @@ export const DatabaseDataManager: React.FC<DatabaseDataManagerProps> = ({ onJobs
       
       <Box sx={{ display: 'flex', gap: 2, mb: 2, flexWrap: 'wrap' }}>
         <TextField
-          label="Start Time (optional)"
+          label="Start Time (Optional)"
           type="datetime-local"
           value={start}
           onChange={e => setStart(e.target.value)}
@@ -107,14 +110,14 @@ export const DatabaseDataManager: React.FC<DatabaseDataManagerProps> = ({ onJobs
             sx: { fontSize: '14px' }
           }}
           size="small"
-          helperText="Leave empty to import all records"
+          helperText="Leave empty to import all"
           FormHelperTextProps={{ sx: { fontSize: '13px' } }}
           inputProps={{
             style: { fontSize: '14px' }
           }}
         />
         <TextField
-          label="End Time (optional)"
+          label="End Time (Optional)"
           type="datetime-local"
           value={end}
           onChange={e => setEnd(e.target.value)}
@@ -123,20 +126,20 @@ export const DatabaseDataManager: React.FC<DatabaseDataManagerProps> = ({ onJobs
             sx: { fontSize: '14px' }
           }}
           size="small"
-          helperText="Leave empty to import all records"
+          helperText="Leave empty to import all"
           FormHelperTextProps={{ sx: { fontSize: '13px' } }}
           inputProps={{
             style: { fontSize: '14px' }
           }}
         />
         <TextField
-          label="Search Description (optional)"
+          label="Search Description (Optional)"
           type="text"
           value={search}
           onChange={e => setSearch(e.target.value)}
           size="small"
-          placeholder="Enter search term..."
-          helperText="Case insensitive search in job descriptions"
+          placeholder="Enter search term"
+          helperText="Case insensitive search"
           InputLabelProps={{ sx: { fontSize: '14px' } }}
           FormHelperTextProps={{ sx: { fontSize: '13px' } }}
           inputProps={{
@@ -158,7 +161,7 @@ export const DatabaseDataManager: React.FC<DatabaseDataManagerProps> = ({ onJobs
       
       {recordCount !== null && (
         <Typography variant="body1" color="text.secondary" sx={{ mb: 2, fontSize: '14px' }}>
-          {recordCount} record{recordCount !== 1 ? 's' : ''} will be imported
+          {recordCount} {recordCount !== 1 ? 'records will be imported' : 'record will be imported'}
         </Typography>
       )}
       
@@ -258,13 +261,13 @@ export const VehicleDatabaseManager: React.FC<VehicleDatabaseManagerProps> = ({ 
       
       <Box sx={{ display: 'flex', gap: 2, mb: 2, flexWrap: 'wrap' }}>
         <TextField
-          label="Search Description (optional)"
+          label="Search Description (Optional)"
           type="text"
           value={search}
           onChange={e => setSearch(e.target.value)}
           size="small"
-          placeholder="Enter search term..."
-          helperText="Case insensitive search in vehicle descriptions"
+          placeholder="Enter search term"
+          helperText="Case insensitive search for vehicles"
           InputLabelProps={{ sx: { fontSize: '14px' } }}
           FormHelperTextProps={{ sx: { fontSize: '13px' } }}
           inputProps={{
@@ -286,7 +289,7 @@ export const VehicleDatabaseManager: React.FC<VehicleDatabaseManagerProps> = ({ 
       
       {recordCount !== null && (
         <Typography variant="body1" color="text.secondary" sx={{ mb: 2, fontSize: '14px' }}>
-          {recordCount} record{recordCount !== 1 ? 's' : ''} will be imported
+          {recordCount} {recordCount !== 1 ? 'records will be imported' : 'record will be imported'}
         </Typography>
       )}
       

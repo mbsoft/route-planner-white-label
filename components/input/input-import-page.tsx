@@ -942,11 +942,11 @@ export const InputImportPage = ({ currentStep, onStepChange, preferences, onPref
                   </Typography>
                   <Button
                     variant="outlined"
-                    size="small"
                     onClick={handleCancelPolling}
                     sx={{ 
                       color: '#d32f2f', 
                       borderColor: '#d32f2f',
+                      minWidth: '80px',
                       '&:hover': {
                         borderColor: '#b71c1c',
                         backgroundColor: 'rgba(211, 47, 47, 0.04)'
