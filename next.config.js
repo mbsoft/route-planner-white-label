@@ -43,8 +43,8 @@ const nextConfig = {
     NEXT_PUBLIC_LAST_UPDATED: getLastCommitDate(),
     NEXT_PUBLIC_GIT_COMMIT: getGitCommit(),
     NEXT_PUBLIC_ENABLE_CSV_IMPORT: process.env.NEXT_PUBLIC_ENABLE_CSV_IMPORT || 'false',
-    COMPANY_LOGO: process.env.COMPANY_LOGO || '/company_logo.svg',
-    COMPANY_NAME: process.env.COMPANY_NAME || 'Route Planner',
+    COMPANY_LOGO: process.env.COMPANY_LOGO || '/image_example.png',
+    COMPANY_NAME: process.env.COMPANY_NAME || 'The Service Company',
   },
   typescript: {
     ignoreBuildErrors: true,
