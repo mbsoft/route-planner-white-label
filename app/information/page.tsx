@@ -62,7 +62,7 @@ export default function InformationPage() {
                 src={companyLogo}
                 alt={`${companyName} Logo`}
                 style={{
-                  height: '25px',
+                  height: '60px',
                   width: 'auto',
                   borderRadius: '4px'
                 }}
