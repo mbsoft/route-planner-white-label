@@ -41,3 +41,10 @@ next-env.d.ts
 local.db
 scripts/import-jobs.js
 scripts/import-vehicles.js
+
+# CSV data files
+jobs_backup.csv
+jobs_michigan.csv
+jobs_modified.csv
+jobs_phoenix.csv
+vehicles*.csv
