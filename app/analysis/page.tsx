@@ -701,250 +701,210 @@ export default function RouteAnalysisPage() {
 
               {/* Analysis Cards */}
               <Grid item xs={12} md={6} lg={3}>
-                <Card sx={{ height: '100%' }}>
-                  <CardHeader
-                    avatar={
-                      <Box sx={{ 
-                        display: 'flex', 
-                        alignItems: 'center', 
-                        justifyContent: 'center',
-                        width: 40,
-                        height: 40,
-                        backgroundColor: '#ff9800',
-                        borderRadius: '50%',
-                        color: 'white'
-                      }}>
-                        <SpeedIcon />
-                      </Box>
-                    }
-                    title="Average Speed"
-                    titleTypographyProps={{ variant: 'h6' }}
-                  />
-                  <CardContent>
-                    <Typography variant="h3" sx={{ fontWeight: 'bold', color: '#ff9800' }}>
-                      {summaryStats.avgSpeed}
-                    </Typography>
-                    <Typography variant="body1" sx={{ color: '#666', mt: 1 }}>
-                      km/h average speed
-                    </Typography>
-                  </CardContent>
+                <Card sx={{ height: '100%', p: 3 }}>
+                  <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
+                    <Box sx={{ 
+                      display: 'flex', 
+                      alignItems: 'center', 
+                      justifyContent: 'center',
+                      width: 48,
+                      height: 48,
+                      backgroundColor: '#ff9800',
+                      borderRadius: '50%',
+                      color: 'white',
+                      mr: 2
+                    }}>
+                      <SpeedIcon sx={{ fontSize: 24 }} />
+                    </Box>
+                  </Box>
+                  <Typography variant="h3" sx={{ fontWeight: 'bold', color: '#ff9800', mb: 1 }}>
+                    {summaryStats.avgSpeed}
+                  </Typography>
+                  <Typography variant="body1" sx={{ color: '#666' }}>
+                    km/h average speed
+                  </Typography>
                 </Card>
               </Grid>
 
               <Grid item xs={12} md={6} lg={3}>
-                <Card sx={{ height: '100%' }}>
-                  <CardHeader
-                    avatar={
-                      <Box sx={{ 
-                        display: 'flex', 
-                        alignItems: 'center', 
-                        justifyContent: 'center',
-                        width: 40,
-                        height: 40,
-                        backgroundColor: '#2196f3',
-                        borderRadius: '50%',
-                        color: 'white'
-                      }}>
-                        <RouteIcon />
-                      </Box>
-                    }
-                    title="Total Routes"
-                    titleTypographyProps={{ variant: 'h6' }}
-                  />
-                  <CardContent>
-                    <Typography variant="h3" sx={{ fontWeight: 'bold', color: '#2196f3' }}>
-                      {summaryStats.totalRoutes}
-                    </Typography>
-                    <Typography variant="body1" sx={{ color: '#666', mt: 1 }}>
-                      Optimization plans
-                    </Typography>
-                  </CardContent>
+                <Card sx={{ height: '100%', p: 3 }}>
+                  <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
+                    <Box sx={{ 
+                      display: 'flex', 
+                      alignItems: 'center', 
+                      justifyContent: 'center',
+                      width: 48,
+                      height: 48,
+                      backgroundColor: '#2196f3',
+                      borderRadius: '50%',
+                      color: 'white',
+                      mr: 2
+                    }}>
+                      <RouteIcon sx={{ fontSize: 24 }} />
+                    </Box>
+                  </Box>
+                  <Typography variant="h3" sx={{ fontWeight: 'bold', color: '#2196f3', mb: 1 }}>
+                    {summaryStats.totalRoutes}
+                  </Typography>
+                  <Typography variant="body1" sx={{ color: '#666' }}>
+                    Optimization plans
+                  </Typography>
                 </Card>
               </Grid>
 
               <Grid item xs={12} md={6} lg={3}>
-                <Card sx={{ height: '100%' }}>
-                  <CardHeader
-                    avatar={
-                      <Box sx={{ 
-                        display: 'flex', 
-                        alignItems: 'center', 
-                        justifyContent: 'center',
-                        width: 40,
-                        height: 40,
-                        backgroundColor: '#9c27b0',
-                        borderRadius: '50%',
-                        color: 'white'
-                      }}>
-                        <LocalGasStationIcon />
-                      </Box>
-                    }
-                    title="Avg Gallons/Route"
-                    titleTypographyProps={{ variant: 'h6' }}
-                  />
-                  <CardContent>
-                    <Typography variant="h3" sx={{ fontWeight: 'bold', color: '#9c27b0' }}>
-                      {summaryStats.avgGallonsPerRoute.toLocaleString()}
-                    </Typography>
-                    <Typography variant="body1" sx={{ color: '#666', mt: 1 }}>
-                      Average gallons per route
-                    </Typography>
-                  </CardContent>
+                <Card sx={{ height: '100%', p: 3 }}>
+                  <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
+                    <Box sx={{ 
+                      display: 'flex', 
+                      alignItems: 'center', 
+                      justifyContent: 'center',
+                      width: 48,
+                      height: 48,
+                      backgroundColor: '#9c27b0',
+                      borderRadius: '50%',
+                      color: 'white',
+                      mr: 2
+                    }}>
+                      <LocalGasStationIcon sx={{ fontSize: 24 }} />
+                    </Box>
+                  </Box>
+                  <Typography variant="h3" sx={{ fontWeight: 'bold', color: '#9c27b0', mb: 1 }}>
+                    {summaryStats.avgGallonsPerRoute.toLocaleString()}
+                  </Typography>
+                  <Typography variant="body1" sx={{ color: '#666' }}>
+                    Average gallons per route
+                  </Typography>
                 </Card>
               </Grid>
 
               <Grid item xs={12} md={6} lg={3}>
-                <Card sx={{ height: '100%' }}>
-                  <CardHeader
-                    avatar={
-                      <Box sx={{ 
-                        display: 'flex', 
-                        alignItems: 'center', 
-                        justifyContent: 'center',
-                        width: 40,
-                        height: 40,
-                        backgroundColor: '#f44336',
-                        borderRadius: '50%',
-                        color: 'white'
-                      }}>
-                        <CancelIcon />
-                      </Box>
-                    }
-                    title="Unassigned Jobs"
-                    titleTypographyProps={{ variant: 'h6' }}
-                  />
-                  <CardContent>
-                    <Typography variant="h3" sx={{ fontWeight: 'bold', color: '#f44336' }}>
-                      {summaryStats.totalUnassignedJobs}
-                    </Typography>
-                    <Typography variant="body1" sx={{ color: '#666', mt: 1 }}>
-                      Total unassigned jobs
-                    </Typography>
-                  </CardContent>
+                <Card sx={{ height: '100%', p: 3 }}>
+                  <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
+                    <Box sx={{ 
+                      display: 'flex', 
+                      alignItems: 'center', 
+                      justifyContent: 'center',
+                      width: 48,
+                      height: 48,
+                      backgroundColor: '#f44336',
+                      borderRadius: '50%',
+                      color: 'white',
+                      mr: 2
+                    }}>
+                      <CancelIcon sx={{ fontSize: 24 }} />
+                    </Box>
+                  </Box>
+                  <Typography variant="h3" sx={{ fontWeight: 'bold', color: '#f44336', mb: 1 }}>
+                    {summaryStats.totalUnassignedJobs}
+                  </Typography>
+                  <Typography variant="body1" sx={{ color: '#666' }}>
+                    Total unassigned jobs
+                  </Typography>
                 </Card>
               </Grid>
 
               <Grid item xs={12} md={6} lg={3}>
-                <Card sx={{ height: '100%' }}>
-                  <CardHeader
-                    avatar={
-                      <Box sx={{ 
-                        display: 'flex', 
-                        alignItems: 'center', 
-                        justifyContent: 'center',
-                        width: 40,
-                        height: 40,
-                        backgroundColor: '#4caf50',
-                        borderRadius: '50%',
-                        color: 'white'
-                      }}>
-                        <StopIcon />
-                      </Box>
-                    }
-                    title="Avg Stops/Route"
-                    titleTypographyProps={{ variant: 'h6' }}
-                  />
-                  <CardContent>
-                    <Typography variant="h3" sx={{ fontWeight: 'bold', color: '#4caf50' }}>
-                      {summaryStats.avgStopsPerRoute}
-                    </Typography>
-                    <Typography variant="body1" sx={{ color: '#666', mt: 1 }}>
-                      Average stops per route
-                    </Typography>
-                  </CardContent>
+                <Card sx={{ height: '100%', p: 3 }}>
+                  <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
+                    <Box sx={{ 
+                      display: 'flex', 
+                      alignItems: 'center', 
+                      justifyContent: 'center',
+                      width: 48,
+                      height: 48,
+                      backgroundColor: '#4caf50',
+                      borderRadius: '50%',
+                      color: 'white',
+                      mr: 2
+                    }}>
+                      <StopIcon sx={{ fontSize: 24 }} />
+                    </Box>
+                  </Box>
+                  <Typography variant="h3" sx={{ fontWeight: 'bold', color: '#4caf50', mb: 1 }}>
+                    {summaryStats.avgStopsPerRoute}
+                  </Typography>
+                  <Typography variant="body1" sx={{ color: '#666' }}>
+                    Average stops per route
+                  </Typography>
                 </Card>
               </Grid>
 
               <Grid item xs={12} md={6} lg={3}>
-                <Card sx={{ height: '100%' }}>
-                  <CardHeader
-                    avatar={
-                      <Box sx={{ 
-                        display: 'flex', 
-                        alignItems: 'center', 
-                        justifyContent: 'center',
-                        width: 40,
-                        height: 40,
-                        backgroundColor: '#ff5722',
-                        borderRadius: '50%',
-                        color: 'white'
-                      }}>
-                        <StraightenIcon />
-                      </Box>
-                    }
-                    title="Avg Distance/Route"
-                    titleTypographyProps={{ variant: 'h6' }}
-                  />
-                  <CardContent>
-                    <Typography variant="h3" sx={{ fontWeight: 'bold', color: '#ff5722' }}>
-                      {formatDistance(summaryStats.avgDistancePerRoute)}
-                    </Typography>
-                    <Typography variant="body1" sx={{ color: '#666', mt: 1 }}>
-                      Average distance per route
-                    </Typography>
-                  </CardContent>
+                <Card sx={{ height: '100%', p: 3 }}>
+                  <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
+                    <Box sx={{ 
+                      display: 'flex', 
+                      alignItems: 'center', 
+                      justifyContent: 'center',
+                      width: 48,
+                      height: 48,
+                      backgroundColor: '#ff5722',
+                      borderRadius: '50%',
+                      color: 'white',
+                      mr: 2
+                    }}>
+                      <StraightenIcon sx={{ fontSize: 24 }} />
+                    </Box>
+                  </Box>
+                  <Typography variant="h3" sx={{ fontWeight: 'bold', color: '#ff5722', mb: 1 }}>
+                    {formatDistance(summaryStats.avgDistancePerRoute)}
+                  </Typography>
+                  <Typography variant="body1" sx={{ color: '#666' }}>
+                    Average distance per route
+                  </Typography>
                 </Card>
               </Grid>
 
               <Grid item xs={12} md={6} lg={3}>
-                <Card sx={{ height: '100%' }}>
-                  <CardHeader
-                    avatar={
-                      <Box sx={{ 
-                        display: 'flex', 
-                        alignItems: 'center', 
-                        justifyContent: 'center',
-                        width: 40,
-                        height: 40,
-                        backgroundColor: '#795548',
-                        borderRadius: '50%',
-                        color: 'white'
-                      }}>
-                        <AccessTimeIcon />
-                      </Box>
-                    }
-                    title="Total Waiting Time"
-                    titleTypographyProps={{ variant: 'h6' }}
-                  />
-                  <CardContent>
-                    <Typography variant="h3" sx={{ fontWeight: 'bold', color: '#795548' }}>
-                      {formatDuration(summaryStats.totalWaitingTime)}
-                    </Typography>
-                    <Typography variant="body1" sx={{ color: '#666', mt: 1 }}>
-                      Total waiting time
-                    </Typography>
-                  </CardContent>
+                <Card sx={{ height: '100%', p: 3 }}>
+                  <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
+                    <Box sx={{ 
+                      display: 'flex', 
+                      alignItems: 'center', 
+                      justifyContent: 'center',
+                      width: 48,
+                      height: 48,
+                      backgroundColor: '#795548',
+                      borderRadius: '50%',
+                      color: 'white',
+                      mr: 2
+                    }}>
+                      <AccessTimeIcon sx={{ fontSize: 24 }} />
+                    </Box>
+                  </Box>
+                  <Typography variant="h3" sx={{ fontWeight: 'bold', color: '#795548', mb: 1 }}>
+                    {formatDuration(summaryStats.totalWaitingTime)}
+                  </Typography>
+                  <Typography variant="body1" sx={{ color: '#666' }}>
+                    Total waiting time
+                  </Typography>
                 </Card>
               </Grid>
 
               <Grid item xs={12} md={6} lg={3}>
-                <Card sx={{ height: '100%' }}>
-                  <CardHeader
-                    avatar={
-                      <Box sx={{ 
-                        display: 'flex', 
-                        alignItems: 'center', 
-                        justifyContent: 'center',
-                        width: 40,
-                        height: 40,
-                        backgroundColor: '#607d8b',
-                        borderRadius: '50%',
-                        color: 'white'
-                      }}>
-                        <BuildIcon />
-                      </Box>
-                    }
-                    title="Avg Service Time/Route"
-                    titleTypographyProps={{ variant: 'h6' }}
-                  />
-                  <CardContent>
-                    <Typography variant="h3" sx={{ fontWeight: 'bold', color: '#607d8b' }}>
-                      {formatDuration(summaryStats.avgServiceTimePerRoute)}
-                    </Typography>
-                    <Typography variant="body1" sx={{ color: '#666', mt: 1 }}>
-                      Average service time per route
-                    </Typography>
-                  </CardContent>
+                <Card sx={{ height: '100%', p: 3 }}>
+                  <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
+                    <Box sx={{ 
+                      display: 'flex', 
+                      alignItems: 'center', 
+                      justifyContent: 'center',
+                      width: 48,
+                      height: 48,
+                      backgroundColor: '#607d8b',
+                      borderRadius: '50%',
+                      color: 'white',
+                      mr: 2
+                    }}>
+                      <BuildIcon sx={{ fontSize: 24 }} />
+                    </Box>
+                  </Box>
+                  <Typography variant="h3" sx={{ fontWeight: 'bold', color: '#607d8b', mb: 1 }}>
+                    {formatDuration(summaryStats.avgServiceTimePerRoute)}
+                  </Typography>
+                  <Typography variant="body1" sx={{ color: '#666' }}>
+                    Average service time per route
+                  </Typography>
                 </Card>
               </Grid>
 
