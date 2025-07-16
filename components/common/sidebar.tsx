@@ -174,7 +174,9 @@ export const Sidebar: React.FC<SidebarProps> = ({ currentPage = 'home' }) => {
                     sx={{
                       '& .MuiListItemText-primary': {
                         fontWeight: item.isActive ? 'bold' : 'normal',
-                        color: item.isActive ? companyColor : 'inherit',
+                        color: item.isActive ? companyColor : '#000000',
+                        fontSize: '0.875rem',
+                        lineHeight: 1.2,
                       },
                     }}
                   />

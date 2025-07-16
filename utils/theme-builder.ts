@@ -25,6 +25,7 @@ export interface ThemeConfig {
 }
 
 export function buildThemeFromConfig(config: ThemeConfig): Theme {
+  console.log('Building theme with config:', config)
   return createTheme({
     palette: {
       primary: {
@@ -107,7 +108,7 @@ export function buildThemeFromConfig(config: ThemeConfig): Theme {
       },
     },
     shape: {
-      borderRadius: parseInt(config.borderRadius),
+      borderRadius: parseInt(config.borderRadius.replace('px', '')) || 4,
     },
     spacing: config.spacingUnit,
     components: {
@@ -146,7 +147,21 @@ export function buildThemeFromConfig(config: ThemeConfig): Theme {
       MuiChip: {
         styleOverrides: {
           root: {
-            borderRadius: config.borderRadius,
+            borderRadius: parseInt(config.borderRadius.replace('px', '')) || 4,
+          },
+          label: {
+            color: config.textPrimary,
+            fontSize: '0.875rem',
+            fontWeight: 400,
+          },
+        },
+      },
+      MuiListItemText: {
+        styleOverrides: {
+          primary: {
+            color: config.textPrimary,
+            fontSize: '0.875rem',
+            fontWeight: 400,
           },
         },
       },
