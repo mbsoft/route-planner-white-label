@@ -48,3 +48,6 @@ jobs_michigan.csv
 jobs_modified.csv
 jobs_phoenix.csv
 vehicles*.csv
+
+# Default logo files
+company_logo.svg
