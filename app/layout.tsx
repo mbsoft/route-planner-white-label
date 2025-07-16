@@ -1,4 +1,5 @@
 import {WhiteLabelLayout} from './white-label-layout'
+import { Analytics } from '@vercel/analytics/react'
 
 export const metadata = {
   title: 'Route Planner White Label',
@@ -21,6 +22,7 @@ export default function RootLayout({
       </head>
       <body style={{ background: '#E5EEFA' }}>
         <WhiteLabelLayout>{children}</WhiteLabelLayout>
+        <Analytics />
       </body>
     </html>
   )
