@@ -420,6 +420,242 @@ export default function InformationPage() {
               </Grid>
             </Grid>
 
+            {/* Internationalization (i18n) Section */}
+            <Typography variant="h5" sx={{ fontWeight: 'bold', mb: 3, mt: 4, color: companyColor }}>
+              Internationalization (i18n) Guide
+            </Typography>
+
+            <Typography variant="body1" sx={{ mb: 3, fontSize: '1.1rem', lineHeight: 1.6 }}>
+              The platform supports multiple languages using next-intl. Currently, English and Spanish (Mexican) are supported, 
+              and you can easily add additional languages to accommodate your global user base.
+            </Typography>
+
+            {/* i18n Implementation Details */}
+            <Grid container spacing={3} sx={{ mb: 4 }}>
+              <Grid item xs={12} md={6}>
+                <Accordion sx={{ border: '1px solid #e0e0e0' }}>
+                  <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+                      <CodeIcon sx={{ color: companyColor }} />
+                      <Typography variant="h6" sx={{ fontWeight: 'bold' }}>
+                        Adding New Languages
+                      </Typography>
+                    </Box>
+                  </AccordionSummary>
+                  <AccordionDetails>
+                    <Typography variant="body2" sx={{ mb: 2 }}>
+                      <strong>Current Languages:</strong>
+                    </Typography>
+                    <List dense>
+                      <ListItem sx={{ py: 0.5 }}>
+                        <ListItemText 
+                          primary="• English (en) - Default language"
+                          secondary="Located in /locales/en/common.json"
+                        />
+                      </ListItem>
+                      <ListItem sx={{ py: 0.5 }}>
+                        <ListItemText 
+                          primary="• Spanish Mexican (es-MX)"
+                          secondary="Located in /locales/es-MX/common.json"
+                        />
+                      </ListItem>
+                    </List>
+                    
+                    <Typography variant="body2" sx={{ mb: 2, mt: 2 }}>
+                      <strong>Steps to Add a New Language:</strong>
+                    </Typography>
+                    <Box sx={{ bgcolor: '#f5f5f5', p: 2, borderRadius: 1, fontFamily: 'monospace', fontSize: '0.9rem' }}>
+                      1. Create new directory: /locales/[language-code]/<br/>
+                      2. Copy common.json from /locales/en/ to new directory<br/>
+                      3. Translate all values in the JSON file<br/>
+                      4. Update middleware.ts to include new locale<br/>
+                      5. Test the new language implementation
+                    </Box>
+
+                    <Typography variant="body2" sx={{ mb: 2, mt: 2 }}>
+                      <strong>Example Language Codes:</strong>
+                    </Typography>
+                    <List dense>
+                      <ListItem sx={{ py: 0.5 }}>
+                        <ListItemText 
+                          primary="• French: fr or fr-FR"
+                          secondary="German: de or de-DE"
+                        />
+                      </ListItem>
+                      <ListItem sx={{ py: 0.5 }}>
+                        <ListItemText 
+                          primary="• Italian: it or it-IT"
+                          secondary="Portuguese: pt or pt-BR"
+                        />
+                      </ListItem>
+                      <ListItem sx={{ py: 0.5 }}>
+                        <ListItemText 
+                          primary="• Chinese: zh-CN or zh-TW"
+                          secondary="Japanese: ja or ja-JP"
+                        />
+                      </ListItem>
+                    </List>
+                  </AccordionDetails>
+                </Accordion>
+              </Grid>
+
+              <Grid item xs={12} md={6}>
+                <Accordion sx={{ border: '1px solid #e0e0e0' }}>
+                  <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+                      <StorageIcon sx={{ color: companyColor }} />
+                      <Typography variant="h6" sx={{ fontWeight: 'bold' }}>
+                        Translation File Structure
+                      </Typography>
+                    </Box>
+                  </AccordionSummary>
+                  <AccordionDetails>
+                    <Typography variant="body2" sx={{ mb: 2 }}>
+                      <strong>File Organization:</strong>
+                    </Typography>
+                    <Box sx={{ bgcolor: '#f5f5f5', p: 2, borderRadius: 1, fontFamily: 'monospace', fontSize: '0.9rem' }}>
+                      locales/<br/>
+                      ├── en/<br/>
+                      │   └── common.json<br/>
+                      ├── es-MX/<br/>
+                      │   └── common.json<br/>
+                      └── [new-language]/<br/>
+                      &nbsp;&nbsp;&nbsp;&nbsp;└── common.json
+                    </Box>
+                    
+                    <Typography variant="body2" sx={{ mb: 2, mt: 2 }}>
+                      <strong>Translation Categories:</strong>
+                    </Typography>
+                    <List dense>
+                      <ListItem sx={{ py: 0.5 }}>
+                        <ListItemText 
+                          primary="• navigation - Menu and navigation items"
+                          secondary="header, sidebar, footer content"
+                        />
+                      </ListItem>
+                      <ListItem sx={{ py: 0.5 }}>
+                        <ListItemText 
+                          primary="• buttons - Action buttons and controls"
+                          secondary="save, cancel, delete, import, etc."
+                        />
+                      </ListItem>
+                      <ListItem sx={{ py: 0.5 }}>
+                        <ListItemText 
+                          primary="• dataImport - Import functionality"
+                          secondary="CSV import, mapping, validation"
+                        />
+                      </ListItem>
+                      <ListItem sx={{ py: 0.5 }}>
+                        <ListItemText 
+                          primary="• optimization - Route optimization terms"
+                          secondary="algorithms, constraints, preferences"
+                        />
+                      </ListItem>
+                      <ListItem sx={{ py: 0.5 }}>
+                        <ListItemText 
+                          primary="• errors/success - User feedback messages"
+                          secondary="validation, network, completion messages"
+                        />
+                      </ListItem>
+                      <ListItem sx={{ py: 0.5 }}>
+                        <ListItemText 
+                          primary="• language - Language selection UI"
+                          secondary="language names and selection interface"
+                        />
+                      </ListItem>
+                    </List>
+                  </AccordionDetails>
+                </Accordion>
+              </Grid>
+
+              <Grid item xs={12}>
+                <Accordion sx={{ border: '1px solid #e0e0e0' }}>
+                  <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+                      <SettingsIcon sx={{ color: companyColor }} />
+                      <Typography variant="h6" sx={{ fontWeight: 'bold' }}>
+                        Implementation & Configuration
+                      </Typography>
+                    </Box>
+                  </AccordionSummary>
+                  <AccordionDetails>
+                    <Typography variant="body2" sx={{ mb: 2 }}>
+                      <strong>Technical Implementation:</strong>
+                    </Typography>
+                    <Box sx={{ bgcolor: '#f5f5f5', p: 2, borderRadius: 1, fontFamily: 'monospace', fontSize: '0.9rem' }}>
+                      // The platform uses next-intl v4.3.4<br/>
+                      // To implement translations in components:<br/><br/>
+                      
+                      import &#123;useTranslations&#125; from 'next-intl'<br/><br/>
+                      
+                      const t = useTranslations('navigation')<br/>
+                      return &lt;button&gt;&#123;t('routePlanner')&#125;&lt;/button&gt;
+                    </Box>
+
+                    <Typography variant="body2" sx={{ mb: 2, mt: 3 }}>
+                      <strong>Configuration Steps:</strong>
+                    </Typography>
+                    <List dense>
+                      <ListItem sx={{ py: 0.5 }}>
+                        <ListItemText 
+                          primary="1. Update middleware.ts"
+                          secondary="Add your new locale to the locales array and configure routing"
+                        />
+                      </ListItem>
+                      <ListItem sx={{ py: 0.5 }}>
+                        <ListItemText 
+                          primary="2. Create i18n configuration"
+                          secondary="Set up locale detection and routing preferences"
+                        />
+                      </ListItem>
+                      <ListItem sx={{ py: 0.5 }}>
+                        <ListItemText 
+                          primary="3. Add language selector"
+                          secondary="Implement UI component for users to switch languages"
+                        />
+                      </ListItem>
+                      <ListItem sx={{ py: 0.5 }}>
+                        <ListItemText 
+                          primary="4. Test implementation"
+                          secondary="Verify translations load correctly and URLs work properly"
+                        />
+                      </ListItem>
+                    </List>
+
+                    <Typography variant="body2" sx={{ mb: 2, mt: 3 }}>
+                      <strong>Translation Best Practices:</strong>
+                    </Typography>
+                    <List dense>
+                      <ListItem sx={{ py: 0.5 }}>
+                        <ListItemText 
+                          primary="• Use nested keys for organization"
+                          secondary="Group related translations under common parent keys"
+                        />
+                      </ListItem>
+                      <ListItem sx={{ py: 0.5 }}>
+                        <ListItemText 
+                          primary="• Keep keys descriptive and consistent"
+                          secondary="Use clear naming conventions across all language files"
+                        />
+                      </ListItem>
+                      <ListItem sx={{ py: 0.5 }}>
+                        <ListItemText 
+                          primary="• Consider cultural context"
+                          secondary="Adapt content for cultural differences, not just language"
+                        />
+                      </ListItem>
+                      <ListItem sx={{ py: 0.5 }}>
+                        <ListItemText 
+                          primary="• Test with longer text"
+                          secondary="Some languages require more space for equivalent content"
+                        />
+                      </ListItem>
+                    </List>
+                  </AccordionDetails>
+                </Accordion>
+              </Grid>
+            </Grid>
+
             {/* Getting Started Section */}
             <Typography variant="h5" sx={{ fontWeight: 'bold', mb: 3, mt: 4, color: companyColor }}>
               Getting Started
