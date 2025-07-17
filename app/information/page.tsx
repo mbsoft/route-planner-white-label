@@ -1,7 +1,7 @@
 'use client'
 
-import React from 'react'
-import { Container, Box, Typography, Paper, Divider, Button, Grid, Card, CardContent, CardHeader, List, ListItem, ListItemIcon, ListItemText, Chip, Accordion, AccordionSummary, AccordionDetails } from '@mui/material'
+import React, { useEffect, useState } from 'react'
+import { Container, Box, Typography, Paper, Divider, Button, Grid, Card, CardContent, CardHeader, List, ListItem, ListItemIcon, ListItemText, Chip, Accordion, AccordionSummary, AccordionDetails, CircularProgress } from '@mui/material'
 import { 
   Logout as LogoutIcon,
   Route as RouteIcon,
@@ -18,12 +18,15 @@ import {
 } from '@mui/icons-material'
 import { WhiteLabelLayout } from '../white-label-layout'
 import { Sidebar } from '../../components/common/sidebar'
+import { LanguageSwitcher } from '../../components/common/language-switcher'
 import { useRouter } from 'next/navigation'
 import { useWhiteLabelContext } from '../white-label-layout'
+import { useLanguage } from '../../contexts/language-context'
 
 export default function InformationPage() {
   const router = useRouter()
   const { companyName, companyLogo, companyColor } = useWhiteLabelContext()
+  const { t, isLoading, language, renderKey } = useLanguage()
 
   const handleLogout = async () => {
     try {
@@ -39,6 +42,17 @@ export default function InformationPage() {
     } catch (error) {
       console.error('Logout error:', error)
     }
+  }
+
+  // Show loading spinner while translations are loading
+  if (isLoading) {
+    return (
+      <WhiteLabelLayout>
+        <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
+          <CircularProgress />
+        </Box>
+      </WhiteLabelLayout>
+    )
   }
 
   return (
@@ -57,34 +71,51 @@ export default function InformationPage() {
         }}>
           {/* Header */}
           <Box sx={{ p: 2, borderBottom: '1px solid #e0e0e0', backgroundColor: '#ffffff' }}>
-            <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-              <img
-                src={companyLogo}
-                alt={`${companyName} Logo`}
-                style={{
-                  height: '60px',
-                  width: 'auto',
-                  borderRadius: '4px'
-                }}
-              />
-              <Typography
-                variant="h4"
-                component="h1"
-                sx={{ color: '#333', fontWeight: 'bold', fontSize: '1.1rem' }}
-              >
-                Information & Documentation
-              </Typography>
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, justifyContent: 'space-between' }}>
+              <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+                <img
+                  src={companyLogo}
+                  alt={`${companyName} Logo`}
+                  style={{
+                    height: '60px',
+                    width: 'auto',
+                    borderRadius: '4px'
+                  }}
+                />
+                <Typography
+                  variant="h4"
+                  component="h1"
+                  sx={{ color: '#333', fontWeight: 'bold', fontSize: '1.1rem' }}
+                >
+                  {t('header.informationDocumentation')}
+                </Typography>
+              </Box>
+              <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+                <LanguageSwitcher />
+                <Button
+                  variant="outlined"
+                  size="small"
+                  onClick={handleLogout}
+                  startIcon={<LogoutIcon />}
+                  sx={{ 
+                    height: '25px',
+                    fontSize: '0.75rem',
+                    textTransform: 'none'
+                  }}
+                >
+                  {t('navigation.logout')}
+                </Button>
+              </Box>
             </Box>
           </Box>
-          <Box sx={{ flex: 1, backgroundColor: '#ffffff', p: 3, overflow: 'auto' }}>
+          <Box key={`content-${language}-${renderKey}`} sx={{ flex: 1, backgroundColor: '#ffffff', p: 3, overflow: 'auto' }}>
             {/* Application Overview */}
             <Typography variant="h4" sx={{ fontWeight: 'bold', mb: 3, color: companyColor }}>
-              Route Planning & Optimization Platform
+              {t('information.pageTitle')}
             </Typography>
             
             <Typography variant="body1" sx={{ mb: 4, fontSize: '1.1rem', lineHeight: 1.6 }}>
-              Welcome to the {companyName} Route Planning Platform, a comprehensive white-label solution powered by NextBillion.ai's advanced optimization engine. 
-              This platform provides intelligent route planning, real-time optimization, and detailed analytics for fleet management operations.
+              {t('information.welcomeMessage').replace('{companyName}', companyName)}
             </Typography>
 
             {/* Core Features Grid */}
@@ -93,37 +124,37 @@ export default function InformationPage() {
                 <Card sx={{ height: '100%', border: '1px solid #e0e0e0' }}>
                   <CardHeader
                     avatar={<RouteIcon sx={{ color: companyColor }} />}
-                    title="Route Optimization"
+                    title={t('information.routeOptimization')}
                     titleTypographyProps={{ variant: 'h6', fontWeight: 'bold' }}
                   />
                   <CardContent>
                     <Typography variant="body2" sx={{ mb: 2 }}>
-                      Advanced algorithms optimize routes for:
+                      {t('information.routeOptimizationDesc')}
                     </Typography>
                     <List dense>
                       <ListItem sx={{ py: 0.5 }}>
                         <ListItemIcon sx={{ minWidth: 30 }}>
                           <CheckCircleIcon sx={{ fontSize: 16, color: '#4caf50' }} />
                         </ListItemIcon>
-                        <ListItemText primary="Minimum travel time and distance" />
+                        <ListItemText primary={t('information.minTravelTime')} />
                       </ListItem>
                       <ListItem sx={{ py: 0.5 }}>
                         <ListItemIcon sx={{ minWidth: 30 }}>
                           <CheckCircleIcon sx={{ fontSize: 16, color: '#4caf50' }} />
                         </ListItemIcon>
-                        <ListItemText primary="Vehicle capacity constraints" />
+                        <ListItemText primary={t('information.vehicleCapacity')} />
                       </ListItem>
                       <ListItem sx={{ py: 0.5 }}>
                         <ListItemIcon sx={{ minWidth: 30 }}>
                           <CheckCircleIcon sx={{ fontSize: 16, color: '#4caf50' }} />
                         </ListItemIcon>
-                        <ListItemText primary="Time window compliance" />
+                        <ListItemText primary={t('information.timeWindow')} />
                       </ListItem>
                       <ListItem sx={{ py: 0.5 }}>
                         <ListItemIcon sx={{ minWidth: 30 }}>
                           <CheckCircleIcon sx={{ fontSize: 16, color: '#4caf50' }} />
                         </ListItemIcon>
-                        <ListItemText primary="Multi-fuel type support" />
+                        <ListItemText primary={t('information.multiFuel')} />
                       </ListItem>
                     </List>
                   </CardContent>
@@ -134,37 +165,37 @@ export default function InformationPage() {
                 <Card sx={{ height: '100%', border: '1px solid #e0e0e0' }}>
                   <CardHeader
                     avatar={<UploadIcon sx={{ color: companyColor }} />}
-                    title="Data Import & Management"
+                    title={t('information.dataImport')}
                     titleTypographyProps={{ variant: 'h6', fontWeight: 'bold' }}
                   />
                   <CardContent>
                     <Typography variant="body2" sx={{ mb: 2 }}>
-                      Flexible data import options:
+                      {t('information.dataImportDesc')}
                     </Typography>
                     <List dense>
                       <ListItem sx={{ py: 0.5 }}>
                         <ListItemIcon sx={{ minWidth: 30 }}>
                           <CheckCircleIcon sx={{ fontSize: 16, color: '#4caf50' }} />
                         </ListItemIcon>
-                        <ListItemText primary="CSV/Excel file upload" />
+                        <ListItemText primary={t('information.csvExcel')} />
                       </ListItem>
                       <ListItem sx={{ py: 0.5 }}>
                         <ListItemIcon sx={{ minWidth: 30 }}>
                           <CheckCircleIcon sx={{ fontSize: 16, color: '#4caf50' }} />
                         </ListItemIcon>
-                        <ListItemText primary="Database integration" />
+                        <ListItemText primary={t('information.databaseIntegration')} />
                       </ListItem>
                       <ListItem sx={{ py: 0.5 }}>
                         <ListItemIcon sx={{ minWidth: 30 }}>
                           <CheckCircleIcon sx={{ fontSize: 16, color: '#4caf50' }} />
                         </ListItemIcon>
-                        <ListItemText primary="Real-time data mapping" />
+                        <ListItemText primary={t('information.realTimeMapping')} />
                       </ListItem>
                       <ListItem sx={{ py: 0.5 }}>
                         <ListItemIcon sx={{ minWidth: 30 }}>
                           <CheckCircleIcon sx={{ fontSize: 16, color: '#4caf50' }} />
                         </ListItemIcon>
-                        <ListItemText primary="Bulk data validation" />
+                        <ListItemText primary={t('information.bulkValidation')} />
                       </ListItem>
                     </List>
                   </CardContent>
@@ -175,37 +206,37 @@ export default function InformationPage() {
                 <Card sx={{ height: '100%', border: '1px solid #e0e0e0' }}>
                   <CardHeader
                     avatar={<AnalyticsIcon sx={{ color: companyColor }} />}
-                    title="Analytics & Reporting"
+                    title={t('information.analytics')}
                     titleTypographyProps={{ variant: 'h6', fontWeight: 'bold' }}
                   />
                   <CardContent>
                     <Typography variant="body2" sx={{ mb: 2 }}>
-                      Comprehensive analytics features:
+                      {t('information.analyticsDesc')}
                     </Typography>
                     <List dense>
                       <ListItem sx={{ py: 0.5 }}>
                         <ListItemIcon sx={{ minWidth: 30 }}>
                           <CheckCircleIcon sx={{ fontSize: 16, color: '#4caf50' }} />
                         </ListItemIcon>
-                        <ListItemText primary="Fuel delivery metrics" />
+                        <ListItemText primary={t('information.fuelMetrics')} />
                       </ListItem>
                       <ListItem sx={{ py: 0.5 }}>
                         <ListItemIcon sx={{ minWidth: 30 }}>
                           <CheckCircleIcon sx={{ fontSize: 16, color: '#4caf50' }} />
                         </ListItemIcon>
-                        <ListItemText primary="Route performance analysis" />
+                        <ListItemText primary={t('information.routePerformance')} />
                       </ListItem>
                       <ListItem sx={{ py: 0.5 }}>
                         <ListItemIcon sx={{ minWidth: 30 }}>
                           <CheckCircleIcon sx={{ fontSize: 16, color: '#4caf50' }} />
                         </ListItemIcon>
-                        <ListItemText primary="Optimization history" />
+                        <ListItemText primary={t('information.optimizationHistory')} />
                       </ListItem>
                       <ListItem sx={{ py: 0.5 }}>
                         <ListItemIcon sx={{ minWidth: 30 }}>
                           <CheckCircleIcon sx={{ fontSize: 16, color: '#4caf50' }} />
                         </ListItemIcon>
-                        <ListItemText primary="Export capabilities" />
+                        <ListItemText primary={t('information.exportCapabilities')} />
                       </ListItem>
                     </List>
                   </CardContent>
@@ -215,12 +246,11 @@ export default function InformationPage() {
 
             {/* White Label Customization Section */}
             <Typography variant="h5" sx={{ fontWeight: 'bold', mb: 3, mt: 4, color: companyColor }}>
-              White Label Customization Guide
+              {t('information.whiteLabelTitle')}
             </Typography>
 
             <Typography variant="body1" sx={{ mb: 3, fontSize: '1.1rem', lineHeight: 1.6 }}>
-              This platform is designed as a white-label solution, allowing complete customization of branding, 
-              styling, and functionality to match your organization's identity and requirements.
+              {t('information.whiteLabelDesc')}
             </Typography>
 
             {/* Customization Options */}
@@ -231,98 +261,34 @@ export default function InformationPage() {
                     <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
                       <PaletteIcon sx={{ color: companyColor }} />
                       <Typography variant="h6" sx={{ fontWeight: 'bold' }}>
-                        Branding & Visual Customization
+                        {t('information.brandingTitle')}
                       </Typography>
                     </Box>
                   </AccordionSummary>
                   <AccordionDetails>
                     <Typography variant="body2" sx={{ mb: 2 }}>
-                      <strong>Logo & Company Identity:</strong>
+                      <strong>{t('information.logoIdentity')}</strong>
                     </Typography>
                     <List dense>
                       <ListItem sx={{ py: 0.5 }}>
                         <ListItemText 
-                          primary="• Replace default logo with your company logo"
-                          secondary="Set COMPANY_LOGO environment variable or update company_logo.svg in the public directory"
+                          primary={`• ${t('information.replaceLogo')}`}
+                          secondary={t('information.setCompanyLogo')}
                         />
                       </ListItem>
                       <ListItem sx={{ py: 0.5 }}>
                         <ListItemText 
-                          primary="• Customize company name throughout the application"
-                          secondary="Modify company name in white-label configuration"
+                          primary={`• ${t('information.colorScheme')}`}
+                          secondary={t('information.setCompanyColor')}
                         />
                       </ListItem>
                       <ListItem sx={{ py: 0.5 }}>
                         <ListItemText 
-                          primary="• Update color scheme and theme"
-                          secondary="Customize primary colors, typography, and styling"
+                          primary={`• ${t('information.companyName')}`}
+                          secondary={t('information.setCompanyName')}
                         />
                       </ListItem>
                     </List>
-                    
-                    <Typography variant="body2" sx={{ mb: 2, mt: 2 }}>
-                      <strong>Implementation Steps:</strong>
-                    </Typography>
-                    <Box sx={{ bgcolor: '#f5f5f5', p: 2, borderRadius: 1, fontFamily: 'monospace', fontSize: '0.9rem' }}>
-                      1. Set COMPANY_LOGO environment variable or replace /public/company_logo.svg with your logo<br/>
-                      2. Update company name in environment variables<br/>
-                      3. Customize theme colors in app/white-label-layout.tsx<br/>
-                      4. Update favicon and meta tags
-                    </Box>
-                  </AccordionDetails>
-                </Accordion>
-              </Grid>
-
-              <Grid item xs={12} md={6}>
-                <Accordion sx={{ border: '1px solid #e0e0e0' }}>
-                  <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-                      <SettingsIcon sx={{ color: companyColor }} />
-                      <Typography variant="h6" sx={{ fontWeight: 'bold' }}>
-                        Configuration & Environment
-                      </Typography>
-                    </Box>
-                  </AccordionSummary>
-                  <AccordionDetails>
-                    <Typography variant="body2" sx={{ mb: 2 }}>
-                      <strong>Environment Variables:</strong>
-                    </Typography>
-                    <List dense>
-                      <ListItem sx={{ py: 0.5 }}>
-                        <ListItemText 
-                          primary="• NEXTBILLION_API_KEY"
-                          secondary="Your NextBillion.ai API key for optimization services"
-                        />
-                      </ListItem>
-                      <ListItem sx={{ py: 0.5 }}>
-                        <ListItemText 
-                          primary="• NEXT_PUBLIC_ENABLE_CSV_IMPORT"
-                          secondary="Control CSV import functionality (true/false)"
-                        />
-                      </ListItem>
-                      <ListItem sx={{ py: 0.5 }}>
-                        <ListItemText 
-                          primary="• USE_CASE"
-                          secondary="Set to 'jobs' or 'shipments' based on your use case"
-                        />
-                      </ListItem>
-                      <ListItem sx={{ py: 0.5 }}>
-                        <ListItemText 
-                          primary="• COMPANY_LOGO"
-                          secondary="Path to your company logo (e.g., '/your-logo.svg' or full URL)"
-                        />
-                      </ListItem>
-                    </List>
-                    
-                    <Typography variant="body2" sx={{ mb: 2, mt: 2 }}>
-                      <strong>Configuration Files:</strong>
-                    </Typography>
-                    <Box sx={{ bgcolor: '#f5f5f5', p: 2, borderRadius: 1, fontFamily: 'monospace', fontSize: '0.9rem' }}>
-                      • .env.local - Environment variables<br/>
-                      • app/white-label-layout.tsx - Branding & theme<br/>
-                      • components/common/sidebar.tsx - Navigation<br/>
-                      • public/ - Static assets (logos, favicons)
-                    </Box>
                   </AccordionDetails>
                 </Accordion>
               </Grid>
@@ -333,531 +299,124 @@ export default function InformationPage() {
                     <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
                       <CodeIcon sx={{ color: companyColor }} />
                       <Typography variant="h6" sx={{ fontWeight: 'bold' }}>
-                        Feature Customization
+                        {t('information.technicalTitle')}
                       </Typography>
                     </Box>
                   </AccordionSummary>
                   <AccordionDetails>
                     <Typography variant="body2" sx={{ mb: 2 }}>
-                      <strong>Available Customizations:</strong>
+                      <strong>{t('information.environmentVariables')}</strong>
                     </Typography>
-                    <List dense>
-                      <ListItem sx={{ py: 0.5 }}>
-                        <ListItemText 
-                          primary="• Enable/disable CSV import functionality"
-                          secondary="Control data import methods based on requirements"
-                        />
-                      </ListItem>
-                      <ListItem sx={{ py: 0.5 }}>
-                        <ListItemText 
-                          primary="• Customize fuel types and delivery metrics"
-                          secondary="Add or modify fuel types (ULSD Clear, ULSD Dyed, UNL, etc.)"
-                        />
-                      </ListItem>
-                      <ListItem sx={{ py: 0.5 }}>
-                        <ListItemText 
-                          primary="• Modify navigation and menu structure"
-                          secondary="Add, remove, or reorganize application sections"
-                        />
-                      </ListItem>
-                      <ListItem sx={{ py: 0.5 }}>
-                        <ListItemText 
-                          primary="• Customize data mapping and validation"
-                          secondary="Adapt field mappings for your specific data format"
-                        />
-                      </ListItem>
-                    </List>
-                  </AccordionDetails>
-                </Accordion>
-              </Grid>
-
-              <Grid item xs={12} md={6}>
-                <Accordion sx={{ border: '1px solid #e0e0e0' }}>
-                  <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-                      <StorageIcon sx={{ color: companyColor }} />
-                      <Typography variant="h6" sx={{ fontWeight: 'bold' }}>
-                        Database Integration
-                      </Typography>
-                    </Box>
-                  </AccordionSummary>
-                  <AccordionDetails>
                     <Typography variant="body2" sx={{ mb: 2 }}>
-                      <strong>Database Features:</strong>
+                      {t('information.envVarsDesc')}
                     </Typography>
                     <List dense>
                       <ListItem sx={{ py: 0.5 }}>
                         <ListItemText 
-                          primary="• Direct database import for jobs and vehicles"
-                          secondary="Import data directly from your existing database"
+                          primary={t('information.companyLogoVar')}
                         />
                       </ListItem>
                       <ListItem sx={{ py: 0.5 }}>
                         <ListItemText 
-                          primary="• Real-time data synchronization"
-                          secondary="Keep route planning data current with live updates"
+                          primary={t('information.companyColorVar')}
                         />
                       </ListItem>
                       <ListItem sx={{ py: 0.5 }}>
                         <ListItemText 
-                          primary="• Custom database schema support"
-                          secondary="Adapt to your existing database structure"
+                          primary={t('information.companyNameVar')}
                         />
                       </ListItem>
                     </List>
-                    
-                    <Typography variant="body2" sx={{ mb: 2, mt: 2 }}>
-                      <strong>Setup Requirements:</strong>
-                    </Typography>
-                    <Box sx={{ bgcolor: '#f5f5f5', p: 2, borderRadius: 1, fontFamily: 'monospace', fontSize: '0.9rem' }}>
-                      • Configure database connection in API routes<br/>
-                      • Set up data transformation logic<br/>
-                      • Implement authentication for database access<br/>
-                      • Configure data refresh intervals
-                    </Box>
                   </AccordionDetails>
                 </Accordion>
               </Grid>
             </Grid>
 
-            {/* Internationalization (i18n) Section */}
+            {/* Deployment Section */}
             <Typography variant="h5" sx={{ fontWeight: 'bold', mb: 3, mt: 4, color: companyColor }}>
-              Internationalization (i18n) Guide
+              {t('information.deploymentTitle')}
+            </Typography>
+
+            <Grid container spacing={3} sx={{ mb: 4 }}>
+              <Grid item xs={12} md={6}>
+                <Card sx={{ border: '1px solid #e0e0e0' }}>
+                  <CardHeader
+                    avatar={<SettingsIcon sx={{ color: companyColor }} />}
+                    title={t('information.vercelDeployment')}
+                    titleTypographyProps={{ variant: 'h6', fontWeight: 'bold' }}
+                  />
+                  <CardContent>
+                    <Typography variant="body2" sx={{ whiteSpace: 'pre-line' }}>
+                      {t('information.vercelSteps')}
+                    </Typography>
+                  </CardContent>
+                </Card>
+              </Grid>
+
+              <Grid item xs={12} md={6}>
+                <Card sx={{ border: '1px solid #e0e0e0' }}>
+                  <CardHeader
+                    avatar={<StorageIcon sx={{ color: companyColor }} />}
+                    title={t('information.otherPlatforms')}
+                    titleTypographyProps={{ variant: 'h6', fontWeight: 'bold' }}
+                  />
+                  <CardContent>
+                    <Typography variant="body2">
+                      {t('information.otherPlatformsDesc')}
+                    </Typography>
+                  </CardContent>
+                </Card>
+              </Grid>
+            </Grid>
+
+            {/* Internationalization Guide */}
+            <Typography variant="h5" sx={{ fontWeight: 'bold', mb: 3, mt: 4, color: companyColor }}>
+              {t('information.i18nGuide')}
             </Typography>
 
             <Typography variant="body1" sx={{ mb: 3, fontSize: '1.1rem', lineHeight: 1.6 }}>
-              The platform supports multiple languages using next-intl. Currently, English and Spanish (Mexican) are supported, 
-              and you can easily add additional languages to accommodate your global user base.
+              {t('information.i18nDescription')}
             </Typography>
 
-            {/* i18n Implementation Details */}
-            <Grid container spacing={3} sx={{ mb: 4 }}>
+            <Grid container spacing={3}>
               <Grid item xs={12} md={6}>
-                <Accordion sx={{ border: '1px solid #e0e0e0' }}>
-                  <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-                      <CodeIcon sx={{ color: companyColor }} />
-                      <Typography variant="h6" sx={{ fontWeight: 'bold' }}>
-                        Adding New Languages
-                      </Typography>
-                    </Box>
-                  </AccordionSummary>
-                  <AccordionDetails>
+                <Card sx={{ border: '1px solid #e0e0e0' }}>
+                  <CardHeader
+                    avatar={<InfoIcon sx={{ color: companyColor }} />}
+                    title={t('information.addingNewLanguages')}
+                    titleTypographyProps={{ variant: 'h6', fontWeight: 'bold' }}
+                  />
+                  <CardContent>
                     <Typography variant="body2" sx={{ mb: 2 }}>
-                      <strong>Current Languages:</strong>
+                      <strong>{t('information.currentLanguages')}</strong>
                     </Typography>
                     <List dense>
                       <ListItem sx={{ py: 0.5 }}>
-                        <ListItemText 
-                          primary="• English (en) - Default language"
-                          secondary="Located in /locales/en/common.json"
-                        />
+                        <ListItemText primary={t('information.englishDefault')} />
                       </ListItem>
                       <ListItem sx={{ py: 0.5 }}>
-                        <ListItemText 
-                          primary="• Spanish Mexican (es-MX)"
-                          secondary="Located in /locales/es-MX/common.json"
-                        />
+                        <ListItemText primary={t('information.spanishMexican')} />
                       </ListItem>
                     </List>
                     
                     <Typography variant="body2" sx={{ mb: 2, mt: 2 }}>
-                      <strong>Steps to Add a New Language:</strong>
-                    </Typography>
-                    <Box sx={{ bgcolor: '#f5f5f5', p: 2, borderRadius: 1, fontFamily: 'monospace', fontSize: '0.9rem' }}>
-                      1. Create new directory: /locales/[language-code]/<br/>
-                      2. Copy common.json from /locales/en/ to new directory<br/>
-                      3. Translate all values in the JSON file<br/>
-                      4. Update middleware.ts to include new locale<br/>
-                      5. Test the new language implementation
-                    </Box>
-
-                    <Typography variant="body2" sx={{ mb: 2, mt: 2 }}>
-                      <strong>Example Language Codes:</strong>
+                      <strong>{t('information.stepsToAdd')}</strong>
                     </Typography>
                     <List dense>
                       <ListItem sx={{ py: 0.5 }}>
-                        <ListItemText 
-                          primary="• French: fr or fr-FR"
-                          secondary="German: de or de-DE"
-                        />
+                        <ListItemText primary={`1. ${t('information.step1')}`} />
                       </ListItem>
                       <ListItem sx={{ py: 0.5 }}>
-                        <ListItemText 
-                          primary="• Italian: it or it-IT"
-                          secondary="Portuguese: pt or pt-BR"
-                        />
+                        <ListItemText primary={`2. ${t('information.step2')}`} />
                       </ListItem>
                       <ListItem sx={{ py: 0.5 }}>
-                        <ListItemText 
-                          primary="• Chinese: zh-CN or zh-TW"
-                          secondary="Japanese: ja or ja-JP"
-                        />
-                      </ListItem>
-                    </List>
-                  </AccordionDetails>
-                </Accordion>
-              </Grid>
-
-              <Grid item xs={12} md={6}>
-                <Accordion sx={{ border: '1px solid #e0e0e0' }}>
-                  <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-                      <StorageIcon sx={{ color: companyColor }} />
-                      <Typography variant="h6" sx={{ fontWeight: 'bold' }}>
-                        Translation File Structure
-                      </Typography>
-                    </Box>
-                  </AccordionSummary>
-                  <AccordionDetails>
-                    <Typography variant="body2" sx={{ mb: 2 }}>
-                      <strong>File Organization:</strong>
-                    </Typography>
-                    <Box sx={{ bgcolor: '#f5f5f5', p: 2, borderRadius: 1, fontFamily: 'monospace', fontSize: '0.9rem' }}>
-                      locales/<br/>
-                      ├── en/<br/>
-                      │   └── common.json<br/>
-                      ├── es-MX/<br/>
-                      │   └── common.json<br/>
-                      └── [new-language]/<br/>
-                      &nbsp;&nbsp;&nbsp;&nbsp;└── common.json
-                    </Box>
-                    
-                    <Typography variant="body2" sx={{ mb: 2, mt: 2 }}>
-                      <strong>Translation Categories:</strong>
-                    </Typography>
-                    <List dense>
-                      <ListItem sx={{ py: 0.5 }}>
-                        <ListItemText 
-                          primary="• navigation - Menu and navigation items"
-                          secondary="header, sidebar, footer content"
-                        />
+                        <ListItemText primary={`3. ${t('information.step3')}`} />
                       </ListItem>
                       <ListItem sx={{ py: 0.5 }}>
-                        <ListItemText 
-                          primary="• buttons - Action buttons and controls"
-                          secondary="save, cancel, delete, import, etc."
-                        />
+                        <ListItemText primary={`4. ${t('information.step4')}`} />
                       </ListItem>
                       <ListItem sx={{ py: 0.5 }}>
-                        <ListItemText 
-                          primary="• dataImport - Import functionality"
-                          secondary="CSV import, mapping, validation"
-                        />
-                      </ListItem>
-                      <ListItem sx={{ py: 0.5 }}>
-                        <ListItemText 
-                          primary="• optimization - Route optimization terms"
-                          secondary="algorithms, constraints, preferences"
-                        />
-                      </ListItem>
-                      <ListItem sx={{ py: 0.5 }}>
-                        <ListItemText 
-                          primary="• errors/success - User feedback messages"
-                          secondary="validation, network, completion messages"
-                        />
-                      </ListItem>
-                      <ListItem sx={{ py: 0.5 }}>
-                        <ListItemText 
-                          primary="• language - Language selection UI"
-                          secondary="language names and selection interface"
-                        />
-                      </ListItem>
-                    </List>
-                  </AccordionDetails>
-                </Accordion>
-              </Grid>
-
-              <Grid item xs={12}>
-                <Accordion sx={{ border: '1px solid #e0e0e0' }}>
-                  <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-                      <SettingsIcon sx={{ color: companyColor }} />
-                      <Typography variant="h6" sx={{ fontWeight: 'bold' }}>
-                        Implementation & Configuration
-                      </Typography>
-                    </Box>
-                  </AccordionSummary>
-                  <AccordionDetails>
-                    <Typography variant="body2" sx={{ mb: 2 }}>
-                      <strong>Technical Implementation:</strong>
-                    </Typography>
-                    <Box sx={{ bgcolor: '#f5f5f5', p: 2, borderRadius: 1, fontFamily: 'monospace', fontSize: '0.9rem' }}>
-                      // The platform uses next-intl v4.3.4<br/>
-                      // To implement translations in components:<br/><br/>
-                      
-                      import &#123;useTranslations&#125; from 'next-intl'<br/><br/>
-                      
-                      const t = useTranslations('navigation')<br/>
-                      return &lt;button&gt;&#123;t('routePlanner')&#125;&lt;/button&gt;
-                    </Box>
-
-                    <Typography variant="body2" sx={{ mb: 2, mt: 3 }}>
-                      <strong>Configuration Steps:</strong>
-                    </Typography>
-                    <List dense>
-                      <ListItem sx={{ py: 0.5 }}>
-                        <ListItemText 
-                          primary="1. Update middleware.ts"
-                          secondary="Add your new locale to the locales array and configure routing"
-                        />
-                      </ListItem>
-                      <ListItem sx={{ py: 0.5 }}>
-                        <ListItemText 
-                          primary="2. Create i18n configuration"
-                          secondary="Set up locale detection and routing preferences"
-                        />
-                      </ListItem>
-                      <ListItem sx={{ py: 0.5 }}>
-                        <ListItemText 
-                          primary="3. Add language selector"
-                          secondary="Implement UI component for users to switch languages"
-                        />
-                      </ListItem>
-                      <ListItem sx={{ py: 0.5 }}>
-                        <ListItemText 
-                          primary="4. Test implementation"
-                          secondary="Verify translations load correctly and URLs work properly"
-                        />
-                      </ListItem>
-                    </List>
-
-                    <Typography variant="body2" sx={{ mb: 2, mt: 3 }}>
-                      <strong>Translation Best Practices:</strong>
-                    </Typography>
-                    <List dense>
-                      <ListItem sx={{ py: 0.5 }}>
-                        <ListItemText 
-                          primary="• Use nested keys for organization"
-                          secondary="Group related translations under common parent keys"
-                        />
-                      </ListItem>
-                      <ListItem sx={{ py: 0.5 }}>
-                        <ListItemText 
-                          primary="• Keep keys descriptive and consistent"
-                          secondary="Use clear naming conventions across all language files"
-                        />
-                      </ListItem>
-                      <ListItem sx={{ py: 0.5 }}>
-                        <ListItemText 
-                          primary="• Consider cultural context"
-                          secondary="Adapt content for cultural differences, not just language"
-                        />
-                      </ListItem>
-                      <ListItem sx={{ py: 0.5 }}>
-                        <ListItemText 
-                          primary="• Test with longer text"
-                          secondary="Some languages require more space for equivalent content"
-                        />
-                      </ListItem>
-                    </List>
-                  </AccordionDetails>
-                </Accordion>
-              </Grid>
-            </Grid>
-
-            {/* Getting Started Section */}
-            <Typography variant="h5" sx={{ fontWeight: 'bold', mb: 3, mt: 4, color: companyColor }}>
-              Getting Started
-            </Typography>
-
-            <Grid container spacing={3} sx={{ mb: 4 }}>
-              <Grid item xs={12} md={8}>
-                <Card sx={{ border: '1px solid #e0e0e0' }}>
-                  <CardHeader
-                    title="Quick Start Guide"
-                    titleTypographyProps={{ variant: 'h6', fontWeight: 'bold' }}
-                  />
-                  <CardContent>
-                    <Typography variant="body2" sx={{ mb: 2 }}>
-                      <strong>1. Initial Setup:</strong>
-                    </Typography>
-                    <List dense>
-                      <ListItem sx={{ py: 0.5 }}>
-                        <ListItemText 
-                          primary="• Configure your NextBillion.ai API key"
-                          secondary="Set NEXTBILLION_API_KEY in your environment variables"
-                        />
-                      </ListItem>
-                      <ListItem sx={{ py: 0.5 }}>
-                        <ListItemText 
-                          primary="• Upload your company logo"
-                          secondary="Replace the default logo with your branded logo"
-                        />
-                      </ListItem>
-                      <ListItem sx={{ py: 0.5 }}>
-                        <ListItemText 
-                          primary="• Set your company name"
-                          secondary="Update the company name throughout the application"
-                        />
-                      </ListItem>
-                    </List>
-
-                    <Typography variant="body2" sx={{ mb: 2, mt: 2 }}>
-                      <strong>2. Data Import:</strong>
-                    </Typography>
-                    <List dense>
-                      <ListItem sx={{ py: 0.5 }}>
-                        <ListItemText 
-                          primary="• Prepare your jobs/vehicles data in CSV format"
-                          secondary="Ensure data includes required fields (location, capacity, time windows)"
-                        />
-                      </ListItem>
-                      <ListItem sx={{ py: 0.5 }}>
-                        <ListItemText 
-                          primary="• Map your data fields to the application schema"
-                          secondary="Use the data mapping interface to connect your fields"
-                        />
-                      </ListItem>
-                      <ListItem sx={{ py: 0.5 }}>
-                        <ListItemText 
-                          primary="• Validate and import your data"
-                          secondary="Review mapped data and proceed with import"
-                        />
-                      </ListItem>
-                    </List>
-
-                    <Typography variant="body2" sx={{ mb: 2, mt: 2 }}>
-                      <strong>3. Route Optimization:</strong>
-                    </Typography>
-                    <List dense>
-                      <ListItem sx={{ py: 0.5 }}>
-                        <ListItemText 
-                          primary="• Configure optimization preferences"
-                          secondary="Set routing mode, constraints, and objectives"
-                        />
-                      </ListItem>
-                      <ListItem sx={{ py: 0.5 }}>
-                        <ListItemText 
-                          primary="• Run optimization and review results"
-                          secondary="Analyze routes, metrics, and performance data"
-                        />
-                      </ListItem>
-                      <ListItem sx={{ py: 0.5 }}>
-                        <ListItemText 
-                          primary="• Export and share results"
-                          secondary="Download route data and share with your team"
-                        />
-                      </ListItem>
-                    </List>
-                  </CardContent>
-                </Card>
-              </Grid>
-
-              <Grid item xs={12} md={4}>
-                <Card sx={{ border: '1px solid #e0e0e0', height: 'fit-content' }}>
-                  <CardHeader
-                    title="System Requirements"
-                    titleTypographyProps={{ variant: 'h6', fontWeight: 'bold' }}
-                  />
-                  <CardContent>
-                    <List dense>
-                      <ListItem sx={{ py: 0.5 }}>
-                        <ListItemIcon sx={{ minWidth: 30 }}>
-                          <InfoIcon sx={{ fontSize: 16, color: '#2196f3' }} />
-                        </ListItemIcon>
-                        <ListItemText 
-                          primary="Node.js 18.17.0+"
-                          secondary="Required for Next.js compatibility"
-                        />
-                      </ListItem>
-                      <ListItem sx={{ py: 0.5 }}>
-                        <ListItemIcon sx={{ minWidth: 30 }}>
-                          <InfoIcon sx={{ fontSize: 16, color: '#2196f3' }} />
-                        </ListItemIcon>
-                        <ListItemText 
-                          primary="NextBillion.ai API Key"
-                          secondary="For route optimization services"
-                        />
-                      </ListItem>
-                      <ListItem sx={{ py: 0.5 }}>
-                        <ListItemIcon sx={{ minWidth: 30 }}>
-                          <InfoIcon sx={{ fontSize: 16, color: '#2196f3' }} />
-                        </ListItemIcon>
-                        <ListItemText 
-                          primary="Modern Web Browser"
-                          secondary="Chrome, Firefox, Safari, Edge"
-                        />
-                      </ListItem>
-                      <ListItem sx={{ py: 0.5 }}>
-                        <ListItemIcon sx={{ minWidth: 30 }}>
-                          <WarningIcon sx={{ fontSize: 16, color: '#ff9800' }} />
-                        </ListItemIcon>
-                        <ListItemText 
-                          primary="Database Access"
-                          secondary="For database import functionality"
-                        />
-                      </ListItem>
-                    </List>
-                  </CardContent>
-                </Card>
-              </Grid>
-            </Grid>
-
-            {/* Support & Documentation */}
-            <Typography variant="h5" sx={{ fontWeight: 'bold', mb: 3, mt: 4, color: companyColor }}>
-              Support & Documentation
-            </Typography>
-
-            <Grid container spacing={3} sx={{ mb: 4 }}>
-              <Grid item xs={12} md={6}>
-                <Card sx={{ border: '1px solid #e0e0e0' }}>
-                  <CardHeader
-                    title="Available Resources"
-                    titleTypographyProps={{ variant: 'h6', fontWeight: 'bold' }}
-                  />
-                  <CardContent>
-                    <List dense>
-                      <ListItem sx={{ py: 0.5 }}>
-                        <ListItemText 
-                          primary={
-                            <a 
-                              href="https://docs.nextbillion.ai/optimization/route-optimization-api" 
-                              target="_blank" 
-                              rel="noopener noreferrer"
-                              style={{ color: companyColor, textDecoration: 'none' }}
-                            >
-                              • API Documentation
-                            </a>
-                          }
-                          secondary="Complete NextBillion.ai API reference"
-                        />
-                      </ListItem>
-                      <ListItem sx={{ py: 0.5 }}>
-                        <ListItemText 
-                          primary={
-                            <a 
-                              href="https://github.com/mbsoft/route-planner-white-label/blob/main/DOCUMENTATION.md#database-schema" 
-                              target="_blank" 
-                              rel="noopener noreferrer"
-                              style={{ color: companyColor, textDecoration: 'none' }}
-                            >
-                              • Data Format Specifications
-                            </a>
-                          }
-                          secondary="Required CSV formats and field mappings"
-                        />
-                      </ListItem>
-                      <ListItem sx={{ py: 0.5 }}>
-                        <ListItemText 
-                          primary={
-                            <a 
-                              href="https://github.com/mbsoft/route-planner-white-label/blob/main/docs/DEPLOYMENT_QUICKSTART.md" 
-                              target="_blank" 
-                              rel="noopener noreferrer"
-                              style={{ color: companyColor, textDecoration: 'none' }}
-                            >
-                              • White Label Guide
-                            </a>
-                          }
-                          secondary="Detailed customization instructions"
-                        />
-                      </ListItem>
-                      <ListItem sx={{ py: 0.5 }}>
-                        <ListItemText 
-                          primary="• Troubleshooting Guide"
-                          secondary="Common issues and solutions"
-                        />
+                        <ListItemText primary={`5. ${t('information.step5')}`} />
                       </ListItem>
                     </List>
                   </CardContent>
@@ -867,30 +426,34 @@ export default function InformationPage() {
               <Grid item xs={12} md={6}>
                 <Card sx={{ border: '1px solid #e0e0e0' }}>
                   <CardHeader
-                    title="Contact & Support"
+                    avatar={<WarningIcon sx={{ color: companyColor }} />}
+                    title={t('information.translationBestPractices')}
                     titleTypographyProps={{ variant: 'h6', fontWeight: 'bold' }}
                   />
                   <CardContent>
-                    <Typography variant="body2" sx={{ mb: 2 }}>
-                      For technical support and customization assistance:
-                    </Typography>
                     <List dense>
                       <ListItem sx={{ py: 0.5 }}>
                         <ListItemText 
-                          primary="• NextBillion.ai Support"
-                          secondary="API and optimization engine support"
+                          primary={t('information.useNestedKeys')}
+                          secondary={t('information.useNestedKeysDesc')}
                         />
                       </ListItem>
                       <ListItem sx={{ py: 0.5 }}>
                         <ListItemText 
-                          primary="• Platform Documentation"
-                          secondary="Comprehensive setup and usage guides"
+                          primary={t('information.keepKeysDescriptive')}
+                          secondary={t('information.keepKeysDescriptiveDesc')}
                         />
                       </ListItem>
                       <ListItem sx={{ py: 0.5 }}>
                         <ListItemText 
-                          primary="• Custom Development"
-                          secondary="For advanced customization needs"
+                          primary={t('information.considerCulturalContext')}
+                          secondary={t('information.considerCulturalContextDesc')}
+                        />
+                      </ListItem>
+                      <ListItem sx={{ py: 0.5 }}>
+                        <ListItemText 
+                          primary={t('information.testLongerText')}
+                          secondary={t('information.testLongerTextDesc')}
                         />
                       </ListItem>
                     </List>
@@ -899,24 +462,23 @@ export default function InformationPage() {
               </Grid>
             </Grid>
           </Box>
+
+          {/* Footer */}
           <Box sx={{
             borderTop: '1px solid #e0e0e0',
             backgroundColor: '#ffffff',
             py: 3,
             px: 2,
-            mt: '5px', // Add 5px margin above the footer
-            position: 'relative',
-            zIndex: 10, // Ensure footer is above content but below sticky elements
-            flexShrink: 0, // Prevent footer from shrinking
+            mt: '5px'
           }}>
             <Box sx={{ mt: 0, pt: 0, display: 'flex', alignItems: 'center', gap: 1 }}>
               <img
                 src={companyLogo}
                 alt={`${companyName} Logo`}
-                style={{ height: '40px', width: 'auto', marginRight: '8px', verticalAlign: 'middle' }}
+                style={{ height: '20px', width: 'auto', marginRight: '8px', verticalAlign: 'middle' }}
               />
-              <Typography variant="body2" sx={{ color: '#999', fontSize: '14px' }}>
-                powered by NextBillion.ai | Version 1.0.0 | Last updated: {new Date().toLocaleDateString()}
+              <Typography variant="caption" sx={{ color: '#999' }}>
+                {t('footer.poweredBy')} | {t('footer.version')} | {t('footer.lastUpdated')}: {new Date().toLocaleDateString()}
               </Typography>
             </Box>
           </Box>

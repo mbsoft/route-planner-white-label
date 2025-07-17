@@ -5,6 +5,7 @@ import {ThemeProvider, createTheme} from '@mui/material/styles'
 import CssBaseline from '@mui/material/CssBaseline'
 
 import { buildThemeFromConfig, parseThemeConfigFromAPI, ThemeConfig } from '../utils/theme-builder'
+import { LanguageProvider } from '../contexts/language-context'
 
 // Create a context for the API key
 interface WhiteLabelContextType {
