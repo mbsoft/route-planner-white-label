@@ -28,7 +28,7 @@ export function LanguageSwitcher() {
     setAnchorEl(null)
   }
 
-  const handleLanguageChange = (newLanguage: 'en' | 'es-MX') => {
+  const handleLanguageChange = (newLanguage: 'en' | 'es-MX' | 'pt-BR' | 'ca-FR') => {
     setLanguage(newLanguage)
     setAnchorEl(null) // Close menu immediately
   }
@@ -39,6 +39,10 @@ export function LanguageSwitcher() {
         return t('language.english')
       case 'es-MX':
         return t('language.spanish')
+      case 'pt-BR':
+        return t('language.portuguese')
+      case 'ca-FR':
+        return t('language.frenchCanadian')
       default:
         return lang
     }
@@ -83,9 +87,18 @@ export function LanguageSwitcher() {
           selected={language === 'en'}
         >
           <ListItemIcon>
-            <Typography variant="body2">🇺🇸</Typography>
+            <Typography variant="body2">🇺🇸 🇨🇦</Typography>
           </ListItemIcon>
           <ListItemText primary={t('language.english')} />
+        </MenuItem>
+        <MenuItem 
+          onClick={() => handleLanguageChange('ca-FR')}
+          selected={language === 'ca-FR'}
+        >
+          <ListItemIcon>
+            <Typography variant="body2">🇨🇦</Typography>
+          </ListItemIcon>
+          <ListItemText primary={t('language.frenchCanadian')} />
         </MenuItem>
         <MenuItem 
           onClick={() => handleLanguageChange('es-MX')}
@@ -96,6 +109,16 @@ export function LanguageSwitcher() {
           </ListItemIcon>
           <ListItemText primary={t('language.spanish')} />
         </MenuItem>
+        <MenuItem 
+          onClick={() => handleLanguageChange('pt-BR')}
+          selected={language === 'pt-BR'}
+        >
+          <ListItemIcon>
+            <Typography variant="body2">🇧🇷</Typography>
+          </ListItemIcon>
+          <ListItemText primary={t('language.portuguese')} />
+        </MenuItem>
+
       </Menu>
     </Box>
   )

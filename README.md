@@ -14,6 +14,49 @@ A white-label route planning application for logistics, field service optimizati
 - **Responsive Design**: Modern UI built with Material-UI components
 - **White-Label Ready**: Easily customizable for different brands and use cases
 - **Role-Based Authentication**: Admin and User roles with different permission levels
+- **Multi-Language Support**: Internationalization (i18n) with support for multiple languages
+
+## Internationalization (i18n)
+
+The application supports multiple languages to accommodate global users. The language switcher is available in the header navigation.
+
+### Supported Languages
+
+The application currently supports the following languages:
+
+- **🇺🇸 🇨🇦 English (en)** - Default language
+- **🇨🇦 French Canadian (ca-FR)** - Canadian French with proper terminology
+- **🇲🇽 Spanish (es-MX)** - Mexican Spanish
+- **🇧🇷 Portuguese (pt-BR)** - Brazilian Portuguese
+
+### Language Features
+
+- **Complete UI Translation**: All user interface elements are translated
+- **Cultural Adaptation**: Translations consider cultural context and regional terminology
+- **Persistent Language Selection**: User's language preference is saved and restored
+- **Real-time Language Switching**: Change languages instantly without page reload
+- **Comprehensive Coverage**: Navigation, forms, error messages, and documentation
+
+### Adding New Languages
+
+To add support for additional languages:
+
+1. **Update Language Type**: Add the new language code to the `Language` type in `contexts/language-context.tsx`
+2. **Create Translations**: Add a new translation object following the existing pattern
+3. **Update Language Loading**: Add the new language case to the switch statement
+4. **Add to Switcher**: Include the new language in the language switcher component
+5. **Test Implementation**: Verify translations load correctly and UI updates properly
+
+### Translation Structure
+
+Translations are organized into logical categories:
+- **navigation**: Menu items and navigation elements
+- **header**: Page headers and titles
+- **buttons**: Action buttons and controls
+- **dataImport**: Import functionality and messages
+- **analysis**: Route analysis and optimization results
+- **errors/success**: User feedback messages
+- **information**: Documentation and help content
 
 ## Authentication & Authorization
 

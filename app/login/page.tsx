@@ -18,6 +18,7 @@ import {
 import { Visibility, VisibilityOff, Login as LoginIcon } from '@mui/icons-material'
 import { WhiteLabelLayout, useWhiteLabelContext } from '../white-label-layout'
 import { buildThemeFromConfig, parseThemeConfigFromAPI, ThemeConfig } from '../../utils/theme-builder'
+import { CompanyLogo } from '../../components/common/company-logo'
 
 const defaultThemeConfig: ThemeConfig = {
   primaryColor: '#D36784',
@@ -118,11 +119,7 @@ function LoginPageContent() {
             }}
           >
             <Box sx={{ textAlign: 'center', mb: 3 }}>
-              <img 
-                src={companyLogo} 
-                alt="Company Logo" 
-                style={{ height: 160, marginBottom: 16 }}
-              />
+              <CompanyLogo height={160} variant="header" />
               <Typography variant="h4" component="h1" gutterBottom>
                 {companyName}
               </Typography>

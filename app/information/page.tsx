@@ -22,6 +22,7 @@ import { LanguageSwitcher } from '../../components/common/language-switcher'
 import { useRouter } from 'next/navigation'
 import { useWhiteLabelContext } from '../white-label-layout'
 import { useLanguage } from '../../contexts/language-context'
+import { CompanyLogo } from '../../components/common/company-logo'
 
 export default function InformationPage() {
   const router = useRouter()
@@ -73,15 +74,7 @@ export default function InformationPage() {
           <Box sx={{ p: 2, borderBottom: '1px solid #e0e0e0', backgroundColor: '#ffffff' }}>
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, justifyContent: 'space-between' }}>
               <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-                <img
-                  src={companyLogo}
-                  alt={`${companyName} Logo`}
-                  style={{
-                    height: '60px',
-                    width: 'auto',
-                    borderRadius: '4px'
-                  }}
-                />
+                <CompanyLogo height={60} variant="header" />
                 <Typography
                   variant="h4"
                   component="h1"
@@ -395,7 +388,13 @@ export default function InformationPage() {
                         <ListItemText primary={t('information.englishDefault')} />
                       </ListItem>
                       <ListItem sx={{ py: 0.5 }}>
+                        <ListItemText primary="🇨🇦 French Canadian (ca-FR)" />
+                      </ListItem>
+                      <ListItem sx={{ py: 0.5 }}>
                         <ListItemText primary={t('information.spanishMexican')} />
+                      </ListItem>
+                      <ListItem sx={{ py: 0.5 }}>
+                        <ListItemText primary="🇧🇷 Portuguese Brazilian (pt-BR)" />
                       </ListItem>
                     </List>
                     
@@ -472,11 +471,7 @@ export default function InformationPage() {
             mt: '5px'
           }}>
             <Box sx={{ mt: 0, pt: 0, display: 'flex', alignItems: 'center', gap: 1 }}>
-              <img
-                src={companyLogo}
-                alt={`${companyName} Logo`}
-                style={{ height: '20px', width: 'auto', marginRight: '8px', verticalAlign: 'middle' }}
-              />
+              <CompanyLogo height={20} variant="footer" />
               <Typography variant="caption" sx={{ color: '#999' }}>
                 {t('footer.poweredBy')} | {t('footer.version')} | {t('footer.lastUpdated')}: {new Date().toLocaleDateString()}
               </Typography>

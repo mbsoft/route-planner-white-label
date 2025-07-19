@@ -822,6 +822,7 @@ export const InputImportPage = ({ currentStep, onStepChange, preferences, onPref
                 if (resultData.result?.routes && onRouteResultsChange) {
                   const routeData = resultData.result.routes.map((route: any) => ({
                     vehicle: route.vehicle,
+                    geometry: route.geometry, // Add geometry field for map polylines
                     cost: route.cost,
                     distance: route.distance,
                     duration: route.duration,
