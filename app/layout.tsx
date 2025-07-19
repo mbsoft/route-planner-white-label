@@ -1,4 +1,4 @@
-import {WhiteLabelLayout} from './white-label-layout'
+import Providers from './providers'
 import { Analytics } from '@vercel/analytics/react'
 
 export const metadata = {
@@ -10,18 +10,16 @@ export const metadata = {
   },
 }
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode
-}) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
       <head>
         <link href="https://maps-gl.nextbillion.io/maps/v2/api/css" rel="stylesheet"/>
       </head>
       <body style={{ background: '#E5EEFA' }}>
-        <WhiteLabelLayout>{children}</WhiteLabelLayout>
+        <Providers>
+          {children}
+        </Providers>
         <Analytics />
       </body>
     </html>

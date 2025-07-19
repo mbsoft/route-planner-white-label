@@ -282,13 +282,13 @@ export const RouteSummaryTable: React.FC<RouteSummaryTableProps> = ({
                 <TableCell onClick={() => handleToggleRoute(routeIndex)}>
                   {route.delivery && route.delivery.length >= 2 ? (
                     <Box sx={{ overflow: 'hidden', textOverflow: 'ellipsis' }}>
-                      <Typography variant="caption" sx={{ display: 'block', color: '#666', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                      <Typography variant="body2" sx={{ display: 'block', color: '#666', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', fontSize: '0.875rem' }}>
                         ULSD Clear: {route.delivery[0]} gal
                       </Typography>
-                      <Typography variant="caption" sx={{ display: 'block', color: '#666', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                      <Typography variant="body2" sx={{ display: 'block', color: '#666', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', fontSize: '0.875rem' }}>
                         ULSD Dyed: {route.delivery[1]} gal
                       </Typography>
-                      <Typography variant="caption" sx={{ display: 'block', fontWeight: 'bold', color: companyColor, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                      <Typography variant="body2" sx={{ display: 'block', fontWeight: 'bold', color: companyColor, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', fontSize: '0.875rem' }}>
                         Total: {route.delivery[0] + route.delivery[1] + route.delivery[2] + route.delivery[3] + route.delivery[4]} gal
                       </Typography>
                     </Box>
@@ -373,13 +373,13 @@ export const RouteSummaryTable: React.FC<RouteSummaryTableProps> = ({
                                 <TableCell sx={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
                                   {step.load && step.load.length >= 2 ? (
                                     <Box>
-                                      <Typography variant="caption" sx={{ display: 'block', color: '#666' }}>
+                                      <Typography variant="body2" sx={{ display: 'block', color: '#666', fontSize: '0.875rem' }}>
                                         ULSD Clear: {step.load[0]} gal
                                       </Typography>
-                                      <Typography variant="caption" sx={{ display: 'block', color: '#666' }}>
+                                      <Typography variant="body2" sx={{ display: 'block', color: '#666', fontSize: '0.875rem' }}>
                                         ULSD Dyed: {step.load[1]} gal
                                       </Typography>
-                                      <Typography variant="caption" sx={{ display: 'block', fontWeight: 'bold', color: companyColor }}>
+                                      <Typography variant="body2" sx={{ display: 'block', fontWeight: 'bold', color: companyColor, fontSize: '0.875rem' }}>
                                         Total: {step.load[0] + step.load[1]} gal
                                       </Typography>
                                     </Box>

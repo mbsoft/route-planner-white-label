@@ -1,0 +1,1190 @@
+'use client'
+
+import React, { createContext, useContext, useState, useEffect, ReactNode, useCallback } from 'react'
+
+type Language = 'en' | 'es-MX' | 'pt-BR' | 'ca-FR'
+
+interface LanguageContextType {
+  language: Language
+  setLanguage: (lang: Language) => void
+  t: (key: string) => string
+  isLoading: boolean
+  renderKey: number
+}
+
+const LanguageContext = createContext<LanguageContextType | undefined>(undefined)
+
+interface LanguageProviderProps {
+  children: ReactNode
+}
+
+// Import locale files directly
+const enTranslations = {
+  "navigation": {
+    "routePlanner": "Route Planner",
+    "routeAnalysis": "Route Analysis",
+    "information": "Information",
+    "logout": "Logout",
+    "admin": "ADMIN"
+  },
+  "header": {
+    "planManageMonitor": "Plan, manage and monitor your routes",
+    "routePlanAnalysis": "Route Plan Analysis",
+    "informationDocumentation": "Information & Documentation",
+    "editRoute": "Edit Route"
+  },
+  "sidebar": {
+    "collapseSidebar": "Collapse sidebar",
+    "expandSidebar": "Expand sidebar"
+  },
+  "footer": {
+    "poweredBy": "powered by NextBillion.ai",
+    "version": "Version 1.0.0",
+    "lastUpdated": "Last updated"
+  },
+  "loading": {
+    "loadingRoutePlanner": "Loading Route Planner...",
+    "checkingApiConfig": "Checking API configuration..."
+  },
+  "buttons": {
+    "import": "Import",
+    "save": "Save",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "edit": "Edit",
+    "close": "Close",
+    "confirm": "Confirm",
+    "back": "Back",
+    "next": "Next",
+    "reset": "Reset",
+    "add": "Add",
+    "clear": "Clear"
+  },
+  "dataImport": {
+    "importJobsFromDatabase": "Import Jobs from Database",
+    "importVehiclesFromDatabase": "Import Vehicles from Database",
+    "startTimeOptional": "Start Time (optional)",
+    "endTimeOptional": "End Time (optional)",
+    "searchDescriptionOptional": "Search Description (optional)",
+    "enterSearchTerm": "Enter search term...",
+    "leaveEmptyToImportAll": "Leave empty to import all records",
+    "caseInsensitiveSearch": "Case insensitive search in job descriptions",
+    "caseInsensitiveSearchVehicles": "Case insensitive search in vehicle descriptions",
+    "recordsWillBeImported": "records will be imported",
+    "recordWillBeImported": "record will be imported",
+    "importJobData": "Import Job Data",
+    "importVehicleData": "Import Vehicle Data",
+    "recordsLoaded": "records loaded",
+    "fromDatabase": "(from database)",
+    "selectField": "Select field",
+    "addAttribute": "Add attribute",
+    "editTable": "Edit table",
+    "saveChanges": "Save changes",
+    "cancelEditing": "Cancel editing",
+    "deleteImportedData": "Delete imported data",
+    "resetMapping": "Reset Mapping",
+    "confirmDeletion": "Confirm Deletion",
+    "deleteConfirmation": "Are you sure you want to delete all imported {type} data? This action cannot be undone.",
+    "areYouSure": "Are you sure?",
+    "deleteConfirmationGeneric": "This will delete all imported data. This action cannot be undone."
+  },
+  "table": {
+    "selectAllRows": "Select all rows",
+    "selectRow": "Select row",
+    "vehicle": "Vehicle",
+    "description": "Description",
+    "start": "Start",
+    "end": "End",
+    "stops": "Stops",
+    "distance": "Distance",
+    "drive": "Drive",
+    "delivery": "Delivery",
+    "departure": "Departure",
+    "id": "ID",
+    "startLocation": "Start Location",
+    "endLocation": "End Location",
+    "serviceTime": "Service Time"
+  },
+  "analysis": {
+    "optimizationResults": "Optimization Results",
+    "noResults": "No optimization results found",
+    "viewResult": "View Result",
+    "editTitle": "Edit Title",
+    "deleteResult": "Delete Result",
+    "downloadResults": "Download Results",
+    "shareResults": "Share Results",
+    "optimizationHistory": "Optimization History",
+    "jobId": "Job ID",
+    "title": "Title",
+    "status": "Status",
+    "createdAt": "Created At",
+    "actions": "Actions",
+    "completed": "Completed",
+    "failed": "Failed",
+    "pending": "Pending",
+    "routeDetails": "Route Details",
+    "routeSummary": "Route Summary",
+    "stepDetails": "Step Details",
+    "totalDistance": "Total Distance",
+    "totalTime": "Total Time",
+    "totalStops": "Total Stops",
+    "vehicleUtilization": "Vehicle Utilization",
+    "capacityUtilization": "Capacity Utilization",
+    "timeUtilization": "Time Utilization"
+  },
+  "map": {
+    "mapView": "Map View",
+    "showJobMarkers": "Jobs/Shipments",
+    "showVehicleMarkers": "Vehicles",
+    "showRoutes": "Routes"
+  },
+  "preferences": {
+    "preferences": "Preferences",
+    "saveMapping": "Save Mapping",
+    "clearPreferences": "Clear Preferences",
+    "routingOptions": "Routing Options",
+    "avoidOptions": "Avoid Options",
+    "hazmatTypes": "Hazardous Material Types",
+    "truckMode": "Truck Mode",
+    "carMode": "Car Mode",
+    "bikeMode": "Bike Mode",
+    "footMode": "Foot Mode"
+  },
+  "hazmatTypes": {
+    "explosives": "Explosives",
+    "gases": "Gases",
+    "flammableLiquids": "Flammable Liquids",
+    "flammableSolids": "Flammable Solids",
+    "oxidizingSubstances": "Oxidizing Substances",
+    "toxicSubstances": "Toxic Substances",
+    "radioactiveMaterials": "Radioactive Materials",
+    "corrosiveSubstances": "Corrosive Substances",
+    "miscellaneous": "Miscellaneous"
+  },
+  "avoidOptions": {
+    "highways": "Highways",
+    "tolls": "Tolls",
+    "ferries": "Ferries",
+    "indoor": "Indoor",
+    "dirtRoads": "Dirt Roads"
+  },
+  "errors": {
+    "failedToFetch": "Failed to fetch data",
+    "failedToSave": "Failed to save changes",
+    "failedToDelete": "Failed to delete",
+    "unknownError": "Unknown error occurred",
+    "networkError": "Network error",
+    "validationError": "Validation error"
+  },
+  "success": {
+    "changesSaved": "Changes saved successfully",
+    "dataDeleted": "Data deleted successfully",
+    "optimizationComplete": "Optimization completed successfully"
+  },
+  "language": {
+    "english": "English",
+    "spanish": "Español",
+    "selectLanguage": "Select Language"
+  },
+  "information": {
+    "pageTitle": "Route Planning & Optimization Platform",
+    "welcomeMessage": "Welcome to the {companyName} Route Planning Platform, a comprehensive white-label solution powered by NextBillion.ai's advanced optimization engine. This platform provides intelligent route planning, real-time optimization, and detailed analytics for fleet management operations.",
+    "routeOptimization": "Route Optimization",
+    "routeOptimizationDesc": "Advanced algorithms optimize routes for:",
+    "minTravelTime": "Minimum travel time and distance",
+    "vehicleCapacity": "Vehicle capacity constraints",
+    "timeWindow": "Time window compliance",
+    "multiFuel": "Multi-fuel type support",
+    "dataImport": "Data Import & Management",
+    "dataImportDesc": "Flexible data import options:",
+    "csvExcel": "CSV/Excel file upload",
+    "databaseIntegration": "Database integration",
+    "realTimeMapping": "Real-time data mapping",
+    "bulkValidation": "Bulk data validation",
+    "analytics": "Analytics & Reporting",
+    "analyticsDesc": "Comprehensive analytics features:",
+    "fuelMetrics": "Fuel delivery metrics",
+    "routePerformance": "Route performance analysis",
+    "optimizationHistory": "Optimization history",
+    "exportCapabilities": "Export capabilities",
+    "whiteLabelTitle": "White Label Customization Guide",
+    "whiteLabelDesc": "This platform is designed as a white-label solution, allowing complete customization of branding, styling, and functionality to match your organization's identity and requirements.",
+    "brandingTitle": "Branding & Visual Customization",
+    "logoIdentity": "Logo & Company Identity:",
+    "replaceLogo": "Replace default logo with your company logo",
+    "setCompanyLogo": "Set COMPANY_LOGO environment variable or update company_logo.svg in the public directory",
+    "colorScheme": "Color Scheme Customization:",
+    "setCompanyColor": "Set COMPANY_COLOR environment variable to customize the primary color scheme throughout the application",
+    "companyName": "Company Name:",
+    "setCompanyName": "Set COMPANY_NAME environment variable to display your company name throughout the application",
+    "technicalTitle": "Technical Implementation",
+    "environmentVariables": "Environment Variables:",
+    "envVarsDesc": "Configure the following environment variables in your deployment environment:",
+    "companyLogoVar": "COMPANY_LOGO - Path to your company logo image",
+    "companyColorVar": "COMPANY_COLOR - Primary brand color (hex format, e.g., #D36784)",
+    "companyNameVar": "COMPANY_NAME - Your company name for display purposes",
+    "deploymentTitle": "Deployment & Configuration",
+    "vercelDeployment": "Vercel Deployment:",
+    "vercelSteps": "1. Set environment variables in Vercel dashboard\n2. Deploy your application\n3. Configure custom domain if needed",
+    "otherPlatforms": "Other Platforms:",
+    "otherPlatformsDesc": "Similar environment variable configuration applies to other deployment platforms",
+    "i18nGuide": "Internationalization (i18n) Guide",
+    "i18nDescription": "The platform supports multiple languages using next-intl. Currently, English, French Canadian, Spanish (Mexican), and Portuguese (Brazilian) are supported, and you can easily add additional languages to accommodate your global user base.",
+    "addingNewLanguages": "Adding New Languages",
+    "currentLanguages": "Current Languages:",
+    "englishDefault": "English (en) - Default language",
+    "spanishMexican": "Spanish Mexican (es-MX)",
+    "portugueseBrazilian": "Portuguese Brazilian (pt-BR)",
+    "frenchCanadian": "French Canadian (ca-FR)",
+    "locatedIn": "Located in",
+    "stepsToAdd": "Steps to Add a New Language:",
+    "step1": "Create new directory: /locales/[language-code]/",
+    "step2": "Copy common.json from /locales/en/ to new directory",
+    "step3": "Translate all values in the JSON file",
+    "step4": "Update middleware.ts to include new locale",
+    "step5": "Test the new language implementation",
+    "exampleLanguageCodes": "Example Language Codes:",
+    "french": "French: fr or fr-FR",
+    "german": "German: de or de-DE",
+    "italian": "Italian: it or it-IT",
+    "portuguese": "Portuguese: pt or pt-BR",
+    "chinese": "Chinese: zh-CN or zh-TW",
+    "japanese": "Japanese: ja or ja-JP",
+    "translationFileStructure": "Translation File Structure",
+    "fileOrganization": "File Organization:",
+    "translationCategories": "Translation Categories:",
+    "navigationCategory": "navigation - Menu and navigation items",
+    "navigationDesc": "header, sidebar, footer content",
+    "buttonsCategory": "buttons - Action buttons and controls",
+    "buttonsDesc": "save, cancel, delete, import, etc.",
+    "dataImportCategory": "dataImport - Import functionality",
+    "dataImportDesc": "CSV import, mapping, validation",
+    "optimizationCategory": "optimization - Route optimization terms",
+    "optimizationDesc": "algorithms, constraints, preferences",
+    "messagesCategory": "errors/success - User feedback messages",
+    "messagesDesc": "validation, network, completion messages",
+    "languageCategory": "language - Language selection UI",
+    "languageDesc": "language names and selection interface",
+    "implementationConfig": "Implementation & Configuration",
+    "technicalImplementation": "Technical Implementation:",
+    "configurationSteps": "Configuration Steps:",
+    "updateMiddleware": "Update middleware.ts",
+    "updateMiddlewareDesc": "Add your new locale to the locales array and configure routing",
+    "createI18nConfig": "Create i18n configuration",
+    "createI18nConfigDesc": "Set up locale detection and routing preferences",
+    "addLanguageSelector": "Add language selector",
+    "addLanguageSelectorDesc": "Implement UI component for users to switch languages",
+    "testImplementation": "Test implementation",
+    "testImplementationDesc": "Verify translations load correctly and URLs work properly",
+    "translationBestPractices": "Translation Best Practices:",
+    "useNestedKeys": "Use nested keys for organization",
+    "useNestedKeysDesc": "Group related translations under common parent keys",
+    "keepKeysDescriptive": "Keep keys descriptive and consistent",
+    "keepKeysDescriptiveDesc": "Use clear naming conventions across all language files",
+    "considerCulturalContext": "Consider cultural context",
+    "considerCulturalContextDesc": "Adapt content for cultural differences, not just language",
+    "testLongerText": "Test with longer text",
+    "testLongerTextDesc": "Some languages require more space for equivalent content"
+  }
+}
+
+const esMxTranslations = {
+  "navigation": {
+    "routePlanner": "Planificador de Rutas",
+    "routeAnalysis": "Análisis de Rutas",
+    "information": "Información",
+    "logout": "Cerrar Sesión",
+    "admin": "ADMIN"
+  },
+  "header": {
+    "planManageMonitor": "Planifica, gestiona y monitorea tus rutas",
+    "routePlanAnalysis": "Análisis de Plan de Ruta",
+    "informationDocumentation": "Información y Documentación",
+    "editRoute": "Editar Ruta"
+  },
+  "sidebar": {
+    "collapseSidebar": "Contraer barra lateral",
+    "expandSidebar": "Expandir barra lateral"
+  },
+  "footer": {
+    "poweredBy": "impulsado por NextBillion.ai",
+    "version": "Versión 1.0.0",
+    "lastUpdated": "Última actualización"
+  },
+  "loading": {
+    "loadingRoutePlanner": "Cargando Planificador de Rutas...",
+    "checkingApiConfig": "Verificando configuración de API..."
+  },
+  "buttons": {
+    "import": "Importar",
+    "save": "Guardar",
+    "cancel": "Cancelar",
+    "delete": "Eliminar",
+    "edit": "Editar",
+    "close": "Cerrar",
+    "confirm": "Confirmar",
+    "back": "Atrás",
+    "next": "Siguiente",
+    "reset": "Restablecer",
+    "add": "Agregar",
+    "clear": "Limpiar"
+  },
+  "dataImport": {
+    "importJobsFromDatabase": "Importar Trabajos desde Base de Datos",
+    "importVehiclesFromDatabase": "Importar Vehículos desde Base de Datos",
+    "startTimeOptional": "Hora de Inicio (opcional)",
+    "endTimeOptional": "Hora de Fin (opcional)",
+    "searchDescriptionOptional": "Buscar Descripción (opcional)",
+    "enterSearchTerm": "Ingrese término de búsqueda...",
+    "leaveEmptyToImportAll": "Dejar vacío para importar todos los registros",
+    "caseInsensitiveSearch": "Búsqueda insensible a mayúsculas en descripciones de trabajos",
+    "caseInsensitiveSearchVehicles": "Búsqueda insensible a mayúsculas en descripciones de vehículos",
+    "recordsWillBeImported": "registros serán importados",
+    "recordWillBeImported": "registro será importado",
+    "importJobData": "Importar Datos de Trabajos",
+    "importVehicleData": "Importar Datos de Vehículos",
+    "recordsLoaded": "registros cargados",
+    "fromDatabase": "(desde base de datos)",
+    "selectField": "Seleccionar campo",
+    "addAttribute": "Agregar atributo",
+    "editTable": "Editar tabla",
+    "saveChanges": "Guardar cambios",
+    "cancelEditing": "Cancelar edición",
+    "deleteImportedData": "Eliminar datos importados",
+    "resetMapping": "Restablecer Mapeo",
+    "confirmDeletion": "Confirmar Eliminación",
+    "deleteConfirmation": "¿Está seguro de que desea eliminar todos los datos de {type} importados? Esta acción no se puede deshacer.",
+    "areYouSure": "¿Está seguro?",
+    "deleteConfirmationGeneric": "Esto eliminará todos los datos importados. Esta acción no se puede deshacer."
+  },
+  "table": {
+    "selectAllRows": "Seleccionar todas las filas",
+    "selectRow": "Seleccionar fila",
+    "vehicle": "Vehículo",
+    "description": "Descripción",
+    "start": "Inicio",
+    "end": "Fin",
+    "stops": "Paradas",
+    "distance": "Distancia",
+    "drive": "Conducir",
+    "delivery": "Entrega",
+    "departure": "Salida",
+    "id": "ID",
+    "startLocation": "Ubicación de Inicio",
+    "endLocation": "Ubicación de Fin",
+    "serviceTime": "Tiempo de Servicio"
+  },
+  "analysis": {
+    "optimizationResults": "Resultados de Optimización",
+    "noResults": "No se encontraron resultados de optimización",
+    "viewResult": "Ver Resultado",
+    "editTitle": "Editar Título",
+    "deleteResult": "Eliminar Resultado",
+    "downloadResults": "Descargar Resultados",
+    "shareResults": "Compartir Resultados",
+    "optimizationHistory": "Historial de Optimización",
+    "jobId": "ID de Trabajo",
+    "title": "Título",
+    "status": "Estado",
+    "createdAt": "Creado En",
+    "actions": "Acciones",
+    "completed": "Completado",
+    "failed": "Fallido",
+    "pending": "Pendiente",
+    "routeDetails": "Detalles de Ruta",
+    "routeSummary": "Resumen de Ruta",
+    "stepDetails": "Detalles de Paso",
+    "totalDistance": "Distancia Total",
+    "totalTime": "Tiempo Total",
+    "totalStops": "Paradas Totales",
+    "vehicleUtilization": "Utilización de Vehículo",
+    "capacityUtilization": "Utilización de Capacidad",
+    "timeUtilization": "Utilización de Tiempo"
+  },
+  "map": {
+    "mapView": "Vista de Mapa",
+    "showJobMarkers": "Trabajos/Envíos",
+    "showVehicleMarkers": "Vehículos",
+    "showRoutes": "Rutas"
+  },
+  "preferences": {
+    "preferences": "Preferencias",
+    "saveMapping": "Guardar Mapeo",
+    "clearPreferences": "Limpiar Preferencias",
+    "routingOptions": "Opciones de Enrutamiento",
+    "avoidOptions": "Opciones de Evitar",
+    "hazmatTypes": "Tipos de Materiales Peligrosos",
+    "truckMode": "Modo Camión",
+    "carMode": "Modo Auto",
+    "bikeMode": "Modo Bicicleta",
+    "footMode": "Modo Peatón"
+  },
+  "hazmatTypes": {
+    "explosives": "Explosivos",
+    "gases": "Gases",
+    "flammableLiquids": "Líquidos Inflamables",
+    "flammableSolids": "Sólidos Inflamables",
+    "oxidizingSubstances": "Sustancias Oxidantes",
+    "toxicSubstances": "Sustancias Tóxicas",
+    "radioactiveMaterials": "Materiales Radiactivos",
+    "corrosiveSubstances": "Sustancias Corrosivas",
+    "miscellaneous": "Varias"
+  },
+  "avoidOptions": {
+    "highways": "Autopistas",
+    "tolls": "Peajes",
+    "ferries": "Ferrocarriles",
+    "indoor": "Interior",
+    "dirtRoads": "Campos de tierra"
+  },
+  "errors": {
+    "failedToFetch": "Error al obtener datos",
+    "failedToSave": "Error al guardar cambios",
+    "failedToDelete": "Error al eliminar",
+    "unknownError": "Error desconocido",
+    "networkError": "Error de red",
+    "validationError": "Error de validación"
+  },
+  "success": {
+    "changesSaved": "Cambios guardados exitosamente",
+    "dataDeleted": "Datos eliminados exitosamente",
+    "optimizationComplete": "Optimización completada exitosamente"
+  },
+  "language": {
+    "english": "English",
+    "spanish": "Español",
+    "selectLanguage": "Seleccionar Idioma"
+  },
+  "information": {
+    "pageTitle": "Plataforma de Planificación y Optimización de Rutas",
+    "welcomeMessage": "Bienvenido a la Plataforma de Planificación de Rutas de {companyName}, una solución white-label integral impulsada por el motor de optimización avanzado de NextBillion.ai. Esta plataforma proporciona planificación inteligente de rutas, optimización en tiempo real y análisis detallados para operaciones de gestión de flotas.",
+    "routeOptimization": "Optimización de Rutas",
+    "routeOptimizationDesc": "Los algoritmos avanzados optimizan las rutas para:",
+    "minTravelTime": "Tiempo y distancia mínimos de viaje",
+    "vehicleCapacity": "Restricciones de capacidad del vehículo",
+    "timeWindow": "Cumplimiento de ventanas de tiempo",
+    "multiFuel": "Soporte para múltiples tipos de combustible",
+    "dataImport": "Importación y Gestión de Datos",
+    "dataImportDesc": "Opciones flexibles de importación de datos:",
+    "csvExcel": "Carga de archivos CSV/Excel",
+    "databaseIntegration": "Integración con base de datos",
+    "realTimeMapping": "Mapeo de datos en tiempo real",
+    "bulkValidation": "Validación masiva de datos",
+    "analytics": "Análisis e Informes",
+    "analyticsDesc": "Características integrales de análisis:",
+    "fuelMetrics": "Métricas de entrega de combustible",
+    "routePerformance": "Análisis de rendimiento de rutas",
+    "optimizationHistory": "Historial de optimización",
+    "exportCapabilities": "Capacidades de exportación",
+    "whiteLabelTitle": "Guía de Personalización White Label",
+    "whiteLabelDesc": "Esta plataforma está diseñada como una solución white-label, permitiendo la personalización completa de marca, estilo y funcionalidad para que coincida con la identidad y requisitos de su organización.",
+    "brandingTitle": "Personalización de Marca y Visual",
+    "logoIdentity": "Logo e Identidad de la Empresa:",
+    "replaceLogo": "Reemplazar el logo predeterminado con el logo de su empresa",
+    "setCompanyLogo": "Establecer la variable de entorno COMPANY_LOGO o actualizar company_logo.svg en el directorio público",
+    "colorScheme": "Personalización del Esquema de Colores:",
+    "setCompanyColor": "Establecer la variable de entorno COMPANY_COLOR para personalizar el esquema de colores primario en toda la aplicación",
+    "companyName": "Nombre de la Empresa:",
+    "setCompanyName": "Establecer la variable de entorno COMPANY_NAME para mostrar el nombre de su empresa en toda la aplicación",
+    "technicalTitle": "Implementación Técnica",
+    "environmentVariables": "Variables de Entorno:",
+    "envVarsDesc": "Configure las siguientes variables de entorno en su entorno de implementación:",
+    "companyLogoVar": "COMPANY_LOGO - Ruta a la imagen del logo de su empresa",
+    "companyColorVar": "COMPANY_COLOR - Color de marca primario (formato hex, ej., #D36784)",
+    "companyNameVar": "COMPANY_NAME - Nombre de su empresa para propósitos de visualización",
+    "deploymentTitle": "Implementación y Configuración",
+    "vercelDeployment": "Implementación en Vercel:",
+    "vercelSteps": "1. Establecer variables de entorno en el panel de Vercel\n2. Implementar su aplicación\n3. Configurar dominio personalizado si es necesario",
+    "otherPlatforms": "Otras Plataformas:",
+    "otherPlatformsDesc": "Configuración similar de variables de entorno se aplica a otras plataformas de implementación",
+    "i18nGuide": "Guía de Internacionalización (i18n)",
+    "i18nDescription": "La plataforma soporta múltiples idiomas usando next-intl. Actualmente, se admiten inglés, francés canadiense, español (mexicano) y portugués (brasileño), y puedes agregar fácilmente idiomas adicionales para acomodar a tu base de usuarios global.",
+    "addingNewLanguages": "Agregando Nuevos Idiomas",
+    "currentLanguages": "Idiomas Actuales:",
+    "englishDefault": "Inglés (en) - Idioma predeterminado",
+    "spanishMexican": "Español Mexicano (es-MX)",
+    "portugueseBrazilian": "Portugués Brasileño (pt-BR)",
+    "frenchCanadian": "Francés Canadiense (ca-FR)",
+    "locatedIn": "Ubicado en",
+    "stepsToAdd": "Pasos para Agregar un Nuevo Idioma:",
+    "step1": "Crear nuevo directorio: /locales/[código-idioma]/",
+    "step2": "Copiar common.json de /locales/en/ al nuevo directorio",
+    "step3": "Traducir todos los valores en el archivo JSON",
+    "step4": "Actualizar middleware.ts para incluir el nuevo locale",
+    "step5": "Probar la implementación del nuevo idioma",
+    "exampleLanguageCodes": "Códigos de Idioma de Ejemplo:",
+    "french": "Francés: fr o fr-FR",
+    "german": "Alemán: de o de-DE",
+    "italian": "Italiano: it o it-IT",
+    "portuguese": "Portugués: pt o pt-BR",
+    "chinese": "Chino: zh-CN o zh-TW",
+    "japanese": "Japonés: ja o ja-JP",
+    "translationFileStructure": "Estructura de Archivos de Traducción",
+    "fileOrganization": "Organización de Archivos:",
+    "translationCategories": "Categorías de Traducción:",
+    "navigationCategory": "navigation - Elementos de menú y navegación",
+    "navigationDesc": "contenido de encabezado, barra lateral, pie de página",
+    "buttonsCategory": "buttons - Botones de acción y controles",
+    "buttonsDesc": "guardar, cancelar, eliminar, importar, etc.",
+    "dataImportCategory": "dataImport - Funcionalidad de importación",
+    "dataImportDesc": "importación CSV, mapeo, validación",
+    "optimizationCategory": "optimization - Términos de optimización de rutas",
+    "optimizationDesc": "algoritmos, restricciones, preferencias",
+    "messagesCategory": "errors/success - Mensajes de retroalimentación del usuario",
+    "messagesDesc": "mensajes de validación, red, finalización",
+    "languageCategory": "language - UI de selección de idioma",
+    "languageDesc": "nombres de idiomas e interfaz de selección",
+    "implementationConfig": "Implementación y Configuración",
+    "technicalImplementation": "Implementación Técnica:",
+    "configurationSteps": "Pasos de Configuración:",
+    "updateMiddleware": "Actualizar middleware.ts",
+    "updateMiddlewareDesc": "Agregar tu nuevo locale al array de locales y configurar enrutamiento",
+    "createI18nConfig": "Crear configuración i18n",
+    "createI18nConfigDesc": "Configurar detección de locale y preferencias de enrutamiento",
+    "addLanguageSelector": "Agregar selector de idioma",
+    "addLanguageSelectorDesc": "Implementar componente UI para que los usuarios cambien idiomas",
+    "testImplementation": "Probar implementación",
+    "testImplementationDesc": "Verificar que las traducciones se cargan correctamente y las URLs funcionan correctamente",
+    "translationBestPractices": "Mejores Prácticas de Traducción:",
+    "useNestedKeys": "Usar claves anidadas para organización",
+    "useNestedKeysDesc": "Agrupar traducciones relacionadas bajo claves padre comunes",
+    "keepKeysDescriptive": "Mantener claves descriptivas y consistentes",
+    "keepKeysDescriptiveDesc": "Usar convenciones de nomenclatura claras en todos los archivos de idioma",
+    "considerCulturalContext": "Considerar contexto cultural",
+    "considerCulturalContextDesc": "Adaptar contenido para diferencias culturales, no solo idioma",
+    "testLongerText": "Probar con texto más largo",
+    "testLongerTextDesc": "Algunos idiomas requieren más espacio para contenido equivalente"
+  }
+}
+
+const ptBrTranslations = {
+  "navigation": {
+    "routePlanner": "Planejador de Rotas",
+    "routeAnalysis": "Análise de Rotas",
+    "information": "Informações",
+    "logout": "Sair",
+    "admin": "ADMIN"
+  },
+  "header": {
+    "planManageMonitor": "Planeje, gerencie e monitore suas rotas",
+    "routePlanAnalysis": "Análise do Plano de Rota",
+    "informationDocumentation": "Informações e Documentação",
+    "editRoute": "Editar Rota"
+  },
+  "sidebar": {
+    "collapseSidebar": "Recolher barra lateral",
+    "expandSidebar": "Expandir barra lateral"
+  },
+  "footer": {
+    "poweredBy": "desenvolvido por NextBillion.ai",
+    "version": "Versão 1.0.0",
+    "lastUpdated": "Última atualização"
+  },
+  "loading": {
+    "loadingRoutePlanner": "Carregando Planejador de Rotas...",
+    "checkingApiConfig": "Verificando configuração da API..."
+  },
+  "buttons": {
+    "import": "Importar",
+    "save": "Salvar",
+    "cancel": "Cancelar",
+    "delete": "Excluir",
+    "edit": "Editar",
+    "close": "Fechar",
+    "confirm": "Confirmar",
+    "back": "Voltar",
+    "next": "Próximo",
+    "reset": "Redefinir",
+    "add": "Adicionar",
+    "clear": "Limpar"
+  },
+  "dataImport": {
+    "importJobsFromDatabase": "Importar Trabalhos do Banco de Dados",
+    "importVehiclesFromDatabase": "Importar Veículos do Banco de Dados",
+    "startTimeOptional": "Hora de Início (opcional)",
+    "endTimeOptional": "Hora de Fim (opcional)",
+    "searchDescriptionOptional": "Pesquisar Descrição (opcional)",
+    "enterSearchTerm": "Digite o termo de pesquisa...",
+    "leaveEmptyToImportAll": "Deixe vazio para importar todos os registros",
+    "caseInsensitiveSearch": "Pesquisa insensível a maiúsculas em descrições de trabalhos",
+    "caseInsensitiveSearchVehicles": "Pesquisa insensível a maiúsculas em descrições de veículos",
+    "recordsWillBeImported": "registros serão importados",
+    "recordWillBeImported": "registro será importado",
+    "importJobData": "Importar Dados de Trabalhos",
+    "importVehicleData": "Importar Dados de Veículos",
+    "recordsLoaded": "registros carregados",
+    "fromDatabase": "(do banco de dados)",
+    "selectField": "Selecionar campo",
+    "addAttribute": "Adicionar atributo",
+    "editTable": "Editar tabela",
+    "saveChanges": "Salvar alterações",
+    "cancelEditing": "Cancelar edição",
+    "deleteImportedData": "Excluir dados importados",
+    "resetMapping": "Redefinir Mapeamento",
+    "confirmDeletion": "Confirmar Exclusão",
+    "deleteConfirmation": "Tem certeza de que deseja excluir todos os dados de {type} importados? Esta ação não pode ser desfeita.",
+    "areYouSure": "Tem certeza?",
+    "deleteConfirmationGeneric": "Isso excluirá todos os dados importados. Esta ação não pode ser desfeita."
+  },
+  "table": {
+    "selectAllRows": "Selecionar todas as linhas",
+    "selectRow": "Selecionar linha",
+    "vehicle": "Veículo",
+    "description": "Descrição",
+    "start": "Início",
+    "end": "Fim",
+    "stops": "Paradas",
+    "distance": "Distância",
+    "drive": "Dirigir",
+    "delivery": "Entrega",
+    "departure": "Partida",
+    "id": "ID",
+    "startLocation": "Local de Início",
+    "endLocation": "Local de Fim",
+    "serviceTime": "Tempo de Serviço"
+  },
+  "analysis": {
+    "optimizationResults": "Resultados da Otimização",
+    "noResults": "Nenhum resultado de otimização encontrado",
+    "viewResult": "Ver Resultado",
+    "editTitle": "Editar Título",
+    "deleteResult": "Excluir Resultado",
+    "downloadResults": "Baixar Resultados",
+    "shareResults": "Compartilhar Resultados",
+    "optimizationHistory": "Histórico de Otimização",
+    "jobId": "ID do Trabalho",
+    "title": "Título",
+    "status": "Status",
+    "createdAt": "Criado Em",
+    "actions": "Ações",
+    "completed": "Concluído",
+    "failed": "Falhou",
+    "pending": "Pendente",
+    "routeDetails": "Detalhes da Rota",
+    "routeSummary": "Resumo da Rota",
+    "stepDetails": "Detalhes da Etapa",
+    "totalDistance": "Distância Total",
+    "totalTime": "Tempo Total",
+    "totalStops": "Paradas Totais",
+    "vehicleUtilization": "Utilização do Veículo",
+    "capacityUtilization": "Utilização da Capacidade",
+    "timeUtilization": "Utilização do Tempo"
+  },
+  "map": {
+    "mapView": "Visualização do Mapa",
+    "showJobMarkers": "Trabalhos/Envios",
+    "showVehicleMarkers": "Veículos",
+    "showRoutes": "Rotas"
+  },
+  "preferences": {
+    "preferences": "Preferências",
+    "saveMapping": "Salvar Mapeamento",
+    "clearPreferences": "Limpar Preferências",
+    "routingOptions": "Opções de Roteamento",
+    "avoidOptions": "Opções de Evitar",
+    "hazmatTypes": "Tipos de Materiais Perigosos",
+    "truckMode": "Modo Caminhão",
+    "carMode": "Modo Carro",
+    "bikeMode": "Modo Bicicleta",
+    "footMode": "Modo Pedestre"
+  },
+  "hazmatTypes": {
+    "explosives": "Explosivos",
+    "gases": "Gases",
+    "flammableLiquids": "Líquidos Inflamáveis",
+    "flammableSolids": "Sólidos Inflamáveis",
+    "oxidizingSubstances": "Substâncias Oxidantes",
+    "toxicSubstances": "Substâncias Tóxicas",
+    "radioactiveMaterials": "Materiais Radioativos",
+    "corrosiveSubstances": "Substâncias Corrosivas",
+    "miscellaneous": "Diversos"
+  },
+  "avoidOptions": {
+    "highways": "Rodovias",
+    "tolls": "Pedágios",
+    "ferries": "Balsas",
+    "indoor": "Interior",
+    "dirtRoads": "Estradas de Terra"
+  },
+  "errors": {
+    "failedToFetch": "Falha ao buscar dados",
+    "failedToSave": "Falha ao salvar alterações",
+    "failedToDelete": "Falha ao excluir",
+    "unknownError": "Erro desconhecido",
+    "networkError": "Erro de rede",
+    "validationError": "Erro de validação"
+  },
+  "success": {
+    "changesSaved": "Alterações salvas com sucesso",
+    "dataDeleted": "Dados excluídos com sucesso",
+    "optimizationComplete": "Otimização concluída com sucesso"
+  },
+  "language": {
+    "english": "English",
+    "spanish": "Español",
+    "portuguese": "Português",
+    "selectLanguage": "Selecionar Idioma"
+  },
+  "information": {
+    "pageTitle": "Plataforma de Planejamento e Otimização de Rotas",
+    "welcomeMessage": "Bem-vindo à Plataforma de Planejamento de Rotas da {companyName}, uma solução white-label abrangente alimentada pelo motor de otimização avançado da NextBillion.ai. Esta plataforma fornece planejamento inteligente de rotas, otimização em tempo real e análises detalhadas para operações de gerenciamento de frotas.",
+    "routeOptimization": "Otimização de Rotas",
+    "routeOptimizationDesc": "Algoritmos avançados otimizam rotas para:",
+    "minTravelTime": "Tempo e distância mínimos de viagem",
+    "vehicleCapacity": "Restrições de capacidade do veículo",
+    "timeWindow": "Conformidade com janelas de tempo",
+    "multiFuel": "Suporte a múltiplos tipos de combustível",
+    "dataImport": "Importação e Gerenciamento de Dados",
+    "dataImportDesc": "Opções flexíveis de importação de dados:",
+    "csvExcel": "Upload de arquivos CSV/Excel",
+    "databaseIntegration": "Integração com banco de dados",
+    "realTimeMapping": "Mapeamento de dados em tempo real",
+    "bulkValidation": "Validação em massa de dados",
+    "analytics": "Análise e Relatórios",
+    "analyticsDesc": "Recursos abrangentes de análise:",
+    "fuelMetrics": "Métricas de entrega de combustível",
+    "routePerformance": "Análise de desempenho de rotas",
+    "optimizationHistory": "Histórico de otimização",
+    "exportCapabilities": "Capacidades de exportação",
+    "whiteLabelTitle": "Guia de Personalização White Label",
+    "whiteLabelDesc": "Esta plataforma é projetada como uma solução white-label, permitindo personalização completa de marca, estilo e funcionalidade para corresponder à identidade e requisitos da sua organização.",
+    "brandingTitle": "Personalização de Marca e Visual",
+    "logoIdentity": "Logo e Identidade da Empresa:",
+    "replaceLogo": "Substituir o logo padrão pelo logo da sua empresa",
+    "setCompanyLogo": "Definir a variável de ambiente COMPANY_LOGO ou atualizar company_logo.svg no diretório público",
+    "colorScheme": "Personalização do Esquema de Cores:",
+    "setCompanyColor": "Definir a variável de ambiente COMPANY_COLOR para personalizar o esquema de cores primário em toda a aplicação",
+    "companyName": "Nome da Empresa:",
+    "setCompanyName": "Definir a variável de ambiente COMPANY_NAME para exibir o nome da sua empresa em toda a aplicação",
+    "technicalTitle": "Implementação Técnica",
+    "environmentVariables": "Variáveis de Ambiente:",
+    "envVarsDesc": "Configure as seguintes variáveis de ambiente no seu ambiente de implantação:",
+    "companyLogoVar": "COMPANY_LOGO - Caminho para a imagem do logo da sua empresa",
+    "companyColorVar": "COMPANY_COLOR - Cor da marca primária (formato hex, ex., #D36784)",
+    "companyNameVar": "COMPANY_NAME - Nome da sua empresa para fins de exibição",
+    "deploymentTitle": "Implantação e Configuração",
+    "vercelDeployment": "Implantação no Vercel:",
+    "vercelSteps": "1. Definir variáveis de ambiente no painel do Vercel\n2. Implantar sua aplicação\n3. Configurar domínio personalizado se necessário",
+    "otherPlatforms": "Outras Plataformas:",
+    "otherPlatformsDesc": "Configuração similar de variáveis de ambiente se aplica a outras plataformas de implantação",
+    "i18nGuide": "Guia de Internacionalização (i18n)",
+    "i18nDescription": "A plataforma suporta múltiplos idiomas usando next-intl. Atualmente, inglês, espanhol (mexicano) e português (brasileiro) são suportados, e você pode facilmente adicionar idiomas adicionais para acomodar sua base de usuários global.",
+    "addingNewLanguages": "Adicionando Novos Idiomas",
+    "currentLanguages": "Idiomas Atuais:",
+    "englishDefault": "Inglês (en) - Idioma padrão",
+    "spanishMexican": "Espanhol Mexicano (es-MX)",
+    "portugueseBrazilian": "Português Brasileiro (pt-BR)",
+    "frenchCanadian": "Francês Canadense (ca-FR)",
+    "portugueseBrazilian": "Português Brasileiro (pt-BR)",
+    "locatedIn": "Localizado em",
+    "stepsToAdd": "Passos para Adicionar um Novo Idioma:",
+    "step1": "Criar novo diretório: /locales/[código-idioma]/",
+    "step2": "Copiar common.json de /locales/en/ para o novo diretório",
+    "step3": "Traduzir todos os valores no arquivo JSON",
+    "step4": "Atualizar middleware.ts para incluir o novo locale",
+    "step5": "Testar a implementação do novo idioma",
+    "exampleLanguageCodes": "Códigos de Idioma de Exemplo:",
+    "french": "Francês: fr ou fr-FR",
+    "german": "Alemão: de ou de-DE",
+    "italian": "Italiano: it ou it-IT",
+    "portuguese": "Português: pt ou pt-BR",
+    "chinese": "Chinês: zh-CN ou zh-TW",
+    "japanese": "Japonês: ja ou ja-JP",
+    "translationFileStructure": "Estrutura de Arquivos de Tradução",
+    "fileOrganization": "Organização de Arquivos:",
+    "translationCategories": "Categorias de Tradução:",
+    "navigationCategory": "navigation - Itens de menu e navegação",
+    "navigationDesc": "conteúdo de cabeçalho, barra lateral, rodapé",
+    "buttonsCategory": "buttons - Botões de ação e controles",
+    "buttonsDesc": "salvar, cancelar, excluir, importar, etc.",
+    "dataImportCategory": "dataImport - Funcionalidade de importação",
+    "dataImportDesc": "importação CSV, mapeamento, validação",
+    "optimizationCategory": "optimization - Termos de otimização de rotas",
+    "optimizationDesc": "algoritmos, restrições, preferências",
+    "messagesCategory": "errors/success - Mensagens de feedback do usuário",
+    "messagesDesc": "mensagens de validação, rede, conclusão",
+    "languageCategory": "language - UI de seleção de idioma",
+    "languageDesc": "nomes de idiomas e interface de seleção",
+    "implementationConfig": "Implementação e Configuração",
+    "technicalImplementation": "Implementação Técnica:",
+    "configurationSteps": "Passos de Configuração:",
+    "updateMiddleware": "Atualizar middleware.ts",
+    "updateMiddlewareDesc": "Adicionar seu novo locale ao array de locales e configurar roteamento",
+    "createI18nConfig": "Criar configuração i18n",
+    "createI18nConfigDesc": "Configurar detecção de locale e preferências de roteamento",
+    "addLanguageSelector": "Adicionar seletor de idioma",
+    "addLanguageSelectorDesc": "Implementar componente UI para usuários alternarem idiomas",
+    "testImplementation": "Testar implementação",
+    "testImplementationDesc": "Verificar se as traduções carregam corretamente e as URLs funcionam adequadamente",
+    "translationBestPractices": "Melhores Práticas de Tradução:",
+    "useNestedKeys": "Usar chaves aninhadas para organização",
+    "useNestedKeysDesc": "Agrupar traduções relacionadas sob chaves pai comuns",
+    "keepKeysDescriptive": "Manter chaves descritivas e consistentes",
+    "keepKeysDescriptiveDesc": "Usar convenções de nomenclatura claras em todos os arquivos de idioma",
+    "considerCulturalContext": "Considerar contexto cultural",
+    "considerCulturalContextDesc": "Adaptar conteúdo para diferenças culturais, não apenas idioma",
+    "testLongerText": "Testar com texto mais longo",
+    "testLongerTextDesc": "Alguns idiomas requerem mais espaço para conteúdo equivalente"
+  }
+}
+
+const caFrTranslations = {
+  "navigation": {
+    "routePlanner": "Planificateur d'Itinéraires",
+    "routeAnalysis": "Analyse d'Itinéraires",
+    "information": "Informations",
+    "logout": "Déconnexion",
+    "admin": "ADMIN"
+  },
+  "header": {
+    "planManageMonitor": "Planifiez, gérez et surveillez vos itinéraires",
+    "routePlanAnalysis": "Analyse du Plan d'Itinéraire",
+    "informationDocumentation": "Informations et Documentation",
+    "editRoute": "Modifier l'Itinéraire"
+  },
+  "sidebar": {
+    "collapseSidebar": "Réduire la barre latérale",
+    "expandSidebar": "Développer la barre latérale"
+  },
+  "footer": {
+    "poweredBy": "propulsé par NextBillion.ai",
+    "version": "Version 1.0.0",
+    "lastUpdated": "Dernière mise à jour"
+  },
+  "loading": {
+    "loadingRoutePlanner": "Chargement du Planificateur d'Itinéraires...",
+    "checkingApiConfig": "Vérification de la configuration de l'API..."
+  },
+  "buttons": {
+    "import": "Importer",
+    "save": "Enregistrer",
+    "cancel": "Annuler",
+    "delete": "Supprimer",
+    "edit": "Modifier",
+    "close": "Fermer",
+    "confirm": "Confirmer",
+    "back": "Retour",
+    "next": "Suivant",
+    "reset": "Réinitialiser",
+    "add": "Ajouter",
+    "clear": "Effacer"
+  },
+  "dataImport": {
+    "importJobsFromDatabase": "Importer les Tâches de la Base de Données",
+    "importVehiclesFromDatabase": "Importer les Véhicules de la Base de Données",
+    "startTimeOptional": "Heure de Début (optionnel)",
+    "endTimeOptional": "Heure de Fin (optionnel)",
+    "searchDescriptionOptional": "Rechercher Description (optionnel)",
+    "enterSearchTerm": "Entrez le terme de recherche...",
+    "leaveEmptyToImportAll": "Laissez vide pour importer tous les enregistrements",
+    "caseInsensitiveSearch": "Recherche insensible à la casse dans les descriptions de tâches",
+    "caseInsensitiveSearchVehicles": "Recherche insensible à la casse dans les descriptions de véhicules",
+    "recordsWillBeImported": "enregistrements seront importés",
+    "recordWillBeImported": "enregistrement sera importé",
+    "importJobData": "Importer les Données de Tâches",
+    "importVehicleData": "Importer les Données de Véhicules",
+    "recordsLoaded": "enregistrements chargés",
+    "fromDatabase": "(de la base de données)",
+    "selectField": "Sélectionner le champ",
+    "addAttribute": "Ajouter un attribut",
+    "editTable": "Modifier le tableau",
+    "saveChanges": "Enregistrer les modifications",
+    "cancelEditing": "Annuler la modification",
+    "deleteImportedData": "Supprimer les données importées",
+    "resetMapping": "Réinitialiser le Mappage",
+    "confirmDeletion": "Confirmer la Suppression",
+    "deleteConfirmation": "Êtes-vous sûr de vouloir supprimer toutes les données de {type} importées ? Cette action ne peut pas être annulée.",
+    "areYouSure": "Êtes-vous sûr ?",
+    "deleteConfirmationGeneric": "Cela supprimera toutes les données importées. Cette action ne peut pas être annulée."
+  },
+  "table": {
+    "selectAllRows": "Sélectionner toutes les lignes",
+    "selectRow": "Sélectionner la ligne",
+    "vehicle": "Véhicule",
+    "description": "Description",
+    "start": "Début",
+    "end": "Fin",
+    "stops": "Arrêts",
+    "distance": "Distance",
+    "drive": "Conduire",
+    "delivery": "Livraison",
+    "departure": "Départ",
+    "id": "ID",
+    "startLocation": "Lieu de Début",
+    "endLocation": "Lieu de Fin",
+    "serviceTime": "Temps de Service"
+  },
+  "analysis": {
+    "optimizationResults": "Résultats d'Optimisation",
+    "noResults": "Aucun résultat d'optimisation trouvé",
+    "viewResult": "Voir le Résultat",
+    "editTitle": "Modifier le Titre",
+    "deleteResult": "Supprimer le Résultat",
+    "downloadResults": "Télécharger les Résultats",
+    "shareResults": "Partager les Résultats",
+    "optimizationHistory": "Historique d'Optimisation",
+    "jobId": "ID de la Tâche",
+    "title": "Titre",
+    "status": "Statut",
+    "createdAt": "Créé Le",
+    "actions": "Actions",
+    "completed": "Terminé",
+    "failed": "Échoué",
+    "pending": "En Attente",
+    "routeDetails": "Détails de l'Itinéraire",
+    "routeSummary": "Résumé de l'Itinéraire",
+    "stepDetails": "Détails de l'Étape",
+    "totalDistance": "Distance Totale",
+    "totalTime": "Temps Total",
+    "totalStops": "Arrêts Totaux",
+    "vehicleUtilization": "Utilisation du Véhicule",
+    "capacityUtilization": "Utilisation de la Capacité",
+    "timeUtilization": "Utilisation du Temps"
+  },
+  "map": {
+    "mapView": "Vue de la Carte",
+    "showJobMarkers": "Tâches/Expéditions",
+    "showVehicleMarkers": "Véhicules",
+    "showRoutes": "Itinéraires"
+  },
+  "preferences": {
+    "preferences": "Préférences",
+    "saveMapping": "Enregistrer le Mappage",
+    "clearPreferences": "Effacer les Préférences",
+    "routingOptions": "Options de Routage",
+    "avoidOptions": "Options d'Évitement",
+    "hazmatTypes": "Types de Matières Dangereuses",
+    "truckMode": "Mode Camion",
+    "carMode": "Mode Voiture",
+    "bikeMode": "Mode Vélo",
+    "footMode": "Mode Piéton"
+  },
+  "hazmatTypes": {
+    "explosives": "Explosifs",
+    "gases": "Gaz",
+    "flammableLiquids": "Liquides Inflammables",
+    "flammableSolids": "Solides Inflammables",
+    "oxidizingSubstances": "Substances Oxydantes",
+    "toxicSubstances": "Substances Toxiques",
+    "radioactiveMaterials": "Matériaux Radioactifs",
+    "corrosiveSubstances": "Substances Corrosives",
+    "miscellaneous": "Divers"
+  },
+  "avoidOptions": {
+    "highways": "Autoroutes",
+    "tolls": "Péages",
+    "ferries": "Traversiers",
+    "indoor": "Intérieur",
+    "dirtRoads": "Routes de Terre"
+  },
+  "errors": {
+    "failedToFetch": "Échec de la récupération des données",
+    "failedToSave": "Échec de l'enregistrement des modifications",
+    "failedToDelete": "Échec de la suppression",
+    "unknownError": "Erreur inconnue",
+    "networkError": "Erreur de réseau",
+    "validationError": "Erreur de validation"
+  },
+  "success": {
+    "changesSaved": "Modifications enregistrées avec succès",
+    "dataDeleted": "Données supprimées avec succès",
+    "optimizationComplete": "Optimisation terminée avec succès"
+  },
+  "language": {
+    "english": "English",
+    "spanish": "Español",
+    "portuguese": "Português",
+    "frenchCanadian": "Français Canadien",
+    "selectLanguage": "Sélectionner la Langue"
+  },
+  "information": {
+    "pageTitle": "Plateforme de Planification et d'Optimisation d'Itinéraires",
+    "welcomeMessage": "Bienvenue à la Plateforme de Planification d'Itinéraires de {companyName}, une solution white-label complète alimentée par le moteur d'optimisation avancé de NextBillion.ai. Cette plateforme fournit une planification intelligente d'itinéraires, une optimisation en temps réel et des analyses détaillées pour les opérations de gestion de flotte.",
+    "routeOptimization": "Optimisation d'Itinéraires",
+    "routeOptimizationDesc": "Les algorithmes avancés optimisent les itinéraires pour :",
+    "minTravelTime": "Temps et distance de voyage minimaux",
+    "vehicleCapacity": "Contraintes de capacité du véhicule",
+    "timeWindow": "Conformité aux fenêtres de temps",
+    "multiFuel": "Support de multiples types de carburant",
+    "dataImport": "Importation et Gestion de Données",
+    "dataImportDesc": "Options flexibles d'importation de données :",
+    "csvExcel": "Téléchargement de fichiers CSV/Excel",
+    "databaseIntegration": "Intégration de base de données",
+    "realTimeMapping": "Mappage de données en temps réel",
+    "bulkValidation": "Validation en masse de données",
+    "analytics": "Analyse et Rapports",
+    "analyticsDesc": "Fonctionnalités d'analyse complètes :",
+    "fuelMetrics": "Métriques de livraison de carburant",
+    "routePerformance": "Analyse de performance d'itinéraires",
+    "optimizationHistory": "Historique d'optimisation",
+    "exportCapabilities": "Capacités d'exportation",
+    "whiteLabelTitle": "Guide de Personnalisation White Label",
+    "whiteLabelDesc": "Cette plateforme est conçue comme une solution white-label, permettant une personnalisation complète de la marque, du style et de la fonctionnalité pour correspondre à l'identité et aux exigences de votre organisation.",
+    "brandingTitle": "Personnalisation de Marque et Visuelle",
+    "logoIdentity": "Logo et Identité de l'Entreprise :",
+    "replaceLogo": "Remplacer le logo par défaut par le logo de votre entreprise",
+    "setCompanyLogo": "Définir la variable d'environnement COMPANY_LOGO ou mettre à jour company_logo.svg dans le répertoire public",
+    "colorScheme": "Personnalisation du Schéma de Couleurs :",
+    "setCompanyColor": "Définir la variable d'environnement COMPANY_COLOR pour personnaliser le schéma de couleurs principal dans toute l'application",
+    "companyName": "Nom de l'Entreprise :",
+    "setCompanyName": "Définir la variable d'environnement COMPANY_NAME pour afficher le nom de votre entreprise dans toute l'application",
+    "technicalTitle": "Implémentation Technique",
+    "environmentVariables": "Variables d'Environnement :",
+    "envVarsDesc": "Configurez les variables d'environnement suivantes dans votre environnement de déploiement :",
+    "companyLogoVar": "COMPANY_LOGO - Chemin vers l'image du logo de votre entreprise",
+    "companyColorVar": "COMPANY_COLOR - Couleur de marque principale (format hex, ex., #D36784)",
+    "companyNameVar": "COMPANY_NAME - Nom de votre entreprise à des fins d'affichage",
+    "deploymentTitle": "Déploiement et Configuration",
+    "vercelDeployment": "Déploiement Vercel :",
+    "vercelSteps": "1. Définir les variables d'environnement dans le tableau de bord Vercel\n2. Déployer votre application\n3. Configurer le domaine personnalisé si nécessaire",
+    "otherPlatforms": "Autres Plateformes :",
+    "otherPlatformsDesc": "Une configuration similaire de variables d'environnement s'applique à d'autres plateformes de déploiement",
+    "i18nGuide": "Guide d'Internationalisation (i18n)",
+    "i18nDescription": "La plateforme prend en charge plusieurs langues en utilisant next-intl. Actuellement, l'anglais, l'espagnol (mexicain), le portugais (brésilien) et le français canadien sont pris en charge, et vous pouvez facilement ajouter des langues supplémentaires pour accommoder votre base d'utilisateurs mondiale.",
+    "addingNewLanguages": "Ajout de Nouvelles Langues",
+    "currentLanguages": "Langues Actuelles :",
+    "englishDefault": "Anglais (en) - Langue par défaut",
+    "spanishMexican": "Espagnol Mexicain (es-MX)",
+    "portugueseBrazilian": "Portugais Brésilien (pt-BR)",
+    "frenchCanadian": "Français Canadien (ca-FR)",
+    "portugueseBrazilian": "Portugais Brésilien (pt-BR)",
+    "frenchCanadian": "Français Canadien (ca-FR)",
+    "locatedIn": "Situé dans",
+    "stepsToAdd": "Étapes pour Ajouter une Nouvelle Langue :",
+    "step1": "Créer un nouveau répertoire : /locales/[code-langue]/",
+    "step2": "Copier common.json de /locales/en/ vers le nouveau répertoire",
+    "step3": "Traduire toutes les valeurs dans le fichier JSON",
+    "step4": "Mettre à jour middleware.ts pour inclure le nouveau locale",
+    "step5": "Tester l'implémentation de la nouvelle langue",
+    "exampleLanguageCodes": "Codes de Langue d'Exemple :",
+    "french": "Français : fr ou fr-FR",
+    "german": "Allemand : de ou de-DE",
+    "italian": "Italien : it ou it-IT",
+    "portuguese": "Portugais : pt ou pt-BR",
+    "chinese": "Chinois : zh-CN ou zh-TW",
+    "japanese": "Japonais : ja ou ja-JP",
+    "translationFileStructure": "Structure des Fichiers de Traduction",
+    "fileOrganization": "Organisation des Fichiers :",
+    "translationCategories": "Catégories de Traduction :",
+    "navigationCategory": "navigation - Éléments de menu et navigation",
+    "navigationDesc": "contenu d'en-tête, barre latérale, pied de page",
+    "buttonsCategory": "buttons - Boutons d'action et contrôles",
+    "buttonsDesc": "enregistrer, annuler, supprimer, importer, etc.",
+    "dataImportCategory": "dataImport - Fonctionnalité d'importation",
+    "dataImportDesc": "importation CSV, mappage, validation",
+    "optimizationCategory": "optimization - Termes d'optimisation d'itinéraires",
+    "optimizationDesc": "algorithmes, contraintes, préférences",
+    "messagesCategory": "errors/success - Messages de retour d'utilisateur",
+    "messagesDesc": "messages de validation, réseau, achèvement",
+    "languageCategory": "language - UI de sélection de langue",
+    "languageDesc": "noms de langues et interface de sélection",
+    "implementationConfig": "Implémentation et Configuration",
+    "technicalImplementation": "Implémentation Technique :",
+    "configurationSteps": "Étapes de Configuration :",
+    "updateMiddleware": "Mettre à jour middleware.ts",
+    "updateMiddlewareDesc": "Ajouter votre nouveau locale au tableau des locales et configurer le routage",
+    "createI18nConfig": "Créer la configuration i18n",
+    "createI18nConfigDesc": "Configurer la détection de locale et les préférences de routage",
+    "addLanguageSelector": "Ajouter le sélecteur de langue",
+    "addLanguageSelectorDesc": "Implémenter le composant UI pour que les utilisateurs changent de langue",
+    "testImplementation": "Tester l'implémentation",
+    "testImplementationDesc": "Vérifier que les traductions se chargent correctement et que les URLs fonctionnent correctement",
+    "translationBestPractices": "Meilleures Pratiques de Traduction :",
+    "useNestedKeys": "Utiliser des clés imbriquées pour l'organisation",
+    "useNestedKeysDesc": "Grouper les traductions liées sous des clés parent communes",
+    "keepKeysDescriptive": "Garder les clés descriptives et cohérentes",
+    "keepKeysDescriptiveDesc": "Utiliser des conventions de nommage claires dans tous les fichiers de langue",
+    "considerCulturalContext": "Considérer le contexte culturel",
+    "considerCulturalContextDesc": "Adapter le contenu pour les différences culturelles, pas seulement la langue",
+    "testLongerText": "Tester avec du texte plus long",
+    "testLongerTextDesc": "Certaines langues nécessitent plus d'espace pour un contenu équivalent"
+  }
+}
+
+export function LanguageProvider({ children }: LanguageProviderProps) {
+  const [language, setLanguageState] = useState<Language>('en')
+  const [translations, setTranslations] = useState<any>(enTranslations)
+  const [isLoading, setIsLoading] = useState(false)
+  const [renderKey, setRenderKey] = useState(0)
+
+  // Load translations based on current language
+  useEffect(() => {
+    const loadTranslations = async () => {
+      setIsLoading(true)
+      try {
+        // Use direct imports instead of fetch
+        let newTranslations
+        switch (language) {
+          case 'en':
+            newTranslations = enTranslations
+            break
+          case 'es-MX':
+            newTranslations = esMxTranslations
+            break
+          case 'pt-BR':
+            newTranslations = ptBrTranslations
+            break
+          case 'ca-FR':
+            newTranslations = caFrTranslations
+            break
+          default:
+            newTranslations = enTranslations
+        }
+        setTranslations(newTranslations)
+        // Force re-render by updating the render key
+        setRenderKey(prev => prev + 1)
+      } catch (error) {
+        // Keep existing translations if loading fails
+      } finally {
+        setIsLoading(false)
+      }
+    }
+
+    loadTranslations()
+  }, [language])
+
+  // Load saved language preference from localStorage
+  useEffect(() => {
+    const savedLanguage = localStorage.getItem('preferred-language') as Language
+    if (savedLanguage && (savedLanguage === 'en' || savedLanguage === 'es-MX' || savedLanguage === 'pt-BR' || savedLanguage === 'ca-FR')) {
+      setLanguageState(savedLanguage)
+    }
+  }, [])
+
+  const setLanguage = (lang: Language) => {
+    setLanguageState(lang)
+    localStorage.setItem('preferred-language', lang)
+  }
+
+  // Translation function
+  const t = useCallback((key: string): string => {
+    const keys = key.split('.')
+    let value = translations
+    
+    for (const k of keys) {
+      if (value && typeof value === 'object' && k in value) {
+        value = value[k]
+      } else {
+        // Return the key if translation not found
+        return key
+      }
+    }
+    
+    const result = typeof value === 'string' ? value : key
+    return result
+  }, [translations, language])
+
+  return (
+    <LanguageContext.Provider value={{ language, setLanguage, t, isLoading, renderKey }}>
+      {children}
+    </LanguageContext.Provider>
+  )
+}
+
+export function useLanguage() {
+  const context = useContext(LanguageContext)
+  if (context === undefined) {
+    throw new Error('useLanguage must be used within a LanguageProvider')
+  }
+  return context
+} 

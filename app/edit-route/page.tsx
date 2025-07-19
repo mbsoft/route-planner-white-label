@@ -20,6 +20,7 @@ import { useRouter, useSearchParams } from 'next/navigation'
 import { WhiteLabelLayout } from '../white-label-layout'
 import { Sidebar } from '../../components/common/sidebar'
 import { useWhiteLabelContext } from '../white-label-layout'
+import { CompanyLogo } from '../../components/common/company-logo'
 
 export default function EditRoutePage() {
   const router = useRouter()
@@ -97,15 +98,7 @@ export default function EditRoutePage() {
           {/* Header */}
           <Box sx={{ p: 2, borderBottom: '1px solid #e0e0e0', backgroundColor: '#ffffff' }}>
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-              <img
-                src={companyLogo}
-                alt={`${companyName} Logo`}
-                style={{
-                  height: '25px',
-                  width: 'auto',
-                  borderRadius: '4px'
-                }}
-              />
+              <CompanyLogo height={25} variant="header" />
               <Typography
                 variant="h4"
                 component="h1"

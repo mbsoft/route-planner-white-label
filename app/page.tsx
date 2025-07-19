@@ -14,6 +14,9 @@ import { useInputStore } from '../models/input/store'
 import { PreferencesInput } from '../components/input/input-panels/preferences-page'
 import { usePreferencesPersistence } from '../hooks/use-preferences-persistence'
 import { useAuth } from '../hooks/use-auth'
+import { LanguageSwitcher } from '../components/common/language-switcher'
+import { useLanguage } from '../contexts/language-context'
+import { CompanyLogo } from '../components/common/company-logo'
 
 export interface MapMarker {
   id: string
@@ -52,12 +55,12 @@ export default function HomePage() {
       travel_cost: 'duration',
     },
   })
-  
+
   const store = useInputStore()
   const { job, vehicle } = store.inputCore
   const { status: preferencesStatus, savePreferences, loadPreferences } = usePreferencesPersistence()
   const { isAdmin } = useAuth()
-
+  const { t, isLoading, language, renderKey } = useLanguage()
   // Initialize store and load persisted mappings on mount
   React.useEffect(() => {
     const initializeApp = async () => {
@@ -310,8 +313,9 @@ export default function HomePage() {
   }
 
   const handleOptimizationComplete = (jobId: string) => {
-    // Navigate to analysis page with the job ID as a query parameter
-    router.push(`/analysis?job_id=${encodeURIComponent(jobId)}`)
+    // Optimization completed - stay on current page instead of auto-navigating
+    // The user can manually navigate to analysis page if desired
+    console.log('Optimization completed with job ID:', jobId)
   }
 
   const handleLogout = async () => {
@@ -319,7 +323,7 @@ export default function HomePage() {
       const response = await fetch('/api/auth/logout', {
         method: 'POST',
       })
-      
+
       if (response.ok) {
         router.push('/login')
       } else {
@@ -336,27 +340,19 @@ export default function HomePage() {
         {/* Sidebar */}
         <Sidebar currentPage="home" />
         {/* Main Content Area */}
-        <Box sx={{ 
-          flex: 1, 
-          display: 'flex', 
-          flexDirection: 'column', 
+        <Box sx={{
+          flex: 1,
+          display: 'flex',
+          flexDirection: 'column',
           ml: 'var(--sidebar-width, 280px)',
           transition: 'margin-left 0.3s ease',
-          backgroundColor: '#ffffff' 
+          backgroundColor: '#ffffff'
         }}>
           {/* Header */}
           <Box sx={{ p: 2, borderBottom: '1px solid #e0e0e0', backgroundColor: '#ffffff' }}>
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, justifyContent: 'space-between' }}>
               <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-                <img
-                  src={companyLogo}
-                  alt="Company Logo"
-                  style={{
-                    height: '60px',
-                    width: 'auto',
-                    borderRadius: '4px'
-                  }}
-                />
+                <CompanyLogo height={60} variant="header" />
                 <Typography
                   variant="h4"
                   component="h1"
@@ -382,12 +378,13 @@ export default function HomePage() {
                     ADMIN
                   </Typography>
                 )}
+                <LanguageSwitcher />
                 <Button
                   variant="outlined"
                   size="small"
                   onClick={handleLogout}
                   startIcon={<LogoutIcon />}
-                  sx={{ 
+                  sx={{
                     height: '25px',
                     fontSize: '0.75rem',
                     textTransform: 'none'
@@ -405,8 +402,8 @@ export default function HomePage() {
           </Box>
 
           {/* Main content area */}
-          <Box sx={{ 
-            flex: 1, 
+          <Box sx={{
+            flex: 1,
             backgroundColor: '#ffffff',
             pb: 2, // Add bottom padding to ensure content doesn't get hidden behind footer
             overflow: 'auto', // Allow scrolling if content is too long
@@ -435,11 +432,7 @@ export default function HomePage() {
             flexShrink: 0, // Prevent footer from shrinking
           }}>
             <Box sx={{ mt: 0, pt: 0, display: 'flex', alignItems: 'center', gap: 1 }}>
-              <img
-                src={companyLogo}
-                alt="Company Logo"
-                style={{ height: '40px', width: 'auto', marginRight: '8px', verticalAlign: 'middle' }}
-              />
+              <CompanyLogo height={40} variant="footer" />
               <Typography variant="body2" sx={{ color: '#999', fontSize: '14px' }}>
                 powered by NextBillion.ai | Version 1.0.0 | Last updated: {new Date().toLocaleDateString()}
               </Typography>

@@ -53,11 +53,15 @@ import { RouteSummaryTable } from '../../components/common/route-summary-table'
 import { useRouter } from 'next/navigation'
 import { useAuth } from '../../hooks/use-auth'
 import { useWhiteLabelContext } from '../white-label-layout'
+import { LanguageSwitcher } from '../../components/common/language-switcher'
+import { useLanguage } from '../../contexts/language-context'
+import { CompanyLogo } from '../../components/common/company-logo'
 
 export default function RouteAnalysisPage() {
   const router = useRouter()
   const { isAdmin } = useAuth()
   const { companyName, companyLogo, companyColor } = useWhiteLabelContext()
+  const { t, isLoading, language, renderKey } = useLanguage()
   const [optimizationResults, setOptimizationResults] = useState<any[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
@@ -91,7 +95,7 @@ export default function RouteAnalysisPage() {
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search)
     const jobIdFromUrl = urlParams.get('job_id')
-    
+
     if (jobIdFromUrl && optimizationResults.length > 0) {
       // Find the optimization result with this job_id
       const result = optimizationResults.find(r => r.job_id === jobIdFromUrl)
@@ -141,9 +145,9 @@ export default function RouteAnalysisPage() {
     if (isCalculatingRef.current) {
       return
     }
-    
+
     isCalculatingRef.current = true
-    
+
     if (results.length === 0) {
       setSummaryStats({
         totalRoutes: 0,
@@ -191,10 +195,10 @@ export default function RouteAnalysisPage() {
             detailData = await detailResponse.json()
           }
         }
-        
+
         if (detailData?.response_data) {
           const kpis = calculateKPIs(detailData.response_data)
-          
+
           if (kpis) {
             totalRoutes += kpis.routesCount
             totalSpeed += kpis.avgSpeed
@@ -222,7 +226,7 @@ export default function RouteAnalysisPage() {
       totalWaitingTime: totalWaitingTime,
       avgServiceTimePerRoute: totalRoutes > 0 && totalServiceTime > 0 && !isNaN(totalServiceTime) ? Math.round(totalServiceTime / totalRoutes) : 0
     }
-    
+
     setSummaryStats(finalStats)
     isCalculatingRef.current = false
   }
@@ -230,14 +234,14 @@ export default function RouteAnalysisPage() {
   const handleViewResult = async (jobId: string) => {
     try {
       setLoadingDetails(true)
-      
+
       // Check if we already have the full data in optimizationResults
       const existingResult = optimizationResults.find(r => r.job_id === jobId && r.response_data)
-      
+
       if (existingResult) {
         // Use existing data if available
-        const resultWithSharedUrl = { 
-          ...existingResult, 
+        const resultWithSharedUrl = {
+          ...existingResult,
           title: existingResult.title || existingResult.title,
           shared_url: existingResult.shared_url || existingResult.shared_url
         }
@@ -246,7 +250,7 @@ export default function RouteAnalysisPage() {
         setLoadingDetails(false)
         return
       }
-      
+
       // Fetch from API if not available locally
       const response = await fetch(`/api/optimization-results?job_id=${encodeURIComponent(jobId)}`)
       if (response.ok) {
@@ -254,8 +258,8 @@ export default function RouteAnalysisPage() {
         // Find the summary result for this jobId
         const summary = optimizationResults.find(r => r.job_id === jobId)
         // Merge the title and shared_url from summary if available
-        const resultWithSharedUrl = { 
-          ...data, 
+        const resultWithSharedUrl = {
+          ...data,
           title: summary?.title || data.title,
           shared_url: summary?.shared_url || data.shared_url
         }
@@ -299,7 +303,7 @@ export default function RouteAnalysisPage() {
     if (!resultData?.result) return null
 
     const { summary, routes, unassigned } = resultData.result
-    
+
     // Fuel delivery metrics
     const totalFuelDelivered = summary?.delivery || [0, 0, 0, 0, 0]
     const ulsdClearDelivered = totalFuelDelivered[0] || 0
@@ -308,36 +312,36 @@ export default function RouteAnalysisPage() {
     const gasUnlPreDelivered = totalFuelDelivered[3] || 0
     const rec90Delivered = totalFuelDelivered[4] || 0
     const totalFuel = ulsdClearDelivered + ulsdDyedDelivered + unlDelivered + gasUnlPreDelivered + rec90Delivered
-    
+
     // Operational metrics
     const totalDistance = summary?.distance || 0
     const totalDuration = summary?.duration || 0
     const totalService = summary?.service || 0
     const totalWaiting = summary?.waiting_time || 0
     const totalSetup = summary?.setup || 0
-    
+
     // Cost metrics
     const totalCost = summary?.cost || 0
     const totalRevenue = summary?.revenue || 0
     const profit = totalRevenue - totalCost
-    
+
     // Service quality metrics
     const unassignedCount = summary?.unassigned || 0
     const totalLateTime = summary?.total_visit_lateness || 0
     const lateVisits = summary?.num_late_visits || 0
-    
+
     // Vehicle metrics
     const routesCount = routes?.length || 0
     const avgFuelPerRoute = routesCount > 0 ? totalFuel / routesCount : 0
     const avgDistancePerRoute = routesCount > 0 ? totalDistance / routesCount : 0
     const avgDurationPerRoute = routesCount > 0 ? totalDuration / routesCount : 0
-    
+
     // Efficiency metrics
     const avgSpeed = totalDuration > 0 ? (totalDistance / 1000) / (totalDuration / 3600) : 0 // km/h
     const fuelEfficiency = totalFuel > 0 ? totalDistance / totalFuel : 0 // meters per gallon
     const costPerGallon = totalFuel > 0 ? totalCost / totalFuel : 0
     const costPerKm = totalDistance > 0 ? totalCost / (totalDistance / 1000) : 0
-    
+
     return {
       // Fuel metrics
       ulsdClearDelivered,
@@ -347,7 +351,7 @@ export default function RouteAnalysisPage() {
       rec90Delivered,
       totalFuel,
       avgFuelPerRoute,
-      
+
       // Operational metrics
       totalDistance,
       totalDuration,
@@ -357,23 +361,23 @@ export default function RouteAnalysisPage() {
       avgDistancePerRoute,
       avgDurationPerRoute,
       avgSpeed,
-      
+
       // Cost metrics
       totalCost,
       totalRevenue,
       profit,
       costPerGallon,
       costPerKm,
-      
+
       // Service quality
       unassignedCount,
       totalLateTime,
       lateVisits,
-      
+
       // Efficiency
       fuelEfficiency,
       routesCount,
-      
+
       // Additional metrics for summary tiles
       totalStops: routes?.reduce((sum: number, route: any) => sum + (route.steps?.length || 0), 0) || 0
     }
@@ -399,9 +403,9 @@ export default function RouteAnalysisPage() {
 
       if (response.ok) {
         // Update the local state
-        setOptimizationResults(prev => 
-          prev.map(r => 
-            r.id === result.id 
+        setOptimizationResults(prev =>
+          prev.map(r =>
+            r.id === result.id
               ? { ...r, title: editingTitleValue }
               : r
           )
@@ -442,9 +446,9 @@ export default function RouteAnalysisPage() {
           setSelectedResult(null)
           setSelectedJobId(null)
         }
-        
+
         // Remove the deleted result from the local state
-        setOptimizationResults(prev => 
+        setOptimizationResults(prev =>
           prev.filter(r => r.id !== resultToDelete.id)
         )
         setDeleteDialogOpen(false)
@@ -503,7 +507,7 @@ export default function RouteAnalysisPage() {
       routes.forEach((route: any, index: number) => {
         const vehicleId = route.vehicle || `vehicle_${index + 1}`
         const steps = route.steps || []
-        
+
         // Create CSV content for this route
         const csvHeaders = ['Step', 'Location', 'Type', 'Arrival Time', 'Departure Time', 'Service Time', 'Waiting Time', 'Distance (km)', 'Duration (min)']
         const csvRows = [csvHeaders]
@@ -530,7 +534,7 @@ export default function RouteAnalysisPage() {
         })
 
         // Convert to CSV string
-        const csvContent = csvRows.map(row => 
+        const csvContent = csvRows.map(row =>
           row.map(cell => `"${cell}"`).join(',')
         ).join('\n')
 
@@ -574,7 +578,7 @@ export default function RouteAnalysisPage() {
 
       // Create JSON content
       const jsonContent = JSON.stringify(resultData.response_data, null, 2)
-      
+
       // Create and download the JSON file
       const blob = new Blob([jsonContent], { type: 'application/json' })
       const url = URL.createObjectURL(blob)
@@ -599,7 +603,7 @@ export default function RouteAnalysisPage() {
       const response = await fetch('/api/auth/logout', {
         method: 'POST',
       })
-      
+
       if (response.ok) {
         router.push('/login')
       } else {
@@ -615,12 +619,12 @@ export default function RouteAnalysisPage() {
       <Box sx={{ display: 'flex', minHeight: '100vh' }}>
         {/* Sidebar */}
         <Sidebar currentPage="analysis" />
-        
+
         {/* Main Content Area */}
-        <Box sx={{ 
-          flex: 1, 
-          display: 'flex', 
-          flexDirection: 'column', 
+        <Box sx={{
+          flex: 1,
+          display: 'flex',
+          flexDirection: 'column',
           ml: 'var(--sidebar-width, 280px)',
           transition: 'margin-left 0.3s ease'
         }}>
@@ -628,15 +632,7 @@ export default function RouteAnalysisPage() {
           <Box sx={{ p: 2, borderBottom: '1px solid #e0e0e0', backgroundColor: '#ffffff' }}>
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, justifyContent: 'space-between' }}>
               <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-                <img
-                  src={companyLogo}
-                  alt={`${companyName} Logo`}
-                  style={{
-                    height: '60px',
-                    width: 'auto',
-                    borderRadius: '4px'
-                  }}
-                />
+                <CompanyLogo height={60} variant="header" />
                 <Typography
                   variant="h4"
                   component="h1"
@@ -662,12 +658,13 @@ export default function RouteAnalysisPage() {
                     ADMIN
                   </Typography>
                 )}
+                <LanguageSwitcher />
                 <Button
                   variant="outlined"
                   size="small"
                   onClick={handleLogout}
                   startIcon={<LogoutIcon />}
-                  sx={{ 
+                  sx={{
                     height: '25px',
                     fontSize: '0.75rem',
                     textTransform: 'none'
@@ -703,9 +700,9 @@ export default function RouteAnalysisPage() {
               <Grid item xs={12} md={6} lg={3}>
                 <Card sx={{ height: '100%', p: 3 }}>
                   <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
-                    <Box sx={{ 
-                      display: 'flex', 
-                      alignItems: 'center', 
+                    <Box sx={{
+                      display: 'flex',
+                      alignItems: 'center',
                       justifyContent: 'center',
                       width: 48,
                       height: 48,
@@ -734,9 +731,9 @@ export default function RouteAnalysisPage() {
               <Grid item xs={12} md={6} lg={3}>
                 <Card sx={{ height: '100%', p: 3 }}>
                   <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
-                    <Box sx={{ 
-                      display: 'flex', 
-                      alignItems: 'center', 
+                    <Box sx={{
+                      display: 'flex',
+                      alignItems: 'center',
                       justifyContent: 'center',
                       width: 48,
                       height: 48,
@@ -765,9 +762,9 @@ export default function RouteAnalysisPage() {
               <Grid item xs={12} md={6} lg={3}>
                 <Card sx={{ height: '100%', p: 3 }}>
                   <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
-                    <Box sx={{ 
-                      display: 'flex', 
-                      alignItems: 'center', 
+                    <Box sx={{
+                      display: 'flex',
+                      alignItems: 'center',
                       justifyContent: 'center',
                       width: 48,
                       height: 48,
@@ -796,9 +793,9 @@ export default function RouteAnalysisPage() {
               <Grid item xs={12} md={6} lg={3}>
                 <Card sx={{ height: '100%', p: 3 }}>
                   <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
-                    <Box sx={{ 
-                      display: 'flex', 
-                      alignItems: 'center', 
+                    <Box sx={{
+                      display: 'flex',
+                      alignItems: 'center',
                       justifyContent: 'center',
                       width: 48,
                       height: 48,
@@ -827,9 +824,9 @@ export default function RouteAnalysisPage() {
               <Grid item xs={12} md={6} lg={3}>
                 <Card sx={{ height: '100%', p: 3 }}>
                   <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
-                    <Box sx={{ 
-                      display: 'flex', 
-                      alignItems: 'center', 
+                    <Box sx={{
+                      display: 'flex',
+                      alignItems: 'center',
                       justifyContent: 'center',
                       width: 48,
                       height: 48,
@@ -858,9 +855,9 @@ export default function RouteAnalysisPage() {
               <Grid item xs={12} md={6} lg={3}>
                 <Card sx={{ height: '100%', p: 3 }}>
                   <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
-                    <Box sx={{ 
-                      display: 'flex', 
-                      alignItems: 'center', 
+                    <Box sx={{
+                      display: 'flex',
+                      alignItems: 'center',
                       justifyContent: 'center',
                       width: 48,
                       height: 48,
@@ -889,9 +886,9 @@ export default function RouteAnalysisPage() {
               <Grid item xs={12} md={6} lg={3}>
                 <Card sx={{ height: '100%', p: 3 }}>
                   <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
-                    <Box sx={{ 
-                      display: 'flex', 
-                      alignItems: 'center', 
+                    <Box sx={{
+                      display: 'flex',
+                      alignItems: 'center',
                       justifyContent: 'center',
                       width: 48,
                       height: 48,
@@ -920,9 +917,9 @@ export default function RouteAnalysisPage() {
               <Grid item xs={12} md={6} lg={3}>
                 <Card sx={{ height: '100%', p: 3 }}>
                   <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
-                    <Box sx={{ 
-                      display: 'flex', 
-                      alignItems: 'center', 
+                    <Box sx={{
+                      display: 'flex',
+                      alignItems: 'center',
                       justifyContent: 'center',
                       width: 48,
                       height: 48,
@@ -994,7 +991,7 @@ export default function RouteAnalysisPage() {
                             </TableHead>
                             <TableBody>
                               {optimizationResults.map((result) => (
-                                <TableRow 
+                                <TableRow
                                   key={result.id}
                                   sx={{
                                     backgroundColor: selectedJobId === result.job_id ? '#f0f8ff' : 'inherit',
@@ -1008,7 +1005,7 @@ export default function RouteAnalysisPage() {
                                     if (editingTitle !== null) {
                                       return;
                                     }
-                                    
+
                                     // If the panel is already open for this result, close it
                                     if (selectedJobId === result.job_id) {
                                       setSelectedResult(null)
@@ -1018,7 +1015,7 @@ export default function RouteAnalysisPage() {
                                       handleViewResult(result.job_id)
                                     }
                                   }}
-                                  style={{ 
+                                  style={{
                                     cursor: editingTitle !== null ? 'default' : 'pointer',
                                     opacity: editingTitle !== null ? 0.6 : 1
                                   }}
@@ -1062,9 +1059,9 @@ export default function RouteAnalysisPage() {
                                       </Box>
                                     ) : (
                                       <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                                        <Typography 
-                                          variant="body2" 
-                                          sx={{ 
+                                        <Typography
+                                          variant="body2"
+                                          sx={{
                                             flex: 1,
                                             cursor: editingTitle !== null ? 'default' : 'pointer',
                                             opacity: editingTitle !== null ? 0.6 : 1,
@@ -1074,12 +1071,12 @@ export default function RouteAnalysisPage() {
                                           }}
                                           onClick={(e) => {
                                             e.stopPropagation() // Prevent row click from firing
-                                            
+
                                             // Disable title click if any title is being edited
                                             if (editingTitle !== null) {
                                               return;
                                             }
-                                            
+
                                             // If the panel is already open for this result, close it
                                             if (selectedJobId === result.job_id) {
                                               setSelectedResult(null)
@@ -1147,7 +1144,7 @@ export default function RouteAnalysisPage() {
                                           size="small"
                                           startIcon={<DeleteIcon />}
                                           onClick={() => handleDeleteClick(result)}
-                                          sx={{ 
+                                          sx={{
                                             textTransform: 'none',
                                             color: '#d32f2f',
                                             borderColor: '#d32f2f',
@@ -1197,10 +1194,10 @@ export default function RouteAnalysisPage() {
                               setSelectedResult(null)
                               setSelectedJobId(null)
                             }}
-                            sx={{ 
-                              position: 'absolute', 
-                              top: 8, 
-                              right: 8, 
+                            sx={{
+                              position: 'absolute',
+                              top: 8,
+                              right: 8,
                               zIndex: 11,
                               minWidth: '80px',
                               px: 2,
@@ -1223,218 +1220,218 @@ export default function RouteAnalysisPage() {
                               <Typography variant="h6" sx={{ mb: 2, fontWeight: 'bold' }}>
                                 Optimization Result Details
                               </Typography>
-                          {/* Basic Information */}
-                          <Grid container spacing={2} sx={{ mb: 3 }}>
-                            <Grid item xs={12} md={6}>
-                              <Typography variant="body2" sx={{ fontWeight: 'bold' }}>
-                                Title:
-                              </Typography>
-                              <Typography variant="body2" sx={{ fontFamily: 'monospace', mb: 2 }}>
-                                {selectedResult.title}
-                              </Typography>
-                            </Grid>
-                            <Grid item xs={12} md={6}>
-                              <Typography variant="body2" sx={{ fontWeight: 'bold' }}>
-                                ID:
-                              </Typography>
-                              <Typography variant="body2" sx={{ fontFamily: 'monospace', mb: 2 }}>
-                                {selectedResult.id}
-                              </Typography>
-                            </Grid>
-                            <Grid item xs={12} md={6}>
-                              <Typography variant="body2" sx={{ fontWeight: 'bold' }}>
-                                Status:
-                              </Typography>
-                              <Typography variant="body2" sx={{ mb: 2 }}>
-                                {selectedResult.status}
-                              </Typography>
-                            </Grid>
-                            <Grid item xs={12} md={6}>
-                              <Typography variant="body2" sx={{ fontWeight: 'bold' }}>
-                                Created:
-                              </Typography>
-                              <Typography variant="body2" sx={{ mb: 2 }}>
-                                {formatDate(selectedResult.created_at)}
-                              </Typography>
-                            </Grid>
-                            <Grid item xs={12} md={6}>
-                              <Typography variant="body2" sx={{ fontWeight: 'bold' }}>
-                                Routes Found:
-                              </Typography>
-                              <Typography variant="body2" sx={{ mb: 2 }}>
-                                {selectedResult.response_data?.result?.routes?.length || 0}
-                              </Typography>
-                            </Grid>
-                            <Grid item xs={12} md={6}>
-                              <Typography variant="body2" sx={{ fontWeight: 'bold' }}>
-                                Solution Time:
-                              </Typography>
-                              <Typography variant="body2" sx={{ mb: 2 }}>
-                                {selectedResult.solution_time ? `${selectedResult.solution_time.toFixed(2)} seconds` : 'N/A'}
-                              </Typography>
-                            </Grid>
-                          </Grid>
-
-                          {/* Route Details Table */}
-                          {selectedResult?.response_data?.result?.routes && (
-                            <Box sx={{ mt: 3 }}>
-                              <Typography variant="h6" sx={{ mb: 2, color: companyColor, fontWeight: 'bold' }}>
-                                Route Details
-                              </Typography>
-                              <RouteSummaryTable
-                                routes={selectedResult.response_data.result.routes}
-                                expandedRoutes={expandedRoutes}
-                                onToggleRoute={(index) => {
-                                  setExpandedRoutes(prev => {
-                                    const newSet = new Set(prev);
-                                    if (newSet.has(index)) {
-                                      newSet.delete(index);
-                                    } else {
-                                      newSet.add(index);
-                                    }
-                                    return newSet;
-                                  });
-                                }}
-                                showSelection={false}
-                                maxHeight={400}
-                              />
-                            </Box>
-                          )}
-
-                          {/* KPI Calculations */}
-                          {(() => {
-                            const kpis = calculateKPIs(selectedResult.response_data)
-                            if (!kpis) return null
-                            return (
-                              <>
-                                {/* Fuel Delivery KPIs */}
-                                <Typography variant="h6" sx={{ mb: 2, mt: 4, color: companyColor, fontWeight: 'bold' }}>
-                                  Fuel Delivery Metrics
-                                </Typography>
-                                <Grid container spacing={2} sx={{ mb: 3 }}>
-                                  <Grid item xs={12} md={2}>
-                                    <Box sx={{ p: 2, bgcolor: '#f8f9fa', borderRadius: 1, textAlign: 'center' }}>
-                                      <Typography variant="h6" sx={{ color: companyColor, fontWeight: 'bold' }}>
-                                        {kpis.ulsdClearDelivered.toLocaleString()}
-                                      </Typography>
-                                      <Typography variant="body1" sx={{ color: '#666' }}>
-                                        ULSD Clear (gal)
-                                      </Typography>
-                                    </Box>
-                                  </Grid>
-                                  <Grid item xs={12} md={2}>
-                                    <Box sx={{ p: 2, bgcolor: '#f8f9fa', borderRadius: 1, textAlign: 'center' }}>
-                                      <Typography variant="h6" sx={{ color: companyColor, fontWeight: 'bold' }}>
-                                        {kpis.ulsdDyedDelivered.toLocaleString()}
-                                      </Typography>
-                                      <Typography variant="body1" sx={{ color: '#666' }}>
-                                        ULSD Dyed (gal)
-                                      </Typography>
-                                    </Box>
-                                  </Grid>
-                                  <Grid item xs={12} md={2}>
-                                    <Box sx={{ p: 2, bgcolor: '#f8f9fa', borderRadius: 1, textAlign: 'center' }}>
-                                      <Typography variant="h6" sx={{ color: companyColor, fontWeight: 'bold' }}>
-                                        {kpis.unlDelivered.toLocaleString()}
-                                      </Typography>
-                                      <Typography variant="body1" sx={{ color: '#666' }}>
-                                        UNL (gal)
-                                      </Typography>
-                                    </Box>
-                                  </Grid>
-                                  <Grid item xs={12} md={2}>
-                                    <Box sx={{ p: 2, bgcolor: '#f8f9fa', borderRadius: 1, textAlign: 'center' }}>
-                                      <Typography variant="h6" sx={{ color: companyColor, fontWeight: 'bold' }}>
-                                        {kpis.gasUnlPreDelivered.toLocaleString()}
-                                      </Typography>
-                                      <Typography variant="body1" sx={{ color: '#666' }}>
-                                        GAS UNL PRE (gal)
-                                      </Typography>
-                                    </Box>
-                                  </Grid>
-                                  <Grid item xs={12} md={2}>
-                                    <Box sx={{ p: 2, bgcolor: '#f8f9fa', borderRadius: 1, textAlign: 'center' }}>
-                                      <Typography variant="h6" sx={{ color: companyColor, fontWeight: 'bold' }}>
-                                        {kpis.rec90Delivered.toLocaleString()}
-                                      </Typography>
-                                      <Typography variant="body1" sx={{ color: '#666' }}>
-                                        REC 90 (gal)
-                                      </Typography>
-                                    </Box>
-                                  </Grid>
-                                  <Grid item xs={12} md={2}>
-                                    <Box sx={{ p: 2, bgcolor: '#f8f9fa', borderRadius: 1, textAlign: 'center' }}>
-                                      <Typography variant="h6" sx={{ color: companyColor, fontWeight: 'bold' }}>
-                                        {kpis.totalFuel.toLocaleString()}
-                                      </Typography>
-                                      <Typography variant="body1" sx={{ color: '#666' }}>
-                                        Total Fuel (gal)
-                                      </Typography>
-                                    </Box>
-                                  </Grid>
+                              {/* Basic Information */}
+                              <Grid container spacing={2} sx={{ mb: 3 }}>
+                                <Grid item xs={12} md={6}>
+                                  <Typography variant="body2" sx={{ fontWeight: 'bold' }}>
+                                    Title:
+                                  </Typography>
+                                  <Typography variant="body2" sx={{ fontFamily: 'monospace', mb: 2 }}>
+                                    {selectedResult.title}
+                                  </Typography>
                                 </Grid>
-                                <Grid container spacing={2} sx={{ mb: 3 }}>
-                                  <Grid item xs={12} md={3}>
-                                    <Box sx={{ p: 2, bgcolor: '#f8f9fa', borderRadius: 1, textAlign: 'center' }}>
-                                      <Typography variant="h6" sx={{ color: companyColor, fontWeight: 'bold' }}>
-                                        {kpis.avgFuelPerRoute.toFixed(0)}
-                                      </Typography>
-                                      <Typography variant="body1" sx={{ color: '#666' }}>
-                                        Avg per Route (gal)
-                                      </Typography>
-                                    </Box>
-                                  </Grid>
+                                <Grid item xs={12} md={6}>
+                                  <Typography variant="body2" sx={{ fontWeight: 'bold' }}>
+                                    ID:
+                                  </Typography>
+                                  <Typography variant="body2" sx={{ fontFamily: 'monospace', mb: 2 }}>
+                                    {selectedResult.id}
+                                  </Typography>
                                 </Grid>
+                                <Grid item xs={12} md={6}>
+                                  <Typography variant="body2" sx={{ fontWeight: 'bold' }}>
+                                    Status:
+                                  </Typography>
+                                  <Typography variant="body2" sx={{ mb: 2 }}>
+                                    {selectedResult.status}
+                                  </Typography>
+                                </Grid>
+                                <Grid item xs={12} md={6}>
+                                  <Typography variant="body2" sx={{ fontWeight: 'bold' }}>
+                                    Created:
+                                  </Typography>
+                                  <Typography variant="body2" sx={{ mb: 2 }}>
+                                    {formatDate(selectedResult.created_at)}
+                                  </Typography>
+                                </Grid>
+                                <Grid item xs={12} md={6}>
+                                  <Typography variant="body2" sx={{ fontWeight: 'bold' }}>
+                                    Routes Found:
+                                  </Typography>
+                                  <Typography variant="body2" sx={{ mb: 2 }}>
+                                    {selectedResult.response_data?.result?.routes?.length || 0}
+                                  </Typography>
+                                </Grid>
+                                <Grid item xs={12} md={6}>
+                                  <Typography variant="body2" sx={{ fontWeight: 'bold' }}>
+                                    Solution Time:
+                                  </Typography>
+                                  <Typography variant="body2" sx={{ mb: 2 }}>
+                                    {selectedResult.solution_time ? `${selectedResult.solution_time.toFixed(2)} seconds` : 'N/A'}
+                                  </Typography>
+                                </Grid>
+                              </Grid>
 
-                                {/* Operational Efficiency KPIs */}
-                                <Typography variant="h6" sx={{ mb: 2, mt: 3, color: companyColor, fontWeight: 'bold' }}>
-                                  Operational Efficiency
-                                </Typography>
-                                <Grid container spacing={2} sx={{ mb: 3 }}>
-                                  <Grid item xs={12} md={3}>
-                                    <Box sx={{ p: 2, bgcolor: '#f8f9fa', borderRadius: 1, textAlign: 'center' }}>
-                                      <Typography variant="h6" sx={{ color: companyColor, fontWeight: 'bold' }}>
-                                        {formatDistance(kpis.totalDistance)}
-                                      </Typography>
-                                      <Typography variant="body1" sx={{ color: '#666' }}>
-                                        Total Distance
-                                      </Typography>
-                                    </Box>
-                                  </Grid>
-                                  <Grid item xs={12} md={3}>
-                                    <Box sx={{ p: 2, bgcolor: '#f8f9fa', borderRadius: 1, textAlign: 'center' }}>
-                                      <Typography variant="h6" sx={{ color: companyColor, fontWeight: 'bold' }}>
-                                        {formatDuration(kpis.totalDuration)}
-                                      </Typography>
-                                      <Typography variant="body1" sx={{ color: '#666' }}>
-                                        Total Duration
-                                      </Typography>
-                                    </Box>
-                                  </Grid>
-                                  <Grid item xs={12} md={3}>
-                                    <Box sx={{ p: 2, bgcolor: '#f8f9fa', borderRadius: 1, textAlign: 'center' }}>
-                                      <Typography variant="h6" sx={{ color: companyColor, fontWeight: 'bold' }}>
-                                        {formatDuration(kpis.totalService)}
-                                      </Typography>
-                                      <Typography variant="body1" sx={{ color: '#666' }}>
-                                        Total Service
-                                      </Typography>
-                                    </Box>
-                                  </Grid>
-                                  <Grid item xs={12} md={3}>
-                                    <Box sx={{ p: 2, bgcolor: '#f8f9fa', borderRadius: 1, textAlign: 'center' }}>
-                                      <Typography variant="h6" sx={{ color: companyColor, fontWeight: 'bold' }}>
-                                        {formatDuration(kpis.totalWaiting)}
-                                      </Typography>
-                                      <Typography variant="body1" sx={{ color: '#666' }}>
-                                        Total Waiting
-                                      </Typography>
-                                    </Box>
-                                  </Grid>
-                                </Grid>
-                              </>
-                            )
-                          })()}
+                              {/* Route Details Table */}
+                              {selectedResult?.response_data?.result?.routes && (
+                                <Box sx={{ mt: 3 }}>
+                                  <Typography variant="h6" sx={{ mb: 2, color: companyColor, fontWeight: 'bold' }}>
+                                    Route Details
+                                  </Typography>
+                                  <RouteSummaryTable
+                                    routes={selectedResult.response_data.result.routes}
+                                    expandedRoutes={expandedRoutes}
+                                    onToggleRoute={(index) => {
+                                      setExpandedRoutes(prev => {
+                                        const newSet = new Set(prev);
+                                        if (newSet.has(index)) {
+                                          newSet.delete(index);
+                                        } else {
+                                          newSet.add(index);
+                                        }
+                                        return newSet;
+                                      });
+                                    }}
+                                    showSelection={false}
+                                    maxHeight={400}
+                                  />
+                                </Box>
+                              )}
+
+                              {/* KPI Calculations */}
+                              {(() => {
+                                const kpis = calculateKPIs(selectedResult.response_data)
+                                if (!kpis) return null
+                                return (
+                                  <>
+                                    {/* Fuel Delivery KPIs */}
+                                    <Typography variant="h6" sx={{ mb: 2, mt: 4, color: companyColor, fontWeight: 'bold' }}>
+                                      Fuel Delivery Metrics
+                                    </Typography>
+                                    <Grid container spacing={2} sx={{ mb: 3 }}>
+                                      <Grid item xs={12} md={2}>
+                                        <Box sx={{ p: 2, bgcolor: '#f8f9fa', borderRadius: 1, textAlign: 'center' }}>
+                                          <Typography variant="h6" sx={{ color: companyColor, fontWeight: 'bold' }}>
+                                            {kpis.ulsdClearDelivered.toLocaleString()}
+                                          </Typography>
+                                          <Typography variant="body1" sx={{ color: '#666' }}>
+                                            ULSD Clear (gal)
+                                          </Typography>
+                                        </Box>
+                                      </Grid>
+                                      <Grid item xs={12} md={2}>
+                                        <Box sx={{ p: 2, bgcolor: '#f8f9fa', borderRadius: 1, textAlign: 'center' }}>
+                                          <Typography variant="h6" sx={{ color: companyColor, fontWeight: 'bold' }}>
+                                            {kpis.ulsdDyedDelivered.toLocaleString()}
+                                          </Typography>
+                                          <Typography variant="body1" sx={{ color: '#666' }}>
+                                            ULSD Dyed (gal)
+                                          </Typography>
+                                        </Box>
+                                      </Grid>
+                                      <Grid item xs={12} md={2}>
+                                        <Box sx={{ p: 2, bgcolor: '#f8f9fa', borderRadius: 1, textAlign: 'center' }}>
+                                          <Typography variant="h6" sx={{ color: companyColor, fontWeight: 'bold' }}>
+                                            {kpis.unlDelivered.toLocaleString()}
+                                          </Typography>
+                                          <Typography variant="body1" sx={{ color: '#666' }}>
+                                            UNL (gal)
+                                          </Typography>
+                                        </Box>
+                                      </Grid>
+                                      <Grid item xs={12} md={2}>
+                                        <Box sx={{ p: 2, bgcolor: '#f8f9fa', borderRadius: 1, textAlign: 'center' }}>
+                                          <Typography variant="h6" sx={{ color: companyColor, fontWeight: 'bold' }}>
+                                            {kpis.gasUnlPreDelivered.toLocaleString()}
+                                          </Typography>
+                                          <Typography variant="body1" sx={{ color: '#666' }}>
+                                            GAS UNL PRE (gal)
+                                          </Typography>
+                                        </Box>
+                                      </Grid>
+                                      <Grid item xs={12} md={2}>
+                                        <Box sx={{ p: 2, bgcolor: '#f8f9fa', borderRadius: 1, textAlign: 'center' }}>
+                                          <Typography variant="h6" sx={{ color: companyColor, fontWeight: 'bold' }}>
+                                            {kpis.rec90Delivered.toLocaleString()}
+                                          </Typography>
+                                          <Typography variant="body1" sx={{ color: '#666' }}>
+                                            REC 90 (gal)
+                                          </Typography>
+                                        </Box>
+                                      </Grid>
+                                      <Grid item xs={12} md={2}>
+                                        <Box sx={{ p: 2, bgcolor: '#f8f9fa', borderRadius: 1, textAlign: 'center' }}>
+                                          <Typography variant="h6" sx={{ color: companyColor, fontWeight: 'bold' }}>
+                                            {kpis.totalFuel.toLocaleString()}
+                                          </Typography>
+                                          <Typography variant="body1" sx={{ color: '#666' }}>
+                                            Total Fuel (gal)
+                                          </Typography>
+                                        </Box>
+                                      </Grid>
+                                    </Grid>
+                                    <Grid container spacing={2} sx={{ mb: 3 }}>
+                                      <Grid item xs={12} md={3}>
+                                        <Box sx={{ p: 2, bgcolor: '#f8f9fa', borderRadius: 1, textAlign: 'center' }}>
+                                          <Typography variant="h6" sx={{ color: companyColor, fontWeight: 'bold' }}>
+                                            {kpis.avgFuelPerRoute.toFixed(0)}
+                                          </Typography>
+                                          <Typography variant="body1" sx={{ color: '#666' }}>
+                                            Avg per Route (gal)
+                                          </Typography>
+                                        </Box>
+                                      </Grid>
+                                    </Grid>
+
+                                    {/* Operational Efficiency KPIs */}
+                                    <Typography variant="h6" sx={{ mb: 2, mt: 3, color: companyColor, fontWeight: 'bold' }}>
+                                      Operational Efficiency
+                                    </Typography>
+                                    <Grid container spacing={2} sx={{ mb: 3 }}>
+                                      <Grid item xs={12} md={3}>
+                                        <Box sx={{ p: 2, bgcolor: '#f8f9fa', borderRadius: 1, textAlign: 'center' }}>
+                                          <Typography variant="h6" sx={{ color: companyColor, fontWeight: 'bold' }}>
+                                            {formatDistance(kpis.totalDistance)}
+                                          </Typography>
+                                          <Typography variant="body1" sx={{ color: '#666' }}>
+                                            Total Distance
+                                          </Typography>
+                                        </Box>
+                                      </Grid>
+                                      <Grid item xs={12} md={3}>
+                                        <Box sx={{ p: 2, bgcolor: '#f8f9fa', borderRadius: 1, textAlign: 'center' }}>
+                                          <Typography variant="h6" sx={{ color: companyColor, fontWeight: 'bold' }}>
+                                            {formatDuration(kpis.totalDuration)}
+                                          </Typography>
+                                          <Typography variant="body1" sx={{ color: '#666' }}>
+                                            Total Duration
+                                          </Typography>
+                                        </Box>
+                                      </Grid>
+                                      <Grid item xs={12} md={3}>
+                                        <Box sx={{ p: 2, bgcolor: '#f8f9fa', borderRadius: 1, textAlign: 'center' }}>
+                                          <Typography variant="h6" sx={{ color: companyColor, fontWeight: 'bold' }}>
+                                            {formatDuration(kpis.totalService)}
+                                          </Typography>
+                                          <Typography variant="body1" sx={{ color: '#666' }}>
+                                            Total Service
+                                          </Typography>
+                                        </Box>
+                                      </Grid>
+                                      <Grid item xs={12} md={3}>
+                                        <Box sx={{ p: 2, bgcolor: '#f8f9fa', borderRadius: 1, textAlign: 'center' }}>
+                                          <Typography variant="h6" sx={{ color: companyColor, fontWeight: 'bold' }}>
+                                            {formatDuration(kpis.totalWaiting)}
+                                          </Typography>
+                                          <Typography variant="body1" sx={{ color: '#666' }}>
+                                            Total Waiting
+                                          </Typography>
+                                        </Box>
+                                      </Grid>
+                                    </Grid>
+                                  </>
+                                )
+                              })()}
                             </>
                           )}
                         </Box>
@@ -1455,11 +1452,7 @@ export default function RouteAnalysisPage() {
             mt: '5px'
           }}>
             <Box sx={{ mt: 0, pt: 0, display: 'flex', alignItems: 'center', gap: 1 }}>
-              <img
-                src={companyLogo}
-                alt={`${companyName} Logo`}
-                style={{ height: '40px', width: 'auto', marginRight: '8px', verticalAlign: 'middle' }}
-              />
+              <CompanyLogo height={40} variant="footer" />
               <Typography variant="body2" sx={{ color: '#999', fontSize: '14px' }}>
                 powered by NextBillion.ai | Version 1.0.0 | Last updated: {new Date().toLocaleDateString()}
               </Typography>
@@ -1518,9 +1511,9 @@ export default function RouteAnalysisPage() {
           <Button onClick={handleDeleteCancel} color="primary">
             Cancel
           </Button>
-          <Button 
-            onClick={handleDeleteConfirm} 
-            color="error" 
+          <Button
+            onClick={handleDeleteConfirm}
+            color="error"
             variant="contained"
             autoFocus
           >
