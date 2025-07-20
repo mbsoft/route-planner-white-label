@@ -6,11 +6,13 @@ import { useMappingPersistence } from '../../hooks/input/use-mapping-persistence
 import { usePreferencesPersistence } from '../../hooks/use-preferences-persistence'
 import { InputType } from '../../models/input/input-core'
 import { useWhiteLabelContext } from '../../app/white-label-layout'
+import { useLanguage } from '../../contexts/language-context'
 
 export const MappingManagement: React.FC = () => {
   const { hasMapping } = useMappingPersistence()
   const { status: preferencesStatus, checkPreferencesStatus } = usePreferencesPersistence()
   const { companyColor } = useWhiteLabelContext()
+  const { t } = useLanguage()
 
   // State for mapping status
   const [mappingStatus, setMappingStatus] = useState({
@@ -66,7 +68,7 @@ export const MappingManagement: React.FC = () => {
     return has ? 'primary' : 'default'
   }
   const getStatusText = (has: boolean, loading: boolean, label: string) => {
-    if (loading) return 'Loading...'
+    if (loading) return t('mappingManagement.loading')
     if (!has) return label
     return label + ' ✓'
   }
@@ -75,7 +77,7 @@ export const MappingManagement: React.FC = () => {
   return (
     <Box sx={{ display: 'flex', gap: 1, mb: 2, flexWrap: 'wrap', alignItems: 'center' }}>
       <Chip
-        label={getStatusText(mappingStatus.job.hasMapping, mappingStatus.job.loading, 'Jobs Map')}
+        label={getStatusText(mappingStatus.job.hasMapping, mappingStatus.job.loading, t('mappingManagement.jobsMap'))}
         color={getStatusColor(mappingStatus.job.hasMapping, mappingStatus.job.loading)}
         size="small"
         sx={{
@@ -86,7 +88,7 @@ export const MappingManagement: React.FC = () => {
         }}
       />
       <Chip
-        label={getStatusText(mappingStatus.vehicle.hasMapping, mappingStatus.vehicle.loading, 'Vehicles Map')}
+        label={getStatusText(mappingStatus.vehicle.hasMapping, mappingStatus.vehicle.loading, t('mappingManagement.vehiclesMap'))}
         color={getStatusColor(mappingStatus.vehicle.hasMapping, mappingStatus.vehicle.loading)}
         size="small"
         sx={{
@@ -97,7 +99,7 @@ export const MappingManagement: React.FC = () => {
         }}
       />
       <Chip
-        label={getStatusText(mappingStatus.shipment.hasMapping, mappingStatus.shipment.loading, 'Shipment Map')}
+        label={getStatusText(mappingStatus.shipment.hasMapping, mappingStatus.shipment.loading, t('mappingManagement.shipmentMap'))}
         color={getStatusColor(mappingStatus.shipment.hasMapping, mappingStatus.shipment.loading)}
         size="small"
         sx={{
@@ -108,7 +110,7 @@ export const MappingManagement: React.FC = () => {
         }}
       />
       <Chip
-        label={getStatusText(preferences.hasPreferences, preferences.loading, 'Preferences')}
+        label={getStatusText(preferences.hasPreferences, preferences.loading, t('mappingManagement.preferences'))}
         color={getStatusColor(preferences.hasPreferences, preferences.loading)}
         size="small"
         sx={{

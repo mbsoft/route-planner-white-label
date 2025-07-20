@@ -14,23 +14,13 @@ export default function InputToolbar({currentPhase, onPhaseChange}: InputToolbar
   const [isDebugMode, setIsDebugMode] = useState(false)
   const { companyColor } = useWhiteLabelContext()
   const { t, language } = useLanguage()
-  
-  console.log('InputToolbar: Component rendering with language:', language)
 
-  const phases = useMemo(() => {
-    console.log('InputToolbar: Language changed to', language)
-    console.log('InputToolbar: Preferences translation:', t('inputToolbar.preferences'))
-    console.log('InputToolbar: Orders translation:', t('inputToolbar.orders'))
-    console.log('InputToolbar: Vehicles translation:', t('inputToolbar.vehicles'))
-    console.log('InputToolbar: Depots translation:', t('inputToolbar.depots'))
-    
-    return [
-      {key: InputOption.PREFERENCE, label: t('inputToolbar.preferences')},
-      {key: InputOption.ORDER, label: t('inputToolbar.orders')},
-      {key: InputOption.VEHICLE, label: t('inputToolbar.vehicles')},
-      {key: InputOption.DEPOT, label: t('inputToolbar.depots')},
-    ]
-  }, [t, language])
+  const phases = useMemo(() => [
+    {key: InputOption.PREFERENCE, label: t('inputToolbar.preferences')},
+    {key: InputOption.ORDER, label: t('inputToolbar.orders')},
+    {key: InputOption.VEHICLE, label: t('inputToolbar.vehicles')},
+    {key: InputOption.DEPOT, label: t('inputToolbar.depots')},
+  ], [t, language])
 
   return (
     <div style={{

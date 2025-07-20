@@ -49,6 +49,13 @@ const enTranslations = {
     "depots": "Depots",
     "debug": "Debug"
   },
+  "mappingManagement": {
+    "jobsMap": "Jobs Map",
+    "vehiclesMap": "Vehicles Map",
+    "shipmentMap": "Shipment Map",
+    "preferences": "Preferences",
+    "loading": "Loading..."
+  },
   "sidebar": {
     "collapseSidebar": "Collapse sidebar",
     "expandSidebar": "Expand sidebar"
@@ -380,6 +387,13 @@ const esMxTranslations = {
     "vehicles": "Vehículos",
     "depots": "Depósitos",
     "debug": "Depurar"
+  },
+  "mappingManagement": {
+    "jobsMap": "Mapa de Trabajos",
+    "vehiclesMap": "Mapa de Vehículos",
+    "shipmentMap": "Mapa de Envíos",
+    "preferences": "Preferencias",
+    "loading": "Cargando..."
   },
   "sidebar": {
     "collapseSidebar": "Contraer barra lateral",
@@ -713,6 +727,13 @@ const ptBrTranslations = {
     "depots": "Depósitos",
     "debug": "Depurar"
   },
+  "mappingManagement": {
+    "jobsMap": "Mapa de Trabalhos",
+    "vehiclesMap": "Mapa de Veículos",
+    "shipmentMap": "Mapa de Envios",
+    "preferences": "Preferências",
+    "loading": "Carregando..."
+  },
   "sidebar": {
     "collapseSidebar": "Recolher barra lateral",
     "expandSidebar": "Expandir barra lateral"
@@ -1044,6 +1065,13 @@ const caFrTranslations = {
     "vehicles": "Véhicules",
     "depots": "Dépôts",
     "debug": "Déboguer"
+  },
+  "mappingManagement": {
+    "jobsMap": "Carte des Tâches",
+    "vehiclesMap": "Carte des Véhicules",
+    "shipmentMap": "Carte des Expéditions",
+    "preferences": "Préférences",
+    "loading": "Chargement..."
   },
   "sidebar": {
     "collapseSidebar": "Réduire la barre latérale",
