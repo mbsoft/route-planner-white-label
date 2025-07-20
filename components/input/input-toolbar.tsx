@@ -3,6 +3,7 @@
 import {useState} from 'react'
 import {InputOption} from '../../models/input/input-phrase'
 import { useWhiteLabelContext } from '../../app/white-label-layout'
+import { useLanguage } from '../../contexts/language-context'
 
 interface InputToolbarProps {
   currentPhase: InputOption
@@ -12,12 +13,13 @@ interface InputToolbarProps {
 export default function InputToolbar({currentPhase, onPhaseChange}: InputToolbarProps) {
   const [isDebugMode, setIsDebugMode] = useState(false)
   const { companyColor } = useWhiteLabelContext()
+  const { t } = useLanguage()
 
   const phases = [
-    {key: InputOption.PREFERENCE, label: 'Preferences'},
-    {key: InputOption.ORDER, label: 'Orders'},
-    {key: InputOption.VEHICLE, label: 'Vehicles'},
-    {key: InputOption.DEPOT, label: 'Depots'},
+    {key: InputOption.PREFERENCE, label: t('inputToolbar.preferences')},
+    {key: InputOption.ORDER, label: t('inputToolbar.orders')},
+    {key: InputOption.VEHICLE, label: t('inputToolbar.vehicles')},
+    {key: InputOption.DEPOT, label: t('inputToolbar.depots')},
   ]
 
   return (
@@ -31,7 +33,7 @@ export default function InputToolbar({currentPhase, onPhaseChange}: InputToolbar
       borderBottom: '1px solid #e0e0e0'
     }}>
       <div style={{flex: 1, fontSize: '16px', fontWeight: 'bold'}}>
-        Route Planner - White Label
+        {t('inputToolbar.routePlannerWhiteLabel')}
       </div>
       
       <div style={{display: 'flex', gap: '10px', alignItems: 'center'}}>
@@ -64,7 +66,7 @@ export default function InputToolbar({currentPhase, onPhaseChange}: InputToolbar
             fontSize: '12px'
           }}
         >
-          Debug
+          {t('inputToolbar.debug')}
         </button>
       </div>
     </div>

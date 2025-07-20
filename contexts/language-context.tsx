@@ -41,6 +41,14 @@ const enTranslations = {
     "version": "Version 1.0.0",
     "lastUpdated": "Last updated"
   },
+  "inputToolbar": {
+    "routePlannerWhiteLabel": "Route Planner - White Label",
+    "preferences": "Preferences",
+    "orders": "Orders",
+    "vehicles": "Vehicles",
+    "depots": "Depots",
+    "debug": "Debug"
+  },
   "sidebar": {
     "collapseSidebar": "Collapse sidebar",
     "expandSidebar": "Expand sidebar"
@@ -364,6 +372,14 @@ const esMxTranslations = {
     "poweredBy": "impulsado por NextBillion.ai",
     "version": "Versión 1.0.0",
     "lastUpdated": "Última actualización"
+  },
+  "inputToolbar": {
+    "routePlannerWhiteLabel": "Planificador de Rutas - Marca Blanca",
+    "preferences": "Preferencias",
+    "orders": "Pedidos",
+    "vehicles": "Vehículos",
+    "depots": "Depósitos",
+    "debug": "Depurar"
   },
   "sidebar": {
     "collapseSidebar": "Contraer barra lateral",
@@ -689,6 +705,14 @@ const ptBrTranslations = {
     "version": "Versão 1.0.0",
     "lastUpdated": "Última atualização"
   },
+  "inputToolbar": {
+    "routePlannerWhiteLabel": "Planejador de Rotas - Marca Branca",
+    "preferences": "Preferências",
+    "orders": "Pedidos",
+    "vehicles": "Veículos",
+    "depots": "Depósitos",
+    "debug": "Depurar"
+  },
   "sidebar": {
     "collapseSidebar": "Recolher barra lateral",
     "expandSidebar": "Expandir barra lateral"
@@ -1012,6 +1036,14 @@ const caFrTranslations = {
     "poweredBy": "propulsé par NextBillion.ai",
     "version": "Version 1.0.0",
     "lastUpdated": "Dernière mise à jour"
+  },
+  "inputToolbar": {
+    "routePlannerWhiteLabel": "Planificateur d'Itinéraires - Marque Blanche",
+    "preferences": "Préférences",
+    "orders": "Commandes",
+    "vehicles": "Véhicules",
+    "depots": "Dépôts",
+    "debug": "Déboguer"
   },
   "sidebar": {
     "collapseSidebar": "Réduire la barre latérale",
