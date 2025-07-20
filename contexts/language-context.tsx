@@ -33,6 +33,14 @@ const enTranslations = {
     "informationDocumentation": "Information & Documentation",
     "editRoute": "Edit Route"
   },
+  "routePlanner": {
+    "pageTitle": "Plan, manage and monitor your routes",
+    "admin": "ADMIN",
+    "logout": "Logout",
+    "poweredBy": "powered by NextBillion.ai",
+    "version": "Version 1.0.0",
+    "lastUpdated": "Last updated"
+  },
   "sidebar": {
     "collapseSidebar": "Collapse sidebar",
     "expandSidebar": "Expand sidebar"
@@ -348,6 +356,14 @@ const esMxTranslations = {
     "routePlanAnalysis": "Análisis de Plan de Ruta",
     "informationDocumentation": "Información y Documentación",
     "editRoute": "Editar Ruta"
+  },
+  "routePlanner": {
+    "pageTitle": "Planifica, gestiona y monitorea tus rutas",
+    "admin": "ADMIN",
+    "logout": "Cerrar Sesión",
+    "poweredBy": "impulsado por NextBillion.ai",
+    "version": "Versión 1.0.0",
+    "lastUpdated": "Última actualización"
   },
   "sidebar": {
     "collapseSidebar": "Contraer barra lateral",
@@ -665,6 +681,14 @@ const ptBrTranslations = {
     "informationDocumentation": "Informações e Documentação",
     "editRoute": "Editar Rota"
   },
+  "routePlanner": {
+    "pageTitle": "Planeje, gerencie e monitore suas rotas",
+    "admin": "ADMIN",
+    "logout": "Sair",
+    "poweredBy": "desenvolvido por NextBillion.ai",
+    "version": "Versão 1.0.0",
+    "lastUpdated": "Última atualização"
+  },
   "sidebar": {
     "collapseSidebar": "Recolher barra lateral",
     "expandSidebar": "Expandir barra lateral"
@@ -980,6 +1004,14 @@ const caFrTranslations = {
     "routePlanAnalysis": "Analyse du Plan d'Itinéraire",
     "informationDocumentation": "Informations et Documentation",
     "editRoute": "Modifier l'Itinéraire"
+  },
+  "routePlanner": {
+    "pageTitle": "Planifiez, gérez et surveillez vos itinéraires",
+    "admin": "ADMIN",
+    "logout": "Déconnexion",
+    "poweredBy": "propulsé par NextBillion.ai",
+    "version": "Version 1.0.0",
+    "lastUpdated": "Dernière mise à jour"
   },
   "sidebar": {
     "collapseSidebar": "Réduire la barre latérale",

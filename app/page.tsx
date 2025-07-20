@@ -358,7 +358,7 @@ export default function HomePage() {
                   component="h1"
                   sx={{ color: '#333', fontWeight: 'bold', fontSize: '1.1rem' }}
                 >
-                  Plan, manage and monitor your routes
+                  {t('routePlanner.pageTitle')}
                 </Typography>
               </Box>
               <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
@@ -375,7 +375,7 @@ export default function HomePage() {
                       fontWeight: 'bold'
                     }}
                   >
-                    ADMIN
+                    {t('routePlanner.admin')}
                   </Typography>
                 )}
                 <LanguageSwitcher />
@@ -390,7 +390,7 @@ export default function HomePage() {
                     textTransform: 'none'
                   }}
                 >
-                  Logout
+                  {t('routePlanner.logout')}
                 </Button>
               </Box>
             </Box>
@@ -434,7 +434,7 @@ export default function HomePage() {
             <Box sx={{ mt: 0, pt: 0, display: 'flex', alignItems: 'center', gap: 1 }}>
               <CompanyLogo height={40} variant="footer" />
               <Typography variant="body2" sx={{ color: '#999', fontSize: '14px' }}>
-                powered by NextBillion.ai | Version 1.0.0 | Last updated: {new Date().toLocaleDateString()}
+                {t('routePlanner.poweredBy')} | {t('routePlanner.version')} | {t('routePlanner.lastUpdated')}: {new Date().toLocaleDateString()}
               </Typography>
             </Box>
           </Box>
