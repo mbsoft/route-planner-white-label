@@ -1,6 +1,6 @@
 'use client'
 
-import {useState} from 'react'
+import {useState, useMemo} from 'react'
 import {InputOption} from '../../models/input/input-phrase'
 import { useWhiteLabelContext } from '../../app/white-label-layout'
 import { useLanguage } from '../../contexts/language-context'
@@ -13,14 +13,14 @@ interface InputToolbarProps {
 export default function InputToolbar({currentPhase, onPhaseChange}: InputToolbarProps) {
   const [isDebugMode, setIsDebugMode] = useState(false)
   const { companyColor } = useWhiteLabelContext()
-  const { t } = useLanguage()
+  const { t, language } = useLanguage()
 
-  const phases = [
+  const phases = useMemo(() => [
     {key: InputOption.PREFERENCE, label: t('inputToolbar.preferences')},
     {key: InputOption.ORDER, label: t('inputToolbar.orders')},
     {key: InputOption.VEHICLE, label: t('inputToolbar.vehicles')},
     {key: InputOption.DEPOT, label: t('inputToolbar.depots')},
-  ]
+  ], [t, language])
 
   return (
     <div style={{
