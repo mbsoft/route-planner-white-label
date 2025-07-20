@@ -727,6 +727,7 @@ const ptBrTranslations = {
     "english": "English",
     "spanish": "Español",
     "portuguese": "Português",
+    "frenchCanadian": "Français Canadien",
     "selectLanguage": "Selecionar Idioma"
   },
   "information": {
