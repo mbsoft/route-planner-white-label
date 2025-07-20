@@ -638,7 +638,7 @@ export default function RouteAnalysisPage() {
                   component="h1"
                   sx={{ color: '#333', fontWeight: 'bold', fontSize: '1.1rem' }}
                 >
-                  Route Plan Analysis
+                  {t('analysis.pageTitle')}
                 </Typography>
               </Box>
               <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
@@ -670,7 +670,7 @@ export default function RouteAnalysisPage() {
                     textTransform: 'none'
                   }}
                 >
-                  Logout
+                  {t('analysis.logout')}
                 </Button>
               </Box>
             </Box>
@@ -686,10 +686,10 @@ export default function RouteAnalysisPage() {
                     <AnalyticsIcon sx={{ fontSize: 40, color: '#1976d2' }} />
                     <Box>
                       <Typography variant="h4" sx={{ fontWeight: 'bold', color: '#333' }}>
-                        Route Plan Analysis
+                        {t('analysis.pageTitle')}
                       </Typography>
                       <Typography variant="body1" sx={{ color: '#666' }}>
-                        Analyze and optimize your route planning performance
+                        {t('analysis.pageDescription')}
                       </Typography>
                     </Box>
                   </Box>
@@ -714,7 +714,7 @@ export default function RouteAnalysisPage() {
                       <SpeedIcon sx={{ fontSize: 24 }} />
                     </Box>
                     <Typography variant="body1" sx={{ color: '#666', fontWeight: 'bold' }}>
-                      Average Speed
+                      {t('analysis.averageSpeed')}
                     </Typography>
                   </Box>
                   <Box sx={{ display: 'flex', alignItems: 'baseline', gap: 1 }}>
@@ -722,7 +722,7 @@ export default function RouteAnalysisPage() {
                       {summaryStats.avgSpeed}
                     </Typography>
                     <Typography variant="body2" sx={{ color: '#666' }}>
-                      km/h
+                      {t('analysis.kmh')}
                     </Typography>
                   </Box>
                 </Card>
@@ -745,7 +745,7 @@ export default function RouteAnalysisPage() {
                       <RouteIcon sx={{ fontSize: 24 }} />
                     </Box>
                     <Typography variant="body1" sx={{ color: '#666', fontWeight: 'bold' }}>
-                      Total Routes
+                      {t('analysis.totalRoutes')}
                     </Typography>
                   </Box>
                   <Box sx={{ display: 'flex', alignItems: 'baseline', gap: 1 }}>
@@ -753,7 +753,7 @@ export default function RouteAnalysisPage() {
                       {summaryStats.totalRoutes}
                     </Typography>
                     <Typography variant="body2" sx={{ color: '#666' }}>
-                      Optimization plans
+                      {t('analysis.optimizationPlans')}
                     </Typography>
                   </Box>
                 </Card>
@@ -776,7 +776,7 @@ export default function RouteAnalysisPage() {
                       <LocalGasStationIcon sx={{ fontSize: 24 }} />
                     </Box>
                     <Typography variant="body1" sx={{ color: '#666', fontWeight: 'bold' }}>
-                      Average Gallons/Route
+                      {t('analysis.averageGallonsPerRoute')}
                     </Typography>
                   </Box>
                   <Box sx={{ display: 'flex', alignItems: 'baseline', gap: 1 }}>
@@ -784,7 +784,7 @@ export default function RouteAnalysisPage() {
                       {summaryStats.avgGallonsPerRoute.toLocaleString()}
                     </Typography>
                     <Typography variant="body2" sx={{ color: '#666' }}>
-                      gallons
+                      {t('analysis.gallons')}
                     </Typography>
                   </Box>
                 </Card>
@@ -807,7 +807,7 @@ export default function RouteAnalysisPage() {
                       <CancelIcon sx={{ fontSize: 24 }} />
                     </Box>
                     <Typography variant="body1" sx={{ color: '#666', fontWeight: 'bold' }}>
-                      Unassigned Jobs
+                      {t('analysis.unassignedJobs')}
                     </Typography>
                   </Box>
                   <Box sx={{ display: 'flex', alignItems: 'baseline', gap: 1 }}>
@@ -815,7 +815,7 @@ export default function RouteAnalysisPage() {
                       {summaryStats.totalUnassignedJobs}
                     </Typography>
                     <Typography variant="body2" sx={{ color: '#666' }}>
-                      jobs
+                      {t('analysis.jobs')}
                     </Typography>
                   </Box>
                 </Card>
@@ -838,7 +838,7 @@ export default function RouteAnalysisPage() {
                       <StopIcon sx={{ fontSize: 24 }} />
                     </Box>
                     <Typography variant="body1" sx={{ color: '#666', fontWeight: 'bold' }}>
-                      Average Stops/Route
+                      {t('analysis.averageStopsPerRoute')}
                     </Typography>
                   </Box>
                   <Box sx={{ display: 'flex', alignItems: 'baseline', gap: 1 }}>
@@ -846,7 +846,7 @@ export default function RouteAnalysisPage() {
                       {summaryStats.avgStopsPerRoute}
                     </Typography>
                     <Typography variant="body2" sx={{ color: '#666' }}>
-                      stops
+                      {t('analysis.stops')}
                     </Typography>
                   </Box>
                 </Card>
@@ -869,7 +869,7 @@ export default function RouteAnalysisPage() {
                       <StraightenIcon sx={{ fontSize: 24 }} />
                     </Box>
                     <Typography variant="body1" sx={{ color: '#666', fontWeight: 'bold' }}>
-                      Average Distance/Route
+                      {t('analysis.averageDistancePerRoute')}
                     </Typography>
                   </Box>
                   <Box sx={{ display: 'flex', alignItems: 'baseline', gap: 1 }}>
@@ -877,7 +877,7 @@ export default function RouteAnalysisPage() {
                       {formatDistance(summaryStats.avgDistancePerRoute)}
                     </Typography>
                     <Typography variant="body2" sx={{ color: '#666' }}>
-                      km
+                      {t('analysis.km')}
                     </Typography>
                   </Box>
                 </Card>
@@ -900,7 +900,7 @@ export default function RouteAnalysisPage() {
                       <AccessTimeIcon sx={{ fontSize: 24 }} />
                     </Box>
                     <Typography variant="body1" sx={{ color: '#666', fontWeight: 'bold' }}>
-                      Total Waiting Time
+                      {t('analysis.totalWaitingTime')}
                     </Typography>
                   </Box>
                   <Box sx={{ display: 'flex', alignItems: 'baseline', gap: 1 }}>
@@ -908,7 +908,7 @@ export default function RouteAnalysisPage() {
                       {formatDuration(summaryStats.totalWaitingTime)}
                     </Typography>
                     <Typography variant="body2" sx={{ color: '#666' }}>
-                      time
+                      {t('analysis.time')}
                     </Typography>
                   </Box>
                 </Card>
@@ -931,7 +931,7 @@ export default function RouteAnalysisPage() {
                       <BuildIcon sx={{ fontSize: 24 }} />
                     </Box>
                     <Typography variant="body1" sx={{ color: '#666', fontWeight: 'bold' }}>
-                      Average Service Time/Route
+                      {t('analysis.averageServiceTimePerRoute')}
                     </Typography>
                   </Box>
                   <Box sx={{ display: 'flex', alignItems: 'baseline', gap: 1 }}>
@@ -939,7 +939,7 @@ export default function RouteAnalysisPage() {
                       {formatDuration(summaryStats.avgServiceTimePerRoute)}
                     </Typography>
                     <Typography variant="body2" sx={{ color: '#666' }}>
-                      time
+                      {t('analysis.time')}
                     </Typography>
                   </Box>
                 </Card>
@@ -951,7 +951,7 @@ export default function RouteAnalysisPage() {
                   <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mb: 3 }}>
                     <HistoryIcon sx={{ fontSize: 32, color: companyColor }} />
                     <Typography variant="h5" sx={{ fontWeight: 'bold' }}>
-                      Optimization History
+                      {t('analysis.optimizationHistory')}
                     </Typography>
                   </Box>
 
@@ -968,10 +968,10 @@ export default function RouteAnalysisPage() {
                   ) : optimizationResults.length === 0 ? (
                     <Box sx={{ textAlign: 'center', p: 4 }}>
                       <Typography variant="h6" sx={{ color: '#666', mb: 2 }}>
-                        No optimization results found
+                        {t('analysis.noResults')}
                       </Typography>
                       <Typography variant="body2" sx={{ color: '#999' }}>
-                        Run an optimization on the main page to see results here
+                        {t('analysis.noResultsDescription')}
                       </Typography>
                     </Box>
                   ) : (
@@ -982,11 +982,11 @@ export default function RouteAnalysisPage() {
                           <Table>
                             <TableHead>
                               <TableRow>
-                                <TableCell sx={{ fontWeight: 'bold' }}>Title</TableCell>
-                                <TableCell sx={{ fontWeight: 'bold' }}>Status</TableCell>
-                                <TableCell sx={{ fontWeight: 'bold' }}>Solution Time</TableCell>
-                                <TableCell sx={{ fontWeight: 'bold' }}>Created</TableCell>
-                                <TableCell sx={{ fontWeight: 'bold' }}>Actions</TableCell>
+                                <TableCell sx={{ fontWeight: 'bold' }}>{t('analysis.title')}</TableCell>
+                                <TableCell sx={{ fontWeight: 'bold' }}>{t('analysis.status')}</TableCell>
+                                <TableCell sx={{ fontWeight: 'bold' }}>{t('analysis.solutionTime')}</TableCell>
+                                <TableCell sx={{ fontWeight: 'bold' }}>{t('analysis.createdAt')}</TableCell>
+                                <TableCell sx={{ fontWeight: 'bold' }}>{t('analysis.actions')}</TableCell>
                               </TableRow>
                             </TableHead>
                             <TableBody>
@@ -1126,7 +1126,7 @@ export default function RouteAnalysisPage() {
                                           onClick={() => window.open(result.shared_url, '_blank')}
                                           sx={{ textTransform: 'none' }}
                                         >
-                                          Map
+                                          {t('analysis.map')}
                                         </Button>
                                       )}
                                       <Button
@@ -1136,7 +1136,7 @@ export default function RouteAnalysisPage() {
                                         onClick={(e) => handleDownloadClick(e, result)}
                                         sx={{ textTransform: 'none' }}
                                       >
-                                        Download
+                                        {t('analysis.download')}
                                       </Button>
                                       {isAdmin && (
                                         <Button
@@ -1154,7 +1154,7 @@ export default function RouteAnalysisPage() {
                                             }
                                           }}
                                         >
-                                          Delete
+                                          {t('analysis.delete')}
                                         </Button>
                                       )}
                                     </Box>
@@ -1206,7 +1206,7 @@ export default function RouteAnalysisPage() {
                               textTransform: 'none'
                             }}
                           >
-                            Close
+                            {t('analysis.close')}
                           </Button>
 
                           {/* Loading state */}
@@ -1218,13 +1218,13 @@ export default function RouteAnalysisPage() {
                             <>
                               {/* Details content */}
                               <Typography variant="h6" sx={{ mb: 2, fontWeight: 'bold' }}>
-                                Optimization Result Details
+                                {t('analysis.optimizationResultDetails')}
                               </Typography>
                               {/* Basic Information */}
                               <Grid container spacing={2} sx={{ mb: 3 }}>
                                 <Grid item xs={12} md={6}>
                                   <Typography variant="body2" sx={{ fontWeight: 'bold' }}>
-                                    Title:
+                                    {t('analysis.title')}:
                                   </Typography>
                                   <Typography variant="body2" sx={{ fontFamily: 'monospace', mb: 2 }}>
                                     {selectedResult.title}
@@ -1232,7 +1232,7 @@ export default function RouteAnalysisPage() {
                                 </Grid>
                                 <Grid item xs={12} md={6}>
                                   <Typography variant="body2" sx={{ fontWeight: 'bold' }}>
-                                    ID:
+                                    {t('analysis.jobId')}:
                                   </Typography>
                                   <Typography variant="body2" sx={{ fontFamily: 'monospace', mb: 2 }}>
                                     {selectedResult.id}
@@ -1240,7 +1240,7 @@ export default function RouteAnalysisPage() {
                                 </Grid>
                                 <Grid item xs={12} md={6}>
                                   <Typography variant="body2" sx={{ fontWeight: 'bold' }}>
-                                    Status:
+                                    {t('analysis.status')}:
                                   </Typography>
                                   <Typography variant="body2" sx={{ mb: 2 }}>
                                     {selectedResult.status}
@@ -1248,7 +1248,7 @@ export default function RouteAnalysisPage() {
                                 </Grid>
                                 <Grid item xs={12} md={6}>
                                   <Typography variant="body2" sx={{ fontWeight: 'bold' }}>
-                                    Created:
+                                    {t('analysis.createdAt')}:
                                   </Typography>
                                   <Typography variant="body2" sx={{ mb: 2 }}>
                                     {formatDate(selectedResult.created_at)}
@@ -1256,7 +1256,7 @@ export default function RouteAnalysisPage() {
                                 </Grid>
                                 <Grid item xs={12} md={6}>
                                   <Typography variant="body2" sx={{ fontWeight: 'bold' }}>
-                                    Routes Found:
+                                    {t('analysis.routesFound')}:
                                   </Typography>
                                   <Typography variant="body2" sx={{ mb: 2 }}>
                                     {selectedResult.response_data?.result?.routes?.length || 0}
@@ -1264,10 +1264,10 @@ export default function RouteAnalysisPage() {
                                 </Grid>
                                 <Grid item xs={12} md={6}>
                                   <Typography variant="body2" sx={{ fontWeight: 'bold' }}>
-                                    Solution Time:
+                                    {t('analysis.solutionTime')}:
                                   </Typography>
                                   <Typography variant="body2" sx={{ mb: 2 }}>
-                                    {selectedResult.solution_time ? `${selectedResult.solution_time.toFixed(2)} seconds` : 'N/A'}
+                                    {selectedResult.solution_time ? `${selectedResult.solution_time.toFixed(2)} ${t('analysis.seconds')}` : 'N/A'}
                                   </Typography>
                                 </Grid>
                               </Grid>
@@ -1276,7 +1276,7 @@ export default function RouteAnalysisPage() {
                               {selectedResult?.response_data?.result?.routes && (
                                 <Box sx={{ mt: 3 }}>
                                   <Typography variant="h6" sx={{ mb: 2, color: companyColor, fontWeight: 'bold' }}>
-                                    Route Details
+                                    {t('analysis.routeDetails')}
                                   </Typography>
                                   <RouteSummaryTable
                                     routes={selectedResult.response_data.result.routes}
@@ -1306,7 +1306,7 @@ export default function RouteAnalysisPage() {
                                   <>
                                     {/* Fuel Delivery KPIs */}
                                     <Typography variant="h6" sx={{ mb: 2, mt: 4, color: companyColor, fontWeight: 'bold' }}>
-                                      Fuel Delivery Metrics
+                                      {t('analysis.fuelDeliveryMetrics')}
                                     </Typography>
                                     <Grid container spacing={2} sx={{ mb: 3 }}>
                                       <Grid item xs={12} md={2}>
@@ -1315,7 +1315,7 @@ export default function RouteAnalysisPage() {
                                             {kpis.ulsdClearDelivered.toLocaleString()}
                                           </Typography>
                                           <Typography variant="body1" sx={{ color: '#666' }}>
-                                            ULSD Clear (gal)
+                                            {t('analysis.ulsdClear')}
                                           </Typography>
                                         </Box>
                                       </Grid>
@@ -1325,7 +1325,7 @@ export default function RouteAnalysisPage() {
                                             {kpis.ulsdDyedDelivered.toLocaleString()}
                                           </Typography>
                                           <Typography variant="body1" sx={{ color: '#666' }}>
-                                            ULSD Dyed (gal)
+                                            {t('analysis.ulsdDyed')}
                                           </Typography>
                                         </Box>
                                       </Grid>
@@ -1335,7 +1335,7 @@ export default function RouteAnalysisPage() {
                                             {kpis.unlDelivered.toLocaleString()}
                                           </Typography>
                                           <Typography variant="body1" sx={{ color: '#666' }}>
-                                            UNL (gal)
+                                            {t('analysis.unl')}
                                           </Typography>
                                         </Box>
                                       </Grid>
@@ -1345,7 +1345,7 @@ export default function RouteAnalysisPage() {
                                             {kpis.gasUnlPreDelivered.toLocaleString()}
                                           </Typography>
                                           <Typography variant="body1" sx={{ color: '#666' }}>
-                                            GAS UNL PRE (gal)
+                                            {t('analysis.gasUnlPre')}
                                           </Typography>
                                         </Box>
                                       </Grid>
@@ -1355,7 +1355,7 @@ export default function RouteAnalysisPage() {
                                             {kpis.rec90Delivered.toLocaleString()}
                                           </Typography>
                                           <Typography variant="body1" sx={{ color: '#666' }}>
-                                            REC 90 (gal)
+                                            {t('analysis.rec90')}
                                           </Typography>
                                         </Box>
                                       </Grid>
@@ -1365,7 +1365,7 @@ export default function RouteAnalysisPage() {
                                             {kpis.totalFuel.toLocaleString()}
                                           </Typography>
                                           <Typography variant="body1" sx={{ color: '#666' }}>
-                                            Total Fuel (gal)
+                                            {t('analysis.totalFuel')}
                                           </Typography>
                                         </Box>
                                       </Grid>
@@ -1377,7 +1377,7 @@ export default function RouteAnalysisPage() {
                                             {kpis.avgFuelPerRoute.toFixed(0)}
                                           </Typography>
                                           <Typography variant="body1" sx={{ color: '#666' }}>
-                                            Avg per Route (gal)
+                                            {t('analysis.avgPerRoute')}
                                           </Typography>
                                         </Box>
                                       </Grid>
@@ -1385,7 +1385,7 @@ export default function RouteAnalysisPage() {
 
                                     {/* Operational Efficiency KPIs */}
                                     <Typography variant="h6" sx={{ mb: 2, mt: 3, color: companyColor, fontWeight: 'bold' }}>
-                                      Operational Efficiency
+                                      {t('analysis.operationalEfficiency')}
                                     </Typography>
                                     <Grid container spacing={2} sx={{ mb: 3 }}>
                                       <Grid item xs={12} md={3}>
@@ -1394,7 +1394,7 @@ export default function RouteAnalysisPage() {
                                             {formatDistance(kpis.totalDistance)}
                                           </Typography>
                                           <Typography variant="body1" sx={{ color: '#666' }}>
-                                            Total Distance
+                                            {t('analysis.totalDistance')}
                                           </Typography>
                                         </Box>
                                       </Grid>
@@ -1404,7 +1404,7 @@ export default function RouteAnalysisPage() {
                                             {formatDuration(kpis.totalDuration)}
                                           </Typography>
                                           <Typography variant="body1" sx={{ color: '#666' }}>
-                                            Total Duration
+                                            {t('analysis.totalDuration')}
                                           </Typography>
                                         </Box>
                                       </Grid>
@@ -1414,7 +1414,7 @@ export default function RouteAnalysisPage() {
                                             {formatDuration(kpis.totalService)}
                                           </Typography>
                                           <Typography variant="body1" sx={{ color: '#666' }}>
-                                            Total Service
+                                            {t('analysis.totalService')}
                                           </Typography>
                                         </Box>
                                       </Grid>
@@ -1424,7 +1424,7 @@ export default function RouteAnalysisPage() {
                                             {formatDuration(kpis.totalWaiting)}
                                           </Typography>
                                           <Typography variant="body1" sx={{ color: '#666' }}>
-                                            Total Waiting
+                                            {t('analysis.totalWaiting')}
                                           </Typography>
                                         </Box>
                                       </Grid>
@@ -1479,13 +1479,13 @@ export default function RouteAnalysisPage() {
           <ListItemIcon>
             <GetAppIcon fontSize="small" />
           </ListItemIcon>
-          Download as CSV (ZIP)
+          {t('analysis.downloadAsCsv')}
         </MenuItem>
         <MenuItem onClick={handleDownloadJSON}>
           <ListItemIcon>
             <GetAppIcon fontSize="small" />
           </ListItemIcon>
-          Download as JSON
+          {t('analysis.downloadAsJson')}
         </MenuItem>
       </Menu>
 
@@ -1497,19 +1497,19 @@ export default function RouteAnalysisPage() {
         aria-describedby="delete-dialog-description"
       >
         <DialogTitle id="delete-dialog-title" sx={{ color: '#d32f2f' }}>
-          Confirm Delete
+          {t('analysis.confirmDelete')}
         </DialogTitle>
         <DialogContent>
           <Typography id="delete-dialog-description">
-            Are you sure you want to delete the optimization result "{resultToDelete?.title}"?
+            {t('analysis.deleteConfirmation').replace('{title}', resultToDelete?.title || '')}
           </Typography>
           <Typography variant="body2" sx={{ color: '#666', mt: 1 }}>
-            This action cannot be undone.
+            {t('analysis.deleteWarning')}
           </Typography>
         </DialogContent>
         <DialogActions>
           <Button onClick={handleDeleteCancel} color="primary">
-            Cancel
+            {t('analysis.cancel')}
           </Button>
           <Button
             onClick={handleDeleteConfirm}
@@ -1517,7 +1517,7 @@ export default function RouteAnalysisPage() {
             variant="contained"
             autoFocus
           >
-            Delete
+            {t('analysis.delete')}
           </Button>
         </DialogActions>
       </Dialog>
