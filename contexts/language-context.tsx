@@ -184,6 +184,8 @@ const enTranslations = {
   "language": {
     "english": "English",
     "spanish": "Español",
+    "portuguese": "Português",
+    "frenchCanadian": "Français Canadien",
     "selectLanguage": "Select Language"
   },
   "information": {
@@ -453,6 +455,8 @@ const esMxTranslations = {
   "language": {
     "english": "English",
     "spanish": "Español",
+    "portuguese": "Português",
+    "frenchCanadian": "Français Canadien",
     "selectLanguage": "Seleccionar Idioma"
   },
   "information": {
@@ -775,7 +779,6 @@ const ptBrTranslations = {
     "spanishMexican": "Espanhol Mexicano (es-MX)",
     "portugueseBrazilian": "Português Brasileiro (pt-BR)",
     "frenchCanadian": "Francês Canadense (ca-FR)",
-    "portugueseBrazilian": "Português Brasileiro (pt-BR)",
     "locatedIn": "Localizado em",
     "stepsToAdd": "Passos para Adicionar um Novo Idioma:",
     "step1": "Criar novo diretório: /locales/[código-idioma]/",
@@ -1045,8 +1048,6 @@ const caFrTranslations = {
     "currentLanguages": "Langues Actuelles :",
     "englishDefault": "Anglais (en) - Langue par défaut",
     "spanishMexican": "Espagnol Mexicain (es-MX)",
-    "portugueseBrazilian": "Portugais Brésilien (pt-BR)",
-    "frenchCanadian": "Français Canadien (ca-FR)",
     "portugueseBrazilian": "Portugais Brésilien (pt-BR)",
     "frenchCanadian": "Français Canadien (ca-FR)",
     "locatedIn": "Situé dans",
