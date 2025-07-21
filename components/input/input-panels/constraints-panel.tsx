@@ -8,6 +8,7 @@ import {
 import GavelIcon from '@mui/icons-material/Gavel'
 import {PreferencesPanel} from './preferences-panel'
 import { useWhiteLabelContext } from '../../../app/white-label-layout'
+import { useLanguage } from '../../../contexts/language-context'
 
 export interface ConstraintsPreferences {
   constraints: {
@@ -25,6 +26,7 @@ interface ConstraintsPanelProps {
 export function ConstraintsPanel({ preferences, onPreferencesChange }: ConstraintsPanelProps) {
   const { constraints } = preferences
   const { companyColor } = useWhiteLabelContext()
+  const { t } = useLanguage()
 
   const setMaxOvertime = (value: number) => {
     onPreferencesChange({
@@ -59,14 +61,14 @@ export function ConstraintsPanel({ preferences, onPreferencesChange }: Constrain
   return (
     <PreferencesPanel
       icon={<GavelIcon sx={{ color: companyColor }} />}
-      title="Specify Constraints"
+      title={t('preferences.specifyConstraints')}
       description=""
     >
       <Box>
         <Grid container spacing={2}>
           <Grid item xs={4}>
             <TextField
-              label="Max overtime allowed"
+              label={t('preferences.maxOvertimeAllowed')}
               type="number"
               value={constraints.max_vehicle_overtime || ''}
               onChange={(e) => setMaxOvertime(Number(e.target.value))}
@@ -79,7 +81,7 @@ export function ConstraintsPanel({ preferences, onPreferencesChange }: Constrain
           </Grid>
           <Grid item xs={4}>
             <TextField
-              label="Max allowed delay"
+              label={t('preferences.maxAllowedDelay')}
               type="number"
               value={constraints.max_visit_lateness || ''}
               onChange={(e) => setMaxVisitLateness(Number(e.target.value))}
@@ -92,7 +94,7 @@ export function ConstraintsPanel({ preferences, onPreferencesChange }: Constrain
           </Grid>
           <Grid item xs={4}>
             <TextField
-              label="Max Pause Between Tasks"
+              label={t('preferences.maxPauseBetweenTasks')}
               type="number"
               value={constraints.max_activity_waiting_time || ''}
               onChange={(e) => setMaxActivityWaitingTime(Number(e.target.value))}

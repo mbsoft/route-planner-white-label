@@ -16,6 +16,7 @@ import {
 import DirectionsIcon from '@mui/icons-material/Directions'
 import {PreferencesPanel} from './preferences-panel'
 import { useWhiteLabelContext } from '../../../app/white-label-layout'
+import { useLanguage } from '../../../contexts/language-context'
 
 const ROUTING_MODE_OPTIONS = [
   {label: 'Truck', value: 'truck'},
@@ -70,6 +71,7 @@ interface RoutingPanelProps {
 export function RoutingPanel({ preferences, onPreferencesChange }: RoutingPanelProps) {
   const { routing } = preferences
   const { companyColor } = useWhiteLabelContext()
+  const { t } = useLanguage()
 
   const setTransportMode = (value: string) => {
     if (value === 'truck') {
@@ -176,7 +178,7 @@ export function RoutingPanel({ preferences, onPreferencesChange }: RoutingPanelP
   return (
     <PreferencesPanel
       icon={<DirectionsIcon sx={{ color: companyColor }} />}
-      title="Routing Configuration"
+      title={t('preferences.routingConfiguration')}
       description=""
     >
       <Box>
@@ -206,7 +208,7 @@ export function RoutingPanel({ preferences, onPreferencesChange }: RoutingPanelP
                 },
               }}
             >
-              {option.label}
+              {t(`preferences.${option.value}`)}
             </ToggleButton>
           ))}
         </ToggleButtonGroup>
@@ -214,7 +216,7 @@ export function RoutingPanel({ preferences, onPreferencesChange }: RoutingPanelP
         <Grid container spacing={2}>
           <Grid item xs={4}>
             <TextField
-              label="Traffic timestamp"
+              label={t('preferences.trafficTimestamp')}
               type="datetime-local"
               value={routing.traffic_timestamps || ''}
               onChange={(e) => setTrafficTimestamps(e.target.value)}
@@ -230,7 +232,7 @@ export function RoutingPanel({ preferences, onPreferencesChange }: RoutingPanelP
             <>
               <Grid item xs={4}>
                 <TextField
-                  label="Truck size"
+                  label={t('preferences.truckSize')}
                   error={!isTruckSizeValid}
                   helperText={!isTruckSizeValid ? 'Invalid truck size, e.g. 10,10,10' : ''}
                   placeholder="height,width,length"
@@ -242,7 +244,7 @@ export function RoutingPanel({ preferences, onPreferencesChange }: RoutingPanelP
               </Grid>
               <Grid item xs={4}>
                 <TextField
-                  label="Truck weight"
+                  label={t('preferences.truckWeight')}
                   type="number"
                   value={routing.truck_weight || ''}
                   onChange={(e) => setTruckWeight(Number(e.target.value))}
@@ -260,12 +262,12 @@ export function RoutingPanel({ preferences, onPreferencesChange }: RoutingPanelP
         <Grid container spacing={2} sx={{ mt: 1 }}>
           <Grid item xs={6}>
             <FormControl fullWidth size="small">
-              <InputLabel>Route Avoidances</InputLabel>
+              <InputLabel>{t('preferences.routeAvoidances')}</InputLabel>
               <Select
                 multiple
                 value={routing.avoid || []}
                 onChange={(e) => setAvoids(typeof e.target.value === 'string' ? e.target.value.split(',') : e.target.value)}
-                input={<OutlinedInput label="Route Avoidances" />}
+                input={<OutlinedInput label={t('preferences.routeAvoidances')} />}
                 renderValue={(selected) => (
                   <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
                     {selected.map((value) => {
@@ -301,22 +303,22 @@ export function RoutingPanel({ preferences, onPreferencesChange }: RoutingPanelP
           {routing.mode === 'truck' && (
             <Grid item xs={6}>
               <FormControl fullWidth size="small">
-                <InputLabel>Hazardous Material Types</InputLabel>
+                <InputLabel>{t('preferences.hazardousMaterialTypes')}</InputLabel>
                 <Select
                   value={routing.selected_hazmat_class || ''}
                   onChange={(e) => setHazmatTypes(e.target.value)}
-                  input={<OutlinedInput label="Hazardous Material Types" />}
+                  input={<OutlinedInput label={t('preferences.hazardousMaterialTypes')} />}
                   displayEmpty
                   renderValue={(selected: string) => {
                     if (!selected) {
-                      return <span style={{ color: '#999' }}>Select hazard class...</span>
+                      return <span style={{ color: '#999' }}>{t('preferences.selectHazardClass')}</span>
                     }
                     const option = HAZMAT_OPTIONS.find(opt => opt.value === selected)
                     return option?.label || selected
                   }}
                 >
                   <MenuItem value="">
-                    <em>Clear selection</em>
+                    <em>{t('preferences.clearSelection')}</em>
                   </MenuItem>
                   {HAZMAT_OPTIONS.map((option) => (
                     <MenuItem key={option.value} value={option.value}>
