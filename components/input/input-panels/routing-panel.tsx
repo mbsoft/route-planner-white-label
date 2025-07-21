@@ -234,8 +234,8 @@ export function RoutingPanel({ preferences, onPreferencesChange }: RoutingPanelP
                 <TextField
                   label={t('preferences.truckSize')}
                   error={!isTruckSizeValid}
-                  helperText={!isTruckSizeValid ? 'Invalid truck size, e.g. 10,10,10' : ''}
-                  placeholder="height,width,length"
+                  helperText={!isTruckSizeValid ? t('preferences.truckSizeHelperText') : ''}
+                  placeholder={t('preferences.truckSizePlaceholder')}
                   value={routing.truck_size || ''}
                   onChange={(e) => setTruckSize(e.target.value)}
                   size="small"
