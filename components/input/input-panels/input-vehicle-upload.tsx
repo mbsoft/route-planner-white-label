@@ -16,9 +16,11 @@ import CloseIcon from '@mui/icons-material/Close';
 import { useCallback } from 'react';
 import { VehicleDatabaseManager } from '../database-data-manager';
 import { useWhiteLabelContext } from '../../../app/white-label-layout'
+import { useLanguage } from '../../../contexts/language-context';
 
 export const InputVehicleUpload = () => {
   
+  const { t } = useLanguage();
   const store = useInputStore()
   const { vehicle } = store.inputCore
   const hasData = vehicle.rawData.rows.length > 0
@@ -222,7 +224,7 @@ export const InputVehicleUpload = () => {
             gap: '8px',
           }}
         >
-          Import Vehicle Data
+          {t('dataImport.importVehicleData')}
         </h3>
       </Box>
       {
