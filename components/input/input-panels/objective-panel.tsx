@@ -10,6 +10,7 @@ import FlagIcon from '@mui/icons-material/Flag'
 import TrackChangesIcon from '@mui/icons-material/TrackChanges'
 import {PreferencesPanel} from './preferences-panel'
 import { useWhiteLabelContext } from '../../../app/white-label-layout'
+import { useLanguage } from '../../../contexts/language-context'
 
 const TRAVEL_COST_OPTIONS = [
   {label: 'Duration', value: 'duration'},
@@ -51,6 +52,7 @@ interface ObjectivePanelProps {
 export function ObjectivePanel({ preferences, onPreferencesChange }: ObjectivePanelProps) {
   const { objective } = preferences
   const { companyColor } = useWhiteLabelContext()
+  const { t } = useLanguage()
 
   const setTravelCost = (value: string) => {
     onPreferencesChange({
@@ -114,13 +116,13 @@ export function ObjectivePanel({ preferences, onPreferencesChange }: ObjectivePa
   return (
     <PreferencesPanel
       icon={<FlagIcon sx={{ mr: 1, color: companyColor }} />}
-      title="Set Your Objective"
+      title={t('preferences.setYourObjective')}
       description=""
     >
       <Box>
         <Box sx={{display: 'flex', gap: 2, mt: 2}}>
           <TextField
-            label="Travel Cost"
+            label={t('preferences.travelCost')}
             value={objective.travel_cost || 'duration'}
             onChange={(e) => {
               setTravelCost(e.target.value)
@@ -146,13 +148,13 @@ export function ObjectivePanel({ preferences, onPreferencesChange }: ObjectivePa
               color="primary"
             />
           }
-          label="Custom Optimization Criteria"
+          label={t('preferences.customOptimizationCriteria')}
         />
 
         {!!objective.custom && (
           <Box sx={{display: 'flex', gap: 2, mt: 1}}>
             <TextField
-              label="Type"
+              label={t('preferences.type')}
               value={objective.custom?.type}
               onChange={(e) => setCustomType(e.target.value)}
               select
@@ -167,7 +169,7 @@ export function ObjectivePanel({ preferences, onPreferencesChange }: ObjectivePa
             </TextField>
             {objective.custom?.type === CUSTOM_TYPE_OPTIONS[0].value && (
               <TextField
-                label="Value"
+                label={t('preferences.value')}
                 value={objective.custom?.value}
                 onChange={(e) => setCustomValue(e.target.value)}
                 select
@@ -184,7 +186,7 @@ export function ObjectivePanel({ preferences, onPreferencesChange }: ObjectivePa
 
             {objective.custom?.type === CUSTOM_TYPE_OPTIONS[1].value && (
               <TextField
-                label="Value"
+                label={t('preferences.value')}
                 value={objective.custom?.value}
                 onChange={(e) => setCustomValue(e.target.value)}
                 select

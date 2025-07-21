@@ -6,6 +6,7 @@ import LocalShippingIcon from '@mui/icons-material/LocalShipping';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import { useUseCase } from '../../utils/use-case';
 import { useWhiteLabelContext } from '../../app/white-label-layout';
+import { useLanguage } from '../../contexts/language-context';
 
 interface InputImportStepperProps {
   currentStep: number;
@@ -26,31 +27,32 @@ export const InputImportStepper: React.FC<InputImportStepperProps> = ({
 }) => {
   const useCase = useUseCase();
   const { companyColor } = useWhiteLabelContext();
-  const orderTypeLabel = useCase === 'jobs' ? 'Jobs' : 'Shipments';
+  const { t } = useLanguage();
+  const orderTypeLabel = useCase === 'jobs' ? t('routePlanning.jobs') : 'Shipments';
 
   const steps = [
     {
-      label: 'Preferences',
+      label: t('routePlanning.preferences'),
       icon: <TuneIcon sx={{ fontSize: 20 }} />,
-      description: 'Configure optimization settings',
+      description: t('routePlanning.configureOptimizationSettings'),
       isCompleted: true, // Preferences step is always considered complete
     },
     {
       label: orderTypeLabel,
       icon: <AssignmentIcon sx={{ fontSize: 20 }} />,
-      description: 'Import and map job data',
+      description: t('routePlanning.importAndMapJobData'),
       isCompleted: hasJobsData && hasJobsMapping,
     },
     {
-      label: 'Vehicles',
+      label: t('routePlanning.vehicles'),
       icon: <LocalShippingIcon sx={{ fontSize: 20 }} />,
-      description: 'Import and map vehicle data',
+      description: t('routePlanning.importAndMapVehicleData'),
       isCompleted: hasVehiclesData && hasVehiclesMapping,
     },
     {
-      label: 'Review & Run',
+      label: t('routePlanning.reviewAndRun'),
       icon: <PlayArrowIcon sx={{ fontSize: 20 }} />,
-      description: 'Review data and start optimization',
+      description: t('routePlanning.reviewDataAndStartOptimization'),
       isCompleted: false, // This step is never "completed" as it's the final step
     },
   ];
@@ -77,14 +79,14 @@ export const InputImportStepper: React.FC<InputImportStepperProps> = ({
           padding: '10px 20px',
         }}
       >
-        Route Planning Workflow
+        {t('routePlanning.routePlanningWorkflow')}
       </Typography>
       
       {/* Progress indicator */}
       <Box sx={{ mb: 3, px: 2 }}>
         <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
           <Typography variant="body2" sx={{ color: '#666', mr: 1 }}>
-            Step {currentStep + 1} of {steps.length}:
+            {t('routePlanning.stepOf').replace('{current}', String(currentStep + 1)).replace('{total}', String(steps.length))}
           </Typography>
           <Chip 
             label={steps[currentStep].label}
@@ -105,7 +107,7 @@ export const InputImportStepper: React.FC<InputImportStepperProps> = ({
       {/* Breadcrumb navigation */}
       <Box sx={{ mb: 2, px: 2 }}>
         <Typography variant="caption" sx={{ color: '#666', mb: 1, display: 'block' }}>
-          Workflow Progress:
+          {t('routePlanning.workflowProgress')}
         </Typography>
         <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
           {steps.map((step, idx) => (

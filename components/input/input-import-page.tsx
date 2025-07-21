@@ -34,6 +34,7 @@ import DialogActions from '@mui/material/DialogActions';
 import { usePreferencesPersistence } from '../../hooks/use-preferences-persistence'
 import { RouteSummaryTable } from '../common/route-summary-table'
 import { useWhiteLabelContext } from '../../app/white-label-layout'
+import { useLanguage } from '../../contexts/language-context'
 
 // Types for optimization API
 interface OptimizationMvrpOrderJobV2 {
@@ -501,6 +502,7 @@ export const InputImportPage = ({ currentStep, onStepChange, preferences, onPref
   const inputType = useCase === 'jobs' ? 'job' : 'shipment'
   const orderTypeLabel = useCase === 'jobs' ? 'Jobs' : 'Shipments'
   const { apiKey } = useWhiteLabelContext()
+  const { t } = useLanguage()
 
   // Local editing state for jobs mapping
   const [isEditing, setIsEditing] = React.useState(false)
@@ -1034,7 +1036,7 @@ export const InputImportPage = ({ currentStep, onStepChange, preferences, onPref
             disabled={currentStep === 0 || isSavingPreferences}
             onClick={() => onStepChange(Math.max(0, currentStep - 1))}
           >
-            Back
+            {t('buttons.back')}
           </Button>
           <Button
             variant="contained"
@@ -1045,7 +1047,7 @@ export const InputImportPage = ({ currentStep, onStepChange, preferences, onPref
               ? 'Saving...'
               : currentStep === steps.length - 1
                 ? (isOptimizing ? 'Optimizing...' : 'Run Optimization')
-                : 'Next'}
+                : t('buttons.next')}
           </Button>
         </Box>
       </Box>

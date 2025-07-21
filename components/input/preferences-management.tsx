@@ -16,6 +16,7 @@ import { useInputStore } from '../../models/input/store'
 import { mappingPersistence } from '../../utils/mapping-persistence'
 import { useAuth } from '../../hooks/use-auth'
 import { useWhiteLabelContext } from '../../app/white-label-layout'
+import { useLanguage } from '../../contexts/language-context'
 
 export const PreferencesManagement: React.FC = () => {
   const { status, clearPreferences, checkPreferencesStatus } = usePreferencesPersistence()
@@ -26,6 +27,7 @@ export const PreferencesManagement: React.FC = () => {
   const store = useInputStore()
   const { isAdmin } = useAuth()
   const { companyColor } = useWhiteLabelContext()
+  const { t } = useLanguage()
 
   // Refresh preferences status on mount and after clearing (only on client side)
   useEffect(() => {
@@ -93,7 +95,7 @@ export const PreferencesManagement: React.FC = () => {
             }
           }}
         >
-          Save Mappings
+          {t('routePlanning.saveMappings')}
         </Button>
       )}
       {isAdmin && hasPreferences && (
@@ -119,23 +121,23 @@ export const PreferencesManagement: React.FC = () => {
             }
           }}
         >
-          Clear Preferences
+          {t('routePlanning.clearPreferences')}
         </Button>
       )}
       
       {/* Save Mappings Dialog */}
       <Dialog open={saveDialogOpen} onClose={() => setSaveDialogOpen(false)}>
-        <DialogTitle>Save Mappings</DialogTitle>
+        <DialogTitle>{t('routePlanning.saveMappingsTitle')}</DialogTitle>
         <DialogContent>
           <DialogContentText>
-            <strong>Save current mapping configurations?</strong>
+            <strong>{t('routePlanning.saveMappingsDescription')}</strong>
             <br />
-            This will save the current Jobs Map and Vehicles Map configurations to persistent storage. This will overwrite any previously saved mappings.
+            {t('routePlanning.saveMappingsDetails')}
           </DialogContentText>
         </DialogContent>
         <DialogActions>
           <Button onClick={() => setSaveDialogOpen(false)} disabled={saving}>
-            Cancel
+            {t('routePlanning.cancel')}
           </Button>
           <Button 
             onClick={handleSaveMappings} 
@@ -144,24 +146,24 @@ export const PreferencesManagement: React.FC = () => {
             disabled={saving}
             startIcon={saving ? <CircularProgress size={16} /> : null}
           >
-            Save Mappings
+            {t('routePlanning.saveMappings')}
           </Button>
         </DialogActions>
       </Dialog>
 
       {/* Clear Preferences Dialog */}
       <Dialog open={clearDialogOpen} onClose={() => setClearDialogOpen(false)}>
-        <DialogTitle>Clear Preferences</DialogTitle>
+        <DialogTitle>{t('routePlanning.clearPreferencesTitle')}</DialogTitle>
         <DialogContent>
           <DialogContentText>
-            <strong>Are you sure?</strong>
+            <strong>{t('routePlanning.clearPreferencesDescription')}</strong>
             <br />
-            This will permanently delete all saved optimization preferences from your browser's local storage. This action cannot be undone.
+            {t('routePlanning.clearPreferencesDetails')}
           </DialogContentText>
         </DialogContent>
         <DialogActions>
           <Button onClick={() => setClearDialogOpen(false)} disabled={loading}>
-            Cancel
+            {t('routePlanning.cancel')}
           </Button>
           <Button 
             onClick={handleClearPreferences} 
@@ -170,7 +172,7 @@ export const PreferencesManagement: React.FC = () => {
             disabled={loading}
             startIcon={loading ? <CircularProgress size={16} /> : null}
           >
-            Clear Preferences
+            {t('routePlanning.clearPreferences')}
           </Button>
         </DialogActions>
       </Dialog>
