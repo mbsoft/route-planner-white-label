@@ -156,7 +156,7 @@ export const DatabaseDataManager: React.FC<DatabaseDataManagerProps> = ({ onJobs
             disabled={loading}
             sx={{ mt: '-15px' }}
           >
-            {loading ? <CircularProgress size={20} /> : 'Import'}
+            {loading ? <CircularProgress size={20} /> : t('buttons.import')}
           </Button>
         </Box>
       </Box>
