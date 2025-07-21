@@ -15,8 +15,10 @@ import SaveIcon from '@mui/icons-material/Save';
 import CloseIcon from '@mui/icons-material/Close';
 import { DatabaseDataManager } from '../database-data-manager';
 import { useWhiteLabelContext } from '../../../app/white-label-layout'
+import { useLanguage } from '../../../contexts/language-context';
 
 export const InputJobUpload = () => {
+  const { t } = useLanguage();
   const store = useInputStore()
   const useCase = useUseCase()
   const inputType = useCase === 'jobs' ? 'job' : 'shipment'
@@ -212,7 +214,7 @@ export const InputJobUpload = () => {
             fontWeight: '500',
           }}
         >
-          Import {orderTypeLabel} Data
+          {useCase === 'jobs' ? t('dataImport.importJobData') : t('dataImport.importShipmentData')}
         </h3>
       </Box>
       {
