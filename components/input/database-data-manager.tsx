@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Box, Button, TextField, Typography, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, CircularProgress } from '@mui/material';
 import StorageIcon from '@mui/icons-material/Storage';
 import dayjs from 'dayjs';
+import { useLanguage } from '../../contexts/language-context';
 
 
 interface Job {
@@ -29,6 +30,7 @@ interface VehicleDatabaseManagerProps {
 }
 
 export const DatabaseDataManager: React.FC<DatabaseDataManagerProps> = ({ onJobsImported }) => {
+  const { t } = useLanguage();
   const [start, setStart] = useState('');
   const [end, setEnd] = useState('');
   const [search, setSearch] = useState('');
@@ -96,12 +98,12 @@ export const DatabaseDataManager: React.FC<DatabaseDataManagerProps> = ({ onJobs
     <Paper sx={{ p: 3, mb: 2 }}>
       <Typography variant="h6" sx={{ mb: 2, display: 'flex', alignItems: 'center', gap: 1 }}>
         <StorageIcon color="primary" />
-        Import Jobs from Database
+        {t('dataImport.importJobsFromDatabase')}
       </Typography>
       
       <Box sx={{ display: 'flex', gap: 2, mb: 2, flexWrap: 'wrap' }}>
         <TextField
-          label="Start Time (Optional)"
+          label={t('dataImport.startTimeOptional')}
           type="datetime-local"
           value={start}
           onChange={e => setStart(e.target.value)}
@@ -110,14 +112,14 @@ export const DatabaseDataManager: React.FC<DatabaseDataManagerProps> = ({ onJobs
             sx: { fontSize: '14px' }
           }}
           size="small"
-          helperText="Leave empty to import all"
+          helperText={t('dataImport.leaveEmptyToImportAll')}
           FormHelperTextProps={{ sx: { fontSize: '13px' } }}
           inputProps={{
             style: { fontSize: '14px' }
           }}
         />
         <TextField
-          label="End Time (Optional)"
+          label={t('dataImport.endTimeOptional')}
           type="datetime-local"
           value={end}
           onChange={e => setEnd(e.target.value)}
@@ -126,20 +128,20 @@ export const DatabaseDataManager: React.FC<DatabaseDataManagerProps> = ({ onJobs
             sx: { fontSize: '14px' }
           }}
           size="small"
-          helperText="Leave empty to import all"
+          helperText={t('dataImport.leaveEmptyToImportAll')}
           FormHelperTextProps={{ sx: { fontSize: '13px' } }}
           inputProps={{
             style: { fontSize: '14px' }
           }}
         />
         <TextField
-          label="Search Description (Optional)"
+          label={t('dataImport.searchDescriptionOptional')}
           type="text"
           value={search}
           onChange={e => setSearch(e.target.value)}
           size="small"
-          placeholder="Enter search term"
-          helperText="Case insensitive search"
+          placeholder={t('dataImport.enterSearchTerm')}
+          helperText={t('dataImport.caseInsensitiveSearch')}
           InputLabelProps={{ sx: { fontSize: '14px' } }}
           FormHelperTextProps={{ sx: { fontSize: '13px' } }}
           inputProps={{
@@ -154,14 +156,14 @@ export const DatabaseDataManager: React.FC<DatabaseDataManagerProps> = ({ onJobs
             disabled={loading}
             sx={{ mt: '-15px' }}
           >
-            {loading ? <CircularProgress size={20} /> : 'Import'}
+            {loading ? <CircularProgress size={20} /> : t('buttons.import')}
           </Button>
         </Box>
       </Box>
       
       {recordCount !== null && (
         <Typography variant="body1" color="text.secondary" sx={{ mb: 2, fontSize: '14px' }}>
-          {recordCount} {recordCount !== 1 ? 'records will be imported' : 'record will be imported'}
+          {recordCount} {recordCount !== 1 ? t('dataImport.recordsWillBeImported') : t('dataImport.recordWillBeImported')}
         </Typography>
       )}
       
@@ -196,6 +198,7 @@ export const DatabaseDataManager: React.FC<DatabaseDataManagerProps> = ({ onJobs
 };
 
 export const VehicleDatabaseManager: React.FC<VehicleDatabaseManagerProps> = ({ onVehiclesImported }) => {
+  const { t } = useLanguage();
   const [search, setSearch] = useState('');
   const [vehicles, setVehicles] = useState<Vehicle[]>([]);
   const [loading, setLoading] = useState(false);
@@ -256,18 +259,18 @@ export const VehicleDatabaseManager: React.FC<VehicleDatabaseManagerProps> = ({ 
     <Paper sx={{ p: 3, mb: 2 }}>
       <Typography variant="h6" sx={{ mb: 2, display: 'flex', alignItems: 'center', gap: 1 }}>
         <StorageIcon color="primary" />
-        Import Vehicles from Database
+        {t('dataImport.importVehiclesFromDatabase')}
       </Typography>
       
       <Box sx={{ display: 'flex', gap: 2, mb: 2, flexWrap: 'wrap' }}>
         <TextField
-          label="Search Description (Optional)"
+          label={t('dataImport.searchDescriptionOptional')}
           type="text"
           value={search}
           onChange={e => setSearch(e.target.value)}
           size="small"
-          placeholder="Enter search term"
-          helperText="Case insensitive search for vehicles"
+          placeholder={t('dataImport.enterSearchTerm')}
+          helperText={t('dataImport.caseInsensitiveSearchVehicles')}
           InputLabelProps={{ sx: { fontSize: '14px' } }}
           FormHelperTextProps={{ sx: { fontSize: '13px' } }}
           inputProps={{
@@ -282,14 +285,14 @@ export const VehicleDatabaseManager: React.FC<VehicleDatabaseManagerProps> = ({ 
             disabled={loading}
             sx={{ mt: '-15px' }}
           >
-            {loading ? <CircularProgress size={20} /> : 'Import'}
+            {loading ? <CircularProgress size={20} /> : t('buttons.import')}
           </Button>
         </Box>
       </Box>
       
       {recordCount !== null && (
         <Typography variant="body1" color="text.secondary" sx={{ mb: 2, fontSize: '14px' }}>
-          {recordCount} {recordCount !== 1 ? 'records will be imported' : 'record will be imported'}
+          {recordCount} {recordCount !== 1 ? t('dataImport.recordsWillBeImported') : t('dataImport.recordWillBeImported')}
         </Typography>
       )}
       

@@ -4,6 +4,7 @@ import {useEffect, useState} from 'react'
 import {useFileDialog} from '../../../hooks/use-file-dialog'
 import * as XLSX from 'xlsx'
 import { Box, Button, Dialog, DialogTitle, DialogContent, DialogActions, List, ListItem, ListItemButton, ListItemText, Typography } from '@mui/material'
+import { useLanguage } from '../../../contexts/language-context'
 
 type FileDropZoneProps = {
   onDataUpload: (header: string[], data: string[][]) => void
@@ -186,6 +187,7 @@ function parseExcel(file: File, worksheetName?: string): Promise<{rows: string[]
 
 export const FileDropZone = (props: FileDropZoneProps) => {
   const {onDataUpload, sampleLink} = props
+  const { t } = useLanguage()
   const [isDragOver, setIsDragOver] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [isLoading, setIsLoading] = useState(false)
@@ -368,10 +370,10 @@ export const FileDropZone = (props: FileDropZoneProps) => {
         marginBottom: '10px'
       }}>
           {isLoading ? (
-            'Processing file...'
+            t('dataImport.processingFile')
           ) : (
             <>
-              Drag and drop a file (CSV, Excel) or{' '}
+              {t('dataImport.dragAndDropFile')}{' '}
         <span
                 onClick={() => !isLoading && openFileDialog()}
           style={{
@@ -380,7 +382,7 @@ export const FileDropZone = (props: FileDropZoneProps) => {
             textDecoration: 'underline',
           }}
         >
-          Browse for file
+          {t('dataImport.browseForFile')}
         </span>
             </>
           )}
@@ -391,7 +393,7 @@ export const FileDropZone = (props: FileDropZoneProps) => {
           color: '#666',
           marginBottom: '10px'
         }}>
-          Supported formats: CSV, XLS, XLSX
+          {t('dataImport.supportedFormats')}
         </div>
 
         {importInfo && (

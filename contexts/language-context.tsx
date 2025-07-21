@@ -118,6 +118,7 @@ const enTranslations = {
     "recordsWillBeImported": "records will be imported",
     "recordWillBeImported": "record will be imported",
     "importJobData": "Import Job Data",
+    "importShipmentData": "Import Shipment Data",
     "importVehicleData": "Import Vehicle Data",
     "recordsLoaded": "records loaded",
     "fromDatabase": "(from database)",
@@ -131,7 +132,11 @@ const enTranslations = {
     "confirmDeletion": "Confirm Deletion",
     "deleteConfirmation": "Are you sure you want to delete all imported {type} data? This action cannot be undone.",
     "areYouSure": "Are you sure?",
-    "deleteConfirmationGeneric": "This will delete all imported data. This action cannot be undone."
+    "deleteConfirmationGeneric": "This will delete all imported data. This action cannot be undone.",
+    "dragAndDropFile": "Drag and drop a file (CSV, Excel) or",
+    "browseForFile": "Browse for file",
+    "supportedFormats": "Supported formats: CSV, XLS, XLSX",
+    "processingFile": "Processing file..."
   },
   "table": {
     "selectAllRows": "Select all rows",
@@ -500,6 +505,7 @@ const esMxTranslations = {
     "recordsWillBeImported": "registros serán importados",
     "recordWillBeImported": "registro será importado",
     "importJobData": "Importar Datos de Trabajos",
+    "importShipmentData": "Importar Datos de Envíos",
     "importVehicleData": "Importar Datos de Vehículos",
     "recordsLoaded": "registros cargados",
     "fromDatabase": "(desde base de datos)",
@@ -513,7 +519,11 @@ const esMxTranslations = {
     "confirmDeletion": "Confirmar Eliminación",
     "deleteConfirmation": "¿Está seguro de que desea eliminar todos los datos de {type} importados? Esta acción no se puede deshacer.",
     "areYouSure": "¿Está seguro?",
-    "deleteConfirmationGeneric": "Esto eliminará todos los datos importados. Esta acción no se puede deshacer."
+    "deleteConfirmationGeneric": "Esto eliminará todos los datos importados. Esta acción no se puede deshacer.",
+    "dragAndDropFile": "Arrastra y suelta un archivo (CSV, Excel) o",
+    "browseForFile": "Buscar archivo",
+    "supportedFormats": "Formatos soportados: CSV, XLS, XLSX",
+    "processingFile": "Procesando archivo..."
   },
   "table": {
     "selectAllRows": "Seleccionar todas las filas",
@@ -882,6 +892,7 @@ const ptBrTranslations = {
     "recordsWillBeImported": "registros serão importados",
     "recordWillBeImported": "registro será importado",
     "importJobData": "Importar Dados de Trabalhos",
+    "importShipmentData": "Importar Dados de Envios",
     "importVehicleData": "Importar Dados de Veículos",
     "recordsLoaded": "registros carregados",
     "fromDatabase": "(do banco de dados)",
@@ -895,7 +906,11 @@ const ptBrTranslations = {
     "confirmDeletion": "Confirmar Exclusão",
     "deleteConfirmation": "Tem certeza de que deseja excluir todos os dados de {type} importados? Esta ação não pode ser desfeita.",
     "areYouSure": "Tem certeza?",
-    "deleteConfirmationGeneric": "Isso excluirá todos os dados importados. Esta ação não pode ser desfeita."
+    "deleteConfirmationGeneric": "Isso excluirá todos os dados importados. Esta ação não pode ser desfeita.",
+    "dragAndDropFile": "Arraste e solte um arquivo (CSV, Excel) ou",
+    "browseForFile": "Procurar arquivo",
+    "supportedFormats": "Formatos suportados: CSV, XLS, XLSX",
+    "processingFile": "Processando arquivo..."
   },
   "table": {
     "selectAllRows": "Selecionar todas as linhas",
@@ -1264,6 +1279,7 @@ const caFrTranslations = {
     "recordsWillBeImported": "enregistrements seront importés",
     "recordWillBeImported": "enregistrement sera importé",
     "importJobData": "Importer les Données de Tâches",
+    "importShipmentData": "Importer les Données d'Expéditions",
     "importVehicleData": "Importer les Données de Véhicules",
     "recordsLoaded": "enregistrements chargés",
     "fromDatabase": "(de la base de données)",
@@ -1277,7 +1293,11 @@ const caFrTranslations = {
     "confirmDeletion": "Confirmer la Suppression",
     "deleteConfirmation": "Êtes-vous sûr de vouloir supprimer toutes les données de {type} importées ? Cette action ne peut pas être annulée.",
     "areYouSure": "Êtes-vous sûr ?",
-    "deleteConfirmationGeneric": "Cela supprimera toutes les données importées. Cette action ne peut pas être annulée."
+    "deleteConfirmationGeneric": "Cela supprimera toutes les données importées. Cette action ne peut pas être annulée.",
+    "dragAndDropFile": "Glissez et déposez un fichier (CSV, Excel) ou",
+    "browseForFile": "Parcourir les fichiers",
+    "supportedFormats": "Formats supportés : CSV, XLS, XLSX",
+    "processingFile": "Traitement du fichier..."
   },
   "table": {
     "selectAllRows": "Sélectionner toutes les lignes",
