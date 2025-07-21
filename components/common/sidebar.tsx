@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState } from 'react'
+import React, { useState, useMemo } from 'react'
 import {
   Box,
   List,
@@ -26,6 +26,7 @@ import {
 import { useRouter } from 'next/navigation'
 
 import { useWhiteLabelContext } from '../../app/white-label-layout'
+import { useLanguage } from '../../contexts/language-context'
 
 interface SidebarProps {
   currentPage?: string
@@ -42,6 +43,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ currentPage = 'home' }) => {
   })
   const router = useRouter()
   const { companyName, companyColor } = useWhiteLabelContext()
+  const { t } = useLanguage()
 
   // Save state to localStorage whenever it changes
   React.useEffect(() => {
@@ -64,26 +66,26 @@ export const Sidebar: React.FC<SidebarProps> = ({ currentPage = 'home' }) => {
     setIsExpanded(!isExpanded)
   }
 
-  const menuItems = [
+  const menuItems = useMemo(() => [
     {
-      text: 'Route Planner',
+      text: t('navigation.routePlanner'),
       icon: <RouteIcon />,
       path: '/',
       isActive: currentPage === 'home',
     },
     {
-      text: 'Route Analysis',
+      text: t('navigation.routeAnalysis'),
       icon: <AnalyticsIcon />,
       path: '/analysis',
       isActive: currentPage === 'analysis',
     },
     {
-      text: 'Information',
+      text: t('navigation.information'),
       icon: <InfoIcon />,
       path: '/information',
       isActive: currentPage === 'information',
     },
-  ]
+  ], [t, currentPage])
 
   return (
     <Box
@@ -119,7 +121,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ currentPage = 'home' }) => {
         </Collapse>
         
         <Tooltip 
-          title={isExpanded ? "Collapse sidebar" : "Expand sidebar"} 
+          title={isExpanded ? t('sidebar.collapseSidebar') : t('sidebar.expandSidebar')} 
           placement="right"
           componentsProps={{
             tooltip: {
