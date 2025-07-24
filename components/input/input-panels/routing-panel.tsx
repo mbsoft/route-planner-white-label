@@ -33,6 +33,7 @@ const AVOID_OPTIONS = [
 ]
 
 const HAZMAT_OPTIONS = [
+  {label: 'None', value: 'none', internalValues: []},
   {label: 'Class 1 (Explosives)', value: 'class_1', internalValues: ['circumstantial', 'general', 'explosive']},
   {label: 'Class 2 (Gas)', value: 'class_2', internalValues: ['circumstantial', 'general', 'explosive']},
   {label: 'Class 3 (Flammable Liquid)', value: 'class_3', internalValues: ['circumstantial', 'general', 'explosive', 'harmful_to_water']},
@@ -82,6 +83,8 @@ export function RoutingPanel({ preferences, onPreferencesChange }: RoutingPanelP
           mode: value,
           truck_size: '',
           truck_weight: 0,
+          selected_hazmat_class: 'none',
+          hazmat_type: [],
         },
       })
     } else {
@@ -140,19 +143,6 @@ export function RoutingPanel({ preferences, onPreferencesChange }: RoutingPanelP
   const setHazmatTypes = (value: string | string[]) => {
     // Handle single selection - if it's a string, convert to array
     const selectedValues = Array.isArray(value) ? value : [value]
-    
-    // If no values selected, clear the setting
-    if (selectedValues.length === 0) {
-      onPreferencesChange({
-        ...preferences,
-        routing: {
-          ...routing,
-          hazmat_type: undefined,
-          selected_hazmat_class: undefined,
-        },
-      })
-      return
-    }
     
     // Take only the first selected value (single selection)
     const selectedValue = selectedValues[0]
@@ -305,21 +295,14 @@ export function RoutingPanel({ preferences, onPreferencesChange }: RoutingPanelP
               <FormControl fullWidth size="small">
                 <InputLabel>{t('preferences.hazardousMaterialTypes')}</InputLabel>
                 <Select
-                  value={routing.selected_hazmat_class || ''}
+                  value={routing.selected_hazmat_class || 'none'}
                   onChange={(e) => setHazmatTypes(e.target.value)}
                   input={<OutlinedInput label={t('preferences.hazardousMaterialTypes')} />}
-                  displayEmpty
                   renderValue={(selected: string) => {
-                    if (!selected) {
-                      return <span style={{ color: '#999' }}>{t('preferences.selectHazardClass')}</span>
-                    }
                     const option = HAZMAT_OPTIONS.find(opt => opt.value === selected)
                     return option?.label || selected
                   }}
                 >
-                  <MenuItem value="">
-                    <em>{t('preferences.clearSelection')}</em>
-                  </MenuItem>
                   {HAZMAT_OPTIONS.map((option) => (
                     <MenuItem key={option.value} value={option.value}>
                       {option.label}

@@ -214,8 +214,7 @@ export const RouteSummaryTable: React.FC<RouteSummaryTableProps> = ({
             <TableCell sx={{ width: 80, minWidth: 80 }}><strong>Stops</strong></TableCell>
             <TableCell sx={{ width: 100, minWidth: 100 }}><strong>Distance</strong></TableCell>
             <TableCell sx={{ width: 100, minWidth: 100 }}><strong>Drive</strong></TableCell>
-            <TableCell sx={{ width: 120, minWidth: 120 }}><strong>Delivery</strong></TableCell>
-            <TableCell sx={{ width: 140, minWidth: 140 }}><strong>Departure</strong></TableCell>
+            <TableCell sx={{ width: 180, minWidth: 180 }}><strong>Fuel Delivery</strong></TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -282,13 +281,13 @@ export const RouteSummaryTable: React.FC<RouteSummaryTableProps> = ({
                 <TableCell onClick={() => handleToggleRoute(routeIndex)}>
                   {route.delivery && route.delivery.length >= 2 ? (
                     <Box sx={{ overflow: 'hidden', textOverflow: 'ellipsis' }}>
-                      <Typography variant="body2" sx={{ display: 'block', color: '#666', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', fontSize: '0.875rem' }}>
+                      <Typography variant="body2" sx={{ display: 'block', color: '#666', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', fontSize: '0.75rem' }}>
                         ULSD Clear: {route.delivery[0]} gal
                       </Typography>
-                      <Typography variant="body2" sx={{ display: 'block', color: '#666', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', fontSize: '0.875rem' }}>
+                      <Typography variant="body2" sx={{ display: 'block', color: '#666', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', fontSize: '0.75rem' }}>
                         ULSD Dyed: {route.delivery[1]} gal
                       </Typography>
-                      <Typography variant="body2" sx={{ display: 'block', fontWeight: 'bold', color: companyColor, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', fontSize: '0.875rem' }}>
+                      <Typography variant="body2" sx={{ display: 'block', fontWeight: 'bold', color: companyColor, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', fontSize: '0.75rem' }}>
                         Total: {route.delivery[0] + route.delivery[1] + route.delivery[2] + route.delivery[3] + route.delivery[4]} gal
                       </Typography>
                     </Box>
@@ -302,26 +301,10 @@ export const RouteSummaryTable: React.FC<RouteSummaryTableProps> = ({
                     </Typography>
                   )}
                 </TableCell>
-                <TableCell onClick={() => handleToggleRoute(routeIndex)}>
-                  <Typography variant="body2" sx={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
-                    {(() => {
-                      const startLoad = route.steps && route.steps[0] && route.steps[0].load;
-                      const capacity = route.capacity;
-                      if (Array.isArray(startLoad) && Array.isArray(capacity) && capacity.length > 0) {
-                        const totalLoad = startLoad.reduce((a: number, b: number) => a + b, 0);
-                        const totalCapacity = capacity.reduce((a: number, b: number) => a + b, 0);
-                        if (totalCapacity > 0) {
-                          const percent = (totalLoad / totalCapacity) * 100;
-                          return percent.toFixed(1) + '%';
-                        }
-                      }
-                      return '-';
-                    })()}
-                  </Typography>
-                </TableCell>
+
               </TableRow>
               <TableRow>
-                <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={showSelection ? 11 : 10}>
+                <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={showSelection ? 10 : 9}>
                   <Collapse in={expandedRoutes.has(routeIndex)} timeout="auto" unmountOnExit>
                     <Box sx={{ margin: 1 }}>
                       <Typography variant="h6" gutterBottom component="div">
@@ -373,13 +356,13 @@ export const RouteSummaryTable: React.FC<RouteSummaryTableProps> = ({
                                 <TableCell sx={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
                                   {step.load && step.load.length >= 2 ? (
                                     <Box>
-                                      <Typography variant="body2" sx={{ display: 'block', color: '#666', fontSize: '0.875rem' }}>
+                                      <Typography variant="body2" sx={{ display: 'block', color: '#666', fontSize: '0.75rem' }}>
                                         ULSD Clear: {step.load[0]} gal
                                       </Typography>
-                                      <Typography variant="body2" sx={{ display: 'block', color: '#666', fontSize: '0.875rem' }}>
+                                      <Typography variant="body2" sx={{ display: 'block', color: '#666', fontSize: '0.75rem' }}>
                                         ULSD Dyed: {step.load[1]} gal
                                       </Typography>
-                                      <Typography variant="body2" sx={{ display: 'block', fontWeight: 'bold', color: companyColor, fontSize: '0.875rem' }}>
+                                      <Typography variant="body2" sx={{ display: 'block', fontWeight: 'bold', color: companyColor, fontSize: '0.75rem' }}>
                                         Total: {step.load[0] + step.load[1]} gal
                                       </Typography>
                                     </Box>
