@@ -60,6 +60,11 @@ export const PreferencesManagement: React.FC = () => {
         await mappingPersistence.saveMapping('vehicle', store.inputCore.vehicle.mapConfig)
       }
       
+      // Save Shipments Map data
+      if (store.inputCore.shipment.mapConfig.dataMappings.length > 0) {
+        await mappingPersistence.saveMapping('shipment', store.inputCore.shipment.mapConfig)
+      }
+      
       setSaveDialogOpen(false)
       console.log('Mappings saved successfully')
     } catch (error) {

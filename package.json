@@ -9,7 +9,8 @@
     "start": "next start",
     "lint": "next lint",
     "test": "jest",
-    "type-check": "tsc --noEmit"
+    "type-check": "tsc --noEmit",
+    "import-shipments": "node scripts/import-shipments.js"
   },
   "dependencies": {
     "@deck.gl/core": "^8.9.31",
@@ -34,6 +35,7 @@
     "@vercel/edge-config": "^1.4.0",
     "dayjs": "^1.11.10",
     "deck.gl": "^8.9.31",
+    "dotenv": "^17.2.0",
     "jszip": "^3.10.1",
     "mapbox-gl": "^2.15.0",
     "maplibre-gl": "^2.4.0",
@@ -44,6 +46,7 @@
     "react-dom": "18.3.1",
     "react-map-gl": "^7.0.25",
     "sass": "^1.89.2",
+    "sqlite3": "^5.1.7",
     "xlsx": "^0.18.5",
     "zustand": "^4.4.1"
   },

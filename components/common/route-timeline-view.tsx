@@ -61,7 +61,7 @@ const getStepTypeIcon = (type: string) => {
   };
   switch (type) {
     case 'start':
-      return <DirectionsCarIcon sx={iconStyle} />;
+      return <LocalShippingIcon sx={iconStyle} />;
     case 'job':
       return <LocalGasStationIcon sx={iconStyle} />;
     case 'pickup':
@@ -321,7 +321,7 @@ export const RouteTimelineView: React.FC<RouteTimelineViewProps> = ({
   if (timelineData.length === 0) {
     return (
       <Paper sx={{ p: 3, textAlign: 'center' }}>
-        <Typography variant="body1" color="text.secondary">
+        <Typography variant="body1" color="text.secondary" sx={{ fontSize: '13px' }}>
           No route data available for timeline view
         </Typography>
       </Paper>

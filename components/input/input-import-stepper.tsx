@@ -11,24 +11,25 @@ import { useLanguage } from '../../contexts/language-context';
 interface InputImportStepperProps {
   currentStep: number;
   onStepChange: (step: number) => void;
-  hasJobsData?: boolean;
+  hasOrdersData?: boolean;
   hasVehiclesData?: boolean;
-  hasJobsMapping?: boolean;
+  hasOrdersMapping?: boolean;
   hasVehiclesMapping?: boolean;
 }
 
 export const InputImportStepper: React.FC<InputImportStepperProps> = ({ 
   currentStep, 
   onStepChange, 
-  hasJobsData = false, 
+  hasOrdersData = false, 
   hasVehiclesData = false,
-  hasJobsMapping = false,
+  hasOrdersMapping = false,
   hasVehiclesMapping = false
 }) => {
   const useCase = useUseCase();
   const { companyColor } = useWhiteLabelContext();
   const { t } = useLanguage();
   const orderTypeLabel = useCase === 'jobs' ? t('routePlanning.jobs') : 'Shipments';
+  const orderTypeDescription = useCase === 'jobs' ? t('routePlanning.importAndMapJobData') : t('routePlanning.importAndMapShipmentData');
 
   const steps = [
     {
@@ -40,8 +41,8 @@ export const InputImportStepper: React.FC<InputImportStepperProps> = ({
     {
       label: orderTypeLabel,
       icon: <AssignmentIcon sx={{ fontSize: 20 }} />,
-      description: t('routePlanning.importAndMapJobData'),
-      isCompleted: hasJobsData && hasJobsMapping,
+      description: orderTypeDescription,
+      isCompleted: hasOrdersData && hasOrdersMapping,
     },
     {
       label: t('routePlanning.vehicles'),
