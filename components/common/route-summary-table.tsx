@@ -93,7 +93,7 @@ export const RouteSummaryTable: React.FC<RouteSummaryTableProps> = ({
     
     switch (type) {
       case 'start': 
-        return <DirectionsCarIcon sx={iconStyle} />
+        return <LocalShippingIcon sx={iconStyle} />
       case 'job': 
         return <LocalGasStationIcon sx={iconStyle} />
       case 'pickup': 

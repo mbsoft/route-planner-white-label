@@ -19,8 +19,34 @@ if (tursoUrl && tursoAuthToken && !tursoUrl.includes('your_turso_database_url_he
 async function ensureShipmentsTable() {
   await turso.execute(`
     CREATE TABLE IF NOT EXISTS shipments (
-      id TEXT PRIMARY KEY
-      -- Add other default columns as needed
+      id TEXT PRIMARY KEY,
+      -- Pickup step fields
+      pickup_id TEXT,
+      pickup_description TEXT,
+      pickup_location_index INTEGER,
+      pickup_service INTEGER,
+      pickup_setup INTEGER,
+      pickup_time_windows TEXT,
+      -- Delivery step fields
+      delivery_id TEXT,
+      delivery_description TEXT,
+      delivery_location_index INTEGER,
+      delivery_service INTEGER,
+      delivery_setup INTEGER,
+      delivery_time_windows TEXT,
+      -- Shipment level fields
+      amount TEXT,
+      skills TEXT,
+      priority INTEGER,
+      zones TEXT,
+      load_types TEXT,
+      incompatible_load_types TEXT,
+      max_time_in_vehicle INTEGER,
+      revenue INTEGER,
+      outsourcing_cost INTEGER,
+      follow_lifo_order INTEGER,
+      volume TEXT,
+      joint_order INTEGER
     )
   `);
 }

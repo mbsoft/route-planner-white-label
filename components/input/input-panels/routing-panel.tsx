@@ -216,6 +216,7 @@ export function RoutingPanel({ preferences, onPreferencesChange }: RoutingPanelP
                 shrink: true,
               }}
               helperText="When traffic conditions should be considered"
+              FormHelperTextProps={{ sx: { fontSize: '13px' } }}
             />
           </Grid>
           {routing.mode === 'truck' && (
@@ -225,6 +226,7 @@ export function RoutingPanel({ preferences, onPreferencesChange }: RoutingPanelP
                   label={t('preferences.truckSize')}
                   error={!isTruckSizeValid}
                   helperText={!isTruckSizeValid ? t('preferences.truckSizeHelperText') : ''}
+                  FormHelperTextProps={{ sx: { fontSize: '13px' } }}
                   placeholder={t('preferences.truckSizePlaceholder')}
                   value={routing.truck_size || ''}
                   onChange={(e) => setTruckSize(e.target.value)}

@@ -79,7 +79,7 @@ interface OptimizationMvrpOrderShipmentV2 {
   id?: number | string
   amount?: number[]
   delivery: {
-    id: number
+    id: number | string
     location_index: number
     service?: number
     setup?: number
@@ -87,7 +87,7 @@ interface OptimizationMvrpOrderShipmentV2 {
     description: string
   }
   pickup: {
-    id: number
+    id: number | string
     location_index: number
     service?: number
     setup?: number
@@ -202,7 +202,7 @@ function getLocationString(row: string[], mapConfig: any, prefix: string = 'loca
 }
 
 // Build unique locations array and mapping from lat/lng string to index
-function buildLocations(jobs: any, vehicles: any, jobMapConfig: any, vehicleMapConfig: any) {
+function buildLocations(jobs: any, vehicles: any, shipments: any, jobMapConfig: any, vehicleMapConfig: any, shipmentMapConfig: any) {
   const locMap = new Map<string, number>();
   const locationStrings: string[] = [];
   let nextId = 0;
@@ -227,6 +227,9 @@ function buildLocations(jobs: any, vehicles: any, jobMapConfig: any, vehicleMapC
   const vehicleSelection = vehicles.selection && vehicles.selection.length === vehicles.rows.length 
     ? vehicles.selection 
     : Array(vehicles.rows.length).fill(true);
+  const shipmentSelection = shipments.selection && shipments.selection.length === shipments.rows.length 
+    ? shipments.selection 
+    : Array(shipments.rows.length).fill(true);
 
   // Add job locations (only for selected jobs)
   jobs.rows.forEach((row: string[], index: number) => {
@@ -234,6 +237,17 @@ function buildLocations(jobs: any, vehicles: any, jobMapConfig: any, vehicleMapC
     if (jobSelection[index]) {
       const locStr = getLocationString(row, jobMapConfig, 'location');
       if (locStr) addLocation(locStr);
+    }
+  });
+
+  // Add shipment pickup/delivery locations (only for selected shipments)
+  shipments.rows.forEach((row: string[], index: number) => {
+    // Only process if this shipment is explicitly selected
+    if (shipmentSelection[index]) {
+      const pickupLocStr = getLocationString(row, shipmentMapConfig, 'pickup.location');
+      if (pickupLocStr) addLocation(pickupLocStr);
+      const deliveryLocStr = getLocationString(row, shipmentMapConfig, 'delivery.location');
+      if (deliveryLocStr) addLocation(deliveryLocStr);
     }
   });
 
@@ -378,7 +392,167 @@ function normalizeJobs(jobData: any, mapConfig: any, locMap: Map<string, number>
   return selectedJobs;
 }
 
-function normalizeVehicles(vehicleData: any, mapConfig: any, locMap: Map<string, number>): VehicleType[] {
+function normalizeShipments(shipmentData: any, mapConfig: any, locMap: Map<string, number>): OptimizationMvrpOrderShipmentV2[] {
+  if (!shipmentData.rows || shipmentData.rows.length === 0) return [];
+  
+  const selectedShipments: OptimizationMvrpOrderShipmentV2[] = [];
+  
+  // Only process explicitly selected rows, ensure selection array is properly initialized
+  const selection = shipmentData.selection && shipmentData.selection.length === shipmentData.rows.length 
+    ? shipmentData.selection 
+    : Array(shipmentData.rows.length).fill(true);
+  
+  shipmentData.rows.forEach((row: string[], index: number) => {
+    // Only process if this shipment is explicitly selected
+    if (!selection[index]) {
+      return;
+    }
+    
+    const shipment: OptimizationMvrpOrderShipmentV2 = {
+      id: (index + 1).toString(),
+      pickup: {
+        id: (index + 1).toString(),
+        location_index: -1,
+        description: '',
+      },
+      delivery: {
+        id: (index + 1).toString(),
+        location_index: -1,
+        description: '',
+      },
+    };
+    
+    mapConfig.dataMappings.forEach((mapping: any) => {
+      const value = row[mapping.index];
+      if (!value) return;
+      
+      switch (mapping.value) {
+        case 'pickup.id':
+          shipment.pickup.id = value || (index + 1).toString();
+          break;
+        case 'pickup.description':
+          shipment.pickup.description = value;
+          break;
+        case 'pickup.location#latLng':
+          const pickupLocation = getLocationString(row, mapConfig, 'pickup.location');
+          if (pickupLocation) {
+            const parsed = parseLatLng(pickupLocation);
+            if (parsed) {
+              const key = parsed.join(',');
+              shipment.pickup.location_index = locMap.get(key) ?? -1;
+            }
+          }
+          break;
+        case 'pickup.location#lngLat':
+          const pickupLocationLngLat = getLocationString(row, mapConfig, 'pickup.location');
+          if (pickupLocationLngLat) {
+            const parsed = parseLatLng(pickupLocationLngLat);
+            if (parsed) {
+              const key = parsed.join(',');
+              shipment.pickup.location_index = locMap.get(key) ?? -1;
+            }
+          }
+          break;
+        case 'pickup.service':
+          shipment.pickup.service = parseInt(value);
+          break;
+        case 'pickup.setup':
+          shipment.pickup.setup = parseInt(value);
+          break;
+        case 'pickup.time_windows_start':
+          if (shipment.pickup.time_windows) {
+            shipment.pickup.time_windows[0][0] = convertTimeToMinutes(value);
+          } else {
+            shipment.pickup.time_windows = [[convertTimeToMinutes(value), 0]];
+          }
+          break;
+        case 'pickup.time_windows_end':
+          if (shipment.pickup.time_windows) {
+            shipment.pickup.time_windows[0][1] = convertTimeToMinutes(value);
+          } else {
+            shipment.pickup.time_windows = [[0, convertTimeToMinutes(value)]];
+          }
+          break;
+        case 'delivery.id':
+          shipment.delivery.id = value || (index + 1).toString();
+          break;
+        case 'delivery.description':
+          shipment.delivery.description = value;
+          break;
+        case 'delivery.location#latLng':
+          const deliveryLocation = getLocationString(row, mapConfig, 'delivery.location');
+          if (deliveryLocation) {
+            const parsed = parseLatLng(deliveryLocation);
+            if (parsed) {
+              const key = parsed.join(',');
+              shipment.delivery.location_index = locMap.get(key) ?? -1;
+            }
+          }
+          break;
+        case 'delivery.location#lngLat':
+          const deliveryLocationLngLat = getLocationString(row, mapConfig, 'delivery.location');
+          if (deliveryLocationLngLat) {
+            const parsed = parseLatLng(deliveryLocationLngLat);
+            if (parsed) {
+              const key = parsed.join(',');
+              shipment.delivery.location_index = locMap.get(key) ?? -1;
+            }
+          }
+          break;
+        case 'delivery.service':
+          shipment.delivery.service = parseInt(value);
+          break;
+        case 'delivery.setup':
+          shipment.delivery.setup = parseInt(value);
+          break;
+        case 'delivery.time_windows_start':
+          if (shipment.delivery.time_windows) {
+            shipment.delivery.time_windows[0][0] = convertTimeToMinutes(value);
+          } else {
+            shipment.delivery.time_windows = [[convertTimeToMinutes(value), 0]];
+          }
+          break;
+        case 'delivery.time_windows_end':
+          if (shipment.delivery.time_windows) {
+            shipment.delivery.time_windows[0][1] = convertTimeToMinutes(value);
+          } else {
+            shipment.delivery.time_windows = [[0, convertTimeToMinutes(value)]];
+          }
+          break;
+        case 'amount':
+          try {
+            const parsedAmount = JSON.parse(value);
+            if (Array.isArray(parsedAmount)) {
+              shipment.amount = parsedAmount;
+            }
+          } catch (error) {
+            console.warn('Failed to parse amount array:', value);
+          }
+          break;
+        case 'skills':
+          shipment.skills = value.split(',').map((s) => parseInt(s.trim())).filter((n) => !isNaN(n));
+          break;
+        case 'priority':
+          shipment.priority = parseInt(value);
+          break;
+      }
+    });
+    
+    // Ensure location indices are set
+    if (shipment.pickup.location_index === -1) {
+      shipment.pickup.location_index = 0;
+    }
+    if (shipment.delivery.location_index === -1) {
+      shipment.delivery.location_index = 0;
+    }
+    
+    selectedShipments.push(shipment);
+  });
+  
+  return selectedShipments;
+}
+
+function normalizeVehicles(vehicleData: any, mapConfig: any, locMap: Map<string, number>, driverBreakTime?: number): VehicleType[] {
   if (!vehicleData.rows || vehicleData.rows.length === 0) return [];
   const selectedVehicles: VehicleType[] = [];
   
@@ -473,6 +647,22 @@ function normalizeVehicles(vehicleData: any, mapConfig: any, locMap: Map<string,
         vehicle.end_index = locMap.get(key) ?? -1;
       }
     }
+
+    // Add driver break if break time is specified and vehicle has time window
+    if (driverBreakTime && driverBreakTime > 0 && vehicle.time_window) {
+      const [startTime, endTime] = vehicle.time_window;
+      const midpoint = startTime + (endTime - startTime) / 2;
+      const breakStart = Math.max(startTime, midpoint - 3600); // 1 hour before midpoint
+      const breakEnd = Math.min(endTime, midpoint + 3600); // 1 hour after midpoint
+      
+      vehicle.break = {
+        id: 1,
+        service: driverBreakTime,
+        time_windows: [[breakStart, breakEnd]],
+        description: 'Driver Break'
+      };
+    }
+
     selectedVehicles.push(vehicle);
   });
   
@@ -640,20 +830,28 @@ export const InputImportPage = ({ currentStep, onStepChange, preferences, onPref
       setRouteResults(null)
       setPollingMessage('')
       
-      // Check if at least one job and one vehicle are selected
+      // Check if at least one job/shipment and one vehicle are selected
       // Ensure selection arrays are properly initialized
       const jobSelection = job.selection && job.selection.length === job.rawData.rows.length 
         ? job.selection 
         : Array(job.rawData.rows.length).fill(true);
+      const shipmentSelection = store.inputCore.shipment.selection && store.inputCore.shipment.selection.length === store.inputCore.shipment.rawData.rows.length 
+        ? store.inputCore.shipment.selection 
+        : Array(store.inputCore.shipment.rawData.rows.length).fill(true);
       const vehicleSelection = vehicle.selection && vehicle.selection.length === vehicle.rawData.rows.length 
         ? vehicle.selection 
         : Array(vehicle.rawData.rows.length).fill(true);
       
       const selectedJobsCount = jobSelection.filter(Boolean).length;
+      const selectedShipmentsCount = shipmentSelection.filter(Boolean).length;
       const selectedVehiclesCount = vehicleSelection.filter(Boolean).length;
       
-      if (selectedJobsCount === 0) {
+      if (useCase === 'jobs' && selectedJobsCount === 0) {
         throw new Error('Please select at least one job to optimize');
+      }
+      
+      if (useCase === 'shipments' && selectedShipmentsCount === 0) {
+        throw new Error('Please select at least one shipment to optimize');
       }
       
       if (selectedVehiclesCount === 0) {
@@ -667,23 +865,37 @@ export const InputImportPage = ({ currentStep, onStepChange, preferences, onPref
       const apiClient = new ApiClient(apiKey)
       
       // Build unique locations and mapping
-      const { locations, locMap } = buildLocations(job.rawData, store.inputCore.vehicle.rawData, job.mapConfig, store.inputCore.vehicle.mapConfig);
+      const { locations, locMap } = buildLocations(
+        job.rawData, 
+        store.inputCore.vehicle.rawData, 
+        store.inputCore.shipment.rawData,
+        job.mapConfig, 
+        store.inputCore.vehicle.mapConfig,
+        store.inputCore.shipment.mapConfig
+      );
       
       // Normalize the data
-      const normalizedJobs = normalizeJobs(
+      const normalizedJobs = useCase === 'jobs' ? normalizeJobs(
         { ...job.rawData, selection: job.selection },
         job.mapConfig,
         locMap
-      )
+      ) : [];
+      const normalizedShipments = useCase === 'shipments' ? normalizeShipments(
+        { ...store.inputCore.shipment.rawData, selection: store.inputCore.shipment.selection },
+        store.inputCore.shipment.mapConfig,
+        locMap
+      ) : [];
       const normalizedVehicles = normalizeVehicles(
         { ...store.inputCore.vehicle.rawData, selection: store.inputCore.vehicle.selection },
         store.inputCore.vehicle.mapConfig,
-        locMap
+        locMap,
+        preferences?.constraints?.driver_break_time
       )
       
       // Build the optimization request
       const optimizationRequest: OptimizationMvrpOrderRequestV2 = {
-        jobs: normalizedJobs,
+        ...(useCase === 'jobs' && { jobs: normalizedJobs }),
+        ...(useCase === 'shipments' && { shipments: normalizedShipments }),
         vehicles: normalizedVehicles,
         locations: locations,
         options: {
@@ -757,9 +969,11 @@ export const InputImportPage = ({ currentStep, onStepChange, preferences, onPref
                 
                 // Save optimization results to Turso storage
                 try {
-                  // Generate a unique job ID based on the current job data
-                  const jobIds = normalizedJobs.map(job => job.id).join(',');
-                  const jobId = jobIds.length > 50 ? jobIds.substring(0, 50) + '...' : jobIds;
+                  // Generate a unique job/shipment ID based on the current data
+                  const orderIds = useCase === 'jobs' 
+                    ? normalizedJobs.map(job => job.id).join(',')
+                    : normalizedShipments.map(shipment => shipment.id).join(',');
+                  const jobId = orderIds.length > 50 ? orderIds.substring(0, 50) + '...' : orderIds;
                   
                   // Generate title from optimization results
                   const dateTime = new Date().toLocaleString();
@@ -1010,9 +1224,9 @@ export const InputImportPage = ({ currentStep, onStepChange, preferences, onPref
   // Remove renderMapping and showMapping logic for jobs step, since mapping is now inside the card
 
   // Determine if data has been imported and mapped
-  const hasJobsData = store.inputCore[inputType].rawData.rows.length > 0;
+  const hasOrdersData = store.inputCore[inputType].rawData.rows.length > 0;
   const hasVehiclesData = vehicle.rawData.rows.length > 0;
-  const hasJobsMapping = job.mapConfig.dataMappings.length > 0;
+  const hasOrdersMapping = job.mapConfig.dataMappings.length > 0;
   const hasVehiclesMapping = vehicle.mapConfig.dataMappings.length > 0;
 
   return (
@@ -1020,9 +1234,9 @@ export const InputImportPage = ({ currentStep, onStepChange, preferences, onPref
       <InputImportStepper 
         currentStep={currentStep} 
         onStepChange={onStepChange}
-        hasJobsData={hasJobsData}
+        hasOrdersData={hasOrdersData}
         hasVehiclesData={hasVehiclesData}
-        hasJobsMapping={hasJobsMapping}
+        hasOrdersMapping={hasOrdersMapping}
         hasVehiclesMapping={hasVehiclesMapping}
       />
       <Box sx={{ flex: 1, display: 'flex', flexDirection: 'column' }}>

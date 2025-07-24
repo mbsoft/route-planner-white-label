@@ -123,7 +123,7 @@ function LoginPageContent() {
               <Typography variant="h4" component="h1" gutterBottom>
                 {companyName}
               </Typography>
-              <Typography variant="body2" color="text.secondary">
+              <Typography variant="body2" color="text.secondary" sx={{ fontSize: '13px' }}>
                 Sign in to access the route planning system
               </Typography>
             </Box>
@@ -186,7 +186,7 @@ function LoginPageContent() {
               </Button>
             </form>
 
-            <Typography variant="body1" color="text.secondary" sx={{ textAlign: 'center', mt: 2, fontSize: '16px' }}>
+            <Typography variant="body1" color="text.secondary" sx={{ textAlign: 'center', mt: 2, fontSize: '13px' }}>
               Powered by NextBillion.ai
             </Typography>
           </Paper>

@@ -15,6 +15,7 @@ export interface ConstraintsPreferences {
     max_vehicle_overtime?: number
     max_visit_lateness?: number
     max_activity_waiting_time?: number
+    driver_break_time?: number
   }
 }
 
@@ -58,6 +59,16 @@ export function ConstraintsPanel({ preferences, onPreferencesChange }: Constrain
     })
   }
 
+  const setDriverBreakTime = (value: number) => {
+    onPreferencesChange({
+      ...preferences,
+      constraints: {
+        ...constraints,
+        driver_break_time: value,
+      },
+    })
+  }
+
   return (
     <PreferencesPanel
       icon={<GavelIcon sx={{ color: companyColor }} />}
@@ -66,7 +77,7 @@ export function ConstraintsPanel({ preferences, onPreferencesChange }: Constrain
     >
       <Box>
         <Grid container spacing={2}>
-          <Grid item xs={4}>
+          <Grid item xs={3}>
             <TextField
               label={t('preferences.maxOvertimeAllowed')}
               type="number"
@@ -79,7 +90,7 @@ export function ConstraintsPanel({ preferences, onPreferencesChange }: Constrain
               }}
             />
           </Grid>
-          <Grid item xs={4}>
+          <Grid item xs={3}>
             <TextField
               label={t('preferences.maxAllowedDelay')}
               type="number"
@@ -92,12 +103,25 @@ export function ConstraintsPanel({ preferences, onPreferencesChange }: Constrain
               }}
             />
           </Grid>
-          <Grid item xs={4}>
+          <Grid item xs={3}>
             <TextField
               label={t('preferences.maxPauseBetweenTasks')}
               type="number"
               value={constraints.max_activity_waiting_time || ''}
               onChange={(e) => setMaxActivityWaitingTime(Number(e.target.value))}
+              size="small"
+              fullWidth
+              InputProps={{
+                endAdornment: <InputAdornment position="end">sec</InputAdornment>,
+              }}
+            />
+          </Grid>
+          <Grid item xs={3}>
+            <TextField
+              label={t('preferences.driverBreakTime')}
+              type="number"
+              value={constraints.driver_break_time || ''}
+              onChange={(e) => setDriverBreakTime(Number(e.target.value))}
               size="small"
               fullWidth
               InputProps={{

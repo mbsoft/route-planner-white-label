@@ -17,6 +17,7 @@ export interface PreferencesInput {
     max_vehicle_overtime?: number
     max_visit_lateness?: number
     max_activity_waiting_time?: number
+    driver_break_time?: number
   }
   objective: {
     travel_cost?: string

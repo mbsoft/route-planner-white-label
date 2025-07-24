@@ -21,12 +21,25 @@ interface Vehicle {
   [key: string]: any;
 }
 
+interface Shipment {
+  id: string;
+  pickup_description: string;
+  delivery_description: string;
+  pickup_time_windows: string;
+  delivery_time_windows: string;
+  [key: string]: any;
+}
+
 interface DatabaseDataManagerProps {
   onJobsImported: (jobs: Job[]) => void;
 }
 
 interface VehicleDatabaseManagerProps {
   onVehiclesImported: (vehicles: Vehicle[]) => void;
+}
+
+interface ShipmentDatabaseManagerProps {
+  onShipmentsImported: (shipments: Shipment[]) => void;
 }
 
 export const DatabaseDataManager: React.FC<DatabaseDataManagerProps> = ({ onJobsImported }) => {
@@ -38,6 +51,7 @@ export const DatabaseDataManager: React.FC<DatabaseDataManagerProps> = ({ onJobs
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [recordCount, setRecordCount] = useState<number | null>(null);
+  const [showTable, setShowTable] = useState(false);
 
   // Fetch record count when start/end times or search change
   useEffect(() => {
@@ -71,6 +85,7 @@ export const DatabaseDataManager: React.FC<DatabaseDataManagerProps> = ({ onJobs
   const handleImport = async () => {
     setLoading(true);
     setError(null);
+    setShowTable(false);
     try {
       const startTimestamp = start ? Math.floor(new Date(start).getTime() / 1000) : undefined;
       const endTimestamp = end ? Math.floor(new Date(end).getTime() / 1000) : undefined;
@@ -87,6 +102,11 @@ export const DatabaseDataManager: React.FC<DatabaseDataManagerProps> = ({ onJobs
       const data = await res.json();
       setJobs(data.jobs || []);
       onJobsImported(data.jobs || []);
+      
+      // Add a small delay to ensure styles are applied before showing the table
+      setTimeout(() => {
+        setShowTable(true);
+      }, 50);
     } catch (e: any) {
       setError(e.message || 'Unknown error');
     } finally {
@@ -169,8 +189,20 @@ export const DatabaseDataManager: React.FC<DatabaseDataManagerProps> = ({ onJobs
       
       {error && <Typography color="error" sx={{ mb: 2 }}>{error}</Typography>}
       
-      {jobs.length > 0 && (
-        <TableContainer component={Paper}>
+      {jobs.length > 0 && !showTable && (
+        <Box sx={{ display: 'flex', justifyContent: 'center', py: 2 }}>
+          <CircularProgress size={24} />
+        </Box>
+      )}
+      
+      {jobs.length > 0 && showTable && (
+        <TableContainer 
+          component={Paper}
+          sx={{
+            opacity: showTable ? 1 : 0,
+            transition: 'opacity 0.2s ease-in-out',
+          }}
+        >
           <Table size="small">
             <TableHead>
               <TableRow>
@@ -197,6 +229,195 @@ export const DatabaseDataManager: React.FC<DatabaseDataManagerProps> = ({ onJobs
   );
 };
 
+export const ShipmentDatabaseManager: React.FC<ShipmentDatabaseManagerProps> = ({ onShipmentsImported }) => {
+  const { t } = useLanguage();
+  const [start, setStart] = useState('');
+  const [end, setEnd] = useState('');
+  const [search, setSearch] = useState('');
+  const [shipments, setShipments] = useState<Shipment[]>([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [recordCount, setRecordCount] = useState<number | null>(null);
+  const [showTable, setShowTable] = useState(false);
+
+  // Fetch record count when start/end times or search change
+  useEffect(() => {
+    const fetchRecordCount = async () => {
+      try {
+        const startTimestamp = start ? Math.floor(new Date(start).getTime() / 1000) : undefined;
+        const endTimestamp = end ? Math.floor(new Date(end).getTime() / 1000) : undefined;
+        
+        let url = '/api/shipments';
+        const params = new URLSearchParams();
+        if (startTimestamp) params.append('start', startTimestamp.toString());
+        if (endTimestamp) params.append('end', endTimestamp.toString());
+        if (search.trim()) params.append('search', search.trim());
+        if (params.toString()) url += '?' + params.toString();
+        
+        const res = await fetch(url);
+        if (!res.ok) throw new Error('Failed to fetch shipments count');
+        const data = await res.json();
+        setRecordCount(data.shipments?.length || 0);
+      } catch (e: any) {
+        console.error('Error fetching record count:', e);
+        setRecordCount(null);
+      }
+    };
+
+    // Debounce the API call
+    const timeoutId = setTimeout(fetchRecordCount, 500);
+    return () => clearTimeout(timeoutId);
+  }, [start, end, search]);
+
+  const handleImport = async () => {
+    setLoading(true);
+    setError(null);
+    setShowTable(false);
+    try {
+      const startTimestamp = start ? Math.floor(new Date(start).getTime() / 1000) : undefined;
+      const endTimestamp = end ? Math.floor(new Date(end).getTime() / 1000) : undefined;
+      
+      let url = '/api/shipments';
+      const params = new URLSearchParams();
+      if (startTimestamp) params.append('start', startTimestamp.toString());
+      if (endTimestamp) params.append('end', endTimestamp.toString());
+      if (search.trim()) params.append('search', search.trim());
+      if (params.toString()) url += '?' + params.toString();
+      
+      const res = await fetch(url);
+      if (!res.ok) throw new Error('Failed to fetch shipments');
+      const data = await res.json();
+      setShipments(data.shipments || []);
+      onShipmentsImported(data.shipments || []);
+      
+      // Add a small delay to ensure styles are applied before showing the table
+      setTimeout(() => {
+        setShowTable(true);
+      }, 50);
+    } catch (e: any) {
+      setError(e.message || 'Unknown error');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <Paper sx={{ p: 3, mb: 2 }}>
+      <Typography variant="h6" sx={{ mb: 2, display: 'flex', alignItems: 'center', gap: 1 }}>
+        <StorageIcon color="primary" />
+        {t('dataImport.importShipmentsFromDatabase')}
+      </Typography>
+      
+      <Box sx={{ display: 'flex', gap: 2, mb: 2, flexWrap: 'wrap' }}>
+        <TextField
+          label={t('dataImport.startTimeOptional')}
+          type="datetime-local"
+          value={start}
+          onChange={e => setStart(e.target.value)}
+          InputLabelProps={{ 
+            shrink: true,
+            sx: { fontSize: '14px' }
+          }}
+          size="small"
+          helperText={t('dataImport.leaveEmptyToImportAll')}
+          FormHelperTextProps={{ sx: { fontSize: '13px' } }}
+          inputProps={{
+            style: { fontSize: '14px' }
+          }}
+        />
+        <TextField
+          label={t('dataImport.endTimeOptional')}
+          type="datetime-local"
+          value={end}
+          onChange={e => setEnd(e.target.value)}
+          InputLabelProps={{ 
+            shrink: true,
+            sx: { fontSize: '14px' }
+          }}
+          size="small"
+          helperText={t('dataImport.leaveEmptyToImportAll')}
+          FormHelperTextProps={{ sx: { fontSize: '13px' } }}
+          inputProps={{
+            style: { fontSize: '14px' }
+          }}
+        />
+        <TextField
+          label={t('dataImport.searchDescriptionOptional')}
+          type="text"
+          value={search}
+          onChange={e => setSearch(e.target.value)}
+          size="small"
+          placeholder={t('dataImport.enterSearchTerm')}
+          helperText={t('dataImport.caseInsensitiveSearch')}
+          InputLabelProps={{ sx: { fontSize: '14px' } }}
+          FormHelperTextProps={{ sx: { fontSize: '13px' } }}
+          inputProps={{
+            style: { fontSize: '14px' }
+          }}
+          sx={{ minWidth: 200 }}
+        />
+        <Box sx={{ display: 'flex', alignItems: 'center', height: '56px' }}>
+          <Button 
+            variant="contained" 
+            onClick={handleImport} 
+            disabled={loading}
+            sx={{ mt: '-15px' }}
+          >
+            {loading ? <CircularProgress size={20} /> : t('buttons.import')}
+          </Button>
+        </Box>
+      </Box>
+      
+      {recordCount !== null && (
+        <Typography variant="body1" color="text.secondary" sx={{ mb: 2, fontSize: '14px' }}>
+          {recordCount} {recordCount !== 1 ? t('dataImport.recordsWillBeImported') : t('dataImport.recordWillBeImported')}
+        </Typography>
+      )}
+      
+      {error && <Typography color="error" sx={{ mb: 2 }}>{error}</Typography>}
+      
+      {shipments.length > 0 && !showTable && (
+        <Box sx={{ display: 'flex', justifyContent: 'center', py: 2 }}>
+          <CircularProgress size={24} />
+        </Box>
+      )}
+      
+      {shipments.length > 0 && showTable && (
+        <TableContainer 
+          component={Paper}
+          sx={{
+            opacity: showTable ? 1 : 0,
+            transition: 'opacity 0.2s ease-in-out',
+          }}
+        >
+          <Table size="small">
+            <TableHead>
+              <TableRow>
+                <TableCell>ID</TableCell>
+                <TableCell>Pickup Description</TableCell>
+                <TableCell>Delivery Description</TableCell>
+                <TableCell>Pickup Time</TableCell>
+                <TableCell>Delivery Time</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {shipments.map(shipment => (
+                <TableRow key={shipment.id}>
+                  <TableCell>{shipment.id}</TableCell>
+                  <TableCell>{shipment.pickup_description}</TableCell>
+                  <TableCell>{shipment.delivery_description}</TableCell>
+                  <TableCell>{shipment.pickup_time_windows ? dayjs.unix(parseInt(shipment.pickup_time_windows)).format('YYYY-MM-DD HH:mm') : ''}</TableCell>
+                  <TableCell>{shipment.delivery_time_windows ? dayjs.unix(parseInt(shipment.delivery_time_windows)).format('YYYY-MM-DD HH:mm') : ''}</TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
+      )}
+    </Paper>
+  );
+};
+
 export const VehicleDatabaseManager: React.FC<VehicleDatabaseManagerProps> = ({ onVehiclesImported }) => {
   const { t } = useLanguage();
   const [search, setSearch] = useState('');
@@ -204,6 +425,7 @@ export const VehicleDatabaseManager: React.FC<VehicleDatabaseManagerProps> = ({ 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [recordCount, setRecordCount] = useState<number | null>(null);
+  const [showTable, setShowTable] = useState(false);
 
   // Fetch record count when search changes
   useEffect(() => {
@@ -233,6 +455,7 @@ export const VehicleDatabaseManager: React.FC<VehicleDatabaseManagerProps> = ({ 
     console.log('VehicleDatabaseManager: Import button clicked')
     setLoading(true);
     setError(null);
+    setShowTable(false);
     try {
       let url = '/api/vehicles';
       if (search.trim()) {
@@ -247,6 +470,11 @@ export const VehicleDatabaseManager: React.FC<VehicleDatabaseManagerProps> = ({ 
       setVehicles(data.vehicles || []);
       console.log('VehicleDatabaseManager: Calling onVehiclesImported with:', data.vehicles || [])
       onVehiclesImported(data.vehicles || []);
+      
+      // Add a small delay to ensure styles are applied before showing the table
+      setTimeout(() => {
+        setShowTable(true);
+      }, 50);
     } catch (e: any) {
       console.error('VehicleDatabaseManager: Error:', e)
       setError(e.message || 'Unknown error');
@@ -298,8 +526,20 @@ export const VehicleDatabaseManager: React.FC<VehicleDatabaseManagerProps> = ({ 
       
       {error && <Typography color="error" sx={{ mb: 2 }}>{error}</Typography>}
       
-      {vehicles.length > 0 && (
-        <TableContainer component={Paper}>
+      {vehicles.length > 0 && !showTable && (
+        <Box sx={{ display: 'flex', justifyContent: 'center', py: 2 }}>
+          <CircularProgress size={24} />
+        </Box>
+      )}
+      
+      {vehicles.length > 0 && showTable && (
+        <TableContainer 
+          component={Paper}
+          sx={{
+            opacity: showTable ? 1 : 0,
+            transition: 'opacity 0.2s ease-in-out',
+          }}
+        >
           <Table size="small">
             <TableHead>
               <TableRow>
