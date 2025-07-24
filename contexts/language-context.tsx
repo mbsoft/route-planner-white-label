@@ -239,7 +239,7 @@ const enTranslations = {
     "clearPreferences": "Clear Preferences",
     "routingOptions": "Routing Options",
     "avoidOptions": "Avoid Options",
-    "hazmatTypes": "Hazardous Material Types",
+
     "truckMode": "Truck Mode",
     "carMode": "Car Mode",
     "bikeMode": "Bike Mode",
@@ -262,7 +262,7 @@ const enTranslations = {
     "truckSizeHelperText": "Invalid truck size, e.g. 10,10,10",
     "truckWeight": "Truck weight",
     "routeAvoidances": "Route Avoidances",
-    "hazardousMaterialTypes": "Hazardous Material Types",
+    "hazardousMaterialTypes": "HAZMAT",
     "selectHazardClass": "Select hazard class...",
     "clearSelection": "Clear selection"
   },
@@ -626,7 +626,6 @@ const esMxTranslations = {
     "clearPreferences": "Limpiar Preferencias",
     "routingOptions": "Opciones de Enrutamiento",
     "avoidOptions": "Opciones de Evitar",
-    "hazmatTypes": "Tipos de Materiales Peligrosos",
     "truckMode": "Modo Camión",
     "carMode": "Modo Auto",
     "bikeMode": "Modo Bicicleta",
@@ -649,7 +648,7 @@ const esMxTranslations = {
     "truckSizeHelperText": "Tamaño de camión inválido, ej. 10,10,10",
     "truckWeight": "Peso del camión",
     "routeAvoidances": "Evitaciones de Ruta",
-    "hazardousMaterialTypes": "Tipos de Materiales Peligrosos",
+    "hazardousMaterialTypes": "HAZMAT",
     "selectHazardClass": "Seleccionar clase de peligro...",
     "clearSelection": "Limpiar selección"
   },
@@ -1013,7 +1012,6 @@ const ptBrTranslations = {
     "clearPreferences": "Limpar Preferências",
     "routingOptions": "Opções de Roteamento",
     "avoidOptions": "Opções de Evitar",
-    "hazmatTypes": "Tipos de Materiais Perigosos",
     "truckMode": "Modo Caminhão",
     "carMode": "Modo Carro",
     "bikeMode": "Modo Bicicleta",
@@ -1036,7 +1034,7 @@ const ptBrTranslations = {
     "truckSizeHelperText": "Tamanho de caminhão inválido, ex. 10,10,10",
     "truckWeight": "Peso do caminhão",
     "routeAvoidances": "Evitamentos de Rota",
-    "hazardousMaterialTypes": "Tipos de Materiais Perigosos",
+    "hazardousMaterialTypes": "HAZMAT",
     "selectHazardClass": "Selecionar classe de perigo...",
     "clearSelection": "Limpar seleção"
   },
@@ -1400,7 +1398,6 @@ const caFrTranslations = {
     "clearPreferences": "Effacer les Préférences",
     "routingOptions": "Options de Routage",
     "avoidOptions": "Options d'Évitement",
-    "hazmatTypes": "Types de Matières Dangereuses",
     "truckMode": "Mode Camion",
     "carMode": "Mode Voiture",
     "bikeMode": "Mode Vélo",
@@ -1423,7 +1420,7 @@ const caFrTranslations = {
     "truckSizeHelperText": "Taille de camion invalide, ex. 10,10,10",
     "truckWeight": "Poids du camion",
     "routeAvoidances": "Évitements de Route",
-    "hazardousMaterialTypes": "Types de Matières Dangereuses",
+    "hazardousMaterialTypes": "HAZMAT",
     "selectHazardClass": "Sélectionner la classe de danger...",
     "clearSelection": "Effacer la sélection"
   },
