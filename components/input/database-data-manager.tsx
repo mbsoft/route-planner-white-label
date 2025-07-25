@@ -25,8 +25,11 @@ interface Shipment {
   id: string;
   pickup_description: string;
   delivery_description: string;
+  pickup_location: string;
+  delivery_location: string;
   pickup_time_windows: string;
-  delivery_time_windows: string;
+  delivery_time_start: string;
+  delivery_time_end: string;
   [key: string]: any;
 }
 
@@ -395,9 +398,12 @@ export const ShipmentDatabaseManager: React.FC<ShipmentDatabaseManagerProps> = (
               <TableRow>
                 <TableCell>ID</TableCell>
                 <TableCell>Pickup Description</TableCell>
+                <TableCell>Pickup Location</TableCell>
                 <TableCell>Delivery Description</TableCell>
+                <TableCell>Delivery Location</TableCell>
                 <TableCell>Pickup Time</TableCell>
-                <TableCell>Delivery Time</TableCell>
+                <TableCell>Delivery Start</TableCell>
+                <TableCell>Delivery End</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -405,9 +411,12 @@ export const ShipmentDatabaseManager: React.FC<ShipmentDatabaseManagerProps> = (
                 <TableRow key={shipment.id}>
                   <TableCell>{shipment.id}</TableCell>
                   <TableCell>{shipment.pickup_description}</TableCell>
+                  <TableCell>{shipment.pickup_location || ''}</TableCell>
                   <TableCell>{shipment.delivery_description}</TableCell>
+                  <TableCell>{shipment.delivery_location || ''}</TableCell>
                   <TableCell>{shipment.pickup_time_windows ? dayjs.unix(parseInt(shipment.pickup_time_windows)).format('YYYY-MM-DD HH:mm') : ''}</TableCell>
-                  <TableCell>{shipment.delivery_time_windows ? dayjs.unix(parseInt(shipment.delivery_time_windows)).format('YYYY-MM-DD HH:mm') : ''}</TableCell>
+                  <TableCell>{shipment.delivery_time_start ? dayjs(shipment.delivery_time_start).format('YYYY-MM-DD HH:mm') : ''}</TableCell>
+                  <TableCell>{shipment.delivery_time_end ? dayjs(shipment.delivery_time_end).format('YYYY-MM-DD HH:mm') : ''}</TableCell>
                 </TableRow>
               ))}
             </TableBody>

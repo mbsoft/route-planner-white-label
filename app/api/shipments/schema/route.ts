@@ -10,7 +10,7 @@ if (tursoUrl && tursoAuthToken && !tursoUrl.includes('your_turso_database_url_he
   turso = createClient({ url: tursoUrl, authToken: tursoAuthToken });
 } else {
   turso = createClient({ 
-    url: 'file:./local.db',
+    url: 'file:/Users/jimwelch/workspace/route-planner-white-label/local.db',
     syncUrl: undefined,
     authToken: undefined
   });
@@ -23,6 +23,7 @@ async function ensureShipmentsTable() {
       -- Pickup step fields
       pickup_id TEXT,
       pickup_description TEXT,
+      pickup_location TEXT,
       pickup_location_index INTEGER,
       pickup_service INTEGER,
       pickup_setup INTEGER,
@@ -30,10 +31,12 @@ async function ensureShipmentsTable() {
       -- Delivery step fields
       delivery_id TEXT,
       delivery_description TEXT,
+      delivery_location TEXT,
       delivery_location_index INTEGER,
       delivery_service INTEGER,
       delivery_setup INTEGER,
-      delivery_time_windows TEXT,
+      delivery_time_start TEXT,
+      delivery_time_end TEXT,
       -- Shipment level fields
       amount TEXT,
       skills TEXT,

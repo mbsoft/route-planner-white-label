@@ -38,6 +38,11 @@ export const SHIPMENT_OPTIONS: DataMapOption[] = [
     required: true,
   },
   {
+    label: 'Pickup Description',
+    value: ShipmentMapOption.PickupDescription,
+    type: MapInputType.Description,
+  },
+  {
     label: 'Pickup Service',
     value: ShipmentMapOption.PickupService,
     type: MapInputType.Number,
@@ -96,6 +101,11 @@ export const SHIPMENT_OPTIONS: DataMapOption[] = [
     label: 'Delivery ID',
     value: ShipmentMapOption.DeliveryID,
     required: true,
+  },
+  {
+    label: 'Delivery Description',
+    value: ShipmentMapOption.DeliveryDescription,
+    type: MapInputType.Description,
   },
   {
     label: 'Delivery Service',
@@ -358,6 +368,11 @@ export const SHIPMENT_OPTIONS_MAP: Record<string, DataMapOption> = {
     value: ShipmentMapOption.PickupID,
     required: true,
   },
+  [ShipmentMapOption.PickupDescription]: {
+    label: 'Pickup Description',
+    value: ShipmentMapOption.PickupDescription,
+    type: MapInputType.Description,
+  },
   [ShipmentMapOption.PickupService]: {
     label: 'Pickup Service',
     value: ShipmentMapOption.PickupService,
@@ -423,6 +438,11 @@ export const SHIPMENT_OPTIONS_MAP: Record<string, DataMapOption> = {
     label: 'Delivery ID',
     value: ShipmentMapOption.DeliveryID,
     required: true,
+  },
+  [ShipmentMapOption.DeliveryDescription]: {
+    label: 'Delivery Description',
+    value: ShipmentMapOption.DeliveryDescription,
+    type: MapInputType.Description,
   },
   [ShipmentMapOption.DeliveryService]: {
     label: 'Delivery Service',
@@ -685,6 +705,10 @@ export const SHIPMENT_OPTION_MENU_LIST: MenuInfo[] = [
     required: true,
   },
   {
+    label: 'Pickup Description',
+    value: ShipmentMapOption.PickupDescription,
+  },
+  {
     label: 'Pickup Service',
     value: ShipmentMapOption.PickupService,
   },
@@ -723,6 +747,10 @@ export const SHIPMENT_OPTION_MENU_LIST: MenuInfo[] = [
     label: 'Delivery ID',
     value: ShipmentMapOption.DeliveryID,
     required: true,
+  },
+  {
+    label: 'Delivery Description',
+    value: ShipmentMapOption.DeliveryDescription,
   },
   {
     label: 'Delivery Service',

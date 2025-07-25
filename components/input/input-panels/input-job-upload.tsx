@@ -13,7 +13,7 @@ import AddIcon from '@mui/icons-material/Add';
 import EditIcon from '@mui/icons-material/Edit';
 import SaveIcon from '@mui/icons-material/Save';
 import CloseIcon from '@mui/icons-material/Close';
-import { DatabaseDataManager } from '../database-data-manager';
+import { DatabaseDataManager, ShipmentDatabaseManager } from '../database-data-manager';
 import { useWhiteLabelContext } from '../../../app/white-label-layout'
 import { useLanguage } from '../../../contexts/language-context';
 
@@ -203,6 +203,33 @@ export const InputJobUpload = () => {
     console.log('Original jobs set:', jobs)
   }
 
+  const handleDatabaseShipmentsImported = async (shipments: any[]) => {
+    console.log('Database shipments imported:', shipments)
+    if (!shipments || shipments.length === 0) return;
+    // Fetch schema from API
+    let header: string[] = [];
+    try {
+      const schemaRes = await fetch('/api/shipments/schema');
+      if (schemaRes.ok) {
+        const schemaData = await schemaRes.json();
+        header = schemaData.columns || Object.keys(shipments[0]);
+      } else {
+        header = Object.keys(shipments[0]);
+      }
+    } catch (e) {
+      header = Object.keys(shipments[0]);
+    }
+    // Map each row to the full header
+    const rows = shipments.map(shipment => header.map(h => shipment[h] ?? ''));
+    store.inputCore.setRawData(inputType, {
+      header,
+      rows,
+      attachedRows: [],
+    });
+    setOriginalJobs(shipments) // Reuse the same state for both jobs and shipments
+    console.log('Original shipments set:', shipments)
+  }
+
   return (
     <div style={{ padding: '20px' }}>
       <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 2 }}>
@@ -230,6 +257,10 @@ export const InputJobUpload = () => {
             {/* Database import panel for jobs */}
             {useCase === 'jobs' && (
               <DatabaseDataManager onJobsImported={handleDatabaseJobsImported} />
+            )}
+            {/* Database import panel for shipments */}
+            {useCase === 'shipments' && (
+              <ShipmentDatabaseManager onShipmentsImported={handleDatabaseShipmentsImported} />
             )}
             {/* CSV import panel - only show if enabled */}
             {enableCsvImport && (

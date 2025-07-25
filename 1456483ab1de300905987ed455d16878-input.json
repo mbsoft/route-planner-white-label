@@ -1,0 +1,5828 @@
+{
+	"shipments": [
+		{
+			"id": "1",
+			"pickup": {
+				"id": "61117-2L",
+				"location_index": 0,
+				"description": "Kinder Morgan 125 N. 53rd Ave, Phoenix",
+				"setup": 2700
+			},
+			"delivery": {
+				"id": "61117-2D",
+				"location_index": 1,
+				"description": "61117|1549 South 59th Avenue , Phoenix, AZ|ULSD Clear",
+				"service": 1200,
+				"time_windows": [
+					[
+						1752681600,
+						1752768000
+					]
+				]
+			},
+			"amount": [
+				239,
+				0,
+				0,
+				0,
+				0
+			]
+		},
+		{
+			"id": "2",
+			"pickup": {
+				"id": "62483-3L",
+				"location_index": 0,
+				"description": "Kinder Morgan 125 N. 53rd Ave, Phoenix",
+				"setup": 2700
+			},
+			"delivery": {
+				"id": "62483-3D",
+				"location_index": 2,
+				"description": "62483|515 North 51st Avenue, Phoenix, AZ|ULSD Clear",
+				"service": 3540,
+				"time_windows": [
+					[
+						1752667200,
+						1752696000
+					]
+				]
+			},
+			"amount": [
+				658,
+				0,
+				0,
+				0,
+				0
+			]
+		},
+		{
+			"id": "3",
+			"pickup": {
+				"id": "81840-4L",
+				"location_index": 0,
+				"description": "Kinder Morgan 125 N. 53rd Ave, Phoenix",
+				"setup": 2700
+			},
+			"delivery": {
+				"id": "81840-4D",
+				"location_index": 3,
+				"description": "81840|4715 West Buckeye Road, Phoenix, AZ|ULSD Clear",
+				"service": 480,
+				"time_windows": [
+					[
+						1752667200,
+						1752696000
+					]
+				]
+			},
+			"amount": [
+				0,
+				0,
+				0,
+				0,
+				0
+			]
+		},
+		{
+			"id": "4",
+			"pickup": {
+				"id": "124548-5L",
+				"location_index": 0,
+				"description": "Kinder Morgan 125 N. 53rd Ave, Phoenix",
+				"setup": 2700
+			},
+			"delivery": {
+				"id": "124548-5D",
+				"location_index": 4,
+				"description": "124548|2831 North 31st Avenue, Phoenix, AZ|ULSD Clear",
+				"service": 7620,
+				"time_windows": [
+					[
+						1752706800,
+						1752793200
+					]
+				]
+			},
+			"amount": [
+				192,
+				0,
+				0,
+				0,
+				0
+			]
+		},
+		{
+			"id": "5",
+			"pickup": {
+				"id": "125327-6L",
+				"location_index": 0,
+				"description": "Kinder Morgan 125 N. 53rd Ave, Phoenix",
+				"setup": 2700
+			},
+			"delivery": {
+				"id": "125327-6D",
+				"location_index": 5,
+				"description": "125327|2131 W Roosevelt Street, Phoenix, AZ|ULSD Clear",
+				"service": 5100,
+				"time_windows": [
+					[
+						1752667200,
+						1752696000
+					]
+				]
+			},
+			"amount": [
+				383,
+				0,
+				0,
+				0,
+				0
+			]
+		},
+		{
+			"id": "6",
+			"pickup": {
+				"id": "125348-7L",
+				"location_index": 0,
+				"description": "Kinder Morgan 125 N. 53rd Ave, Phoenix",
+				"setup": 2700
+			},
+			"delivery": {
+				"id": "125348-7D",
+				"location_index": 4,
+				"description": "125348|2831 North 31st Avenue, Phoenix, AZ|ULSD Clear",
+				"service": 7620,
+				"time_windows": [
+					[
+						1752681600,
+						1752768000
+					]
+				]
+			},
+			"amount": [
+				58,
+				0,
+				0,
+				0,
+				0
+			]
+		},
+		{
+			"id": "7",
+			"pickup": {
+				"id": "126227-8L",
+				"location_index": 0,
+				"description": "Kinder Morgan 125 N. 53rd Ave, Phoenix",
+				"setup": 2700
+			},
+			"delivery": {
+				"id": "126227-8D",
+				"location_index": 6,
+				"description": "126227|3910 East Wier Avenue , Phoenix, AZ|ULSD Clear",
+				"service": 1500,
+				"time_windows": [
+					[
+						1752699600,
+						1752786000
+					]
+				]
+			},
+			"amount": [
+				42,
+				0,
+				0,
+				0,
+				0
+			]
+		},
+		{
+			"id": "8",
+			"pickup": {
+				"id": "126285-9L",
+				"location_index": 0,
+				"description": "Kinder Morgan 125 N. 53rd Ave, Phoenix",
+				"setup": 2700
+			},
+			"delivery": {
+				"id": "126285-9D",
+				"location_index": 7,
+				"description": "126285|3200 South 7th Street , Phoenix, AZ|ULSD Clear",
+				"service": 2940,
+				"time_windows": [
+					[
+						1752697800,
+						1752710400
+					]
+				]
+			},
+			"amount": [
+				258,
+				0,
+				0,
+				0,
+				0
+			]
+		},
+		{
+			"id": "9",
+			"pickup": {
+				"id": "126300-10L",
+				"location_index": 0,
+				"description": "Kinder Morgan 125 N. 53rd Ave, Phoenix",
+				"setup": 2700
+			},
+			"delivery": {
+				"id": "126300-10D",
+				"location_index": 8,
+				"description": "126300|4239 South 43rd Place , Phoenix, AZ|ULSD Clear",
+				"service": 2280,
+				"time_windows": [
+					[
+						1752690600,
+						1752777000
+					]
+				]
+			},
+			"amount": [
+				107,
+				0,
+				0,
+				0,
+				0
+			]
+		},
+		{
+			"id": "10",
+			"pickup": {
+				"id": "81840-21L",
+				"location_index": 0,
+				"description": "Kinder Morgan 125 N. 53rd Ave, Phoenix",
+				"setup": 2700
+			},
+			"delivery": {
+				"id": "81840-21D",
+				"location_index": 3,
+				"description": "81840|4715 West Buckeye Road, Phoenix, AZ|ULSD Clear",
+				"service": 240,
+				"time_windows": [
+					[
+						1752667200,
+						1752696000
+					]
+				]
+			},
+			"amount": [
+				34,
+				0,
+				0,
+				0,
+				0
+			]
+		},
+		{
+			"id": "11",
+			"pickup": {
+				"id": "124516-22L",
+				"location_index": 0,
+				"description": "Kinder Morgan 125 N. 53rd Ave, Phoenix",
+				"setup": 2700
+			},
+			"delivery": {
+				"id": "124516-22D",
+				"location_index": 9,
+				"description": "124516|8602 West Buckeye Road, Tolleson, AZ|ULSD Clear",
+				"service": 6780,
+				"time_windows": [
+					[
+						1752667200,
+						1752696000
+					]
+				]
+			},
+			"amount": [
+				803,
+				0,
+				0,
+				0,
+				0
+			]
+		},
+		{
+			"id": "12",
+			"pickup": {
+				"id": "126433-25L",
+				"location_index": 0,
+				"description": "Kinder Morgan 125 N. 53rd Ave, Phoenix",
+				"setup": 2700
+			},
+			"delivery": {
+				"id": "126433-25D",
+				"location_index": 10,
+				"description": "126433|3002 East Old Tower Road , Phoenix, AZ|ULSD Clear",
+				"service": 6720,
+				"time_windows": [
+					[
+						1752710400,
+						1752796800
+					]
+				]
+			},
+			"amount": [
+				1167,
+				0,
+				0,
+				0,
+				0
+			]
+		},
+		{
+			"id": "13",
+			"pickup": {
+				"id": "130310-26L",
+				"location_index": 0,
+				"description": "Kinder Morgan 125 N. 53rd Ave, Phoenix",
+				"setup": 2700
+			},
+			"delivery": {
+				"id": "130310-26D",
+				"location_index": 11,
+				"description": "130310|4350 S 18th Ave, Phoenix, AZ|ULSD Clear",
+				"service": 1860,
+				"time_windows": [
+					[
+						1752710400,
+						1752796800
+					]
+				]
+			},
+			"amount": [
+				547,
+				0,
+				0,
+				0,
+				0
+			]
+		},
+		{
+			"id": "14",
+			"pickup": {
+				"id": "147501-28L",
+				"location_index": 0,
+				"description": "Kinder Morgan 125 N. 53rd Ave, Phoenix",
+				"setup": 2700
+			},
+			"delivery": {
+				"id": "147501-28D",
+				"location_index": 12,
+				"description": "147501|13255 West Sweatwater Avenue, Surprise, AZ|ULSD Clear",
+				"service": 2220,
+				"time_windows": [
+					[
+						1752667200,
+						1752697800
+					]
+				]
+			},
+			"amount": [
+				155,
+				0,
+				0,
+				0,
+				0
+			]
+		},
+		{
+			"id": "15",
+			"pickup": {
+				"id": "149762-29L",
+				"location_index": 0,
+				"description": "Kinder Morgan 125 N. 53rd Ave, Phoenix",
+				"setup": 2700
+			},
+			"delivery": {
+				"id": "149762-29D",
+				"location_index": 13,
+				"description": "149762|NEC 32nd St and McDowell, Mesa, AZ|ULSD Clear",
+				"service": 420,
+				"time_windows": [
+					[
+						1752681600,
+						1752768000
+					]
+				]
+			},
+			"amount": [
+				215,
+				0,
+				0,
+				0,
+				0
+			]
+		},
+		{
+			"id": "16",
+			"pickup": {
+				"id": "170914-37L",
+				"location_index": 0,
+				"description": "Kinder Morgan 125 N. 53rd Ave, Phoenix",
+				"setup": 2700
+			},
+			"delivery": {
+				"id": "170914-37D",
+				"location_index": 14,
+				"description": "170914|1325 S. Signal Butte Road , Mesa, AZ|ULSD Clear",
+				"service": 2520,
+				"time_windows": [
+					[
+						1752667200,
+						1752696000
+					]
+				]
+			},
+			"amount": [
+				58,
+				0,
+				0,
+				0,
+				0
+			]
+		},
+		{
+			"id": "17",
+			"pickup": {
+				"id": "126106-41L",
+				"location_index": 0,
+				"description": "Kinder Morgan 125 N. 53rd Ave, Phoenix",
+				"setup": 2700
+			},
+			"delivery": {
+				"id": "126106-41D",
+				"location_index": 15,
+				"description": "126106|7831 N 67th Ave, Glendale, AZ|ULSD Clear",
+				"service": 1800,
+				"time_windows": [
+					[
+						1752699600,
+						1752786000
+					]
+				]
+			},
+			"amount": [
+				111,
+				0,
+				0,
+				0,
+				0
+			]
+		},
+		{
+			"id": "18",
+			"pickup": {
+				"id": "127000-43L",
+				"location_index": 0,
+				"description": "Kinder Morgan 125 N. 53rd Ave, Phoenix",
+				"setup": 2700
+			},
+			"delivery": {
+				"id": "127000-43D",
+				"location_index": 16,
+				"description": "127000|1198 West Fairmont Drive , Tempe, AZ|ULSD Clear",
+				"service": 2820,
+				"time_windows": [
+					[
+						1752645600,
+						1752732000
+					]
+				]
+			},
+			"amount": [
+				110,
+				0,
+				0,
+				0,
+				0
+			]
+		},
+		{
+			"id": "19",
+			"pickup": {
+				"id": "129217-44L",
+				"location_index": 0,
+				"description": "Kinder Morgan 125 N. 53rd Ave, Phoenix",
+				"setup": 2700
+			},
+			"delivery": {
+				"id": "129217-44D",
+				"location_index": 17,
+				"description": "129217|4750 West Mohave Street , Phoenix, AZ|ULSD Clear",
+				"service": 660,
+				"time_windows": [
+					[
+						1752660000,
+						1752670800
+					]
+				]
+			},
+			"amount": [
+				48,
+				0,
+				0,
+				0,
+				0
+			]
+		},
+		{
+			"id": "20",
+			"pickup": {
+				"id": "149971-49L",
+				"location_index": 0,
+				"description": "Kinder Morgan 125 N. 53rd Ave, Phoenix",
+				"setup": 2700
+			},
+			"delivery": {
+				"id": "149971-49D",
+				"location_index": 18,
+				"description": "149971|4780 North Cotton Lane, Goodyear, AZ|ULSD Clear",
+				"service": 1860,
+				"time_windows": [
+					[
+						1752667200,
+						1752696000
+					]
+				]
+			},
+			"amount": [
+				0,
+				0,
+				0,
+				0,
+				0
+			]
+		},
+		{
+			"id": "21",
+			"pickup": {
+				"id": "159007-50L",
+				"location_index": 0,
+				"description": "Kinder Morgan 125 N. 53rd Ave, Phoenix",
+				"setup": 2700
+			},
+			"delivery": {
+				"id": "159007-50D",
+				"location_index": 19,
+				"description": "159007|8787 West Buckeye Road, Tolleson, AZ|ULSD Clear",
+				"service": 5460,
+				"time_windows": [
+					[
+						1752667200,
+						1752696000
+					]
+				]
+			},
+			"amount": [
+				934,
+				0,
+				0,
+				0,
+				0
+			]
+		},
+		{
+			"id": "22",
+			"pickup": {
+				"id": "173415-53L",
+				"location_index": 0,
+				"description": "Kinder Morgan 125 N. 53rd Ave, Phoenix",
+				"setup": 2700
+			},
+			"delivery": {
+				"id": "173415-53D",
+				"location_index": 20,
+				"description": "173415|11923 West Indian School, Avondale, AZ|ULSD Clear",
+				"service": 2400,
+				"time_windows": [
+					[
+						1752667200,
+						1752696000
+					]
+				]
+			},
+			"amount": [
+				106,
+				0,
+				0,
+				0,
+				0
+			]
+		},
+		{
+			"id": "23",
+			"pickup": {
+				"id": "81840-55L",
+				"location_index": 0,
+				"description": "Kinder Morgan 125 N. 53rd Ave, Phoenix",
+				"setup": 2700
+			},
+			"delivery": {
+				"id": "81840-55D",
+				"location_index": 3,
+				"description": "81840|4715 West Buckeye Road, Phoenix, AZ|ULSD Clear",
+				"service": 300,
+				"time_windows": [
+					[
+						1752667200,
+						1752696000
+					]
+				]
+			},
+			"amount": [
+				35,
+				0,
+				0,
+				0,
+				0
+			]
+		},
+		{
+			"id": "24",
+			"pickup": {
+				"id": "81840-56L",
+				"location_index": 0,
+				"description": "Kinder Morgan 125 N. 53rd Ave, Phoenix",
+				"setup": 2700
+			},
+			"delivery": {
+				"id": "81840-56D",
+				"location_index": 3,
+				"description": "81840|4715 West Buckeye Road, Phoenix, AZ|ULSD Clear",
+				"service": 300,
+				"time_windows": [
+					[
+						1752667200,
+						1752696000
+					]
+				]
+			},
+			"amount": [
+				33,
+				0,
+				0,
+				0,
+				0
+			]
+		},
+		{
+			"id": "25",
+			"pickup": {
+				"id": "124914-57L",
+				"location_index": 0,
+				"description": "Kinder Morgan 125 N. 53rd Ave, Phoenix",
+				"setup": 2700
+			},
+			"delivery": {
+				"id": "124914-57D",
+				"location_index": 21,
+				"description": "124914|3575 South 28th Street Suite 100, Phoenix, AZ|ULSD Clear",
+				"service": 1260,
+				"time_windows": [
+					[
+						1752706800,
+						1752793200
+					]
+				]
+			},
+			"amount": [
+				203,
+				0,
+				0,
+				0,
+				0
+			]
+		},
+		{
+			"id": "26",
+			"pickup": {
+				"id": "125455-58L",
+				"location_index": 0,
+				"description": "Kinder Morgan 125 N. 53rd Ave, Phoenix",
+				"setup": 2700
+			},
+			"delivery": {
+				"id": "125455-58D",
+				"location_index": 22,
+				"description": "125455|7600 West Roosevelt Street, Phoenix, AZ|ULSD Clear",
+				"service": 8340,
+				"time_windows": [
+					[
+						1752663600,
+						1752750000
+					]
+				]
+			},
+			"amount": [
+				41,
+				0,
+				0,
+				0,
+				0
+			]
+		},
+		{
+			"id": "27",
+			"pickup": {
+				"id": "126295-59L",
+				"location_index": 0,
+				"description": "Kinder Morgan 125 N. 53rd Ave, Phoenix",
+				"setup": 2700
+			},
+			"delivery": {
+				"id": "126295-59D",
+				"location_index": 23,
+				"description": "126295|3121 South 40th Street , Waddell, AZ|ULSD Clear",
+				"service": 2340,
+				"time_windows": [
+					[
+						1752692400,
+						1752723000
+					]
+				]
+			},
+			"amount": [
+				64,
+				0,
+				0,
+				0,
+				0
+			]
+		},
+		{
+			"id": "28",
+			"pickup": {
+				"id": "126997-60L",
+				"location_index": 0,
+				"description": "Kinder Morgan 125 N. 53rd Ave, Phoenix",
+				"setup": 2700
+			},
+			"delivery": {
+				"id": "126997-60D",
+				"location_index": 24,
+				"description": "126997|245 South Nina Drive , Mesa, AZ|ULSD Clear",
+				"service": 4800,
+				"time_windows": [
+					[
+						1752667200,
+						1752696000
+					]
+				]
+			},
+			"amount": [
+				180,
+				0,
+				0,
+				0,
+				0
+			]
+		},
+		{
+			"id": "29",
+			"pickup": {
+				"id": "129200-63L",
+				"location_index": 0,
+				"description": "Kinder Morgan 125 N. 53rd Ave, Phoenix",
+				"setup": 2700
+			},
+			"delivery": {
+				"id": "129200-63D",
+				"location_index": 25,
+				"description": "129200|580 S 143rd Ave, Goodyear, AZ|ULSD Clear",
+				"service": 1140,
+				"time_windows": [
+					[
+						1752667200,
+						1752696000
+					]
+				]
+			},
+			"amount": [
+				135,
+				0,
+				0,
+				0,
+				0
+			]
+		},
+		{
+			"id": "30",
+			"pickup": {
+				"id": "135664-65L",
+				"location_index": 0,
+				"description": "Kinder Morgan 125 N. 53rd Ave, Phoenix",
+				"setup": 2700
+			},
+			"delivery": {
+				"id": "135664-65D",
+				"location_index": 26,
+				"description": "135664|4775 E Washington St, Phoenix, AZ|ULSD Clear",
+				"service": 180,
+				"time_windows": [
+					[
+						1752658200,
+						1752692400
+					]
+				]
+			},
+			"amount": [
+				12,
+				0,
+				0,
+				0,
+				0
+			]
+		},
+		{
+			"id": "31",
+			"pickup": {
+				"id": "138426-67L",
+				"location_index": 0,
+				"description": "Kinder Morgan 125 N. 53rd Ave, Phoenix",
+				"setup": 2700
+			},
+			"delivery": {
+				"id": "138426-67D",
+				"location_index": 27,
+				"description": "138426|4626 South 40th St, Phoenix, AZ|ULSD Clear",
+				"service": 4140,
+				"time_windows": [
+					[
+						1752694200,
+						1752699600
+					]
+				]
+			},
+			"amount": [
+				337,
+				0,
+				0,
+				0,
+				0
+			]
+		},
+		{
+			"id": "32",
+			"pickup": {
+				"id": "157500-70L",
+				"location_index": 0,
+				"description": "Kinder Morgan 125 N. 53rd Ave, Phoenix",
+				"setup": 2700
+			},
+			"delivery": {
+				"id": "157500-70D",
+				"location_index": 28,
+				"description": "157500|163rd Ave & W. Planada Lane, Surprise, AZ|ULSD Clear",
+				"service": 2460,
+				"time_windows": [
+					[
+						1752638400,
+						1752724800
+					]
+				]
+			},
+			"amount": [
+				27,
+				0,
+				0,
+				0,
+				0
+			]
+		},
+		{
+			"id": "33",
+			"pickup": {
+				"id": "81840-72L",
+				"location_index": 0,
+				"description": "Kinder Morgan 125 N. 53rd Ave, Phoenix",
+				"setup": 2700
+			},
+			"delivery": {
+				"id": "81840-72D",
+				"location_index": 3,
+				"description": "81840|4715 West Buckeye Road, Phoenix, AZ|ULSD Clear",
+				"service": 600,
+				"time_windows": [
+					[
+						1752667200,
+						1752696000
+					]
+				]
+			},
+			"amount": [
+				5,
+				0,
+				0,
+				0,
+				0
+			]
+		},
+		{
+			"id": "34",
+			"pickup": {
+				"id": "81840-73L",
+				"location_index": 0,
+				"description": "Kinder Morgan 125 N. 53rd Ave, Phoenix",
+				"setup": 2700
+			},
+			"delivery": {
+				"id": "81840-73D",
+				"location_index": 3,
+				"description": "81840|4715 West Buckeye Road, Phoenix, AZ|ULSD Clear",
+				"service": 540,
+				"time_windows": [
+					[
+						1752667200,
+						1752696000
+					]
+				]
+			},
+			"amount": [
+				20,
+				0,
+				0,
+				0,
+				0
+			]
+		},
+		{
+			"id": "35",
+			"pickup": {
+				"id": "124560-74L",
+				"location_index": 0,
+				"description": "Kinder Morgan 125 N. 53rd Ave, Phoenix",
+				"setup": 2700
+			},
+			"delivery": {
+				"id": "124560-74D",
+				"location_index": 29,
+				"description": "124560|3001 W Whitton Avenue, Phoenix, AZ|ULSD Clear",
+				"service": 2580,
+				"time_windows": [
+					[
+						1752699600,
+						1752706800
+					]
+				]
+			},
+			"amount": [
+				535,
+				0,
+				0,
+				0,
+				0
+			]
+		},
+		{
+			"id": "36",
+			"pickup": {
+				"id": "126045-76L",
+				"location_index": 0,
+				"description": "Kinder Morgan 125 N. 53rd Ave, Phoenix",
+				"setup": 2700
+			},
+			"delivery": {
+				"id": "126045-76D",
+				"location_index": 30,
+				"description": "126045|21829 North 16th Street , Phoenix, AZ|ULSD Clear",
+				"service": 10440,
+				"time_windows": [
+					[
+						1752703200,
+						1752789600
+					]
+				]
+			},
+			"amount": [
+				1868,
+				0,
+				0,
+				0,
+				0
+			]
+		},
+		{
+			"id": "37",
+			"pickup": {
+				"id": "127713-77L",
+				"location_index": 0,
+				"description": "Kinder Morgan 125 N. 53rd Ave, Phoenix",
+				"setup": 2700
+			},
+			"delivery": {
+				"id": "127713-77D",
+				"location_index": 31,
+				"description": "127713|8390 South Kyrene , Tempe, AZ|ULSD Clear",
+				"service": 3240,
+				"time_windows": [
+					[
+						1752710400,
+						1752796800
+					]
+				]
+			},
+			"amount": [
+				222,
+				0,
+				0,
+				0,
+				0
+			]
+		},
+		{
+			"id": "38",
+			"pickup": {
+				"id": "129189-79L",
+				"location_index": 0,
+				"description": "Kinder Morgan 125 N. 53rd Ave, Phoenix",
+				"setup": 2700
+			},
+			"delivery": {
+				"id": "129189-79D",
+				"location_index": 32,
+				"description": "129189|16920 West Commerce Drive , Goodyear, AZ|ULSD Clear",
+				"service": 480,
+				"time_windows": [
+					[
+						1752674400,
+						1752681600
+					]
+				]
+			},
+			"amount": [
+				52,
+				0,
+				0,
+				0,
+				0
+			]
+		},
+		{
+			"id": "39",
+			"pickup": {
+				"id": "129857-80L",
+				"location_index": 0,
+				"description": "Kinder Morgan 125 N. 53rd Ave, Phoenix",
+				"setup": 2700
+			},
+			"delivery": {
+				"id": "129857-80D",
+				"location_index": 33,
+				"description": "129857|320 E Deer Valley Dr, Phoenix, AZ|ULSD Clear",
+				"service": 420,
+				"time_windows": [
+					[
+						1752681600,
+						1752768000
+					]
+				]
+			},
+			"amount": [
+				15,
+				0,
+				0,
+				0,
+				0
+			]
+		},
+		{
+			"id": "40",
+			"pickup": {
+				"id": "135605-81L",
+				"location_index": 0,
+				"description": "Kinder Morgan 125 N. 53rd Ave, Phoenix",
+				"setup": 2700
+			},
+			"delivery": {
+				"id": "135605-81D",
+				"location_index": 13,
+				"description": "135605|NEC 32nd St and McDowell, Mesa, AZ|ULSD Clear",
+				"service": 1380,
+				"time_windows": [
+					[
+						1752681600,
+						1752768000
+					]
+				]
+			},
+			"amount": [
+				194,
+				0,
+				0,
+				0,
+				0
+			]
+		},
+		{
+			"id": "41",
+			"pickup": {
+				"id": "159405-84L",
+				"location_index": 0,
+				"description": "Kinder Morgan 125 N. 53rd Ave, Phoenix",
+				"setup": 2700
+			},
+			"delivery": {
+				"id": "159405-84D",
+				"location_index": 34,
+				"description": "159405|5301 W Bethany Home Road, Phoenix, AZ|ULSD Clear",
+				"service": 960,
+				"time_windows": [
+					[
+						1752660000,
+						1752678000
+					]
+				]
+			},
+			"amount": [
+				286,
+				0,
+				0,
+				0,
+				0
+			]
+		},
+		{
+			"id": "42",
+			"pickup": {
+				"id": "159952-85L",
+				"location_index": 0,
+				"description": "Kinder Morgan 125 N. 53rd Ave, Phoenix",
+				"setup": 2700
+			},
+			"delivery": {
+				"id": "159952-85D",
+				"location_index": 35,
+				"description": "159952|5757 Lower Buckeye Road, Phoenix, AZ|ULSD Clear",
+				"service": 4080,
+				"time_windows": [
+					[
+						1752692400,
+						1752710400
+					]
+				]
+			},
+			"amount": [
+				470,
+				0,
+				0,
+				0,
+				0
+			]
+		},
+		{
+			"id": "43",
+			"pickup": {
+				"id": "61118-88L",
+				"location_index": 0,
+				"description": "Kinder Morgan 125 N. 53rd Ave, Phoenix",
+				"setup": 2700
+			},
+			"delivery": {
+				"id": "61118-88D",
+				"location_index": 36,
+				"description": "61118|1411 South 47th Avenue, Phoenix, AZ|ULSD Clear",
+				"service": 1380,
+				"time_windows": [
+					[
+						1752663600,
+						1752750000
+					]
+				]
+			},
+			"amount": [
+				284,
+				0,
+				0,
+				0,
+				0
+			]
+		},
+		{
+			"id": "44",
+			"pickup": {
+				"id": "62622-89L",
+				"location_index": 0,
+				"description": "Kinder Morgan 125 N. 53rd Ave, Phoenix",
+				"setup": 2700
+			},
+			"delivery": {
+				"id": "62622-89D",
+				"location_index": 37,
+				"description": "62622|2375 South 45th Avenue, Phoenix, AZ|ULSD Clear",
+				"service": 6960,
+				"time_windows": [
+					[
+						1752678000,
+						1752714000
+					]
+				]
+			},
+			"amount": [
+				1290,
+				0,
+				0,
+				0,
+				0
+			]
+		},
+		{
+			"id": "45",
+			"pickup": {
+				"id": "64873-90L",
+				"location_index": 0,
+				"description": "Kinder Morgan 125 N. 53rd Ave, Phoenix",
+				"setup": 2700
+			},
+			"delivery": {
+				"id": "64873-90D",
+				"location_index": 38,
+				"description": "64873|3132 West Lincoln Street, Phoenix, AZ|ULSD Clear",
+				"service": 1020,
+				"time_windows": [
+					[
+						1752697800,
+						1752784200
+					]
+				]
+			},
+			"amount": [
+				148,
+				0,
+				0,
+				0,
+				0
+			]
+		},
+		{
+			"id": "46",
+			"pickup": {
+				"id": "124550-91L",
+				"location_index": 0,
+				"description": "Kinder Morgan 125 N. 53rd Ave, Phoenix",
+				"setup": 2700
+			},
+			"delivery": {
+				"id": "124550-91D",
+				"location_index": 39,
+				"description": "124550|1305 N 27th Ave, Phoenix, AZ|ULSD Clear",
+				"service": 3240,
+				"time_windows": [
+					[
+						1752703200,
+						1752789600
+					]
+				]
+			},
+			"amount": [
+				446,
+				0,
+				0,
+				0,
+				0
+			]
+		},
+		{
+			"id": "47",
+			"pickup": {
+				"id": "127711-94L",
+				"location_index": 0,
+				"description": "Kinder Morgan 125 N. 53rd Ave, Phoenix",
+				"setup": 2700
+			},
+			"delivery": {
+				"id": "127711-94D",
+				"location_index": 40,
+				"description": "127711|1475 North McQueen Road, Gilbert, AZ|ULSD Clear",
+				"service": 6480,
+				"time_windows": [
+					[
+						1752696000,
+						1752782400
+					]
+				]
+			},
+			"amount": [
+				312,
+				0,
+				0,
+				0,
+				0
+			]
+		},
+		{
+			"id": "48",
+			"pickup": {
+				"id": "129260-95L",
+				"location_index": 0,
+				"description": "Kinder Morgan 125 N. 53rd Ave, Phoenix",
+				"setup": 2700
+			},
+			"delivery": {
+				"id": "129260-95D",
+				"location_index": 41,
+				"description": "129260|17341 West Minnezona Avenue , Goodyear, AZ|ULSD Clear",
+				"service": 2400,
+				"time_windows": [
+					[
+						1752667200,
+						1752696000
+					]
+				]
+			},
+			"amount": [
+				295,
+				0,
+				0,
+				0,
+				0
+			]
+		},
+		{
+			"id": "49",
+			"pickup": {
+				"id": "81840-104L",
+				"location_index": 0,
+				"description": "Kinder Morgan 125 N. 53rd Ave, Phoenix",
+				"setup": 2700
+			},
+			"delivery": {
+				"id": "81840-104D",
+				"location_index": 3,
+				"description": "81840|4715 West Buckeye Road, Phoenix, AZ|ULSD Clear",
+				"service": 360,
+				"time_windows": [
+					[
+						1752667200,
+						1752696000
+					]
+				]
+			},
+			"amount": [
+				23,
+				0,
+				0,
+				0,
+				0
+			]
+		},
+		{
+			"id": "50",
+			"pickup": {
+				"id": "81840-105L",
+				"location_index": 0,
+				"description": "Kinder Morgan 125 N. 53rd Ave, Phoenix",
+				"setup": 2700
+			},
+			"delivery": {
+				"id": "81840-105D",
+				"location_index": 3,
+				"description": "81840|4715 West Buckeye Road, Phoenix, AZ|ULSD Clear",
+				"service": 360,
+				"time_windows": [
+					[
+						1752667200,
+						1752696000
+					]
+				]
+			},
+			"amount": [
+				17,
+				0,
+				0,
+				0,
+				0
+			]
+		},
+		{
+			"id": "51",
+			"pickup": {
+				"id": "121747-106L",
+				"location_index": 0,
+				"description": "Kinder Morgan 125 N. 53rd Ave, Phoenix",
+				"setup": 2700
+			},
+			"delivery": {
+				"id": "121747-106D",
+				"location_index": 42,
+				"description": "121747|735 North 19th Avenue, Phoenix, AZ|ULSD Clear",
+				"service": 840,
+				"time_windows": [
+					[
+						1752712200,
+						1752798600
+					]
+				]
+			},
+			"amount": [
+				133,
+				0,
+				0,
+				0,
+				0
+			]
+		},
+		{
+			"id": "52",
+			"pickup": {
+				"id": "124548-107L",
+				"location_index": 0,
+				"description": "Kinder Morgan 125 N. 53rd Ave, Phoenix",
+				"setup": 2700
+			},
+			"delivery": {
+				"id": "124548-107D",
+				"location_index": 4,
+				"description": "124548|2831 North 31st Avenue, Phoenix, AZ|ULSD Clear",
+				"service": 7620,
+				"time_windows": [
+					[
+						1752706800,
+						1752793200
+					]
+				]
+			},
+			"amount": [
+				362,
+				0,
+				0,
+				0,
+				0
+			]
+		},
+		{
+			"id": "53",
+			"pickup": {
+				"id": "125461-109L",
+				"location_index": 0,
+				"description": "Kinder Morgan 125 N. 53rd Ave, Phoenix",
+				"setup": 2700
+			},
+			"delivery": {
+				"id": "125461-109D",
+				"location_index": 22,
+				"description": "125461|7600 West Roosevelt Street, Phoenix, AZ|ULSD Clear",
+				"service": 8340,
+				"time_windows": [
+					[
+						1752638400,
+						1752724800
+					]
+				]
+			},
+			"amount": [
+				53,
+				0,
+				0,
+				0,
+				0
+			]
+		},
+		{
+			"id": "54",
+			"pickup": {
+				"id": "126045-110L",
+				"location_index": 0,
+				"description": "Kinder Morgan 125 N. 53rd Ave, Phoenix",
+				"setup": 2700
+			},
+			"delivery": {
+				"id": "126045-110D",
+				"location_index": 30,
+				"description": "126045|21829 North 16th Street , Phoenix, AZ|ULSD Clear",
+				"service": 6120,
+				"time_windows": [
+					[
+						1752703200,
+						1752789600
+					]
+				]
+			},
+			"amount": [
+				2011,
+				0,
+				0,
+				0,
+				0
+			]
+		},
+		{
+			"id": "55",
+			"pickup": {
+				"id": "126147-112L",
+				"location_index": 0,
+				"description": "Kinder Morgan 125 N. 53rd Ave, Phoenix",
+				"setup": 2700
+			},
+			"delivery": {
+				"id": "126147-112D",
+				"location_index": 43,
+				"description": "126147|6805 West Morelos , Chandler, AZ|ULSD Clear",
+				"service": 4080,
+				"time_windows": [
+					[
+						1752667200,
+						1752696000
+					]
+				]
+			},
+			"amount": [
+				117,
+				0,
+				0,
+				0,
+				0
+			]
+		},
+		{
+			"id": "56",
+			"pickup": {
+				"id": "126889-114L",
+				"location_index": 0,
+				"description": "Kinder Morgan 125 N. 53rd Ave, Phoenix",
+				"setup": 2700
+			},
+			"delivery": {
+				"id": "126889-114D",
+				"location_index": 44,
+				"description": "126889|3612 South 36th Street , Phoenix, AZ|ULSD Clear",
+				"service": 2160,
+				"time_windows": [
+					[
+						1752703200,
+						1752789600
+					]
+				]
+			},
+			"amount": [
+				336,
+				0,
+				0,
+				0,
+				0
+			]
+		},
+		{
+			"id": "57",
+			"pickup": {
+				"id": "142869-115L",
+				"location_index": 0,
+				"description": "Kinder Morgan 125 N. 53rd Ave, Phoenix",
+				"setup": 2700
+			},
+			"delivery": {
+				"id": "142869-115D",
+				"location_index": 45,
+				"description": "142869|4022 West Broadway Road, Phoenix, AZ|ULSD Clear",
+				"service": 4680,
+				"time_windows": [
+					[
+						1752681600,
+						1752768000
+					]
+				]
+			},
+			"amount": [
+				328,
+				0,
+				0,
+				0,
+				0
+			]
+		},
+		{
+			"id": "58",
+			"pickup": {
+				"id": "172475-120L",
+				"location_index": 0,
+				"description": "Kinder Morgan 125 N. 53rd Ave, Phoenix",
+				"setup": 2700
+			},
+			"delivery": {
+				"id": "172475-120D",
+				"location_index": 46,
+				"description": "172475|4507 N. 45th Avenue, Phoenix, AZ|ULSD Clear",
+				"service": 8040,
+				"time_windows": [
+					[
+						1752696000,
+						1752782400
+					]
+				]
+			},
+			"amount": [
+				20,
+				0,
+				0,
+				0,
+				0
+			]
+		},
+		{
+			"id": "59",
+			"pickup": {
+				"id": "81840-121L",
+				"location_index": 0,
+				"description": "Kinder Morgan 125 N. 53rd Ave, Phoenix",
+				"setup": 2700
+			},
+			"delivery": {
+				"id": "81840-121D",
+				"location_index": 3,
+				"description": "81840|4715 West Buckeye Road, Phoenix, AZ|ULSD Clear",
+				"service": 180,
+				"time_windows": [
+					[
+						1752667200,
+						1752696000
+					]
+				]
+			},
+			"amount": [
+				24,
+				0,
+				0,
+				0,
+				0
+			]
+		},
+		{
+			"id": "60",
+			"pickup": {
+				"id": "124543-124L",
+				"location_index": 0,
+				"description": "Kinder Morgan 125 N. 53rd Ave, Phoenix",
+				"setup": 2700
+			},
+			"delivery": {
+				"id": "124543-124D",
+				"location_index": 47,
+				"description": "124543|4450 North 45th Avenue Penske # 633903, Phoenix, AZ|ULSD Clear",
+				"service": 6060,
+				"time_windows": [
+					[
+						1752667200,
+						1752696000
+					]
+				]
+			},
+			"amount": [
+				714,
+				0,
+				0,
+				0,
+				0
+			]
+		},
+		{
+			"id": "61",
+			"pickup": {
+				"id": "126025-127L",
+				"location_index": 0,
+				"description": "Kinder Morgan 125 N. 53rd Ave, Phoenix",
+				"setup": 2700
+			},
+			"delivery": {
+				"id": "126025-127D",
+				"location_index": 48,
+				"description": "126025|8525 N 75th Avenue , Peoria, AZ|ULSD Clear",
+				"service": 7860,
+				"time_windows": [
+					[
+						1752667200,
+						1752696000
+					]
+				]
+			},
+			"amount": [
+				271,
+				0,
+				0,
+				0,
+				0
+			]
+		},
+		{
+			"id": "62",
+			"pickup": {
+				"id": "126061-128L",
+				"location_index": 0,
+				"description": "Kinder Morgan 125 N. 53rd Ave, Phoenix",
+				"setup": 2700
+			},
+			"delivery": {
+				"id": "126061-128D",
+				"location_index": 49,
+				"description": "126061|5250 East Deer Valley Road , Phoenix, AZ|ULSD Clear",
+				"service": 180,
+				"time_windows": [
+					[
+						1752656400,
+						1752696000
+					]
+				]
+			},
+			"amount": [
+				17,
+				0,
+				0,
+				0,
+				0
+			]
+		},
+		{
+			"id": "63",
+			"pickup": {
+				"id": "126632-129L",
+				"location_index": 0,
+				"description": "Kinder Morgan 125 N. 53rd Ave, Phoenix",
+				"setup": 2700
+			},
+			"delivery": {
+				"id": "126632-129D",
+				"location_index": 50,
+				"description": "126632|3555 South 28th Street , Phoenix, AZ|ULSD Clear",
+				"service": 240,
+				"time_windows": [
+					[
+						1752638400,
+						1752649200
+					]
+				]
+			},
+			"amount": [
+				96,
+				0,
+				0,
+				0,
+				0
+			]
+		},
+		{
+			"id": "64",
+			"pickup": {
+				"id": "127710-130L",
+				"location_index": 0,
+				"description": "Kinder Morgan 125 N. 53rd Ave, Phoenix",
+				"setup": 2700
+			},
+			"delivery": {
+				"id": "127710-130D",
+				"location_index": 51,
+				"description": "127710|11243 E Willis Rd, Chandler, AZ|ULSD Clear",
+				"service": 2220,
+				"time_windows": [
+					[
+						1752696000,
+						1752782400
+					]
+				]
+			},
+			"amount": [
+				460,
+				0,
+				0,
+				0,
+				0
+			]
+		},
+		{
+			"id": "65",
+			"pickup": {
+				"id": "129523-131L",
+				"location_index": 0,
+				"description": "Kinder Morgan 125 N. 53rd Ave, Phoenix",
+				"setup": 2700
+			},
+			"delivery": {
+				"id": "129523-131D",
+				"location_index": 52,
+				"description": "129523|2832 South 46th Street, Phoenix, AZ|ULSD Clear",
+				"service": 4680,
+				"time_windows": [
+					[
+						1752663600,
+						1752750000
+					]
+				]
+			},
+			"amount": [
+				186,
+				0,
+				0,
+				0,
+				0
+			]
+		},
+		{
+			"id": "66",
+			"pickup": {
+				"id": "129847-132L",
+				"location_index": 0,
+				"description": "Kinder Morgan 125 N. 53rd Ave, Phoenix",
+				"setup": 2700
+			},
+			"delivery": {
+				"id": "129847-132D",
+				"location_index": 53,
+				"description": "129847|4805 W Jefferson St, Phoenix, AZ|ULSD Clear",
+				"service": 4440,
+				"time_windows": [
+					[
+						1752667200,
+						1752696000
+					]
+				]
+			},
+			"amount": [
+				257,
+				0,
+				0,
+				0,
+				0
+			]
+		},
+		{
+			"id": "67",
+			"pickup": {
+				"id": "150110-136L",
+				"location_index": 0,
+				"description": "Kinder Morgan 125 N. 53rd Ave, Phoenix",
+				"setup": 2700
+			},
+			"delivery": {
+				"id": "150110-136D",
+				"location_index": 54,
+				"description": "150110|4450 North 42nd Avenue, Phoenix, AZ|ULSD Clear",
+				"service": 1440,
+				"time_windows": [
+					[
+						1752667200,
+						1752696000
+					]
+				]
+			},
+			"amount": [
+				292,
+				0,
+				0,
+				0,
+				0
+			]
+		},
+		{
+			"id": "68",
+			"pickup": {
+				"id": "155575-138L",
+				"location_index": 0,
+				"description": "Kinder Morgan 125 N. 53rd Ave, Phoenix",
+				"setup": 2700
+			},
+			"delivery": {
+				"id": "155575-138D",
+				"location_index": 55,
+				"description": "155575|3105 N Cotton Ln, Goodyear, AZ|ULSD Clear",
+				"service": 3360,
+				"time_windows": [
+					[
+						1752706800,
+						1752793200
+					]
+				]
+			},
+			"amount": [
+				140,
+				0,
+				0,
+				0,
+				0
+			]
+		},
+		{
+			"id": "69",
+			"pickup": {
+				"id": "62522-139L",
+				"location_index": 0,
+				"description": "Kinder Morgan 125 N. 53rd Ave, Phoenix",
+				"setup": 2700
+			},
+			"delivery": {
+				"id": "62522-139D",
+				"location_index": 56,
+				"description": "62522|859 South 86th Avenue , Tolleson, AZ|ULSD Clear",
+				"service": 7260,
+				"time_windows": [
+					[
+						1752660000,
+						1752674400
+					]
+				]
+			},
+			"amount": [
+				283,
+				0,
+				0,
+				0,
+				0
+			]
+		},
+		{
+			"id": "70",
+			"pickup": {
+				"id": "62632-140L",
+				"location_index": 0,
+				"description": "Kinder Morgan 125 N. 53rd Ave, Phoenix",
+				"setup": 2700
+			},
+			"delivery": {
+				"id": "62632-140D",
+				"location_index": 57,
+				"description": "62632|3401 West Buckeye Road, Phoenix, AZ|ULSD Clear",
+				"service": 720,
+				"time_windows": [
+					[
+						1752692400,
+						1752778800
+					]
+				]
+			},
+			"amount": [
+				120,
+				0,
+				0,
+				0,
+				0
+			]
+		},
+		{
+			"id": "71",
+			"pickup": {
+				"id": "64637-141L",
+				"location_index": 0,
+				"description": "Kinder Morgan 125 N. 53rd Ave, Phoenix",
+				"setup": 2700
+			},
+			"delivery": {
+				"id": "64637-141D",
+				"location_index": 58,
+				"description": "64637|800 North 75th Avenue, Phoenix, AZ|ULSD Clear",
+				"service": 1680,
+				"time_windows": [
+					[
+						1752670800,
+						1752678000
+					]
+				]
+			},
+			"amount": [
+				78,
+				0,
+				0,
+				0,
+				0
+			]
+		},
+		{
+			"id": "72",
+			"pickup": {
+				"id": "81840-142L",
+				"location_index": 0,
+				"description": "Kinder Morgan 125 N. 53rd Ave, Phoenix",
+				"setup": 2700
+			},
+			"delivery": {
+				"id": "81840-142D",
+				"location_index": 3,
+				"description": "81840|4715 West Buckeye Road, Phoenix, AZ|ULSD Clear",
+				"service": 120,
+				"time_windows": [
+					[
+						1752667200,
+						1752696000
+					]
+				]
+			},
+			"amount": [
+				25,
+				0,
+				0,
+				0,
+				0
+			]
+		},
+		{
+			"id": "73",
+			"pickup": {
+				"id": "121748-144L",
+				"location_index": 0,
+				"description": "Kinder Morgan 125 N. 53rd Ave, Phoenix",
+				"setup": 2700
+			},
+			"delivery": {
+				"id": "121748-144D",
+				"location_index": 59,
+				"description": "121748|3045 South 35th Avenue, Phoenix, AZ|ULSD Clear",
+				"service": 2700,
+				"time_windows": [
+					[
+						1752706800,
+						1752717600
+					]
+				]
+			},
+			"amount": [
+				264,
+				0,
+				0,
+				0,
+				0
+			]
+		},
+		{
+			"id": "74",
+			"pickup": {
+				"id": "124937-146L",
+				"location_index": 0,
+				"description": "Kinder Morgan 125 N. 53rd Ave, Phoenix",
+				"setup": 2700
+			},
+			"delivery": {
+				"id": "124937-146D",
+				"location_index": 60,
+				"description": "124937|3450 South 59th Ave, Phoenix, AZ|ULSD Clear",
+				"service": 1140,
+				"time_windows": [
+					[
+						1752676200,
+						1752696000
+					]
+				]
+			},
+			"amount": [
+				53,
+				0,
+				0,
+				0,
+				0
+			]
+		},
+		{
+			"id": "75",
+			"pickup": {
+				"id": "124941-147L",
+				"location_index": 0,
+				"description": "Kinder Morgan 125 N. 53rd Ave, Phoenix",
+				"setup": 2700
+			},
+			"delivery": {
+				"id": "124941-147D",
+				"location_index": 61,
+				"description": "124941|6000 West Van Buren Street, Phoenix, AZ|ULSD Clear",
+				"service": 1500,
+				"time_windows": [
+					[
+						1752667200,
+						1752696000
+					]
+				]
+			},
+			"amount": [
+				75,
+				0,
+				0,
+				0,
+				0
+			]
+		},
+		{
+			"id": "76",
+			"pickup": {
+				"id": "125463-149L",
+				"location_index": 0,
+				"description": "Kinder Morgan 125 N. 53rd Ave, Phoenix",
+				"setup": 2700
+			},
+			"delivery": {
+				"id": "125463-149D",
+				"location_index": 22,
+				"description": "125463|7600 West Roosevelt Street, Phoenix, AZ|ULSD Clear",
+				"service": 8340,
+				"time_windows": [
+					[
+						1752701400,
+						1752703200
+					]
+				]
+			},
+			"amount": [
+				615,
+				0,
+				0,
+				0,
+				0
+			]
+		},
+		{
+			"id": "77",
+			"pickup": {
+				"id": "137302-155L",
+				"location_index": 0,
+				"description": "Kinder Morgan 125 N. 53rd Ave, Phoenix",
+				"setup": 2700
+			},
+			"delivery": {
+				"id": "137302-155D",
+				"location_index": 62,
+				"description": "137302|2333 North Country Club Drive, Mesa, AZ|ULSD Clear",
+				"service": 2820,
+				"time_windows": [
+					[
+						1752681600,
+						1752768000
+					]
+				]
+			},
+			"amount": [
+				1375,
+				0,
+				0,
+				0,
+				0
+			]
+		},
+		{
+			"id": "78",
+			"pickup": {
+				"id": "62627-157L",
+				"location_index": 0,
+				"description": "Kinder Morgan 125 N. 53rd Ave, Phoenix",
+				"setup": 2700
+			},
+			"delivery": {
+				"id": "62627-157D",
+				"location_index": 63,
+				"description": "62627|8400 West Sherman Street, Tolleson, AZ|ULSD Clear",
+				"service": 7800,
+				"time_windows": [
+					[
+						1752676200,
+						1752679800
+					]
+				]
+			},
+			"amount": [
+				548,
+				0,
+				0,
+				0,
+				0
+			]
+		},
+		{
+			"id": "79",
+			"pickup": {
+				"id": "62632-158L",
+				"location_index": 0,
+				"description": "Kinder Morgan 125 N. 53rd Ave, Phoenix",
+				"setup": 2700
+			},
+			"delivery": {
+				"id": "62632-158D",
+				"location_index": 57,
+				"description": "62632|3401 West Buckeye Road, Phoenix, AZ|ULSD Clear",
+				"service": 2340,
+				"time_windows": [
+					[
+						1752692400,
+						1752778800
+					]
+				]
+			},
+			"amount": [
+				398,
+				0,
+				0,
+				0,
+				0
+			]
+		},
+		{
+			"id": "80",
+			"pickup": {
+				"id": "81840-159L",
+				"location_index": 0,
+				"description": "Kinder Morgan 125 N. 53rd Ave, Phoenix",
+				"setup": 2700
+			},
+			"delivery": {
+				"id": "81840-159D",
+				"location_index": 3,
+				"description": "81840|4715 West Buckeye Road, Phoenix, AZ|ULSD Clear",
+				"service": 120,
+				"time_windows": [
+					[
+						1752667200,
+						1752696000
+					]
+				]
+			},
+			"amount": [
+				20,
+				0,
+				0,
+				0,
+				0
+			]
+		},
+		{
+			"id": "81",
+			"pickup": {
+				"id": "88016-160L",
+				"location_index": 0,
+				"description": "Kinder Morgan 125 N. 53rd Ave, Phoenix",
+				"setup": 2700
+			},
+			"delivery": {
+				"id": "88016-160D",
+				"location_index": 63,
+				"description": "88016|8400 West Sherman Street, Tolleson, AZ|ULSD Clear",
+				"service": 7800,
+				"time_windows": [
+					[
+						1752663600,
+						1752750000
+					]
+				]
+			},
+			"amount": [
+				590,
+				0,
+				0,
+				0,
+				0
+			]
+		},
+		{
+			"id": "82",
+			"pickup": {
+				"id": "124548-161L",
+				"location_index": 0,
+				"description": "Kinder Morgan 125 N. 53rd Ave, Phoenix",
+				"setup": 2700
+			},
+			"delivery": {
+				"id": "124548-161D",
+				"location_index": 4,
+				"description": "124548|2831 North 31st Avenue, Phoenix, AZ|ULSD Clear",
+				"service": 300,
+				"time_windows": [
+					[
+						1752706800,
+						1752793200
+					]
+				]
+			},
+			"amount": [
+				24,
+				0,
+				0,
+				0,
+				0
+			]
+		},
+		{
+			"id": "83",
+			"pickup": {
+				"id": "124907-163L",
+				"location_index": 0,
+				"description": "Kinder Morgan 125 N. 53rd Ave, Phoenix",
+				"setup": 2700
+			},
+			"delivery": {
+				"id": "124907-163D",
+				"location_index": 64,
+				"description": "124907|7400 West Buckeye Road, Phoenix, AZ|ULSD Clear",
+				"service": 1920,
+				"time_windows": [
+					[
+						1752688800,
+						1752775200
+					]
+				]
+			},
+			"amount": [
+				336,
+				0,
+				0,
+				0,
+				0
+			]
+		},
+		{
+			"id": "84",
+			"pickup": {
+				"id": "125329-164L",
+				"location_index": 0,
+				"description": "Kinder Morgan 125 N. 53rd Ave, Phoenix",
+				"setup": 2700
+			},
+			"delivery": {
+				"id": "125329-164D",
+				"location_index": 65,
+				"description": "125329|737 West Buchanan Street, Phoenix, AZ|ULSD Clear",
+				"service": 2160,
+				"time_windows": [
+					[
+						1752703200,
+						1752789600
+					]
+				]
+			},
+			"amount": [
+				205,
+				0,
+				0,
+				0,
+				0
+			]
+		},
+		{
+			"id": "85",
+			"pickup": {
+				"id": "130469-169L",
+				"location_index": 0,
+				"description": "Kinder Morgan 125 N. 53rd Ave, Phoenix",
+				"setup": 2700
+			},
+			"delivery": {
+				"id": "130469-169D",
+				"location_index": 66,
+				"description": "130469|14250 W El Sol, Goodyear, AZ|ULSD Clear",
+				"service": 540,
+				"time_windows": [
+					[
+						1752681600,
+						1752768000
+					]
+				]
+			},
+			"amount": [
+				282,
+				0,
+				0,
+				0,
+				0
+			]
+		},
+		{
+			"id": "86",
+			"pickup": {
+				"id": "152758-172L",
+				"location_index": 0,
+				"description": "Kinder Morgan 125 N. 53rd Ave, Phoenix",
+				"setup": 2700
+			},
+			"delivery": {
+				"id": "152758-172D",
+				"location_index": 67,
+				"description": "152758|15301 W Northern Ave, Glendale, AZ|ULSD Clear",
+				"service": 1140,
+				"time_windows": [
+					[
+						1752667200,
+						1752696000
+					]
+				]
+			},
+			"amount": [
+				157,
+				0,
+				0,
+				0,
+				0
+			]
+		},
+		{
+			"id": "87",
+			"pickup": {
+				"id": "60114-175L",
+				"location_index": 0,
+				"description": "Kinder Morgan 125 N. 53rd Ave, Phoenix",
+				"setup": 2700
+			},
+			"delivery": {
+				"id": "60114-175D",
+				"location_index": 68,
+				"description": "60114|1115 North 47th Avenue, Phoenix, AZ|ULSD Clear",
+				"service": 4020,
+				"time_windows": [
+					[
+						1752706800,
+						1752714000
+					]
+				]
+			},
+			"amount": [
+				731,
+				0,
+				0,
+				0,
+				0
+			]
+		},
+		{
+			"id": "88",
+			"pickup": {
+				"id": "81840-176L",
+				"location_index": 0,
+				"description": "Kinder Morgan 125 N. 53rd Ave, Phoenix",
+				"setup": 2700
+			},
+			"delivery": {
+				"id": "81840-176D",
+				"location_index": 3,
+				"description": "81840|4715 West Buckeye Road, Phoenix, AZ|ULSD Clear",
+				"service": 360,
+				"time_windows": [
+					[
+						1752667200,
+						1752696000
+					]
+				]
+			},
+			"amount": [
+				45,
+				0,
+				0,
+				0,
+				0
+			]
+		},
+		{
+			"id": "89",
+			"pickup": {
+				"id": "81840-177L",
+				"location_index": 0,
+				"description": "Kinder Morgan 125 N. 53rd Ave, Phoenix",
+				"setup": 2700
+			},
+			"delivery": {
+				"id": "81840-177D",
+				"location_index": 3,
+				"description": "81840|4715 West Buckeye Road, Phoenix, AZ|ULSD Clear",
+				"service": 360,
+				"time_windows": [
+					[
+						1752667200,
+						1752696000
+					]
+				]
+			},
+			"amount": [
+				28,
+				0,
+				0,
+				0,
+				0
+			]
+		},
+		{
+			"id": "90",
+			"pickup": {
+				"id": "81840-178L",
+				"location_index": 0,
+				"description": "Kinder Morgan 125 N. 53rd Ave, Phoenix",
+				"setup": 2700
+			},
+			"delivery": {
+				"id": "81840-178D",
+				"location_index": 3,
+				"description": "81840|4715 West Buckeye Road, Phoenix, AZ|ULSD Clear",
+				"service": 180,
+				"time_windows": [
+					[
+						1752667200,
+						1752696000
+					]
+				]
+			},
+			"amount": [
+				40,
+				0,
+				0,
+				0,
+				0
+			]
+		},
+		{
+			"id": "91",
+			"pickup": {
+				"id": "124541-181L",
+				"location_index": 0,
+				"description": "Kinder Morgan 125 N. 53rd Ave, Phoenix",
+				"setup": 2700
+			},
+			"delivery": {
+				"id": "124541-181D",
+				"location_index": 69,
+				"description": "124541|3801 North 33rd Avenue, Phoenix, AZ|ULSD Clear",
+				"service": 5220,
+				"time_windows": [
+					[
+						1752699600,
+						1752714000
+					]
+				]
+			},
+			"amount": [
+				373,
+				0,
+				0,
+				0,
+				0
+			]
+		},
+		{
+			"id": "92",
+			"pickup": {
+				"id": "126228-183L",
+				"location_index": 0,
+				"description": "Kinder Morgan 125 N. 53rd Ave, Phoenix",
+				"setup": 2700
+			},
+			"delivery": {
+				"id": "126228-183D",
+				"location_index": 70,
+				"description": "126228|402 South 54th Place , Phoenix, AZ|ULSD Clear",
+				"service": 5580,
+				"time_windows": [
+					[
+						1752638400,
+						1752724800
+					]
+				]
+			},
+			"amount": [
+				0,
+				0,
+				0,
+				0,
+				0
+			]
+		},
+		{
+			"id": "93",
+			"pickup": {
+				"id": "129205-185L",
+				"location_index": 0,
+				"description": "Kinder Morgan 125 N. 53rd Ave, Phoenix",
+				"setup": 2700
+			},
+			"delivery": {
+				"id": "129205-185D",
+				"location_index": 71,
+				"description": "129205|6395 N Sarival Ave, Litchfield Park, AZ|ULSD Clear",
+				"service": 1320,
+				"time_windows": [
+					[
+						1752667200,
+						1752696000
+					]
+				]
+			},
+			"amount": [
+				110,
+				0,
+				0,
+				0,
+				0
+			]
+		},
+		{
+			"id": "94",
+			"pickup": {
+				"id": "158052-189L",
+				"location_index": 0,
+				"description": "Kinder Morgan 125 N. 53rd Ave, Phoenix",
+				"setup": 2700
+			},
+			"delivery": {
+				"id": "158052-189D",
+				"location_index": 72,
+				"description": "158052|SE Verrado & McDowell, Buckeye, AZ|ULSD Clear",
+				"service": 5340,
+				"time_windows": [
+					[
+						1752638400,
+						1752724800
+					]
+				]
+			},
+			"amount": [
+				34,
+				0,
+				0,
+				0,
+				0
+			]
+		},
+		{
+			"id": "95",
+			"pickup": {
+				"id": "62623-192L",
+				"location_index": 0,
+				"description": "Kinder Morgan 125 N. 53rd Ave, Phoenix",
+				"setup": 2700
+			},
+			"delivery": {
+				"id": "62623-192D",
+				"location_index": 73,
+				"description": "62623|750 North 119th Avenue, Avondale, AZ|ULSD Clear",
+				"service": 6480,
+				"time_windows": [
+					[
+						1752652800,
+						1752660000
+					]
+				]
+			},
+			"amount": [
+				961,
+				0,
+				0,
+				0,
+				0
+			]
+		},
+		{
+			"id": "96",
+			"pickup": {
+				"id": "62627-193L",
+				"location_index": 0,
+				"description": "Kinder Morgan 125 N. 53rd Ave, Phoenix",
+				"setup": 2700
+			},
+			"delivery": {
+				"id": "62627-193D",
+				"location_index": 63,
+				"description": "62627|8400 West Sherman Street, Tolleson, AZ|ULSD Clear",
+				"service": 7800,
+				"time_windows": [
+					[
+						1752676200,
+						1752679800
+					]
+				]
+			},
+			"amount": [
+				525,
+				0,
+				0,
+				0,
+				0
+			]
+		},
+		{
+			"id": "97",
+			"pickup": {
+				"id": "62852-194L",
+				"location_index": 0,
+				"description": "Kinder Morgan 125 N. 53rd Ave, Phoenix",
+				"setup": 2700
+			},
+			"delivery": {
+				"id": "62852-194D",
+				"location_index": 74,
+				"description": "62852|211 South 49th Ave, Phoenix, AZ|ULSD Clear",
+				"service": 6480,
+				"time_windows": [
+					[
+						1752703200,
+						1752717600
+					]
+				]
+			},
+			"amount": [
+				922,
+				0,
+				0,
+				0,
+				0
+			]
+		},
+		{
+			"id": "98",
+			"pickup": {
+				"id": "121747-195L",
+				"location_index": 0,
+				"description": "Kinder Morgan 125 N. 53rd Ave, Phoenix",
+				"setup": 2700
+			},
+			"delivery": {
+				"id": "121747-195D",
+				"location_index": 42,
+				"description": "121747|735 North 19th Avenue, Phoenix, AZ|ULSD Clear",
+				"service": 1440,
+				"time_windows": [
+					[
+						1752712200,
+						1752798600
+					]
+				]
+			},
+			"amount": [
+				217,
+				0,
+				0,
+				0,
+				0
+			]
+		},
+		{
+			"id": "99",
+			"pickup": {
+				"id": "124520-196L",
+				"location_index": 0,
+				"description": "Kinder Morgan 125 N. 53rd Ave, Phoenix",
+				"setup": 2700
+			},
+			"delivery": {
+				"id": "124520-196D",
+				"location_index": 75,
+				"description": "124520|420 South 53rd Avenue Suite 101, Phoenix, AZ|ULSD Clear",
+				"service": 6420,
+				"time_windows": [
+					[
+						1752681600,
+						1752696000
+					]
+				]
+			},
+			"amount": [
+				351,
+				0,
+				0,
+				0,
+				0
+			]
+		},
+		{
+			"id": "100",
+			"pickup": {
+				"id": "124942-197L",
+				"location_index": 0,
+				"description": "Kinder Morgan 125 N. 53rd Ave, Phoenix",
+				"setup": 2700
+			},
+			"delivery": {
+				"id": "124942-197D",
+				"location_index": 76,
+				"description": "124942|8181 West Roosevelt Street, Phoenix, AZ|ULSD Clear",
+				"service": 2760,
+				"time_windows": [
+					[
+						1752660000,
+						1752699600
+					]
+				]
+			},
+			"amount": [
+				270,
+				0,
+				0,
+				0,
+				0
+			]
+		},
+		{
+			"id": "101",
+			"pickup": {
+				"id": "126227-199L",
+				"location_index": 0,
+				"description": "Kinder Morgan 125 N. 53rd Ave, Phoenix",
+				"setup": 2700
+			},
+			"delivery": {
+				"id": "126227-199D",
+				"location_index": 6,
+				"description": "126227|3910 East Wier Avenue , Phoenix, AZ|ULSD Clear",
+				"service": 1500,
+				"time_windows": [
+					[
+						1752699600,
+						1752786000
+					]
+				]
+			},
+			"amount": [
+				30,
+				0,
+				0,
+				0,
+				0
+			]
+		},
+		{
+			"id": "102",
+			"pickup": {
+				"id": "126633-200L",
+				"location_index": 0,
+				"description": "Kinder Morgan 125 N. 53rd Ave, Phoenix",
+				"setup": 2700
+			},
+			"delivery": {
+				"id": "126633-200D",
+				"location_index": 77,
+				"description": "126633|18616 South Lindsey Road , Gilbert, AZ|ULSD Clear",
+				"service": 1020,
+				"time_windows": [
+					[
+						1752690600,
+						1752777000
+					]
+				]
+			},
+			"amount": [
+				175,
+				0,
+				0,
+				0,
+				0
+			]
+		},
+		{
+			"id": "103",
+			"pickup": {
+				"id": "129195-201L",
+				"location_index": 0,
+				"description": "Kinder Morgan 125 N. 53rd Ave, Phoenix",
+				"setup": 2700
+			},
+			"delivery": {
+				"id": "129195-201D",
+				"location_index": 78,
+				"description": "129195|3333 South 59th Avenue , Phoenix, AZ|ULSD Clear",
+				"service": 1320,
+				"time_windows": [
+					[
+						1752681600,
+						1752768000
+					]
+				]
+			},
+			"amount": [
+				71,
+				0,
+				0,
+				0,
+				0
+			]
+		},
+		{
+			"id": "104",
+			"pickup": {
+				"id": "65545-208L",
+				"location_index": 0,
+				"description": "Kinder Morgan 125 N. 53rd Ave, Phoenix",
+				"setup": 2700
+			},
+			"delivery": {
+				"id": "65545-208D",
+				"location_index": 79,
+				"description": "65545|5001 West Watkins Street, Phoenix, AZ|ULSD Clear",
+				"service": 2580,
+				"time_windows": [
+					[
+						1752703200,
+						1752789600
+					]
+				]
+			},
+			"amount": [
+				328,
+				0,
+				0,
+				0,
+				0
+			]
+		},
+		{
+			"id": "105",
+			"pickup": {
+				"id": "124547-209L",
+				"location_index": 0,
+				"description": "Kinder Morgan 125 N. 53rd Ave, Phoenix",
+				"setup": 2700
+			},
+			"delivery": {
+				"id": "124547-209D",
+				"location_index": 80,
+				"description": "124547|3601 North 34th Avenue, Phoenix, AZ|ULSD Clear",
+				"service": 1320,
+				"time_windows": [
+					[
+						1752681600,
+						1752768000
+					]
+				]
+			},
+			"amount": [
+				365,
+				0,
+				0,
+				0,
+				0
+			]
+		},
+		{
+			"id": "106",
+			"pickup": {
+				"id": "124557-210L",
+				"location_index": 0,
+				"description": "Kinder Morgan 125 N. 53rd Ave, Phoenix",
+				"setup": 2700
+			},
+			"delivery": {
+				"id": "124557-210D",
+				"location_index": 81,
+				"description": "124557|2340 West Encanto Boulevard, Phoenix, AZ|ULSD Clear",
+				"service": 7620,
+				"time_windows": [
+					[
+						1752706800,
+						1752793200
+					]
+				]
+			},
+			"amount": [
+				679,
+				0,
+				0,
+				0,
+				0
+			]
+		},
+		{
+			"id": "107",
+			"pickup": {
+				"id": "126106-211L",
+				"location_index": 0,
+				"description": "Kinder Morgan 125 N. 53rd Ave, Phoenix",
+				"setup": 2700
+			},
+			"delivery": {
+				"id": "126106-211D",
+				"location_index": 15,
+				"description": "126106|7831 N 67th Ave, Glendale, AZ|ULSD Clear",
+				"service": 1800,
+				"time_windows": [
+					[
+						1752699600,
+						1752786000
+					]
+				]
+			},
+			"amount": [
+				181,
+				0,
+				0,
+				0,
+				0
+			]
+		},
+		{
+			"id": "108",
+			"pickup": {
+				"id": "126228-212L",
+				"location_index": 0,
+				"description": "Kinder Morgan 125 N. 53rd Ave, Phoenix",
+				"setup": 2700
+			},
+			"delivery": {
+				"id": "126228-212D",
+				"location_index": 70,
+				"description": "126228|402 South 54th Place , Phoenix, AZ|ULSD Clear",
+				"service": 5580,
+				"time_windows": [
+					[
+						1752638400,
+						1752724800
+					]
+				]
+			},
+			"amount": [
+				960,
+				0,
+				0,
+				0,
+				0
+			]
+		},
+		{
+			"id": "109",
+			"pickup": {
+				"id": "127712-215L",
+				"location_index": 0,
+				"description": "Kinder Morgan 125 N. 53rd Ave, Phoenix",
+				"setup": 2700
+			},
+			"delivery": {
+				"id": "127712-215D",
+				"location_index": 82,
+				"description": "127712|411 West Orion Street, Tempe, AZ|ULSD Clear",
+				"service": 5100,
+				"time_windows": [
+					[
+						1752699600,
+						1752786000
+					]
+				]
+			},
+			"amount": [
+				380,
+				0,
+				0,
+				0,
+				0
+			]
+		},
+		{
+			"id": "110",
+			"pickup": {
+				"id": "128138-216L",
+				"location_index": 0,
+				"description": "Kinder Morgan 125 N. 53rd Ave, Phoenix",
+				"setup": 2700
+			},
+			"delivery": {
+				"id": "128138-216D",
+				"location_index": 83,
+				"description": "128138|890 South 143rd Avenue , Goodyear, AZ|ULSD Clear",
+				"service": 1320,
+				"time_windows": [
+					[
+						1752681600,
+						1752768000
+					]
+				]
+			},
+			"amount": [
+				79,
+				0,
+				0,
+				0,
+				0
+			]
+		},
+		{
+			"id": "111",
+			"pickup": {
+				"id": "128722-217L",
+				"location_index": 0,
+				"description": "Kinder Morgan 125 N. 53rd Ave, Phoenix",
+				"setup": 2700
+			},
+			"delivery": {
+				"id": "128722-217D",
+				"location_index": 84,
+				"description": "128722|12912 West Santa Fe Drive , Surprise, AZ|ULSD Clear",
+				"service": 3780,
+				"time_windows": [
+					[
+						1752667200,
+						1752696000
+					]
+				]
+			},
+			"amount": [
+				726,
+				0,
+				0,
+				0,
+				0
+			]
+		},
+		{
+			"id": "112",
+			"pickup": {
+				"id": "149442-220L",
+				"location_index": 0,
+				"description": "Kinder Morgan 125 N. 53rd Ave, Phoenix",
+				"setup": 2700
+			},
+			"delivery": {
+				"id": "149442-220D",
+				"location_index": 66,
+				"description": "149442|14250 W El Sol, Goodyear, AZ|ULSD Clear",
+				"service": 420,
+				"time_windows": [
+					[
+						1752681600,
+						1752768000
+					]
+				]
+			},
+			"amount": [
+				195,
+				0,
+				0,
+				0,
+				0
+			]
+		},
+		{
+			"id": "113",
+			"pickup": {
+				"id": "158382-222L",
+				"location_index": 0,
+				"description": "Kinder Morgan 125 N. 53rd Ave, Phoenix",
+				"setup": 2700
+			},
+			"delivery": {
+				"id": "158382-222D",
+				"location_index": 85,
+				"description": "158382|1431 North Recker Rd, Gilbert, AZ|ULSD Clear",
+				"service": 540,
+				"time_windows": [
+					[
+						1752638400,
+						1752724800
+					]
+				]
+			},
+			"amount": [
+				155,
+				0,
+				0,
+				0,
+				0
+			]
+		},
+		{
+			"id": "114",
+			"pickup": {
+				"id": "124909-227L",
+				"location_index": 0,
+				"description": "Kinder Morgan 125 N. 53rd Ave, Phoenix",
+				"setup": 2700
+			},
+			"delivery": {
+				"id": "124909-227D",
+				"location_index": 86,
+				"description": "124909|901 South 12th Street, Phoenix, AZ|ULSD Clear",
+				"service": 1080,
+				"time_windows": [
+					[
+						1752714000,
+						1752800400
+					]
+				]
+			},
+			"amount": [
+				162,
+				0,
+				0,
+				0,
+				0
+			]
+		},
+		{
+			"id": "115",
+			"pickup": {
+				"id": "124910-228L",
+				"location_index": 0,
+				"description": "Kinder Morgan 125 N. 53rd Ave, Phoenix",
+				"setup": 2700
+			},
+			"delivery": {
+				"id": "124910-228D",
+				"location_index": 22,
+				"description": "124910|7600 West Roosevelt Street, Phoenix, AZ|ULSD Clear",
+				"service": 8340,
+				"time_windows": [
+					[
+						1752663600,
+						1752750000
+					]
+				]
+			},
+			"amount": [
+				250,
+				0,
+				0,
+				0,
+				0
+			]
+		},
+		{
+			"id": "116",
+			"pickup": {
+				"id": "126017-229L",
+				"location_index": 0,
+				"description": "Kinder Morgan 125 N. 53rd Ave, Phoenix",
+				"setup": 2700
+			},
+			"delivery": {
+				"id": "126017-229D",
+				"location_index": 87,
+				"description": "126017|202 South 30th Street , Phoenix, AZ|ULSD Clear",
+				"service": 6240,
+				"time_windows": [
+					[
+						1752688800,
+						1752717600
+					]
+				]
+			},
+			"amount": [
+				562,
+				0,
+				0,
+				0,
+				0
+			]
+		},
+		{
+			"id": "117",
+			"pickup": {
+				"id": "126107-230L",
+				"location_index": 0,
+				"description": "Kinder Morgan 125 N. 53rd Ave, Phoenix",
+				"setup": 2700
+			},
+			"delivery": {
+				"id": "126107-230D",
+				"location_index": 88,
+				"description": "126107|3749 E Superior Avenue , Phoenix, AZ|ULSD Clear",
+				"service": 3780,
+				"time_windows": [
+					[
+						1752656400,
+						1752663600
+					]
+				]
+			},
+			"amount": [
+				300,
+				0,
+				0,
+				0,
+				0
+			]
+		},
+		{
+			"id": "118",
+			"pickup": {
+				"id": "62618-237L",
+				"location_index": 0,
+				"description": "Kinder Morgan 125 N. 53rd Ave, Phoenix",
+				"setup": 2700
+			},
+			"delivery": {
+				"id": "62618-237D",
+				"location_index": 89,
+				"description": "62618|3918 West Lincoln Street, Phoenix, AZ|ULSD Clear",
+				"service": 1980,
+				"time_windows": [
+					[
+						1752706800,
+						1752793200
+					]
+				]
+			},
+			"amount": [
+				413,
+				0,
+				0,
+				0,
+				0
+			]
+		},
+		{
+			"id": "119",
+			"pickup": {
+				"id": "81840-238L",
+				"location_index": 0,
+				"description": "Kinder Morgan 125 N. 53rd Ave, Phoenix",
+				"setup": 2700
+			},
+			"delivery": {
+				"id": "81840-238D",
+				"location_index": 3,
+				"description": "81840|4715 West Buckeye Road, Phoenix, AZ|ULSD Clear",
+				"service": 600,
+				"time_windows": [
+					[
+						1752667200,
+						1752696000
+					]
+				]
+			},
+			"amount": [
+				30,
+				0,
+				0,
+				0,
+				0
+			]
+		},
+		{
+			"id": "120",
+			"pickup": {
+				"id": "81840-239L",
+				"location_index": 0,
+				"description": "Kinder Morgan 125 N. 53rd Ave, Phoenix",
+				"setup": 2700
+			},
+			"delivery": {
+				"id": "81840-239D",
+				"location_index": 3,
+				"description": "81840|4715 West Buckeye Road, Phoenix, AZ|ULSD Clear",
+				"service": 180,
+				"time_windows": [
+					[
+						1752667200,
+						1752696000
+					]
+				]
+			},
+			"amount": [
+				16,
+				0,
+				0,
+				0,
+				0
+			]
+		},
+		{
+			"id": "121",
+			"pickup": {
+				"id": "81840-240L",
+				"location_index": 0,
+				"description": "Kinder Morgan 125 N. 53rd Ave, Phoenix",
+				"setup": 2700
+			},
+			"delivery": {
+				"id": "81840-240D",
+				"location_index": 3,
+				"description": "81840|4715 West Buckeye Road, Phoenix, AZ|ULSD Clear",
+				"service": 300,
+				"time_windows": [
+					[
+						1752667200,
+						1752696000
+					]
+				]
+			},
+			"amount": [
+				35,
+				0,
+				0,
+				0,
+				0
+			]
+		},
+		{
+			"id": "122",
+			"pickup": {
+				"id": "126264-242L",
+				"location_index": 0,
+				"description": "Kinder Morgan 125 N. 53rd Ave, Phoenix",
+				"setup": 2700
+			},
+			"delivery": {
+				"id": "126264-242D",
+				"location_index": 90,
+				"description": "126264|849 West 24th Street , Tempe, AZ|ULSD Clear",
+				"service": 4620,
+				"time_windows": [
+					[
+						1752714000,
+						1752800400
+					]
+				]
+			},
+			"amount": [
+				380,
+				0,
+				0,
+				0,
+				0
+			]
+		},
+		{
+			"id": "123",
+			"pickup": {
+				"id": "149971-244L",
+				"location_index": 0,
+				"description": "Kinder Morgan 125 N. 53rd Ave, Phoenix",
+				"setup": 2700
+			},
+			"delivery": {
+				"id": "149971-244D",
+				"location_index": 18,
+				"description": "149971|4780 North Cotton Lane, Goodyear, AZ|ULSD Clear",
+				"service": 1200,
+				"time_windows": [
+					[
+						1752667200,
+						1752696000
+					]
+				]
+			},
+			"amount": [
+				56,
+				0,
+				0,
+				0,
+				0
+			]
+		},
+		{
+			"id": "124",
+			"pickup": {
+				"id": "152646-245L",
+				"location_index": 0,
+				"description": "Kinder Morgan 125 N. 53rd Ave, Phoenix",
+				"setup": 2700
+			},
+			"delivery": {
+				"id": "152646-245D",
+				"location_index": 91,
+				"description": "152646|5088 W Innovation Cir, Phoenix, AZ|ULSD Clear",
+				"service": 480,
+				"time_windows": [
+					[
+						1752667200,
+						1752696000
+					]
+				]
+			},
+			"amount": [
+				27,
+				0,
+				0,
+				0,
+				0
+			]
+		},
+		{
+			"id": "125",
+			"pickup": {
+				"id": "172208-251L",
+				"location_index": 0,
+				"description": "Kinder Morgan 125 N. 53rd Ave, Phoenix",
+				"setup": 2700
+			},
+			"delivery": {
+				"id": "172208-251D",
+				"location_index": 92,
+				"description": "172208|NEC 199th Ave & McDowell, Phoenix, AZ|ULSD Clear",
+				"service": 7200,
+				"time_windows": [
+					[
+						1752667200,
+						1752696000
+					]
+				]
+			},
+			"amount": [
+				42,
+				0,
+				0,
+				0,
+				0
+			]
+		},
+		{
+			"id": "126",
+			"pickup": {
+				"id": "155577-254L",
+				"location_index": 0,
+				"description": "Kinder Morgan 125 N. 53rd Ave, Phoenix",
+				"setup": 2700
+			},
+			"delivery": {
+				"id": "155577-254D",
+				"location_index": 93,
+				"description": "155577|4242 E Raymond St, Phoenix, AZ|ULSD Clear",
+				"service": 1740,
+				"time_windows": [
+					[
+						1752706800,
+						1752793200
+					]
+				]
+			},
+			"amount": [
+				81,
+				0,
+				0,
+				0,
+				0
+			]
+		},
+		{
+			"id": "127",
+			"pickup": {
+				"id": "155577-255L",
+				"location_index": 0,
+				"description": "Kinder Morgan 125 N. 53rd Ave, Phoenix",
+				"setup": 2700
+			},
+			"delivery": {
+				"id": "155577-255D",
+				"location_index": 93,
+				"description": "155577|4242 E Raymond St, Phoenix, AZ|ULSD Clear",
+				"service": 3660,
+				"time_windows": [
+					[
+						1752706800,
+						1752793200
+					]
+				]
+			},
+			"amount": [
+				658,
+				0,
+				0,
+				0,
+				0
+			]
+		},
+		{
+			"id": "128",
+			"pickup": {
+				"id": "166613-265L",
+				"location_index": 0,
+				"description": "Kinder Morgan 125 N. 53rd Ave, Phoenix",
+				"setup": 2700
+			},
+			"delivery": {
+				"id": "166613-265D",
+				"location_index": 94,
+				"description": "166613|2401 West 1st Street, Tempe, AZ|ULSD Clear",
+				"service": 3720,
+				"time_windows": [
+					[
+						1752710400,
+						1752796800
+					]
+				]
+			},
+			"amount": [
+				178,
+				0,
+				0,
+				0,
+				0
+			]
+		},
+		{
+			"id": "129",
+			"pickup": {
+				"id": "161973-268L",
+				"location_index": 0,
+				"description": "Kinder Morgan 125 N. 53rd Ave, Phoenix",
+				"setup": 2700
+			},
+			"delivery": {
+				"id": "161973-268D",
+				"location_index": 95,
+				"description": "161973|5740 W Baseline , Laveen, AZ|ULSD Clear",
+				"service": 5040,
+				"time_windows": [
+					[
+						1752703200,
+						1752789600
+					]
+				]
+			},
+			"amount": [
+				17,
+				0,
+				0,
+				0,
+				0
+			]
+		},
+		{
+			"id": "130",
+			"pickup": {
+				"id": "61350-270L",
+				"location_index": 0,
+				"description": "Kinder Morgan 125 N. 53rd Ave, Phoenix",
+				"setup": 2700
+			},
+			"delivery": {
+				"id": "61350-270D",
+				"location_index": 96,
+				"description": "61350|5333 West Lower Buckeye Road, Phoenix, AZ|ULSD Clear",
+				"service": 960,
+				"time_windows": [
+					[
+						1752667200,
+						1752674400
+					]
+				]
+			},
+			"amount": [
+				76,
+				0,
+				0,
+				0,
+				0
+			]
+		},
+		{
+			"id": "131",
+			"pickup": {
+				"id": "121746-271L",
+				"location_index": 0,
+				"description": "Kinder Morgan 125 N. 53rd Ave, Phoenix",
+				"setup": 2700
+			},
+			"delivery": {
+				"id": "121746-271D",
+				"location_index": 97,
+				"description": "121746|301 North 45th Avenue, Phoenix, AZ|ULSD Clear",
+				"service": 5400,
+				"time_windows": [
+					[
+						1752699600,
+						1752710400
+					]
+				]
+			},
+			"amount": [
+				647,
+				0,
+				0,
+				0,
+				0
+			]
+		},
+		{
+			"id": "132",
+			"pickup": {
+				"id": "124561-273L",
+				"location_index": 0,
+				"description": "Kinder Morgan 125 N. 53rd Ave, Phoenix",
+				"setup": 2700
+			},
+			"delivery": {
+				"id": "124561-273D",
+				"location_index": 98,
+				"description": "124561|4342 North 38th Drive, Phoenix, AZ|ULSD Clear",
+				"service": 2280,
+				"time_windows": [
+					[
+						1752703200,
+						1752789600
+					]
+				]
+			},
+			"amount": [
+				350,
+				0,
+				0,
+				0,
+				0
+			]
+		},
+		{
+			"id": "133",
+			"pickup": {
+				"id": "125454-274L",
+				"location_index": 0,
+				"description": "Kinder Morgan 125 N. 53rd Ave, Phoenix",
+				"setup": 2700
+			},
+			"delivery": {
+				"id": "125454-274D",
+				"location_index": 22,
+				"description": "125454|7600 West Roosevelt Street, Phoenix, AZ|ULSD Clear",
+				"service": 8340,
+				"time_windows": [
+					[
+						1752681600,
+						1752768000
+					]
+				]
+			},
+			"amount": [
+				410,
+				0,
+				0,
+				0,
+				0
+			]
+		},
+		{
+			"id": "134",
+			"pickup": {
+				"id": "125948-275L",
+				"location_index": 0,
+				"description": "Kinder Morgan 125 N. 53rd Ave, Phoenix",
+				"setup": 2700
+			},
+			"delivery": {
+				"id": "125948-275D",
+				"location_index": 99,
+				"description": "125948|7612 North 74th Avenue , Glendale, AZ|ULSD Clear",
+				"service": 2760,
+				"time_windows": [
+					[
+						1752706800,
+						1752793200
+					]
+				]
+			},
+			"amount": [
+				434,
+				0,
+				0,
+				0,
+				0
+			]
+		},
+		{
+			"id": "135",
+			"pickup": {
+				"id": "126025-276L",
+				"location_index": 0,
+				"description": "Kinder Morgan 125 N. 53rd Ave, Phoenix",
+				"setup": 2700
+			},
+			"delivery": {
+				"id": "126025-276D",
+				"location_index": 48,
+				"description": "126025|8525 N 75th Avenue , Peoria, AZ|ULSD Clear",
+				"service": 7860,
+				"time_windows": [
+					[
+						1752667200,
+						1752696000
+					]
+				]
+			},
+			"amount": [
+				585,
+				0,
+				0,
+				0,
+				0
+			]
+		},
+		{
+			"id": "136",
+			"pickup": {
+				"id": "128695-277L",
+				"location_index": 0,
+				"description": "Kinder Morgan 125 N. 53rd Ave, Phoenix",
+				"setup": 2700
+			},
+			"delivery": {
+				"id": "128695-277D",
+				"location_index": 100,
+				"description": "128695|8534 North 132nd Drive, El Mirage, AZ|ULSD Clear",
+				"service": 3480,
+				"time_windows": [
+					[
+						1752705000,
+						1752791400
+					]
+				]
+			},
+			"amount": [
+				985,
+				0,
+				0,
+				0,
+				0
+			]
+		},
+		{
+			"id": "137",
+			"pickup": {
+				"id": "129856-280L",
+				"location_index": 0,
+				"description": "Kinder Morgan 125 N. 53rd Ave, Phoenix",
+				"setup": 2700
+			},
+			"delivery": {
+				"id": "129856-280D",
+				"location_index": 101,
+				"description": "129856|8560 E Elliot Rd, Mesa, AZ|ULSD Clear",
+				"service": 600,
+				"time_windows": [
+					[
+						1752681600,
+						1752768000
+					]
+				]
+			},
+			"amount": [
+				55,
+				0,
+				0,
+				0,
+				0
+			]
+		},
+		{
+			"id": "138",
+			"pickup": {
+				"id": "158452-287L",
+				"location_index": 0,
+				"description": "Kinder Morgan 125 N. 53rd Ave, Phoenix",
+				"setup": 2700
+			},
+			"delivery": {
+				"id": "158452-287D",
+				"location_index": 102,
+				"description": "158452|NEC 64th St and Mayo Blvd, Phoenix, AZ|ULSD Clear",
+				"service": 2040,
+				"time_windows": [
+					[
+						1752638400,
+						1752724800
+					]
+				]
+			},
+			"amount": [
+				27,
+				0,
+				0,
+				0,
+				0
+			]
+		},
+		{
+			"id": "139",
+			"pickup": {
+				"id": "163128-290L",
+				"location_index": 0,
+				"description": "Kinder Morgan 125 N. 53rd Ave, Phoenix",
+				"setup": 2700
+			},
+			"delivery": {
+				"id": "163128-290D",
+				"location_index": 103,
+				"description": "163128|7223 NAlsup Ave, Litchfield Park, AZ|ULSD Clear",
+				"service": 1140,
+				"time_windows": [
+					[
+						1752681600,
+						1752768000
+					]
+				]
+			},
+			"amount": [
+				196,
+				0,
+				0,
+				0,
+				0
+			]
+		}
+	],
+	"vehicles": [
+		{
+			"id": "1000,1000,1500,1000|22|58|Fuel Tanker",
+			"start_index": 1,
+			"description": "22|58 Arizona",
+			"time_window": [
+				1752681600,
+				1752717600
+			],
+			"capacity": [
+				1,
+				1,
+				0,
+				0,
+				0
+			],
+			"alternative_capacities": [
+				[
+					2000,
+					0,
+					0,
+					0,
+					0
+				],
+				[
+					1000,
+					1000,
+					0,
+					0,
+					0
+				],
+				[
+					0,
+					2000,
+					0,
+					0,
+					0
+				]
+			],
+			"end_index": 1,
+			"break": {
+				"id": 1,
+				"service": 3600,
+				"time_windows": [
+					[
+						1752696000,
+						1752703200
+					]
+				],
+				"description": "Driver Break"
+			}
+		},
+		{
+			"id": "115,115,115,115,115|55|71|Dualie 1 Ton",
+			"start_index": 1,
+			"description": "55|71 Arizona",
+			"time_window": [
+				1752681600,
+				1752717600
+			],
+			"capacity": [
+				1,
+				1,
+				0,
+				0,
+				0
+			],
+			"alternative_capacities": [
+				[
+					230,
+					0,
+					0,
+					0,
+					0
+				],
+				[
+					115,
+					115,
+					0,
+					0,
+					0
+				],
+				[
+					0,
+					230,
+					0,
+					0,
+					0
+				]
+			],
+			"end_index": 1,
+			"break": {
+				"id": 1,
+				"service": 3600,
+				"time_windows": [
+					[
+						1752696000,
+						1752703200
+					]
+				],
+				"description": "Driver Break"
+			}
+		},
+		{
+			"id": "115,115,115,115,115|55|72|Dualie 1 Ton",
+			"start_index": 1,
+			"description": "57|72 Arizona",
+			"time_window": [
+				1752681600,
+				1752717600
+			],
+			"capacity": [
+				1,
+				1,
+				0,
+				0,
+				0
+			],
+			"alternative_capacities": [
+				[
+					230,
+					0,
+					0,
+					0,
+					0
+				],
+				[
+					115,
+					115,
+					0,
+					0,
+					0
+				],
+				[
+					0,
+					230,
+					0,
+					0,
+					0
+				]
+			],
+			"end_index": 1,
+			"break": {
+				"id": 1,
+				"service": 3600,
+				"time_windows": [
+					[
+						1752696000,
+						1752703200
+					]
+				],
+				"description": "Driver Break"
+			}
+		},
+		{
+			"id": "1500,1000,1000,1000|23|59|Fuel Tanker",
+			"start_index": 1,
+			"description": "23|59 Arizona",
+			"time_window": [
+				1752681600,
+				1752717600
+			],
+			"capacity": [
+				1,
+				1,
+				0,
+				0,
+				0
+			],
+			"alternative_capacities": [
+				[
+					2500,
+					0,
+					0,
+					0,
+					0
+				],
+				[
+					1000,
+					1500,
+					0,
+					0,
+					0
+				],
+				[
+					1500,
+					1000,
+					0,
+					0,
+					0
+				],
+				[
+					0,
+					2500,
+					0,
+					0,
+					0
+				]
+			],
+			"end_index": 1,
+			"break": {
+				"id": 1,
+				"service": 3600,
+				"time_windows": [
+					[
+						1752696000,
+						1752703200
+					]
+				],
+				"description": "Driver Break"
+			}
+		},
+		{
+			"id": "1500,1000,1000,1000|68|78|Fuel Tanker",
+			"start_index": 1,
+			"description": "68|78 Arizona",
+			"time_window": [
+				1752681600,
+				1752717600
+			],
+			"capacity": [
+				1,
+				1,
+				0,
+				0,
+				0
+			],
+			"alternative_capacities": [
+				[
+					2500,
+					0,
+					0,
+					0,
+					0
+				],
+				[
+					1000,
+					1500,
+					0,
+					0,
+					0
+				],
+				[
+					1500,
+					1000,
+					0,
+					0,
+					0
+				],
+				[
+					0,
+					2500,
+					0,
+					0,
+					0
+				]
+			],
+			"end_index": 1,
+			"break": {
+				"id": 1,
+				"service": 3600,
+				"time_windows": [
+					[
+						1752696000,
+						1752703200
+					]
+				],
+				"description": "Driver Break"
+			}
+		},
+		{
+			"id": "1500,1000,1000,1000|69|79|Fuel Tanker",
+			"start_index": 1,
+			"description": "69|79 Arizona",
+			"time_window": [
+				1752681600,
+				1752717600
+			],
+			"capacity": [
+				1,
+				1,
+				0,
+				0,
+				0
+			],
+			"alternative_capacities": [
+				[
+					2500,
+					0,
+					0,
+					0,
+					0
+				],
+				[
+					1000,
+					1500,
+					0,
+					0,
+					0
+				],
+				[
+					1500,
+					1000,
+					0,
+					0,
+					0
+				],
+				[
+					0,
+					2500,
+					0,
+					0,
+					0
+				]
+			],
+			"end_index": 1,
+			"break": {
+				"id": 1,
+				"service": 3600,
+				"time_windows": [
+					[
+						1752696000,
+						1752703200
+					]
+				],
+				"description": "Driver Break"
+			}
+		},
+		{
+			"id": "1500,1000,1000,1000|71|81|Fuel Tanker",
+			"start_index": 1,
+			"description": "71|81 Arizona",
+			"time_window": [
+				1752681600,
+				1752717600
+			],
+			"capacity": [
+				1,
+				1,
+				0,
+				0,
+				0
+			],
+			"alternative_capacities": [
+				[
+					2500,
+					0,
+					0,
+					0,
+					0
+				],
+				[
+					1000,
+					1500,
+					0,
+					0,
+					0
+				],
+				[
+					1500,
+					1000,
+					0,
+					0,
+					0
+				],
+				[
+					0,
+					2500,
+					0,
+					0,
+					0
+				]
+			],
+			"end_index": 1,
+			"break": {
+				"id": 1,
+				"service": 3600,
+				"time_windows": [
+					[
+						1752696000,
+						1752703200
+					]
+				],
+				"description": "Driver Break"
+			}
+		},
+		{
+			"id": "1500,1000,1000,1000|72|82|Fuel Tanker",
+			"start_index": 1,
+			"description": "72|82 Arizona",
+			"time_window": [
+				1752681600,
+				1752717600
+			],
+			"capacity": [
+				1,
+				1,
+				0,
+				0,
+				0
+			],
+			"alternative_capacities": [
+				[
+					2500,
+					0,
+					0,
+					0,
+					0
+				],
+				[
+					1000,
+					1500,
+					0,
+					0,
+					0
+				],
+				[
+					1500,
+					1000,
+					0,
+					0,
+					0
+				],
+				[
+					0,
+					2500,
+					0,
+					0,
+					0
+				]
+			],
+			"end_index": 1,
+			"break": {
+				"id": 1,
+				"service": 3600,
+				"time_windows": [
+					[
+						1752696000,
+						1752703200
+					]
+				],
+				"description": "Driver Break"
+			}
+		},
+		{
+			"id": "1500,1000,1000,1000|73|83|Fuel Tanker",
+			"start_index": 1,
+			"description": "73|83 Arizona",
+			"time_window": [
+				1752681600,
+				1752717600
+			],
+			"capacity": [
+				1,
+				1,
+				0,
+				0,
+				0
+			],
+			"alternative_capacities": [
+				[
+					2500,
+					0,
+					0,
+					0,
+					0
+				],
+				[
+					1000,
+					1500,
+					0,
+					0,
+					0
+				],
+				[
+					1500,
+					1000,
+					0,
+					0,
+					0
+				],
+				[
+					0,
+					2500,
+					0,
+					0,
+					0
+				]
+			],
+			"end_index": 1,
+			"break": {
+				"id": 1,
+				"service": 3600,
+				"time_windows": [
+					[
+						1752696000,
+						1752703200
+					]
+				],
+				"description": "Driver Break"
+			}
+		},
+		{
+			"id": "1500,1000,1000,1000|74|84|Fuel Tanker",
+			"start_index": 1,
+			"description": "74|84 Arizona",
+			"time_window": [
+				1752681600,
+				1752717600
+			],
+			"capacity": [
+				1,
+				1,
+				0,
+				0,
+				0
+			],
+			"alternative_capacities": [
+				[
+					2500,
+					0,
+					0,
+					0,
+					0
+				],
+				[
+					1000,
+					1500,
+					0,
+					0,
+					0
+				],
+				[
+					1500,
+					1000,
+					0,
+					0,
+					0
+				],
+				[
+					0,
+					2500,
+					0,
+					0,
+					0
+				]
+			],
+			"end_index": 1,
+			"break": {
+				"id": 1,
+				"service": 3600,
+				"time_windows": [
+					[
+						1752696000,
+						1752703200
+					]
+				],
+				"description": "Driver Break"
+			}
+		},
+		{
+			"id": "1500,1000,1000,1000|75|85|Fuel Tanker",
+			"start_index": 1,
+			"description": "75|85 Arizona",
+			"time_window": [
+				1752681600,
+				1752717600
+			],
+			"capacity": [
+				1,
+				1,
+				0,
+				0,
+				0
+			],
+			"alternative_capacities": [
+				[
+					2500,
+					0,
+					0,
+					0,
+					0
+				],
+				[
+					1000,
+					1500,
+					0,
+					0,
+					0
+				],
+				[
+					1500,
+					1000,
+					0,
+					0,
+					0
+				],
+				[
+					0,
+					2500,
+					0,
+					0,
+					0
+				]
+			],
+			"end_index": 1,
+			"break": {
+				"id": 1,
+				"service": 3600,
+				"time_windows": [
+					[
+						1752696000,
+						1752703200
+					]
+				],
+				"description": "Driver Break"
+			}
+		},
+		{
+			"id": "1500,1000,1000,1000|76|86|Fuel Tanker",
+			"start_index": 1,
+			"description": "76|86 Arizona",
+			"time_window": [
+				1752681600,
+				1752717600
+			],
+			"capacity": [
+				1,
+				1,
+				0,
+				0,
+				0
+			],
+			"alternative_capacities": [
+				[
+					2500,
+					0,
+					0,
+					0,
+					0
+				],
+				[
+					1000,
+					1500,
+					0,
+					0,
+					0
+				],
+				[
+					1500,
+					1000,
+					0,
+					0,
+					0
+				],
+				[
+					0,
+					2500,
+					0,
+					0,
+					0
+				]
+			],
+			"end_index": 1,
+			"break": {
+				"id": 1,
+				"service": 3600,
+				"time_windows": [
+					[
+						1752696000,
+						1752703200
+					]
+				],
+				"description": "Driver Break"
+			}
+		},
+		{
+			"id": "1500,1000,1000,1000|77|87|Fuel Tanker",
+			"start_index": 1,
+			"description": "77|87 Arizona",
+			"time_window": [
+				1752681600,
+				1752717600
+			],
+			"capacity": [
+				1,
+				1,
+				0,
+				0,
+				0
+			],
+			"alternative_capacities": [
+				[
+					2500,
+					0,
+					0,
+					0,
+					0
+				],
+				[
+					1000,
+					1500,
+					0,
+					0,
+					0
+				],
+				[
+					1500,
+					1000,
+					0,
+					0,
+					0
+				],
+				[
+					0,
+					2500,
+					0,
+					0,
+					0
+				]
+			],
+			"end_index": 1,
+			"break": {
+				"id": 1,
+				"service": 3600,
+				"time_windows": [
+					[
+						1752696000,
+						1752703200
+					]
+				],
+				"description": "Driver Break"
+			}
+		},
+		{
+			"id": "1500,1000,1000,1000|78|88|Fuel Tanker",
+			"start_index": 1,
+			"description": "78|88 Arizona",
+			"time_window": [
+				1752681600,
+				1752717600
+			],
+			"capacity": [
+				1,
+				1,
+				0,
+				0,
+				0
+			],
+			"alternative_capacities": [
+				[
+					2500,
+					0,
+					0,
+					0,
+					0
+				],
+				[
+					1000,
+					1500,
+					0,
+					0,
+					0
+				],
+				[
+					1500,
+					1000,
+					0,
+					0,
+					0
+				],
+				[
+					0,
+					2500,
+					0,
+					0,
+					0
+				]
+			],
+			"end_index": 1,
+			"break": {
+				"id": 1,
+				"service": 3600,
+				"time_windows": [
+					[
+						1752696000,
+						1752703200
+					]
+				],
+				"description": "Driver Break"
+			}
+		},
+		{
+			"id": "1500|52|68|DEF Trailer",
+			"start_index": 1,
+			"description": "52|68 Arizona",
+			"time_window": [
+				1752681600,
+				1752717600
+			],
+			"capacity": [
+				1,
+				1,
+				0,
+				0,
+				0
+			],
+			"alternative_capacities": [
+				[
+					1500,
+					0,
+					0,
+					0,
+					0
+				],
+				[
+					0,
+					1500,
+					0,
+					0,
+					0
+				]
+			],
+			"end_index": 1,
+			"break": {
+				"id": 1,
+				"service": 3600,
+				"time_windows": [
+					[
+						1752696000,
+						1752703200
+					]
+				],
+				"description": "Driver Break"
+			}
+		},
+		{
+			"id": "1750,200|38|64|Lube/Fuel",
+			"start_index": 1,
+			"description": "38|64 Arizona",
+			"time_window": [
+				1752681600,
+				1752717600
+			],
+			"capacity": [
+				1,
+				1,
+				0,
+				0,
+				0
+			],
+			"alternative_capacities": [
+				[
+					2000,
+					0,
+					0,
+					0,
+					0
+				],
+				[
+					250,
+					1750,
+					0,
+					0,
+					0
+				],
+				[
+					1750,
+					250,
+					0,
+					0,
+					0
+				],
+				[
+					0,
+					2000,
+					0,
+					0,
+					0
+				]
+			],
+			"end_index": 1,
+			"break": {
+				"id": 1,
+				"service": 3600,
+				"time_windows": [
+					[
+						1752696000,
+						1752703200
+					]
+				],
+				"description": "Driver Break"
+			}
+		},
+		{
+			"id": "2500,1000,1000,1000|24|60|Fuel Tanker",
+			"start_index": 1,
+			"description": "24|60 Arizona",
+			"time_window": [
+				1752681600,
+				1752717600
+			],
+			"capacity": [
+				1,
+				1,
+				0,
+				0,
+				0
+			],
+			"alternative_capacities": [
+				[
+					3500,
+					0,
+					0,
+					0,
+					0
+				],
+				[
+					1000,
+					2500,
+					0,
+					0,
+					0
+				],
+				[
+					2500,
+					1000,
+					0,
+					0,
+					0
+				],
+				[
+					0,
+					3500,
+					0,
+					0,
+					0
+				]
+			],
+			"end_index": 1,
+			"break": {
+				"id": 1,
+				"service": 3600,
+				"time_windows": [
+					[
+						1752696000,
+						1752703200
+					]
+				],
+				"description": "Driver Break"
+			}
+		},
+		{
+			"id": "2650,800|37|63|Lube/Fuel",
+			"start_index": 1,
+			"description": "37|63 Arizona",
+			"time_window": [
+				1752681600,
+				1752717600
+			],
+			"capacity": [
+				1,
+				1,
+				0,
+				0,
+				0
+			],
+			"alternative_capacities": [
+				[
+					3450,
+					0,
+					0,
+					0,
+					0
+				],
+				[
+					800,
+					2650,
+					0,
+					0,
+					0
+				],
+				[
+					2650,
+					800,
+					0,
+					0,
+					0
+				],
+				[
+					0,
+					3450,
+					0,
+					0,
+					0
+				]
+			],
+			"end_index": 1,
+			"break": {
+				"id": 1,
+				"service": 3600,
+				"time_windows": [
+					[
+						1752696000,
+						1752703200
+					]
+				],
+				"description": "Driver Break"
+			}
+		},
+		{
+			"id": "2700,800|39|65|Lube/Fuel",
+			"start_index": 1,
+			"description": "39|65 Arizona",
+			"time_window": [
+				1752681600,
+				1752717600
+			],
+			"capacity": [
+				1,
+				1,
+				0,
+				0,
+				0
+			],
+			"alternative_capacities": [
+				[
+					3500,
+					0,
+					0,
+					0,
+					0
+				],
+				[
+					800,
+					2700,
+					0,
+					0,
+					0
+				],
+				[
+					2700,
+					800,
+					0,
+					0,
+					0
+				],
+				[
+					0,
+					3500,
+					0,
+					0,
+					0
+				]
+			],
+			"end_index": 1,
+			"break": {
+				"id": 1,
+				"service": 3600,
+				"time_windows": [
+					[
+						1752696000,
+						1752703200
+					]
+				],
+				"description": "Driver Break"
+			}
+		},
+		{
+			"id": "2700,800|40|66|Lube/Fuel",
+			"start_index": 1,
+			"description": "40|66 Arizona",
+			"time_window": [
+				1752681600,
+				1752717600
+			],
+			"capacity": [
+				1,
+				1,
+				0,
+				0,
+				0
+			],
+			"alternative_capacities": [
+				[
+					3500,
+					0,
+					0,
+					0,
+					0
+				],
+				[
+					800,
+					2700,
+					0,
+					0,
+					0
+				],
+				[
+					2700,
+					800,
+					0,
+					0,
+					0
+				],
+				[
+					0,
+					3500,
+					0,
+					0,
+					0
+				]
+			],
+			"end_index": 1,
+			"break": {
+				"id": 1,
+				"service": 3600,
+				"time_windows": [
+					[
+						1752696000,
+						1752703200
+					]
+				],
+				"description": "Driver Break"
+			}
+		},
+		{
+			"id": "2700,800|41|67|Lube/Fuel",
+			"start_index": 1,
+			"description": "41|67 Arizona",
+			"time_window": [
+				1752681600,
+				1752717600
+			],
+			"capacity": [
+				1,
+				1,
+				0,
+				0,
+				0
+			],
+			"alternative_capacities": [
+				[
+					3500,
+					0,
+					0,
+					0,
+					0
+				],
+				[
+					800,
+					2700,
+					0,
+					0,
+					0
+				],
+				[
+					2700,
+					800,
+					0,
+					0,
+					0
+				],
+				[
+					0,
+					3500,
+					0,
+					0,
+					0
+				]
+			],
+			"end_index": 1,
+			"break": {
+				"id": 1,
+				"service": 3600,
+				"time_windows": [
+					[
+						1752696000,
+						1752703200
+					]
+				],
+				"description": "Driver Break"
+			}
+		},
+		{
+			"id": "3000,800,800|25|61|Fuel Tanker",
+			"start_index": 1,
+			"description": "25|61 Arizona",
+			"time_window": [
+				1752681600,
+				1752717600
+			],
+			"capacity": [
+				1,
+				1,
+				0,
+				0,
+				0
+			],
+			"alternative_capacities": [
+				[
+					3800,
+					0,
+					0,
+					0,
+					0
+				],
+				[
+					800,
+					3000,
+					0,
+					0,
+					0
+				],
+				[
+					3000,
+					800,
+					0,
+					0,
+					0
+				],
+				[
+					0,
+					3800,
+					0,
+					0,
+					0
+				]
+			],
+			"end_index": 1,
+			"break": {
+				"id": 1,
+				"service": 3600,
+				"time_windows": [
+					[
+						1752696000,
+						1752703200
+					]
+				],
+				"description": "Driver Break"
+			}
+		},
+		{
+			"id": "3000,800,800|26|62|Fuel Tanker",
+			"start_index": 1,
+			"description": "26|62 Arizona",
+			"time_window": [
+				1752681600,
+				1752717600
+			],
+			"capacity": [
+				1,
+				1,
+				0,
+				0,
+				0
+			],
+			"alternative_capacities": [
+				[
+					3800,
+					0,
+					0,
+					0,
+					0
+				],
+				[
+					800,
+					3000,
+					0,
+					0,
+					0
+				],
+				[
+					3000,
+					800,
+					0,
+					0,
+					0
+				],
+				[
+					0,
+					3800,
+					0,
+					0,
+					0
+				]
+			],
+			"end_index": 1,
+			"break": {
+				"id": 1,
+				"service": 3600,
+				"time_windows": [
+					[
+						1752696000,
+						1752703200
+					]
+				],
+				"description": "Driver Break"
+			}
+		},
+		{
+			"id": "3100,1100|62|73|Fuel Tanker",
+			"start_index": 1,
+			"description": "62|73 Arizona",
+			"time_window": [
+				1752681600,
+				1752717600
+			],
+			"capacity": [
+				1,
+				1,
+				0,
+				0,
+				0
+			],
+			"alternative_capacities": [
+				[
+					4200,
+					0,
+					0,
+					0,
+					0
+				],
+				[
+					1100,
+					3100,
+					0,
+					0,
+					0
+				],
+				[
+					3100,
+					1100,
+					0,
+					0,
+					0
+				],
+				[
+					0,
+					4200,
+					0,
+					0,
+					0
+				]
+			],
+			"end_index": 1,
+			"break": {
+				"id": 1,
+				"service": 3600,
+				"time_windows": [
+					[
+						1752696000,
+						1752703200
+					]
+				],
+				"description": "Driver Break"
+			}
+		},
+		{
+			"id": "3200,1000|63|74|Fuel Tanker",
+			"start_index": 1,
+			"description": "63|74 Arizona",
+			"time_window": [
+				1752681600,
+				1752717600
+			],
+			"capacity": [
+				1,
+				1,
+				0,
+				0,
+				0
+			],
+			"alternative_capacities": [
+				[
+					4200,
+					0,
+					0,
+					0,
+					0
+				],
+				[
+					1000,
+					3200,
+					0,
+					0,
+					0
+				],
+				[
+					3200,
+					1000,
+					0,
+					0,
+					0
+				],
+				[
+					0,
+					4200,
+					0,
+					0,
+					0
+				]
+			],
+			"end_index": 1,
+			"break": {
+				"id": 1,
+				"service": 3600,
+				"time_windows": [
+					[
+						1752696000,
+						1752703200
+					]
+				],
+				"description": "Driver Break"
+			}
+		},
+		{
+			"id": "330,330,330,330|53|69|DEF Truck",
+			"start_index": 1,
+			"description": "53|69 Arizona",
+			"time_window": [
+				1752681600,
+				1752717600
+			],
+			"capacity": [
+				1,
+				1,
+				0,
+				0,
+				0
+			],
+			"alternative_capacities": [
+				[
+					660,
+					0,
+					0,
+					0,
+					0
+				],
+				[
+					330,
+					330,
+					0,
+					0,
+					0
+				],
+				[
+					0,
+					660,
+					0,
+					0,
+					0
+				]
+			],
+			"end_index": 1,
+			"break": {
+				"id": 1,
+				"service": 3600,
+				"time_windows": [
+					[
+						1752696000,
+						1752703200
+					]
+				],
+				"description": "Driver Break"
+			}
+		},
+		{
+			"id": "330,330,330,330|54|70|DEF Truck",
+			"start_index": 1,
+			"description": "54|70 Arizona",
+			"time_window": [
+				1752681600,
+				1752717600
+			],
+			"capacity": [
+				1,
+				1,
+				0,
+				0,
+				0
+			],
+			"alternative_capacities": [
+				[
+					660,
+					0,
+					0,
+					0,
+					0
+				],
+				[
+					330,
+					330,
+					0,
+					0,
+					0
+				],
+				[
+					0,
+					660,
+					0,
+					0,
+					0
+				]
+			],
+			"end_index": 1,
+			"break": {
+				"id": 1,
+				"service": 3600,
+				"time_windows": [
+					[
+						1752696000,
+						1752703200
+					]
+				],
+				"description": "Driver Break"
+			}
+		},
+		{
+			"id": "3350,1250|64|75|Fuel Tanker",
+			"start_index": 1,
+			"description": "64|75 Arizona",
+			"time_window": [
+				1752681600,
+				1752717600
+			],
+			"capacity": [
+				1,
+				1,
+				0,
+				0,
+				0
+			],
+			"alternative_capacities": [
+				[
+					4600,
+					0,
+					0,
+					0,
+					0
+				],
+				[
+					1250,
+					3350,
+					0,
+					0,
+					0
+				],
+				[
+					3350,
+					1250,
+					0,
+					0,
+					0
+				],
+				[
+					0,
+					4600,
+					0,
+					0,
+					0
+				]
+			],
+			"end_index": 1,
+			"break": {
+				"id": 1,
+				"service": 3600,
+				"time_windows": [
+					[
+						1752696000,
+						1752703200
+					]
+				],
+				"description": "Driver Break"
+			}
+		},
+		{
+			"id": "3350,1250|65|76|Fuel Tanker",
+			"start_index": 1,
+			"description": "65|76 Arizona",
+			"time_window": [
+				1752681600,
+				1752717600
+			],
+			"capacity": [
+				1,
+				1,
+				0,
+				0,
+				0
+			],
+			"alternative_capacities": [
+				[
+					4600,
+					0,
+					0,
+					0,
+					0
+				],
+				[
+					1250,
+					3350,
+					0,
+					0,
+					0
+				],
+				[
+					3350,
+					1250,
+					0,
+					0,
+					0
+				],
+				[
+					0,
+					4600,
+					0,
+					0,
+					0
+				]
+			],
+			"end_index": 1,
+			"break": {
+				"id": 1,
+				"service": 3600,
+				"time_windows": [
+					[
+						1752696000,
+						1752703200
+					]
+				],
+				"description": "Driver Break"
+			}
+		},
+		{
+			"id": "3500,500|66|77|Fuel Tanker",
+			"start_index": 1,
+			"description": "66|77 Arizona",
+			"time_window": [
+				1752681600,
+				1752717600
+			],
+			"capacity": [
+				1,
+				1,
+				0,
+				0,
+				0
+			],
+			"alternative_capacities": [
+				[
+					4000,
+					0,
+					0,
+					0,
+					0
+				],
+				[
+					500,
+					3500,
+					0,
+					0,
+					0
+				],
+				[
+					3500,
+					500,
+					0,
+					0,
+					0
+				],
+				[
+					0,
+					4000,
+					0,
+					0,
+					0
+				]
+			],
+			"end_index": 1,
+			"break": {
+				"id": 1,
+				"service": 3600,
+				"time_windows": [
+					[
+						1752696000,
+						1752703200
+					]
+				],
+				"description": "Driver Break"
+			}
+		},
+		{
+			"id": "3500,500|70|80|Fuel Tanker",
+			"start_index": 1,
+			"description": "70|80 Arizona",
+			"time_window": [
+				1752681600,
+				1752717600
+			],
+			"capacity": [
+				1,
+				1,
+				0,
+				0,
+				0
+			],
+			"alternative_capacities": [
+				[
+					4000,
+					0,
+					0,
+					0,
+					0
+				],
+				[
+					500,
+					3500,
+					0,
+					0,
+					0
+				],
+				[
+					3500,
+					500,
+					0,
+					0,
+					0
+				],
+				[
+					0,
+					4000,
+					0,
+					0,
+					0
+				]
+			],
+			"end_index": 1,
+			"break": {
+				"id": 1,
+				"service": 3600,
+				"time_windows": [
+					[
+						1752696000,
+						1752703200
+					]
+				],
+				"description": "Driver Break"
+			}
+		},
+		{
+			"id": "700,1000,2000,700|20|57|Fuel Tanker",
+			"start_index": 1,
+			"description": "20|57 Arizona",
+			"time_window": [
+				1752681600,
+				1752717600
+			],
+			"capacity": [
+				1,
+				1,
+				0,
+				0,
+				0
+			],
+			"alternative_capacities": [
+				[
+					1700,
+					0,
+					0,
+					0,
+					0
+				],
+				[
+					1000,
+					700,
+					0,
+					0,
+					0
+				],
+				[
+					700,
+					1000,
+					0,
+					0,
+					0
+				],
+				[
+					0,
+					1700,
+					0,
+					0,
+					0
+				]
+			],
+			"end_index": 1,
+			"break": {
+				"id": 1,
+				"service": 3600,
+				"time_windows": [
+					[
+						1752696000,
+						1752703200
+					]
+				],
+				"description": "Driver Break"
+			}
+		}
+	],
+	"locations": {
+		"id": 1,
+		"description": "Locations from imported data",
+		"location": [
+			"33.44854856870365,-112.17782466657957",
+			"33.434477,-112.18419",
+			"33.454461,-112.167345",
+			"33.436107,-112.161449",
+			"33.479124,-112.124564",
+			"33.4576975,-112.1054091",
+			"33.40426,-111.997068",
+			"33.4173688,-112.0650857",
+			"33.408162,-111.987342",
+			"33.438311,-112.24737",
+			"33.4235357,-112.0157934",
+			"33.40976,-112.0951",
+			"33.600126,-112.345584",
+			"33.455766,-111.760519",
+			"33.392832,-111.5979173",
+			"33.5515337,-112.2026333",
+			"33.396939,-111.957486",
+			"33.434615,-112.167224",
+			"33.502528,-112.430981",
+			"33.4355035,-112.248653",
+			"33.490739,-112.318362",
+			"33.415268,-112.020504",
+			"33.4598,-112.2228999",
+			"33.4194354,-111.9953836",
+			"33.4106566,-111.8505337",
+			"33.441249,-112.372212",
+			"33.4468707,-111.9796196",
+			"33.404559,-111.995977",
+			"33.694937,-112.401683",
+			"33.489362,-112.124548",
+			"33.685421,-112.045223",
+			"33.338357,-111.946217",
+			"33.412039,-112.421796",
+			"33.6814392,-111.9805145",
+			"33.5239097,-112.0857283",
+			"33.420339,-112.184674",
+			"33.434576,-112.15826",
+			"33.389963,-112.15485",
+			"33.442728,-112.127457",
+			"33.462756,-112.115891",
+			"33.377188,-111.82434",
+			"33.501124,-112.392801",
+			"33.456956,-112.098899",
+			"33.29173,-111.958584",
+			"33.41392,-112.004794",
+			"33.4058261,-112.1454412",
+			"33.501852,-112.157046",
+			"33.500165,-112.159167",
+			"33.560605,-112.218089",
+			"33.6877685,-112.043877",
+			"33.4139642,-112.0212344",
+			"33.282397,-111.840957",
+			"33.420034,-111.982926",
+			"33.44542,-112.163763",
+			"33.5022715,-112.1496565",
+			"33.4816878,-112.4260381",
+			"33.439704,-112.24374",
+			"33.436318,-112.132848",
+			"33.457006,-112.225363",
+			"33.419256,-112.133344",
+			"33.416202,-112.188777",
+			"33.4534912,-112.1887817",
+			"33.457783,-111.838553",
+			"33.44185,-112.245241",
+			"33.438126,-112.218645",
+			"33.4427843,-112.0838034",
+			"33.4137854,-112.3730374",
+			"33.5514596,-112.383371",
+			"33.460794,-112.15883",
+			"33.491588,-112.128247",
+			"33.4429001,-111.9662533",
+			"33.52817,-112.407208",
+			"33.466268,-112.5013",
+			"33.456581,-112.317345",
+			"33.446077,-112.165334",
+			"33.442564,-112.173494",
+			"33.457715,-112.233126",
+			"33.279572,-111.774229",
+			"33.417057,-112.184309",
+			"33.425376,-112.167648",
+			"33.4892588,-112.1299958",
+			"33.47388,-112.1105999",
+			"33.36495,-111.944366",
+			"33.438533,-112.370686",
+			"33.6313896,-112.3383046",
+			"33.3763745,-111.7043554",
+			"33.4388611,-112.055628",
+			"33.4456442,-112.0177775",
+			"33.416079,-111.999996",
+			"33.443439,-112.143965",
+			"33.402347,-111.9513",
+			"33.7759795,-112.1604877",
+			"33.465732,-112.073819",
+			"33.413773,-111.990348",
+			"33.4280505,-111.9752808",
+			"33.378309,-112.183636",
+			"33.4213134,-112.1760875",
+			"33.45199,-112.1548",
+			"33.4993526,-112.1407683",
+			"33.5480303,-112.219023",
+			"33.559557,-112.345455",
+			"33.352171,-111.648852",
+			"33.582229,-111.944216",
+			"33.542224,-112.400233"
+		]
+	},
+	"options": {
+		"objective": {
+			"travel_cost": "duration"
+		},
+		"constraint": {
+			"max_vehicle_overtime": 0,
+			"max_visit_lateness": 0,
+			"max_activity_waiting_time": 0
+		},
+		"routing": {
+			"mode": "car"
+		}
+	}
+}

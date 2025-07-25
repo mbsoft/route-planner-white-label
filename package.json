@@ -10,7 +10,9 @@
     "lint": "next lint",
     "test": "jest",
     "type-check": "tsc --noEmit",
-    "import-shipments": "node scripts/import-shipments.js"
+    "import-shipments": "node scripts/import-shipments.js",
+    "import-shipments-csv": "node scripts/import-shipments-csv.js",
+    "verify-shipments": "node scripts/verify-shipments.js"
   },
   "dependencies": {
     "@deck.gl/core": "^8.9.31",

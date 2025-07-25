@@ -14,7 +14,7 @@ if (tursoUrl && tursoAuthToken && !tursoUrl.includes('your_turso_database_url_he
   // Fallback to local SQLite for development
   console.log('Turso environment variables not set, using local SQLite database');
   turso = createClient({ 
-    url: 'file:./local.db',
+    url: 'file:/Users/jimwelch/workspace/route-planner-white-label/local.db',
     syncUrl: undefined,
     authToken: undefined
   });
@@ -33,6 +33,7 @@ async function ensureShipmentsTable() {
       -- Pickup step fields
       pickup_id TEXT,
       pickup_description TEXT,
+      pickup_location TEXT,
       pickup_location_index INTEGER,
       pickup_service INTEGER,
       pickup_setup INTEGER,
@@ -40,10 +41,12 @@ async function ensureShipmentsTable() {
       -- Delivery step fields
       delivery_id TEXT,
       delivery_description TEXT,
+      delivery_location TEXT,
       delivery_location_index INTEGER,
       delivery_service INTEGER,
       delivery_setup INTEGER,
-      delivery_time_windows TEXT,
+      delivery_time_start TEXT,
+      delivery_time_end TEXT,
       -- Shipment level fields
       amount TEXT,
       skills TEXT,
@@ -89,11 +92,11 @@ export async function GET(request: NextRequest) {
         (pickup_time_windows >= ? AND pickup_time_windows <= ?) OR
         (pickup_time_windows >= ? AND pickup_time_windows <= ?) OR
         (pickup_time_windows <= ? AND pickup_time_windows >= ?) OR
-        (delivery_time_windows >= ? AND delivery_time_windows <= ?) OR
-        (delivery_time_windows >= ? AND delivery_time_windows <= ?) OR
-        (delivery_time_windows <= ? AND delivery_time_windows >= ?) OR
+        (delivery_time_start >= ? AND delivery_time_start <= ?) OR
+        (delivery_time_end >= ? AND delivery_time_end <= ?) OR
+        (delivery_time_start <= ? AND delivery_time_end >= ?) OR
         (pickup_time_windows = '' OR pickup_time_windows IS NULL OR pickup_time_windows = '' OR pickup_time_windows IS NULL OR
-         delivery_time_windows = '' OR delivery_time_windows IS NULL OR delivery_time_windows = '' OR delivery_time_windows IS NULL)
+         delivery_time_start = '' OR delivery_time_start IS NULL OR delivery_time_end = '' OR delivery_time_end IS NULL)
       `;
       params.push(startTime, endTime, startTime, endTime, startTime, endTime, startTime, endTime, startTime, endTime, startTime, endTime);
     }
@@ -245,4 +248,4 @@ export async function PUT(request: NextRequest) {
       { status: 500 }
     );
   }
-} 
+}

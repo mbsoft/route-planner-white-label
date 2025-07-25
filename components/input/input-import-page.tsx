@@ -245,9 +245,13 @@ function buildLocations(jobs: any, vehicles: any, shipments: any, jobMapConfig: 
     // Only process if this shipment is explicitly selected
     if (shipmentSelection[index]) {
       const pickupLocStr = getLocationString(row, shipmentMapConfig, 'pickup.location');
-      if (pickupLocStr) addLocation(pickupLocStr);
+      if (pickupLocStr) {
+        const pickupIndex = addLocation(pickupLocStr);
+      }
       const deliveryLocStr = getLocationString(row, shipmentMapConfig, 'delivery.location');
-      if (deliveryLocStr) addLocation(deliveryLocStr);
+      if (deliveryLocStr) {
+        const deliveryIndex = addLocation(deliveryLocStr);
+      }
     }
   });
 
