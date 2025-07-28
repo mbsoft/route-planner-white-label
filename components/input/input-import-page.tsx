@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useEffect, useState, useRef } from 'react'
+import React, { useState, useEffect, useRef, useMemo, useCallback } from 'react'
 import { Box, Button, Typography, IconButton, LinearProgress, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Collapse, Checkbox } from '@mui/material'
 import DirectionsCarIcon from '@mui/icons-material/DirectionsCar'
 import LocalShippingIcon from '@mui/icons-material/LocalShipping'
@@ -35,6 +35,9 @@ import { usePreferencesPersistence } from '../../hooks/use-preferences-persisten
 import { RouteSummaryTable } from '../common/route-summary-table'
 import { useWhiteLabelContext } from '../../app/white-label-layout'
 import { useLanguage } from '../../contexts/language-context'
+
+// Debug flag - set to true only when debugging optimization issues
+const DEBUG_OPTIMIZATION = true;
 
 // Types for optimization API
 interface OptimizationMvrpOrderJobV2 {
@@ -916,7 +919,7 @@ export const InputImportPage = ({ currentStep, onStepChange, preferences, onPref
         locMap,
         preferences?.constraints?.driver_break_time
       )
-      
+
       // Validate that we have the required data
       if (useCase === 'jobs' && normalizedJobs.length === 0) {
         throw new Error('No jobs were normalized. Please check your job data and mapping.');
@@ -966,23 +969,25 @@ export const InputImportPage = ({ currentStep, onStepChange, preferences, onPref
             ...(preferences?.routing?.mode === 'truck' && preferences?.routing?.truck_weight && {
               truck_weight: preferences.routing.truck_weight
             }),
-            ...(preferences?.routing?.mode === 'truck' && preferences?.routing?.hazmat_type && preferences.routing.hazmat_type.length > 0 && {
-              hazmat_type: preferences.routing.hazmat_type
-            }),
-            ...(preferences?.routing?.avoid && preferences.routing.avoid.length > 0 && {
-              avoid: preferences.routing.avoid
-            })
-          }
-        }
-      }
+          },
+        },
+      };
       
-      // Before sending the optimization request
-      optimizationStartTime = Date.now();
+      console.log('🚀 Sending optimization request:')
+      console.log('🚀 Use case:', useCase)
+      console.log('🚀 Jobs count:', normalizedJobs.length)
+      console.log('🚀 Shipments count:', normalizedShipments.length)
+      console.log('🚀 Vehicles count:', normalizedVehicles.length)
+      console.log('🚀 Locations count:', locations.location.length)
+      console.log('🚀 Request structure:', {
+        hasJobs: !!optimizationRequest.jobs,
+        hasShipments: !!optimizationRequest.shipments,
+        vehiclesCount: optimizationRequest.vehicles.length,
+        locationsCount: optimizationRequest.locations.location.length,
+        options: optimizationRequest.options
+      })
       
-      // Debug: Log the exact request being sent
-      console.log('=== SENDING OPTIMIZATION REQUEST ===');
-      console.log('Request payload:', JSON.stringify(optimizationRequest, null, 2));
-      
+      // Send the optimization request
       const response = await apiClient.createOptimizationRequest(optimizationRequest)
       const responseData = response.data as any
       
@@ -993,11 +998,19 @@ export const InputImportPage = ({ currentStep, onStepChange, preferences, onPref
         setIsPolling(true)
         setPollingMessage('Optimization request submitted successfully! Polling for results...')
         
+        // Track optimization start time
+        optimizationStartTime = Date.now();
+        
         // Poll every 5 seconds
         const interval = setInterval(async () => {
           try {
             const resultResponse = await apiClient.getOptimizationResult(requestId)
             const resultData = resultResponse.data as any
+            
+            if (DEBUG_OPTIMIZATION) {
+              console.log('🔍 Optimization result data:', resultData)
+              console.log('🔍 Routes length:', resultData?.result?.routes?.length)
+            }
             
             if (resultData) {
               // Check if optimization is complete (empty message) or still processing
@@ -1011,13 +1024,35 @@ export const InputImportPage = ({ currentStep, onStepChange, preferences, onPref
                 setExpandedRoutes(new Set())
                 setPollingMessage(`Optimization completed! Found ${resultData.result?.routes?.length || 0} routes.`)
                 
+                if (DEBUG_OPTIMIZATION) {
+                  console.log('✅ Optimization completed successfully')
+                  console.log('✅ Final routes count:', resultData.result?.routes?.length || 0)
+                }
+                
                 // Save optimization results to Turso storage
                 try {
                   // Generate a unique job/shipment ID based on the current data
                   const orderIds = useCase === 'jobs' 
                     ? normalizedJobs.map(job => job.id).join(',')
                     : normalizedShipments.map(shipment => shipment.id).join(',');
-                  const jobId = orderIds.length > 50 ? orderIds.substring(0, 50) + '...' : orderIds;
+                  
+                  // Create a hash of the order IDs to ensure consistent, shorter job_id
+                  const hashString = orderIds + Date.now().toString();
+                  let hash = 0;
+                  for (let i = 0; i < hashString.length; i++) {
+                    const char = hashString.charCodeAt(i);
+                    hash = ((hash << 5) - hash) + char;
+                    hash = hash & hash; // Convert to 32-bit integer
+                  }
+                  const jobId = Math.abs(hash).toString(36); // Convert to base36 for shorter string
+                  
+                  if (DEBUG_OPTIMIZATION) {
+                    console.log('💾 Generating job_id:');
+                    console.log('💾 Order IDs:', orderIds);
+                    console.log('💾 Hash string:', hashString);
+                    console.log('💾 Final job_id:', jobId);
+                    console.log('💾 job_id length:', jobId.length);
+                  }
                   
                   // Generate title from optimization results
                   const dateTime = new Date().toLocaleString();
@@ -1025,6 +1060,11 @@ export const InputImportPage = ({ currentStep, onStepChange, preferences, onPref
                   const unassigned = resultData.result?.summary?.unassigned || 0;
                   const duration = resultData.result?.summary?.duration || 0;
                   const title = `${dateTime}|Routes: ${routes}|Unassigned: ${unassigned}|Duration: ${duration}`;
+                  
+                  if (DEBUG_OPTIMIZATION) {
+                    console.log('💾 Saving optimization result to database:')
+                    console.log('💾 Routes count:', routes)
+                  }
                   
                   // Create shared URL for the optimization result
                   let sharedUrl = null;
@@ -1068,6 +1108,10 @@ export const InputImportPage = ({ currentStep, onStepChange, preferences, onPref
                   
                   // Navigate to analysis page with the completed optimization
                   if (onOptimizationComplete) {
+                    if (DEBUG_OPTIMIZATION) {
+                      console.log('🚀 Navigating to analysis page with job_id:', jobId);
+                      console.log('🚀 Request ID:', requestId);
+                    }
                     onOptimizationComplete(jobId);
                   }
                 } catch (error) {
@@ -1079,7 +1123,8 @@ export const InputImportPage = ({ currentStep, onStepChange, preferences, onPref
                 if (resultData.result?.routes && onRouteResultsChange) {
                   const routeData = resultData.result.routes.map((route: any) => ({
                     vehicle: route.vehicle,
-                    geometry: route.geometry, // Add geometry field for map polylines
+                    // Exclude geometry fields to reduce data size
+                    // geometry: route.geometry, // Removed
                     cost: route.cost,
                     distance: route.distance,
                     duration: route.duration,
