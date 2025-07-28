@@ -57,8 +57,39 @@ async function ensureShipmentsTable() {
 export async function GET(req: NextRequest) {
   try {
     await ensureShipmentsTable();
-    const schemaResult = await turso.execute("PRAGMA table_info(shipments)");
-    const columns = schemaResult.rows.map((row: any) => row.name);
+    
+    // Explicitly define the columns to ensure all are included
+    const columns = [
+      'id',
+      'pickup_id',
+      'pickup_description',
+      'pickup_location',
+      'pickup_location_index',
+      'pickup_service',
+      'pickup_setup',
+      'pickup_time_windows',
+      'delivery_id',
+      'delivery_description',
+      'delivery_location',
+      'delivery_location_index',
+      'delivery_service',
+      'delivery_setup',
+      'delivery_time_start',
+      'delivery_time_end',
+      'amount',
+      'skills',
+      'priority',
+      'zones',
+      'load_types',
+      'incompatible_load_types',
+      'max_time_in_vehicle',
+      'revenue',
+      'outsourcing_cost',
+      'follow_lifo_order',
+      'volume',
+      'joint_order'
+    ];
+    
     return NextResponse.json({ columns });
   } catch (error) {
     return NextResponse.json({ error: 'Failed to fetch shipments schema' }, { status: 500 });

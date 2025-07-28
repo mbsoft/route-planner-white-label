@@ -137,8 +137,8 @@ interface OptimizationMvrpOrderRequestV2 {
 
 // Normalization functions
 // Helper to parse lat/lng from a string ("lat,lng" or "lng,lat")
-function parseLatLng(str: string): [number, number] | null {
-  if (!str) return null;
+function parseLatLng(str: any): [number, number] | null {
+  if (!str || typeof str !== 'string') return null;
   const match = str.match(/(-?\d+\.?\d*)\s*,\s*(-?\d+\.?\d*)/);
   if (!match) return null;
   const a = parseFloat(match[1]);
@@ -175,6 +175,8 @@ function convertTimeToMinutes(timeStr: string): number {
 
 // Helper to get location string from row and mapping config
 function getLocationString(row: string[], mapConfig: any, prefix: string = 'location') {
+  if (!row || !mapConfig || !mapConfig.dataMappings) return null;
+  
   // Try combined field first
   const combined = mapConfig.dataMappings.find((m: any) =>
     m.value === `${prefix}#latLng` ||
@@ -183,8 +185,9 @@ function getLocationString(row: string[], mapConfig: any, prefix: string = 'loca
     m.value === `${prefix}_lng_lat` ||
     m.value === prefix
   );
-  if (combined) {
-    return row[combined.index];
+  if (combined && combined.index !== undefined && row[combined.index]) {
+    const value = row[combined.index];
+    return typeof value === 'string' ? value : String(value);
   }
   // Try separate lat/lng fields
   const latMapping = mapConfig.dataMappings.find((m: any) =>
@@ -193,23 +196,35 @@ function getLocationString(row: string[], mapConfig: any, prefix: string = 'loca
   const lngMapping = mapConfig.dataMappings.find((m: any) =>
     m.value === `${prefix}#lng` || m.value === `${prefix}_lng`
   );
-  if (latMapping && lngMapping) {
+  if (latMapping && lngMapping && latMapping.index !== undefined && lngMapping.index !== undefined) {
     const lat = row[latMapping.index];
     const lng = row[lngMapping.index];
-    if (lat && lng) return `${lat},${lng}`;
+    if (lat && lng) {
+      const latStr = typeof lat === 'string' ? lat : String(lat);
+      const lngStr = typeof lng === 'string' ? lng : String(lng);
+      return `${latStr},${lngStr}`;
+    }
   }
   return null;
 }
 
 // Build unique locations array and mapping from lat/lng string to index
 function buildLocations(jobs: any, vehicles: any, shipments: any, jobMapConfig: any, vehicleMapConfig: any, shipmentMapConfig: any) {
+  console.log('=== BUILDING LOCATIONS ===');
+  console.log('Shipment map config dataMappings:', shipmentMapConfig.dataMappings);
+  
+  // Show detailed mapping information
+  shipmentMapConfig.dataMappings.forEach((mapping: any, index: number) => {
+    console.log(`Mapping ${index}: column ${mapping.index} -> ${mapping.value}`);
+  });
+  
   const locMap = new Map<string, number>();
   const locationStrings: string[] = [];
   let nextId = 0;
 
   // Helper to add a location and return its index
-  function addLocation(str: string): number {
-    if (!str) return -1;
+  function addLocation(str: any): number {
+    if (!str || typeof str !== 'string') return -1;
     const parsed = parseLatLng(str);
     if (!parsed) return -1;
     const key = parsed.join(',');
@@ -247,10 +262,16 @@ function buildLocations(jobs: any, vehicles: any, shipments: any, jobMapConfig: 
       const pickupLocStr = getLocationString(row, shipmentMapConfig, 'pickup.location');
       if (pickupLocStr) {
         const pickupIndex = addLocation(pickupLocStr);
+        console.log(`Shipment ${index} pickup location: ${pickupLocStr} -> index ${pickupIndex}`);
+      } else {
+        console.warn(`Shipment ${index} - no pickup location found`);
       }
       const deliveryLocStr = getLocationString(row, shipmentMapConfig, 'delivery.location');
       if (deliveryLocStr) {
         const deliveryIndex = addLocation(deliveryLocStr);
+        console.log(`Shipment ${index} delivery location: ${deliveryLocStr} -> index ${deliveryIndex}`);
+      } else {
+        console.warn(`Shipment ${index} - no delivery location found`);
       }
     }
   });
@@ -896,6 +917,20 @@ export const InputImportPage = ({ currentStep, onStepChange, preferences, onPref
         preferences?.constraints?.driver_break_time
       )
       
+      // Validate that we have the required data
+      if (useCase === 'jobs' && normalizedJobs.length === 0) {
+        throw new Error('No jobs were normalized. Please check your job data and mapping.');
+      }
+      if (useCase === 'shipments' && normalizedShipments.length === 0) {
+        throw new Error('No shipments were normalized. Please check your shipment data and mapping.');
+      }
+      if (normalizedVehicles.length === 0) {
+        throw new Error('No vehicles were normalized. Please check your vehicle data and mapping.');
+      }
+      if (locations.location.length === 0) {
+        throw new Error('No locations were found. Please check your location mapping.');
+      }
+      
       // Build the optimization request
       const optimizationRequest: OptimizationMvrpOrderRequestV2 = {
         ...(useCase === 'jobs' && { jobs: normalizedJobs }),
@@ -943,6 +978,11 @@ export const InputImportPage = ({ currentStep, onStepChange, preferences, onPref
       
       // Before sending the optimization request
       optimizationStartTime = Date.now();
+      
+      // Debug: Log the exact request being sent
+      console.log('=== SENDING OPTIMIZATION REQUEST ===');
+      console.log('Request payload:', JSON.stringify(optimizationRequest, null, 2));
+      
       const response = await apiClient.createOptimizationRequest(optimizationRequest)
       const responseData = response.data as any
       
@@ -989,17 +1029,14 @@ export const InputImportPage = ({ currentStep, onStepChange, preferences, onPref
                   // Create shared URL for the optimization result
                   let sharedUrl = null;
                   try {
-                    console.log('Creating shared URL for request ID:', requestId);
                     const sharedResponse = await apiClient.createSharedResult(requestId);
-                    console.log('Shared response:', sharedResponse);
                     
                     // If the shared result was created successfully, construct the shared URL
                     if ((sharedResponse.data as any)?.message === "Create shared result successfully") {
                       const sharedResultId = (sharedResponse.data as any)?.id || requestId;
                       sharedUrl = `https://console.nextbillion.ai/route-planner-viewer?id=${sharedResultId}&host=api.nextbillion.io`;
-                      console.log('Shared URL constructed:', sharedUrl);
                     } else {
-                      console.log('Shared result creation failed or returned unexpected response');
+                      // Don't fail the optimization if shared URL creation fails
                     }
                   } catch (sharedError) {
                     console.error('Failed to create shared URL:', sharedError);
@@ -1027,7 +1064,7 @@ export const InputImportPage = ({ currentStep, onStepChange, preferences, onPref
                       solution_time: solutionTime
                     }),
                   });
-                  console.log('Optimization results saved to Turso storage');
+                  // Optimization results saved to Turso storage
                   
                   // Navigate to analysis page with the completed optimization
                   if (onOptimizationComplete) {
@@ -1084,6 +1121,26 @@ export const InputImportPage = ({ currentStep, onStepChange, preferences, onPref
     } catch (error) {
       console.error('=== OPTIMIZATION REQUEST FAILED ===');
       console.error('Error details:', error);
+      
+      // Try to get more details about the error
+      if (error instanceof Error) {
+        console.error('Error message:', error.message);
+        console.error('Error stack:', error.stack);
+      }
+      
+      // If it's a fetch error, try to get response details
+      if (error && typeof error === 'object' && 'response' in error) {
+        try {
+          const response = (error as any).response;
+          console.error('Response status:', response?.status);
+          console.error('Response statusText:', response?.statusText);
+          const errorText = await response?.text();
+          console.error('Response body:', errorText);
+        } catch (e) {
+          console.error('Could not read error response:', e);
+        }
+      }
+      
       console.error('Optimization request failed:', error)
       alert('Optimization request failed: ' + (error as Error).message)
     } finally {
