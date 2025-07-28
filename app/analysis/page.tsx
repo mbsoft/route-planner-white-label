@@ -57,6 +57,9 @@ import { LanguageSwitcher } from '../../components/common/language-switcher'
 import { useLanguage } from '../../contexts/language-context'
 import { CompanyLogo } from '../../components/common/company-logo'
 
+// Debug flag - set to true only when debugging
+const DEBUG_ANALYSIS = false;
+
 export default function RouteAnalysisPage() {
   const router = useRouter()
   const { isAdmin } = useAuth()
@@ -240,6 +243,12 @@ export default function RouteAnalysisPage() {
 
       if (existingResult) {
         // Use existing data if available
+        if (DEBUG_ANALYSIS) {
+          console.log('🔍 Using existing result data:', existingResult)
+          console.log('🔍 Response data structure:', existingResult.response_data)
+          console.log('🔍 Routes count:', existingResult.response_data?.result?.routes?.length)
+        }
+        
         const resultWithSharedUrl = {
           ...existingResult,
           title: existingResult.title || existingResult.title,
@@ -252,9 +261,18 @@ export default function RouteAnalysisPage() {
       }
 
       // Fetch from API if not available locally
+      if (DEBUG_ANALYSIS) {
+        console.log('🔍 Fetching result from API for jobId:', jobId)
+      }
       const response = await fetch(`/api/optimization-results?job_id=${encodeURIComponent(jobId)}`)
       if (response.ok) {
         const data = await response.json()
+        if (DEBUG_ANALYSIS) {
+          console.log('🔍 API response data:', data)
+          console.log('🔍 Response data structure:', data.response_data)
+          console.log('🔍 Routes count:', data.response_data?.result?.routes?.length)
+        }
+        
         // Find the summary result for this jobId
         const summary = optimizationResults.find(r => r.job_id === jobId)
         // Merge the title and shared_url from summary if available

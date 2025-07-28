@@ -3,6 +3,9 @@ import { createClient } from '@libsql/client';
 import fs from 'fs';
 import path from 'path';
 
+// Debug flag - set to true only when debugging
+const DEBUG_API = true;
+
 // Check if Turso environment variables are set
 const tursoUrl = process.env.TURSO_DATABASE_URL;
 const tursoAuthToken = process.env.TURSO_AUTH_TOKEN;
@@ -261,6 +264,47 @@ async function populateVehiclesFromCSV() {
   }
 }
 
+// Function to remove geometry fields from optimization data
+function removeGeometryFields(data: any): any {
+  if (!data || typeof data !== 'object') {
+    return data;
+  }
+  
+  if (Array.isArray(data)) {
+    return data.map(item => removeGeometryFields(item));
+  }
+  
+  const cleaned: any = {};
+  for (const [key, value] of Object.entries(data)) {
+    // Skip geometry-related fields
+    if (key === 'geometry' || key.includes('geometry') || key.includes('polyline')) {
+      continue;
+    }
+    
+    if (typeof value === 'object' && value !== null) {
+      cleaned[key] = removeGeometryFields(value);
+    } else {
+      cleaned[key] = value;
+    }
+  }
+  
+  return cleaned;
+}
+
+// Simple compression function to reduce data size
+function compressData(data: any): string {
+  // First remove geometry fields
+  const cleanedData = removeGeometryFields(data);
+  const jsonString = JSON.stringify(cleanedData);
+  // Simple compression: remove unnecessary whitespace
+  return jsonString.replace(/\s+/g, ' ').trim();
+}
+
+// Simple decompression function
+function decompressData(compressedString: string): any {
+  return JSON.parse(compressedString);
+}
+
 export async function GET(req: NextRequest) {
   try {
     await ensureTable();
@@ -329,18 +373,46 @@ export async function GET(req: NextRequest) {
     
     if (jobId) {
       // Get specific result by job_id
+      if (DEBUG_API) {
+        console.log('🔍 Fetching optimization result for jobId:', jobId)
+        
+        // Debug: Show all job_ids in the database
+        try {
+          const allResults = await turso.execute('SELECT job_id, id, title FROM optimization_results ORDER BY created_at DESC LIMIT 10');
+          console.log('🔍 All job_ids in database:', allResults.rows.map((row: any) => ({
+            job_id: row.job_id,
+            id: row.id,
+            title: row.title
+          })));
+        } catch (error) {
+          console.log('🔍 Error fetching all results for debug:', error);
+        }
+      }
       const result = await turso.execute(
         'SELECT * FROM optimization_results WHERE job_id = ? ORDER BY created_at DESC LIMIT 1',
         [jobId]
       );
       
       if (result.rows.length === 0) {
+        if (DEBUG_API) {
+          console.log('❌ No optimization result found for jobId:', jobId)
+        }
         return NextResponse.json({ error: 'No optimization result found for this job ID' }, { status: 404 });
       }
       
       const row = result.rows[0];
+      if (DEBUG_API) {
+        console.log('🔍 Raw database row:', row)
+        console.log('🔍 Response data length:', row.response_data?.length)
+      }
+      
       try {
-        const responseData = JSON.parse(row.response_data as string);
+        const responseData = decompressData(row.response_data as string);
+        if (DEBUG_API) {
+          console.log('🔍 Parsed response data keys:', Object.keys(responseData || {}))
+          console.log('🔍 Routes count:', responseData?.result?.routes?.length)
+        }
+        
         return NextResponse.json({
           id: row.id,
           job_id: row.job_id,
@@ -504,17 +576,28 @@ export async function POST(req: NextRequest) {
     
     try {
       // Validate and sanitize the response_data
-      console.log('Saving optimization result:', { id, job_id, title, status, solution_time });
-      console.log('Response data type:', typeof response_data);
-      console.log('Response data keys:', Object.keys(response_data || {}));
+      if (DEBUG_API) {
+        console.log('Saving optimization result:', { id, job_id, title, status, solution_time });
+        console.log('Response data type:', typeof response_data);
+        console.log('Response data keys:', Object.keys(response_data || {}));
+        console.log('🔍 Routes count in response_data:', response_data?.result?.routes?.length);
+      }
       
       // Stringify the response_data with error handling
       let responseDataString;
       try {
-        responseDataString = JSON.stringify(response_data);
-        console.log('Response data stringified successfully, length:', responseDataString.length);
+        const originalSize = JSON.stringify(response_data).length;
+        responseDataString = compressData(response_data);
+        const compressedSize = responseDataString.length;
+        
+        if (DEBUG_API) {
+          console.log('Response data compressed successfully:');
+          console.log('  Original size:', originalSize, 'bytes');
+          console.log('  After geometry removal and compression:', compressedSize, 'bytes');
+          console.log('  Size reduction:', Math.round((1 - compressedSize / originalSize) * 100), '%');
+        }
       } catch (stringifyError) {
-        console.error('Failed to stringify response_data:', stringifyError);
+        console.error('Failed to compress response_data:', stringifyError);
         return NextResponse.json(
           { error: 'Failed to serialize response data' },
           { status: 400 }
@@ -522,7 +605,7 @@ export async function POST(req: NextRequest) {
       }
       
       // Check if the stringified data is too large (SQLite has limits)
-      if (responseDataString.length > 1000000) { // 1MB limit
+      if (responseDataString.length > 5000000) { // Increased to 5MB limit
         console.warn('Response data is very large:', responseDataString.length, 'bytes');
         // Create a more comprehensive simplified version that preserves key information
         const simplifiedData = {
@@ -536,7 +619,10 @@ export async function POST(req: NextRequest) {
             steps_count: route.steps?.length || 0,
             service: route.service,
             delivery: route.delivery,
-            pickup: route.pickup
+            pickup: route.pickup,
+            // Exclude geometry fields
+            // geometry: route.geometry, // Removed
+            // polyline: route.polyline, // Removed
           })) || [],
           routing_profiles: response_data.result?.routing_profiles || {},
           status: response_data.status,
@@ -549,7 +635,7 @@ export async function POST(req: NextRequest) {
       }
       
       // Additional check for still-too-large data
-      if (responseDataString.length > 500000) { // 500KB limit
+      if (responseDataString.length > 2000000) { // Increased to 2MB limit
         console.warn('Data still too large after simplification:', responseDataString.length, 'bytes');
         // Create an even more minimal version
         const minimalData = {
@@ -610,6 +696,12 @@ export async function POST(req: NextRequest) {
       // Log if we had to create a unique ID
       if (finalId !== id) {
         console.log(`Original ID '${id}' already existed, created unique ID: '${finalId}'`);
+      }
+      
+      if (DEBUG_API) {
+        console.log('✅ Saved optimization result with job_id:', job_id);
+        console.log('✅ Final ID:', finalId);
+        console.log('✅ Title:', title);
       }
       
       console.log('Optimization result saved successfully');
