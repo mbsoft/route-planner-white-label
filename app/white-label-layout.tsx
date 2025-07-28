@@ -78,7 +78,6 @@ export function WhiteLabelLayout({children}: WhiteLabelLayoutProps) {
         }
         
         const publicConfig = await publicResponse.json()
-        console.log('Public config from API:', publicConfig)
         
         // Set branding values from public config
         const companyName = publicConfig.COMPANY_NAME || 'Route Planner'
@@ -102,10 +101,8 @@ export function WhiteLabelLayout({children}: WhiteLabelLayoutProps) {
         }
         
         const protectedConfig = await protectedResponse.json()
-        console.log('Protected config from API:', protectedConfig)
         
         const apiKey = protectedConfig.NEXTBILLION_API_KEY
-        console.log('API Key from API:', apiKey)
 
         if (!apiKey) {
           console.warn('NEXTBILLION_API_KEY not found in environment variables')

@@ -207,9 +207,6 @@ export const InputVehicleUpload = () => {
     }
   }
 
-  // Debug logging for table rendering
-  console.log('Rendering table with header:', vehicle.rawData.header, 'attachedRows:', vehicle.rawData.attachedRows)
-
   return (
     <div style={{ padding: '20px' }}>
       <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 2 }}>

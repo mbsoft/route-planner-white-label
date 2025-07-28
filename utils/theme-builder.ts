@@ -25,7 +25,6 @@ export interface ThemeConfig {
 }
 
 export function buildThemeFromConfig(config: ThemeConfig): Theme {
-  console.log('Building theme with config:', config)
   return createTheme({
     palette: {
       primary: {

@@ -206,6 +206,13 @@ export const InputJobUpload = () => {
   const handleDatabaseShipmentsImported = async (shipments: any[]) => {
     console.log('Database shipments imported:', shipments)
     if (!shipments || shipments.length === 0) return;
+    
+    // Debug: Check the first shipment to see what fields are available
+    if (shipments.length > 0) {
+      console.log('First shipment data:', shipments[0]);
+      console.log('Available fields:', Object.keys(shipments[0]));
+    }
+    
     // Fetch schema from API
     let header: string[] = [];
     try {
@@ -213,14 +220,37 @@ export const InputJobUpload = () => {
       if (schemaRes.ok) {
         const schemaData = await schemaRes.json();
         header = schemaData.columns || Object.keys(shipments[0]);
+        console.log('Schema columns:', schemaData.columns);
       } else {
         header = Object.keys(shipments[0]);
       }
     } catch (e) {
       header = Object.keys(shipments[0]);
     }
+    
+    console.log('Final header:', header);
+    
+    // Debug: Check if location columns are in the header
+    const hasPickupLocation = header.includes('pickup_location');
+    const hasDeliveryLocation = header.includes('delivery_location');
+    console.log('Location columns check:', { hasPickupLocation, hasDeliveryLocation });
+    
     // Map each row to the full header
     const rows = shipments.map(shipment => header.map(h => shipment[h] ?? ''));
+    
+    // Debug: Check first row to see if location data is present
+    if (rows.length > 0) {
+      const pickupLocationIndex = header.indexOf('pickup_location');
+      const deliveryLocationIndex = header.indexOf('delivery_location');
+      console.log('Location column indices:', { pickupLocationIndex, deliveryLocationIndex });
+      if (pickupLocationIndex >= 0) {
+        console.log('First row pickup location:', rows[0][pickupLocationIndex]);
+      }
+      if (deliveryLocationIndex >= 0) {
+        console.log('First row delivery location:', rows[0][deliveryLocationIndex]);
+      }
+    }
+    
     store.inputCore.setRawData(inputType, {
       header,
       rows,
