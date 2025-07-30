@@ -451,11 +451,15 @@ export const RouteSummaryTable: React.FC<RouteSummaryTableProps> = ({
           {popupRoute.adopted_capacity ? (
             Array.isArray(popupRoute.adopted_capacity) ? (
               <Box>
-                {popupRoute.adopted_capacity.map((capacity: number, index: number) => (
-                  <Typography key={index} variant="body2" sx={{ fontSize: '0.875rem' }}>
-                    Capacity {index + 1}: {capacity}
-                  </Typography>
-                ))}
+                {popupRoute.adopted_capacity.map((capacity: number, index: number) => {
+                  const capTypeKey = `NEXT_PUBLIC_CAP_TYPE_${index + 1}` as keyof typeof process.env
+                  const capTypeLabel = process.env[capTypeKey] || `Capacity ${index + 1}`
+                  return (
+                    <Typography key={index} variant="body2" sx={{ fontSize: '0.875rem' }}>
+                      {capTypeLabel}: {capacity}
+                    </Typography>
+                  )
+                })}
               </Box>
             ) : (
               <Typography variant="body2" sx={{ fontSize: '0.875rem' }}>
