@@ -626,6 +626,12 @@ export const RouteSummaryTable: React.FC<RouteSummaryTableProps> = ({
                                           ID: {step.delivery_id}
                                         </Typography>
                                       )}
+                                      {/* Debug: Show all step properties for pickup/delivery */}
+                                      {(step.type === 'pickup' || step.type === 'delivery') && (
+                                        <Typography variant="caption" sx={{ color: 'red', fontSize: '0.6rem', ml: 3 }}>
+                                          Debug: {JSON.stringify(Object.keys(step))}
+                                        </Typography>
+                                      )}
                                     </Box>
                                   </TableCell>
                                   <TableCell sx={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
