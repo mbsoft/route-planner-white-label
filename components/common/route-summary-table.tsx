@@ -437,47 +437,9 @@ export const RouteSummaryTable: React.FC<RouteSummaryTableProps> = ({
                   <TableCell onClick={() => handleToggleRoute(routeIndex)}>
                     {route.delivery && route.delivery.length > 0 ? (
                       <Box sx={{ overflow: 'hidden', textOverflow: 'ellipsis' }}>
-                        {route.delivery.map((delivery: number, index: number) => {
-                          if (delivery > 0) {
-                            let capTypeLabel = `Capacity ${index + 1}`
-                            
-                            // Use environment variables for capacity type labels
-                            switch (index) {
-                              case 0:
-                                capTypeLabel = process.env.NEXT_PUBLIC_CAP_TYPE_1 || capTypeLabel
-                                break
-                              case 1:
-                                capTypeLabel = process.env.NEXT_PUBLIC_CAP_TYPE_2 || capTypeLabel
-                                break
-                              case 2:
-                                capTypeLabel = process.env.NEXT_PUBLIC_CAP_TYPE_3 || capTypeLabel
-                                break
-                              case 3:
-                                capTypeLabel = process.env.NEXT_PUBLIC_CAP_TYPE_4 || capTypeLabel
-                                break
-                              case 4:
-                                capTypeLabel = process.env.NEXT_PUBLIC_CAP_TYPE_5 || capTypeLabel
-                                break
-                              case 5:
-                                capTypeLabel = process.env.NEXT_PUBLIC_CAP_TYPE_6 || capTypeLabel
-                                break
-                            }
-                            
-                            return (
-                              <Typography key={index} variant="body2" sx={{ display: 'block', color: '#666', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', fontSize: '0.75rem' }}>
-                                {capTypeLabel}: {delivery} gal
-                              </Typography>
-                            )
-                          }
-                          return null
-                        })}
-                        <Typography variant="body2" sx={{ display: 'block', fontWeight: 'bold', color: companyColor, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', fontSize: '0.75rem' }}>
-                          Total: {route.delivery.reduce((sum: number, delivery: number) => sum + delivery, 0)} gal
-                        </Typography>
-                        
                         {/* Tank Distribution Details */}
                         {route.vehicle && route.vehicle.includes('|') && route.delivery && (
-                          <Box sx={{ mt: 1, pt: 1, borderTop: '1px solid #eee' }}>
+                          <Box sx={{ mb: 1 }}>
                             {(() => {
                               const tankDistribution = calculateTankCapacityDistribution(route.vehicle, route.delivery)
                               const firstToken = route.vehicle.split('|')[0]
@@ -561,6 +523,44 @@ export const RouteSummaryTable: React.FC<RouteSummaryTableProps> = ({
                             })()}
                           </Box>
                         )}
+                        
+                        {route.delivery.map((delivery: number, index: number) => {
+                          if (delivery > 0) {
+                            let capTypeLabel = `Capacity ${index + 1}`
+                            
+                            // Use environment variables for capacity type labels
+                            switch (index) {
+                              case 0:
+                                capTypeLabel = process.env.NEXT_PUBLIC_CAP_TYPE_1 || capTypeLabel
+                                break
+                              case 1:
+                                capTypeLabel = process.env.NEXT_PUBLIC_CAP_TYPE_2 || capTypeLabel
+                                break
+                              case 2:
+                                capTypeLabel = process.env.NEXT_PUBLIC_CAP_TYPE_3 || capTypeLabel
+                                break
+                              case 3:
+                                capTypeLabel = process.env.NEXT_PUBLIC_CAP_TYPE_4 || capTypeLabel
+                                break
+                              case 4:
+                                capTypeLabel = process.env.NEXT_PUBLIC_CAP_TYPE_5 || capTypeLabel
+                                break
+                              case 5:
+                                capTypeLabel = process.env.NEXT_PUBLIC_CAP_TYPE_6 || capTypeLabel
+                                break
+                            }
+                            
+                            return (
+                              <Typography key={index} variant="body2" sx={{ display: 'block', color: '#666', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', fontSize: '0.75rem' }}>
+                                {capTypeLabel}: {delivery} gal
+                              </Typography>
+                            )
+                          }
+                          return null
+                        })}
+                        <Typography variant="body2" sx={{ display: 'block', fontWeight: 'bold', color: companyColor, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', fontSize: '0.75rem' }}>
+                          Total: {route.delivery.reduce((sum: number, delivery: number) => sum + delivery, 0)} gal
+                        </Typography>
                       </Box>
                     ) : (
                       <Typography variant="body2" sx={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
@@ -653,6 +653,8 @@ export const RouteSummaryTable: React.FC<RouteSummaryTableProps> = ({
                                           }
                                           return null
                                         })}
+                        
+                        
                                         <Typography variant="body2" sx={{ display: 'block', fontWeight: 'bold', color: companyColor, fontSize: '0.75rem' }}>
                                           Total: {step.load.reduce((sum: number, load: number) => sum + load, 0)} gal
                                         </Typography>

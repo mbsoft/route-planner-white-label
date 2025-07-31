@@ -324,12 +324,46 @@ export default function RouteAnalysisPage() {
 
     // Fuel delivery metrics
     const totalFuelDelivered = summary?.delivery || [0, 0, 0, 0, 0]
+    
+    // Calculate individual fuel type deliveries using environment variables for labels
+    const fuelDeliveries = totalFuelDelivered.map((delivery: number, index: number) => {
+      let capTypeLabel = `Capacity ${index + 1}`
+      
+      // Use environment variables for capacity type labels
+      switch (index) {
+        case 0:
+          capTypeLabel = process.env.NEXT_PUBLIC_CAP_TYPE_1 || capTypeLabel
+          break
+        case 1:
+          capTypeLabel = process.env.NEXT_PUBLIC_CAP_TYPE_2 || capTypeLabel
+          break
+        case 2:
+          capTypeLabel = process.env.NEXT_PUBLIC_CAP_TYPE_3 || capTypeLabel
+          break
+        case 3:
+          capTypeLabel = process.env.NEXT_PUBLIC_CAP_TYPE_4 || capTypeLabel
+          break
+        case 4:
+          capTypeLabel = process.env.NEXT_PUBLIC_CAP_TYPE_5 || capTypeLabel
+          break
+        case 5:
+          capTypeLabel = process.env.NEXT_PUBLIC_CAP_TYPE_6 || capTypeLabel
+          break
+      }
+      
+      return {
+        amount: delivery || 0,
+        label: capTypeLabel
+      }
+    })
+    
+    // Keep backward compatibility for existing code
     const ulsdClearDelivered = totalFuelDelivered[0] || 0
     const ulsdDyedDelivered = totalFuelDelivered[1] || 0
     const unlDelivered = totalFuelDelivered[2] || 0
     const gasUnlPreDelivered = totalFuelDelivered[3] || 0
     const rec90Delivered = totalFuelDelivered[4] || 0
-    const totalFuel = ulsdClearDelivered + ulsdDyedDelivered + unlDelivered + gasUnlPreDelivered + rec90Delivered
+    const totalFuel = totalFuelDelivered.reduce((sum: number, delivery: number) => sum + delivery, 0)
 
     // Operational metrics
     const totalDistance = summary?.distance || 0
@@ -362,6 +396,7 @@ export default function RouteAnalysisPage() {
 
     return {
       // Fuel metrics
+      fuelDeliveries,
       ulsdClearDelivered,
       ulsdDyedDelivered,
       unlDelivered,
@@ -713,6 +748,8 @@ export default function RouteAnalysisPage() {
                   </Box>
                 </Paper>
               </Grid>
+
+
 
               {/* Analysis Cards */}
               <Grid item xs={12} md={6} lg={3}>
@@ -1188,7 +1225,7 @@ export default function RouteAnalysisPage() {
                       {selectedResult && (
                         <Box
                           sx={{
-                            width: { xs: '100%', sm: 750, md: 900 },
+                            width: { xs: '100%', sm: 863, md: 1035 },
                             maxWidth: '90vw',
                             minWidth: 480,
                             boxShadow: 4,
@@ -1327,56 +1364,33 @@ export default function RouteAnalysisPage() {
                                       {t('analysis.fuelDeliveryMetrics')}
                                     </Typography>
                                     <Grid container spacing={2} sx={{ mb: 3 }}>
-                                      <Grid item xs={12} md={2}>
-                                        <Box sx={{ p: 2, bgcolor: '#f8f9fa', borderRadius: 1, textAlign: 'center' }}>
-                                          <Typography variant="h6" sx={{ color: companyColor, fontWeight: 'bold' }}>
-                                            {kpis.ulsdClearDelivered.toLocaleString()}
-                                          </Typography>
-                                          <Typography variant="body1" sx={{ color: '#666' }}>
-                                            {t('analysis.ulsdClear')}
-                                          </Typography>
-                                        </Box>
-                                      </Grid>
-                                      <Grid item xs={12} md={2}>
-                                        <Box sx={{ p: 2, bgcolor: '#f8f9fa', borderRadius: 1, textAlign: 'center' }}>
-                                          <Typography variant="h6" sx={{ color: companyColor, fontWeight: 'bold' }}>
-                                            {kpis.ulsdDyedDelivered.toLocaleString()}
-                                          </Typography>
-                                          <Typography variant="body1" sx={{ color: '#666' }}>
-                                            {t('analysis.ulsdDyed')}
-                                          </Typography>
-                                        </Box>
-                                      </Grid>
-                                      <Grid item xs={12} md={2}>
-                                        <Box sx={{ p: 2, bgcolor: '#f8f9fa', borderRadius: 1, textAlign: 'center' }}>
-                                          <Typography variant="h6" sx={{ color: companyColor, fontWeight: 'bold' }}>
-                                            {kpis.unlDelivered.toLocaleString()}
-                                          </Typography>
-                                          <Typography variant="body1" sx={{ color: '#666' }}>
-                                            {t('analysis.unl')}
-                                          </Typography>
-                                        </Box>
-                                      </Grid>
-                                      <Grid item xs={12} md={2}>
-                                        <Box sx={{ p: 2, bgcolor: '#f8f9fa', borderRadius: 1, textAlign: 'center' }}>
-                                          <Typography variant="h6" sx={{ color: companyColor, fontWeight: 'bold' }}>
-                                            {kpis.gasUnlPreDelivered.toLocaleString()}
-                                          </Typography>
-                                          <Typography variant="body1" sx={{ color: '#666' }}>
-                                            {t('analysis.gasUnlPre')}
-                                          </Typography>
-                                        </Box>
-                                      </Grid>
-                                      <Grid item xs={12} md={2}>
-                                        <Box sx={{ p: 2, bgcolor: '#f8f9fa', borderRadius: 1, textAlign: 'center' }}>
-                                          <Typography variant="h6" sx={{ color: companyColor, fontWeight: 'bold' }}>
-                                            {kpis.rec90Delivered.toLocaleString()}
-                                          </Typography>
-                                          <Typography variant="body1" sx={{ color: '#666' }}>
-                                            {t('analysis.rec90')}
-                                          </Typography>
-                                        </Box>
-                                      </Grid>
+                                      {kpis.fuelDeliveries.map((fuel: any, index: number) => {
+                                        // Get the appropriate color for each fuel type
+                                        const getFuelTypeColor = (label: string) => {
+                                          if (label.includes('ULSD_CLEAR')) return '#4CAF50'
+                                          if (label.includes('ULSD_DYED')) return '#2196F3'
+                                          if (label.includes('GASOLINE_UNL')) return '#FF9800'
+                                          if (label.includes('GASOLINE_UNL_PRE')) return '#FF5722'
+                                          if (label.includes('REC_90_GASOLINE')) return '#9C27B0'
+                                          if (label.includes('DEF')) return '#607D8B'
+                                          return companyColor // fallback to company color
+                                        }
+                                        
+                                        const fuelColor = getFuelTypeColor(fuel.label)
+                                        
+                                        return fuel.amount > 0 && (
+                                          <Grid key={index} item xs={12} md={2}>
+                                            <Box sx={{ p: 2, bgcolor: fuelColor, borderRadius: 1, textAlign: 'center' }}>
+                                              <Typography variant="h6" sx={{ color: 'white', fontWeight: 'bold' }}>
+                                                {fuel.amount.toLocaleString()}
+                                              </Typography>
+                                              <Typography variant="body1" sx={{ color: 'white' }}>
+                                                {fuel.label}
+                                              </Typography>
+                                            </Box>
+                                          </Grid>
+                                        )
+                                      })}
                                       <Grid item xs={12} md={2}>
                                         <Box sx={{ p: 2, bgcolor: '#f8f9fa', borderRadius: 1, textAlign: 'center' }}>
                                           <Typography variant="h6" sx={{ color: companyColor, fontWeight: 'bold' }}>
