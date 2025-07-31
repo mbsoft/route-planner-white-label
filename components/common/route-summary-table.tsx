@@ -114,6 +114,48 @@ export const RouteSummaryTable: React.FC<RouteSummaryTableProps> = ({
   const [loadingGeocode, setLoadingGeocode] = useState<Record<string, boolean>>({})
   const [pendingGeocodes, setPendingGeocodes] = useState<Set<string>>(new Set())
 
+  // Shipment popup state
+  const [shipmentPopup, setShipmentPopup] = useState<{
+    visible: boolean
+    data: any
+    position: { x: number; y: number }
+  }>({
+    visible: false,
+    data: null,
+    position: { x: 0, y: 0 }
+  })
+
+  // Helper function to format address (street + city only)
+  const formatAddress = (fullAddress: string) => {
+    if (!fullAddress) return fullAddress
+    
+    // Split by commas to get address parts
+    const parts = fullAddress.split(',').map(part => part.trim())
+    
+    if (parts.length <= 2) {
+      // If only 2 parts or less, return as is
+      return fullAddress
+    }
+    
+    // Take the first two parts (street address and city)
+    // Skip state, zip, country, etc.
+    return parts.slice(0, 2).join(', ')
+  }
+
+  // Helper to fetch shipment details by ID
+  const fetchShipmentDetails = async (id: string) => {
+    try {
+      const response = await fetch(`/api/shipments?id=${encodeURIComponent(id)}`)
+      if (response.ok) {
+        const data = await response.json()
+        return data.shipments?.[0] || null
+      }
+    } catch (error) {
+      console.error('Error fetching shipment details:', error)
+    }
+    return null
+  }
+
   // Helper to fetch and cache reverse geocode with rate limiting
   const fetchGeocode = async (lat: number, lng: number) => {
     const key = `${lat.toFixed(6)},${lng.toFixed(6)}`
@@ -131,7 +173,8 @@ export const RouteSummaryTable: React.FC<RouteSummaryTableProps> = ({
       const resp = await fetch(url)
       const data = await resp.json()
       if (data.items && data.items.length > 0 && data.items[0].title) {
-        setGeocodeCache(prev => ({ ...prev, [key]: data.items[0].title }))
+        const formattedAddress = formatAddress(data.items[0].title)
+        setGeocodeCache(prev => ({ ...prev, [key]: formattedAddress }))
       } else {
         setGeocodeCache(prev => ({ ...prev, [key]: key }))
       }
@@ -591,11 +634,41 @@ export const RouteSummaryTable: React.FC<RouteSummaryTableProps> = ({
                             </TableHead>
                             <TableBody>
                               {route.steps && route.steps.map((step: any, stepIndex: number) => (
-                                <TableRow key={stepIndex}>
+                                <TableRow 
+                                  key={stepIndex}
+                                  onMouseEnter={async (e) => {
+                                    if (step.id && (step.type === 'pickup' || step.type === 'delivery')) {
+                                      const shipmentData = await fetchShipmentDetails(step.id)
+                                      if (shipmentData) {
+                                        setShipmentPopup({
+                                          visible: true,
+                                          data: shipmentData,
+                                          position: { x: e.clientX, y: e.clientY }
+                                        })
+                                      }
+                                    }
+                                  }}
+                                  onMouseLeave={() => {
+                                    setShipmentPopup(prev => ({ ...prev, visible: false }))
+                                  }}
+                                  sx={{ cursor: (step.id && (step.type === 'pickup' || step.type === 'delivery')) ? 'pointer' : 'default' }}
+                                >
                                   <TableCell sx={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
-                                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                                      {getStepTypeIcon(step.type)}
-                                      {step.type !== 'job' && <span>{step.type?.toUpperCase() || 'N/A'}</span>}
+                                    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 0.5 }}>
+                                      <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                                        {getStepTypeIcon(step.type)}
+                                        {step.type !== 'job' && <span>{step.type?.toUpperCase() || 'N/A'}</span>}
+                                      </Box>
+                                      {(step.type === 'pickup' && step.id) && (
+                                        <Typography variant="caption" sx={{ color: '#666', fontSize: '0.7rem', ml: 3 }}>
+                                          ID: {step.id}
+                                        </Typography>
+                                      )}
+                                      {(step.type === 'delivery' && step.id) && (
+                                        <Typography variant="caption" sx={{ color: '#666', fontSize: '0.7rem', ml: 3 }}>
+                                          ID: {step.id}
+                                        </Typography>
+                                      )}
                                     </Box>
                                   </TableCell>
                                   <TableCell sx={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
@@ -677,6 +750,137 @@ export const RouteSummaryTable: React.FC<RouteSummaryTableProps> = ({
           </TableBody>
         </Table>
       </TableContainer>
+
+      {/* Shipment Details Popup */}
+      {shipmentPopup.visible && shipmentPopup.data && (
+        <Box
+          sx={{
+            position: 'fixed',
+            top: shipmentPopup.position.y + 10,
+            left: shipmentPopup.position.x + 10,
+            zIndex: 9999,
+            backgroundColor: 'white',
+            border: '1px solid #ccc',
+            borderRadius: '4px',
+            boxShadow: '0 2px 8px rgba(0,0,0,0.15)',
+            padding: '16px',
+            maxWidth: '500px',
+            fontSize: '0.9rem'
+          }}
+        >
+                    <Typography variant="subtitle1" sx={{ fontWeight: 'bold', mb: 2, color: companyColor, fontSize: '1rem' }}>
+            Shipment Details
+          </Typography>
+          
+          <Box sx={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 2 }}>
+            {/* Left Column */}
+            <Box>
+              {shipmentPopup.data.pickup_id && (
+                <Box sx={{ mb: 1.5 }}>
+                  <Typography variant="body2" sx={{ fontWeight: 'bold', color: '#666', fontSize: '0.9rem' }}>
+                    Pickup ID:
+                  </Typography>
+                  <Typography variant="body2" sx={{ fontSize: '0.9rem' }}>
+                    {shipmentPopup.data.pickup_id}
+                  </Typography>
+                </Box>
+              )}
+              
+              {shipmentPopup.data.pickup_description && (
+                <Box sx={{ mb: 1.5 }}>
+                  <Typography variant="body2" sx={{ fontWeight: 'bold', color: '#666', fontSize: '0.9rem' }}>
+                    Pickup Description:
+                  </Typography>
+                  <Typography variant="body2" sx={{ fontSize: '0.9rem' }}>
+                    {shipmentPopup.data.pickup_description}
+                  </Typography>
+                </Box>
+              )}
+              
+              {shipmentPopup.data.pickup_setup && (
+                <Box sx={{ mb: 1.5 }}>
+                  <Typography variant="body2" sx={{ fontWeight: 'bold', color: '#666', fontSize: '0.9rem' }}>
+                    Pickup Setup:
+                  </Typography>
+                  <Typography variant="body2" sx={{ fontSize: '0.9rem' }}>
+                    {Math.round(shipmentPopup.data.pickup_setup / 60)} min
+                  </Typography>
+                </Box>
+              )}
+              
+              {shipmentPopup.data.delivery_time_start && (
+                <Box sx={{ mb: 1.5 }}>
+                  <Typography variant="body2" sx={{ fontWeight: 'bold', color: '#666', fontSize: '0.9rem' }}>
+                    Delivery Time Start:
+                  </Typography>
+                  <Typography variant="body2" sx={{ fontSize: '0.9rem' }}>
+                    {shipmentPopup.data.delivery_time_start}
+                  </Typography>
+                </Box>
+              )}
+            </Box>
+            
+            {/* Right Column */}
+            <Box>
+              {shipmentPopup.data.delivery_id && (
+                <Box sx={{ mb: 1.5 }}>
+                  <Typography variant="body2" sx={{ fontWeight: 'bold', color: '#666', fontSize: '0.9rem' }}>
+                    Delivery ID:
+                  </Typography>
+                  <Typography variant="body2" sx={{ fontSize: '0.9rem' }}>
+                    {shipmentPopup.data.delivery_id}
+                  </Typography>
+                </Box>
+              )}
+              
+              {shipmentPopup.data.delivery_description && (
+                <Box sx={{ mb: 1.5 }}>
+                  <Typography variant="body2" sx={{ fontWeight: 'bold', color: '#666', fontSize: '0.9rem' }}>
+                    Delivery Description:
+                  </Typography>
+                  <Typography variant="body2" sx={{ fontSize: '0.9rem' }}>
+                    {shipmentPopup.data.delivery_description}
+                  </Typography>
+                </Box>
+              )}
+              
+              {shipmentPopup.data.delivery_service && (
+                <Box sx={{ mb: 1.5 }}>
+                  <Typography variant="body2" sx={{ fontWeight: 'bold', color: '#666', fontSize: '0.9rem' }}>
+                    Delivery Service:
+                  </Typography>
+                  <Typography variant="body2" sx={{ fontSize: '0.9rem' }}>
+                    {Math.round(shipmentPopup.data.delivery_service / 60)} min
+                  </Typography>
+                </Box>
+              )}
+              
+              {shipmentPopup.data.delivery_time_end && (
+                <Box sx={{ mb: 1.5 }}>
+                  <Typography variant="body2" sx={{ fontWeight: 'bold', color: '#666', fontSize: '0.9rem' }}>
+                    Delivery Time End:
+                  </Typography>
+                  <Typography variant="body2" sx={{ fontSize: '0.9rem' }}>
+                    {shipmentPopup.data.delivery_time_end}
+                  </Typography>
+                </Box>
+              )}
+            </Box>
+          </Box>
+          
+          {/* Full Width Amount */}
+          {shipmentPopup.data.amount && (
+            <Box sx={{ mt: 2, pt: 2, borderTop: '1px solid #eee' }}>
+              <Typography variant="body2" sx={{ fontWeight: 'bold', color: '#666', fontSize: '0.9rem' }}>
+                Amount:
+              </Typography>
+              <Typography variant="body2" sx={{ fontSize: '0.9rem' }}>
+                {shipmentPopup.data.amount}
+              </Typography>
+            </Box>
+          )}
+        </Box>
+      )}
       
     </>
   )

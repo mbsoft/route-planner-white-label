@@ -566,16 +566,40 @@ export default function RouteAnalysisPage() {
         const csvRows = [csvHeaders]
 
         steps.forEach((step: any, stepIndex: number) => {
-          const arrivalTime = step.arrival_time ? new Date(step.arrival_time * 1000).toLocaleString() : 'N/A'
-          const departureTime = step.departure_time ? new Date(step.departure_time * 1000).toLocaleString() : 'N/A'
-          const serviceTime = step.service_time ? (step.service_time / 60).toFixed(2) : '0'
+          // Get location - use coordinates if available, otherwise use ID
+          let location = 'Unknown'
+          if (step.location && step.location.length === 2) {
+            location = `${step.location[0].toFixed(4)}, ${step.location[1].toFixed(4)}`
+          } else if (step.id) {
+            location = step.id
+          }
+          
+          // Get arrival time
+          const arrivalTime = step.arrival ? 
+            new Date(step.arrival * 1000).toLocaleString() : 'N/A'
+          
+          // Get departure time (calculate from arrival + service)
+          let departureTime = 'N/A'
+          if (step.arrival && step.service) {
+            const departureTimestamp = (step.arrival + step.service) * 1000
+            departureTime = new Date(departureTimestamp).toLocaleString()
+          }
+          
+          // Get service time in minutes
+          const serviceTime = step.service ? (step.service / 60).toFixed(2) : '0'
+          
+          // Get waiting time in minutes (if available)
           const waitingTime = step.waiting_time ? (step.waiting_time / 60).toFixed(2) : '0'
-          const distance = step.distance ? (step.distance / 1000).toFixed(2) : '0'
-          const duration = step.duration ? (step.duration / 60).toFixed(2) : '0'
+          
+          // Calculate cumulative distance and duration
+          const distance = stepIndex > 0 ? 
+            ((step.distance || 0) / 1000).toFixed(2) : '0'
+          const duration = stepIndex > 0 ? 
+            ((step.duration || 0) / 60).toFixed(2) : '0'
 
           csvRows.push([
             stepIndex + 1,
-            step.location?.name || step.location_id || 'Unknown',
+            location,
             step.type || 'Unknown',
             arrivalTime,
             departureTime,
