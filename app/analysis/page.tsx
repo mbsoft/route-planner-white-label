@@ -1364,20 +1364,33 @@ export default function RouteAnalysisPage() {
                                       {t('analysis.fuelDeliveryMetrics')}
                                     </Typography>
                                     <Grid container spacing={2} sx={{ mb: 3 }}>
-                                      {kpis.fuelDeliveries.map((fuel: any, index: number) => (
-                                        fuel.amount > 0 && (
+                                      {kpis.fuelDeliveries.map((fuel: any, index: number) => {
+                                        // Get the appropriate color for each fuel type
+                                        const getFuelTypeColor = (label: string) => {
+                                          if (label.includes('ULSD_CLEAR')) return '#4CAF50'
+                                          if (label.includes('ULSD_DYED')) return '#2196F3'
+                                          if (label.includes('GASOLINE_UNL')) return '#FF9800'
+                                          if (label.includes('GASOLINE_UNL_PRE')) return '#FF5722'
+                                          if (label.includes('REC_90_GASOLINE')) return '#9C27B0'
+                                          if (label.includes('DEF')) return '#607D8B'
+                                          return companyColor // fallback to company color
+                                        }
+                                        
+                                        const fuelColor = getFuelTypeColor(fuel.label)
+                                        
+                                        return fuel.amount > 0 && (
                                           <Grid key={index} item xs={12} md={2}>
-                                            <Box sx={{ p: 2, bgcolor: '#f8f9fa', borderRadius: 1, textAlign: 'center' }}>
-                                              <Typography variant="h6" sx={{ color: companyColor, fontWeight: 'bold' }}>
+                                            <Box sx={{ p: 2, bgcolor: fuelColor, borderRadius: 1, textAlign: 'center' }}>
+                                              <Typography variant="h6" sx={{ color: 'white', fontWeight: 'bold' }}>
                                                 {fuel.amount.toLocaleString()}
                                               </Typography>
-                                              <Typography variant="body1" sx={{ color: '#666' }}>
+                                              <Typography variant="body1" sx={{ color: 'white' }}>
                                                 {fuel.label}
                                               </Typography>
                                             </Box>
                                           </Grid>
                                         )
-                                      ))}
+                                      })}
                                       <Grid item xs={12} md={2}>
                                         <Box sx={{ p: 2, bgcolor: '#f8f9fa', borderRadius: 1, textAlign: 'center' }}>
                                           <Typography variant="h6" sx={{ color: companyColor, fontWeight: 'bold' }}>

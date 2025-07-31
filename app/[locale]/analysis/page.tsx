@@ -1322,56 +1322,66 @@ export default function RouteAnalysisPage() {
                                   {t('fuelDeliveryMetrics')}
                                 </Typography>
                                 <Grid container spacing={2} sx={{ mb: 3 }}>
-                                  <Grid item xs={12} md={2}>
-                                    <Box sx={{ p: 2, bgcolor: '#f8f9fa', borderRadius: 1, textAlign: 'center' }}>
-                                      <Typography variant="h6" sx={{ color: companyColor, fontWeight: 'bold' }}>
-                                        {kpis.ulsdClearDelivered.toLocaleString()}
-                                      </Typography>
-                                      <Typography variant="body1" sx={{ color: '#666' }}>
-                                        {tFuelTypes('ulsdClear')}
-                                      </Typography>
-                                    </Box>
-                                  </Grid>
-                                  <Grid item xs={12} md={2}>
-                                    <Box sx={{ p: 2, bgcolor: '#f8f9fa', borderRadius: 1, textAlign: 'center' }}>
-                                      <Typography variant="h6" sx={{ color: companyColor, fontWeight: 'bold' }}>
-                                        {kpis.ulsdDyedDelivered.toLocaleString()}
-                                      </Typography>
-                                      <Typography variant="body1" sx={{ color: '#666' }}>
-                                        {tFuelTypes('ulsdDyed')}
-                                      </Typography>
-                                    </Box>
-                                  </Grid>
-                                  <Grid item xs={12} md={2}>
-                                    <Box sx={{ p: 2, bgcolor: '#f8f9fa', borderRadius: 1, textAlign: 'center' }}>
-                                      <Typography variant="h6" sx={{ color: companyColor, fontWeight: 'bold' }}>
-                                        {kpis.unlDelivered.toLocaleString()}
-                                      </Typography>
-                                      <Typography variant="body1" sx={{ color: '#666' }}>
-                                        {tFuelTypes('unl')}
-                                      </Typography>
-                                    </Box>
-                                  </Grid>
-                                  <Grid item xs={12} md={2}>
-                                    <Box sx={{ p: 2, bgcolor: '#f8f9fa', borderRadius: 1, textAlign: 'center' }}>
-                                      <Typography variant="h6" sx={{ color: companyColor, fontWeight: 'bold' }}>
-                                        {kpis.gasUnlPreDelivered.toLocaleString()}
-                                      </Typography>
-                                      <Typography variant="body1" sx={{ color: '#666' }}>
-                                        {tFuelTypes('gasUnlPre')}
-                                      </Typography>
-                                    </Box>
-                                  </Grid>
-                                  <Grid item xs={12} md={2}>
-                                    <Box sx={{ p: 2, bgcolor: '#f8f9fa', borderRadius: 1, textAlign: 'center' }}>
-                                      <Typography variant="h6" sx={{ color: companyColor, fontWeight: 'bold' }}>
-                                        {kpis.rec90Delivered.toLocaleString()}
-                                      </Typography>
-                                      <Typography variant="body1" sx={{ color: '#666' }}>
-                                        {tFuelTypes('rec90')}
-                                      </Typography>
-                                    </Box>
-                                  </Grid>
+                                  {kpis.ulsdClearDelivered > 0 && (
+                                    <Grid item xs={12} md={2}>
+                                      <Box sx={{ p: 2, bgcolor: '#4CAF50', borderRadius: 1, textAlign: 'center' }}>
+                                        <Typography variant="h6" sx={{ color: 'white', fontWeight: 'bold' }}>
+                                          {kpis.ulsdClearDelivered.toLocaleString()}
+                                        </Typography>
+                                        <Typography variant="body1" sx={{ color: 'white' }}>
+                                          {tFuelTypes('ulsdClear')}
+                                        </Typography>
+                                      </Box>
+                                    </Grid>
+                                  )}
+                                  {kpis.ulsdDyedDelivered > 0 && (
+                                    <Grid item xs={12} md={2}>
+                                      <Box sx={{ p: 2, bgcolor: '#2196F3', borderRadius: 1, textAlign: 'center' }}>
+                                        <Typography variant="h6" sx={{ color: 'white', fontWeight: 'bold' }}>
+                                          {kpis.ulsdDyedDelivered.toLocaleString()}
+                                        </Typography>
+                                        <Typography variant="body1" sx={{ color: 'white' }}>
+                                          {tFuelTypes('ulsdDyed')}
+                                        </Typography>
+                                      </Box>
+                                    </Grid>
+                                  )}
+                                  {kpis.unlDelivered > 0 && (
+                                    <Grid item xs={12} md={2}>
+                                      <Box sx={{ p: 2, bgcolor: '#FF9800', borderRadius: 1, textAlign: 'center' }}>
+                                        <Typography variant="h6" sx={{ color: 'white', fontWeight: 'bold' }}>
+                                          {kpis.unlDelivered.toLocaleString()}
+                                        </Typography>
+                                        <Typography variant="body1" sx={{ color: 'white' }}>
+                                          {tFuelTypes('unl')}
+                                        </Typography>
+                                      </Box>
+                                    </Grid>
+                                  )}
+                                  {kpis.gasUnlPreDelivered > 0 && (
+                                    <Grid item xs={12} md={2}>
+                                      <Box sx={{ p: 2, bgcolor: '#FF5722', borderRadius: 1, textAlign: 'center' }}>
+                                        <Typography variant="h6" sx={{ color: 'white', fontWeight: 'bold' }}>
+                                          {kpis.gasUnlPreDelivered.toLocaleString()}
+                                        </Typography>
+                                        <Typography variant="body1" sx={{ color: 'white' }}>
+                                          {tFuelTypes('gasUnlPre')}
+                                        </Typography>
+                                      </Box>
+                                    </Grid>
+                                  )}
+                                  {kpis.rec90Delivered > 0 && (
+                                    <Grid item xs={12} md={2}>
+                                      <Box sx={{ p: 2, bgcolor: '#9C27B0', borderRadius: 1, textAlign: 'center' }}>
+                                        <Typography variant="h6" sx={{ color: 'white', fontWeight: 'bold' }}>
+                                          {kpis.rec90Delivered.toLocaleString()}
+                                        </Typography>
+                                        <Typography variant="body1" sx={{ color: 'white' }}>
+                                          {tFuelTypes('rec90')}
+                                        </Typography>
+                                      </Box>
+                                    </Grid>
+                                  )}
                                   <Grid item xs={12} md={2}>
                                     <Box sx={{ p: 2, bgcolor: '#f8f9fa', borderRadius: 1, textAlign: 'center' }}>
                                       <Typography variant="h6" sx={{ color: companyColor, fontWeight: 'bold' }}>
