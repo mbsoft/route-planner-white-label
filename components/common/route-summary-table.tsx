@@ -114,6 +114,17 @@ export const RouteSummaryTable: React.FC<RouteSummaryTableProps> = ({
   const [loadingGeocode, setLoadingGeocode] = useState<Record<string, boolean>>({})
   const [pendingGeocodes, setPendingGeocodes] = useState<Set<string>>(new Set())
 
+  // Shipment popup state
+  const [shipmentPopup, setShipmentPopup] = useState<{
+    visible: boolean
+    data: any
+    position: { x: number; y: number }
+  }>({
+    visible: false,
+    data: null,
+    position: { x: 0, y: 0 }
+  })
+
   // Helper function to format address (street + city only)
   const formatAddress = (fullAddress: string) => {
     if (!fullAddress) return fullAddress
@@ -129,6 +140,20 @@ export const RouteSummaryTable: React.FC<RouteSummaryTableProps> = ({
     // Take the first two parts (street address and city)
     // Skip state, zip, country, etc.
     return parts.slice(0, 2).join(', ')
+  }
+
+  // Helper to fetch shipment details by ID
+  const fetchShipmentDetails = async (id: string) => {
+    try {
+      const response = await fetch(`/api/shipments?id=${encodeURIComponent(id)}`)
+      if (response.ok) {
+        const data = await response.json()
+        return data.shipments?.[0] || null
+      }
+    } catch (error) {
+      console.error('Error fetching shipment details:', error)
+    }
+    return null
   }
 
   // Helper to fetch and cache reverse geocode with rate limiting
@@ -609,7 +634,25 @@ export const RouteSummaryTable: React.FC<RouteSummaryTableProps> = ({
                             </TableHead>
                             <TableBody>
                               {route.steps && route.steps.map((step: any, stepIndex: number) => (
-                                <TableRow key={stepIndex}>
+                                <TableRow 
+                                  key={stepIndex}
+                                  onMouseEnter={async (e) => {
+                                    if (step.id && (step.type === 'pickup' || step.type === 'delivery')) {
+                                      const shipmentData = await fetchShipmentDetails(step.id)
+                                      if (shipmentData) {
+                                        setShipmentPopup({
+                                          visible: true,
+                                          data: shipmentData,
+                                          position: { x: e.clientX, y: e.clientY }
+                                        })
+                                      }
+                                    }
+                                  }}
+                                  onMouseLeave={() => {
+                                    setShipmentPopup(prev => ({ ...prev, visible: false }))
+                                  }}
+                                  sx={{ cursor: (step.id && (step.type === 'pickup' || step.type === 'delivery')) ? 'pointer' : 'default' }}
+                                >
                                   <TableCell sx={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
                                     <Box sx={{ display: 'flex', flexDirection: 'column', gap: 0.5 }}>
                                       <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
@@ -707,6 +750,128 @@ export const RouteSummaryTable: React.FC<RouteSummaryTableProps> = ({
           </TableBody>
         </Table>
       </TableContainer>
+
+      {/* Shipment Details Popup */}
+      {shipmentPopup.visible && shipmentPopup.data && (
+        <Box
+          sx={{
+            position: 'fixed',
+            top: shipmentPopup.position.y + 10,
+            left: shipmentPopup.position.x + 10,
+            zIndex: 9999,
+            backgroundColor: 'white',
+            border: '1px solid #ccc',
+            borderRadius: '4px',
+            boxShadow: '0 2px 8px rgba(0,0,0,0.15)',
+            padding: '12px',
+            maxWidth: '300px',
+            fontSize: '0.8rem'
+          }}
+        >
+          <Typography variant="subtitle2" sx={{ fontWeight: 'bold', mb: 1, color: companyColor }}>
+            Shipment Details
+          </Typography>
+          
+          {shipmentPopup.data.pickup_id && (
+            <Box sx={{ mb: 1 }}>
+              <Typography variant="caption" sx={{ fontWeight: 'bold', color: '#666' }}>
+                Pickup ID:
+              </Typography>
+              <Typography variant="caption" sx={{ ml: 1 }}>
+                {shipmentPopup.data.pickup_id}
+              </Typography>
+            </Box>
+          )}
+          
+          {shipmentPopup.data.delivery_id && (
+            <Box sx={{ mb: 1 }}>
+              <Typography variant="caption" sx={{ fontWeight: 'bold', color: '#666' }}>
+                Delivery ID:
+              </Typography>
+              <Typography variant="caption" sx={{ ml: 1 }}>
+                {shipmentPopup.data.delivery_id}
+              </Typography>
+            </Box>
+          )}
+          
+          {shipmentPopup.data.pickup_description && (
+            <Box sx={{ mb: 1 }}>
+              <Typography variant="caption" sx={{ fontWeight: 'bold', color: '#666' }}>
+                Pickup Description:
+              </Typography>
+              <Typography variant="caption" sx={{ ml: 1, display: 'block' }}>
+                {shipmentPopup.data.pickup_description}
+              </Typography>
+            </Box>
+          )}
+          
+          {shipmentPopup.data.delivery_description && (
+            <Box sx={{ mb: 1 }}>
+              <Typography variant="caption" sx={{ fontWeight: 'bold', color: '#666' }}>
+                Delivery Description:
+              </Typography>
+              <Typography variant="caption" sx={{ ml: 1, display: 'block' }}>
+                {shipmentPopup.data.delivery_description}
+              </Typography>
+            </Box>
+          )}
+          
+          {shipmentPopup.data.pickup_setup && (
+            <Box sx={{ mb: 1 }}>
+              <Typography variant="caption" sx={{ fontWeight: 'bold', color: '#666' }}>
+                Pickup Setup:
+              </Typography>
+              <Typography variant="caption" sx={{ ml: 1 }}>
+                {Math.round(shipmentPopup.data.pickup_setup / 60)} min
+              </Typography>
+            </Box>
+          )}
+          
+          {shipmentPopup.data.delivery_service && (
+            <Box sx={{ mb: 1 }}>
+              <Typography variant="caption" sx={{ fontWeight: 'bold', color: '#666' }}>
+                Delivery Service:
+              </Typography>
+              <Typography variant="caption" sx={{ ml: 1 }}>
+                {Math.round(shipmentPopup.data.delivery_service / 60)} min
+              </Typography>
+            </Box>
+          )}
+          
+          {shipmentPopup.data.delivery_time_start && (
+            <Box sx={{ mb: 1 }}>
+              <Typography variant="caption" sx={{ fontWeight: 'bold', color: '#666' }}>
+                Delivery Time Start:
+              </Typography>
+              <Typography variant="caption" sx={{ ml: 1 }}>
+                {shipmentPopup.data.delivery_time_start}
+              </Typography>
+            </Box>
+          )}
+          
+          {shipmentPopup.data.delivery_time_end && (
+            <Box sx={{ mb: 1 }}>
+              <Typography variant="caption" sx={{ fontWeight: 'bold', color: '#666' }}>
+                Delivery Time End:
+              </Typography>
+              <Typography variant="caption" sx={{ ml: 1 }}>
+                {shipmentPopup.data.delivery_time_end}
+              </Typography>
+            </Box>
+          )}
+          
+          {shipmentPopup.data.amount && (
+            <Box sx={{ mb: 1 }}>
+              <Typography variant="caption" sx={{ fontWeight: 'bold', color: '#666' }}>
+                Amount:
+              </Typography>
+              <Typography variant="caption" sx={{ ml: 1 }}>
+                {shipmentPopup.data.amount}
+              </Typography>
+            </Box>
+          )}
+        </Box>
+      )}
       
     </>
   )

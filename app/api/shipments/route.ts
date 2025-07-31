@@ -73,6 +73,7 @@ export async function GET(request: NextRequest) {
     const startParam = searchParams.get('start');
     const endParam = searchParams.get('end');
     const searchParam = searchParams.get('search');
+    const idParam = searchParams.get('id');
 
     // Debug: Check current table schema
     const schemaResult = await turso.execute("PRAGMA table_info(shipments)");
@@ -101,6 +102,13 @@ export async function GET(request: NextRequest) {
       params.push(startTime, endTime, startTime, endTime, startTime, endTime, startTime, endTime, startTime, endTime, startTime, endTime);
     }
 
+    // Build ID condition (highest priority)
+    let idCondition = '';
+    if (idParam && idParam.trim()) {
+      idCondition = '(id = ? OR pickup_id = ? OR delivery_id = ?)';
+      params.push(idParam.trim(), idParam.trim(), idParam.trim());
+    }
+
     // Build search conditions
     let searchCondition = '';
     if (searchParam && searchParam.trim()) {
@@ -111,7 +119,10 @@ export async function GET(request: NextRequest) {
     }
 
     // Combine conditions
-    if (timeWindowCondition && searchCondition) {
+    if (idCondition) {
+      // ID query takes highest priority - return exact match
+      whereConditions.push(idCondition);
+    } else if (timeWindowCondition && searchCondition) {
       // Both time window and search filters: records must match time window AND search
       whereConditions.push(`(${timeWindowCondition}) AND (${searchCondition})`);
     } else if (timeWindowCondition) {
