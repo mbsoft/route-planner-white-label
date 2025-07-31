@@ -611,9 +611,21 @@ export const RouteSummaryTable: React.FC<RouteSummaryTableProps> = ({
                               {route.steps && route.steps.map((step: any, stepIndex: number) => (
                                 <TableRow key={stepIndex}>
                                   <TableCell sx={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
-                                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                                      {getStepTypeIcon(step.type)}
-                                      {step.type !== 'job' && <span>{step.type?.toUpperCase() || 'N/A'}</span>}
+                                    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 0.5 }}>
+                                      <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                                        {getStepTypeIcon(step.type)}
+                                        {step.type !== 'job' && <span>{step.type?.toUpperCase() || 'N/A'}</span>}
+                                      </Box>
+                                      {(step.type === 'pickup' && step.pickup_id) && (
+                                        <Typography variant="caption" sx={{ color: '#666', fontSize: '0.7rem', ml: 3 }}>
+                                          ID: {step.pickup_id}
+                                        </Typography>
+                                      )}
+                                      {(step.type === 'delivery' && step.delivery_id) && (
+                                        <Typography variant="caption" sx={{ color: '#666', fontSize: '0.7rem', ml: 3 }}>
+                                          ID: {step.delivery_id}
+                                        </Typography>
+                                      )}
                                     </Box>
                                   </TableCell>
                                   <TableCell sx={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
