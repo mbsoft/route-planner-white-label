@@ -763,113 +763,113 @@ export const RouteSummaryTable: React.FC<RouteSummaryTableProps> = ({
             border: '1px solid #ccc',
             borderRadius: '4px',
             boxShadow: '0 2px 8px rgba(0,0,0,0.15)',
-            padding: '12px',
-            maxWidth: '300px',
-            fontSize: '0.8rem'
+            padding: '16px',
+            maxWidth: '350px',
+            fontSize: '0.9rem'
           }}
         >
-          <Typography variant="subtitle2" sx={{ fontWeight: 'bold', mb: 1, color: companyColor }}>
+          <Typography variant="subtitle1" sx={{ fontWeight: 'bold', mb: 2, color: companyColor, fontSize: '1rem' }}>
             Shipment Details
           </Typography>
           
-          {shipmentPopup.data.pickup_id && (
-            <Box sx={{ mb: 1 }}>
-              <Typography variant="caption" sx={{ fontWeight: 'bold', color: '#666' }}>
-                Pickup ID:
-              </Typography>
-              <Typography variant="caption" sx={{ ml: 1 }}>
-                {shipmentPopup.data.pickup_id}
-              </Typography>
-            </Box>
-          )}
+                      {shipmentPopup.data.pickup_id && (
+              <Box sx={{ mb: 1.5 }}>
+                <Typography variant="body2" sx={{ fontWeight: 'bold', color: '#666', fontSize: '0.9rem' }}>
+                  Pickup ID:
+                </Typography>
+                <Typography variant="body2" sx={{ ml: 1, fontSize: '0.9rem' }}>
+                  {shipmentPopup.data.pickup_id}
+                </Typography>
+              </Box>
+            )}
           
-          {shipmentPopup.data.delivery_id && (
-            <Box sx={{ mb: 1 }}>
-              <Typography variant="caption" sx={{ fontWeight: 'bold', color: '#666' }}>
-                Delivery ID:
-              </Typography>
-              <Typography variant="caption" sx={{ ml: 1 }}>
-                {shipmentPopup.data.delivery_id}
-              </Typography>
-            </Box>
-          )}
+                      {shipmentPopup.data.delivery_id && (
+              <Box sx={{ mb: 1.5 }}>
+                <Typography variant="body2" sx={{ fontWeight: 'bold', color: '#666', fontSize: '0.9rem' }}>
+                  Delivery ID:
+                </Typography>
+                <Typography variant="body2" sx={{ ml: 1, fontSize: '0.9rem' }}>
+                  {shipmentPopup.data.delivery_id}
+                </Typography>
+              </Box>
+            )}
           
-          {shipmentPopup.data.pickup_description && (
-            <Box sx={{ mb: 1 }}>
-              <Typography variant="caption" sx={{ fontWeight: 'bold', color: '#666' }}>
-                Pickup Description:
-              </Typography>
-              <Typography variant="caption" sx={{ ml: 1, display: 'block' }}>
-                {shipmentPopup.data.pickup_description}
-              </Typography>
-            </Box>
-          )}
+                      {shipmentPopup.data.pickup_description && (
+              <Box sx={{ mb: 1.5 }}>
+                <Typography variant="body2" sx={{ fontWeight: 'bold', color: '#666', fontSize: '0.9rem' }}>
+                  Pickup Description:
+                </Typography>
+                <Typography variant="body2" sx={{ ml: 1, display: 'block', fontSize: '0.9rem' }}>
+                  {shipmentPopup.data.pickup_description}
+                </Typography>
+              </Box>
+            )}
           
-          {shipmentPopup.data.delivery_description && (
-            <Box sx={{ mb: 1 }}>
-              <Typography variant="caption" sx={{ fontWeight: 'bold', color: '#666' }}>
-                Delivery Description:
-              </Typography>
-              <Typography variant="caption" sx={{ ml: 1, display: 'block' }}>
-                {shipmentPopup.data.delivery_description}
-              </Typography>
-            </Box>
-          )}
-          
-          {shipmentPopup.data.pickup_setup && (
-            <Box sx={{ mb: 1 }}>
-              <Typography variant="caption" sx={{ fontWeight: 'bold', color: '#666' }}>
-                Pickup Setup:
-              </Typography>
-              <Typography variant="caption" sx={{ ml: 1 }}>
-                {Math.round(shipmentPopup.data.pickup_setup / 60)} min
-              </Typography>
-            </Box>
-          )}
-          
-          {shipmentPopup.data.delivery_service && (
-            <Box sx={{ mb: 1 }}>
-              <Typography variant="caption" sx={{ fontWeight: 'bold', color: '#666' }}>
-                Delivery Service:
-              </Typography>
-              <Typography variant="caption" sx={{ ml: 1 }}>
-                {Math.round(shipmentPopup.data.delivery_service / 60)} min
-              </Typography>
-            </Box>
-          )}
-          
-          {shipmentPopup.data.delivery_time_start && (
-            <Box sx={{ mb: 1 }}>
-              <Typography variant="caption" sx={{ fontWeight: 'bold', color: '#666' }}>
-                Delivery Time Start:
-              </Typography>
-              <Typography variant="caption" sx={{ ml: 1 }}>
-                {shipmentPopup.data.delivery_time_start}
-              </Typography>
-            </Box>
-          )}
-          
-          {shipmentPopup.data.delivery_time_end && (
-            <Box sx={{ mb: 1 }}>
-              <Typography variant="caption" sx={{ fontWeight: 'bold', color: '#666' }}>
-                Delivery Time End:
-              </Typography>
-              <Typography variant="caption" sx={{ ml: 1 }}>
-                {shipmentPopup.data.delivery_time_end}
-              </Typography>
-            </Box>
-          )}
-          
-          {shipmentPopup.data.amount && (
-            <Box sx={{ mb: 1 }}>
-              <Typography variant="caption" sx={{ fontWeight: 'bold', color: '#666' }}>
-                Amount:
-              </Typography>
-              <Typography variant="caption" sx={{ ml: 1 }}>
-                {shipmentPopup.data.amount}
-              </Typography>
-            </Box>
-          )}
+                      {shipmentPopup.data.delivery_description && (
+              <Box sx={{ mb: 1.5 }}>
+                <Typography variant="body2" sx={{ fontWeight: 'bold', color: '#666', fontSize: '0.9rem' }}>
+                  Delivery Description:
+                </Typography>
+                <Typography variant="body2" sx={{ ml: 1, display: 'block', fontSize: '0.9rem' }}>
+                  {shipmentPopup.data.delivery_description}
+                </Typography>
+              </Box>
+            )}
+            
+            {shipmentPopup.data.pickup_setup && (
+              <Box sx={{ mb: 1.5 }}>
+                <Typography variant="body2" sx={{ fontWeight: 'bold', color: '#666', fontSize: '0.9rem' }}>
+                  Pickup Setup:
+                </Typography>
+                <Typography variant="body2" sx={{ ml: 1, fontSize: '0.9rem' }}>
+                  {Math.round(shipmentPopup.data.pickup_setup / 60)} min
+                </Typography>
+              </Box>
+            )}
+            
+            {shipmentPopup.data.delivery_service && (
+              <Box sx={{ mb: 1.5 }}>
+                <Typography variant="body2" sx={{ fontWeight: 'bold', color: '#666', fontSize: '0.9rem' }}>
+                  Delivery Service:
+                </Typography>
+                <Typography variant="body2" sx={{ ml: 1, fontSize: '0.9rem' }}>
+                  {Math.round(shipmentPopup.data.delivery_service / 60)} min
+                </Typography>
+              </Box>
+            )}
+            
+            {shipmentPopup.data.delivery_time_start && (
+              <Box sx={{ mb: 1.5 }}>
+                <Typography variant="body2" sx={{ fontWeight: 'bold', color: '#666', fontSize: '0.9rem' }}>
+                  Delivery Time Start:
+                </Typography>
+                <Typography variant="body2" sx={{ ml: 1, fontSize: '0.9rem' }}>
+                  {shipmentPopup.data.delivery_time_start}
+                </Typography>
+              </Box>
+            )}
+            
+            {shipmentPopup.data.delivery_time_end && (
+              <Box sx={{ mb: 1.5 }}>
+                <Typography variant="body2" sx={{ fontWeight: 'bold', color: '#666', fontSize: '0.9rem' }}>
+                  Delivery Time End:
+                </Typography>
+                <Typography variant="body2" sx={{ ml: 1, fontSize: '0.9rem' }}>
+                  {shipmentPopup.data.delivery_time_end}
+                </Typography>
+              </Box>
+            )}
+            
+            {shipmentPopup.data.amount && (
+              <Box sx={{ mb: 1.5 }}>
+                <Typography variant="body2" sx={{ fontWeight: 'bold', color: '#666', fontSize: '0.9rem' }}>
+                  Amount:
+                </Typography>
+                <Typography variant="body2" sx={{ ml: 1, fontSize: '0.9rem' }}>
+                  {shipmentPopup.data.amount}
+                </Typography>
+              </Box>
+            )}
         </Box>
       )}
       
