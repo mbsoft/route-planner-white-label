@@ -1183,7 +1183,7 @@ export default function RouteAnalysisPage() {
                       {selectedResult && (
                         <Box
                           sx={{
-                            width: { xs: '100%', sm: 750, md: 900 },
+                            width: { xs: '100%', sm: 863, md: 1035 },
                             maxWidth: '90vw',
                             minWidth: 480,
                             boxShadow: 4,
