@@ -477,7 +477,7 @@ export const RouteSummaryTable: React.FC<RouteSummaryTableProps> = ({
                         
                         {/* Tank Distribution Details */}
                         {route.vehicle && route.vehicle.includes('|') && route.delivery && (
-                          <Box sx={{ mt: 1, pt: 1, borderTop: '1px solid #eee' }}>
+                          <Box sx={{ mb: 1 }}>
                             {(() => {
                               const tankDistribution = calculateTankCapacityDistribution(route.vehicle, route.delivery)
                               const firstToken = route.vehicle.split('|')[0]
