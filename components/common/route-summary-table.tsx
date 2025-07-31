@@ -114,6 +114,23 @@ export const RouteSummaryTable: React.FC<RouteSummaryTableProps> = ({
   const [loadingGeocode, setLoadingGeocode] = useState<Record<string, boolean>>({})
   const [pendingGeocodes, setPendingGeocodes] = useState<Set<string>>(new Set())
 
+  // Helper function to format address (street + city only)
+  const formatAddress = (fullAddress: string) => {
+    if (!fullAddress) return fullAddress
+    
+    // Split by commas to get address parts
+    const parts = fullAddress.split(',').map(part => part.trim())
+    
+    if (parts.length <= 2) {
+      // If only 2 parts or less, return as is
+      return fullAddress
+    }
+    
+    // Take the first two parts (street address and city)
+    // Skip state, zip, country, etc.
+    return parts.slice(0, 2).join(', ')
+  }
+
   // Helper to fetch and cache reverse geocode with rate limiting
   const fetchGeocode = async (lat: number, lng: number) => {
     const key = `${lat.toFixed(6)},${lng.toFixed(6)}`
@@ -131,7 +148,8 @@ export const RouteSummaryTable: React.FC<RouteSummaryTableProps> = ({
       const resp = await fetch(url)
       const data = await resp.json()
       if (data.items && data.items.length > 0 && data.items[0].title) {
-        setGeocodeCache(prev => ({ ...prev, [key]: data.items[0].title }))
+        const formattedAddress = formatAddress(data.items[0].title)
+        setGeocodeCache(prev => ({ ...prev, [key]: formattedAddress }))
       } else {
         setGeocodeCache(prev => ({ ...prev, [key]: key }))
       }
