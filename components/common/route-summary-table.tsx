@@ -52,10 +52,7 @@ export const RouteSummaryTable: React.FC<RouteSummaryTableProps> = ({
 }) => {
   const { companyColor, apiKey } = useWhiteLabelContext()
   
-  // Popup state for adopted_capacity
-  const [popupAnchor, setPopupAnchor] = useState<HTMLElement | null>(null)
-  const [popupRoute, setPopupRoute] = useState<any>(null)
-  const [popupPosition, setPopupPosition] = useState<{ x: number; y: number }>({ x: 0, y: 0 })
+
 
   const formatDuration = (seconds: number) => {
     const hours = Math.floor(seconds / 3600)
@@ -191,16 +188,132 @@ export const RouteSummaryTable: React.FC<RouteSummaryTableProps> = ({
     }
   }
 
-  // Mouse event handlers for adopted_capacity popup
-  const handleMouseEnter = (event: React.MouseEvent<HTMLTableRowElement>, route: any) => {
-    setPopupAnchor(event.currentTarget)
-    setPopupRoute(route)
-    setPopupPosition({ x: event.clientX, y: event.clientY })
+
+
+  // Function to calculate tank capacity distribution
+  const calculateTankCapacityDistribution = (vehicleId: string, adoptedCapacity: number[]) => {
+    if (!vehicleId || !adoptedCapacity || !Array.isArray(adoptedCapacity)) {
+      return []
+    }
+
+    // Extract tank configuration from first token (before first '|')
+    const firstToken = vehicleId.split('|')[0]
+    const tankCapacities = firstToken.split(',').map(cap => parseInt(cap.trim())).filter(cap => !isNaN(cap))
+    
+    if (tankCapacities.length === 0) {
+      return []
+    }
+
+    // Get capacity type labels
+    const capacityTypeLabels = adoptedCapacity.map((_, index) => {
+      switch (index) {
+        case 0:
+          return process.env.NEXT_PUBLIC_CAP_TYPE_1 || `Capacity ${index + 1}`
+        case 1:
+          return process.env.NEXT_PUBLIC_CAP_TYPE_2 || `Capacity ${index + 1}`
+        case 2:
+          return process.env.NEXT_PUBLIC_CAP_TYPE_3 || `Capacity ${index + 1}`
+        case 3:
+          return process.env.NEXT_PUBLIC_CAP_TYPE_4 || `Capacity ${index + 1}`
+        case 4:
+          return process.env.NEXT_PUBLIC_CAP_TYPE_5 || `Capacity ${index + 1}`
+        case 5:
+          return process.env.NEXT_PUBLIC_CAP_TYPE_6 || `Capacity ${index + 1}`
+        default:
+          return `Capacity ${index + 1}`
+      }
+    })
+
+    // Create array of capacity types with their labels and amounts
+    const capacityTypes = adoptedCapacity
+      .map((amount, index) => ({
+        type: capacityTypeLabels[index],
+        amount: amount,
+        originalIndex: index
+      }))
+      .filter(cap => cap.amount > 0)
+      .sort((a, b) => b.amount - a.amount) // Sort by amount descending
+
+      // Create tank info array
+  const tankInfos = tankCapacities
+    .map((capacity, index) => ({ capacity, originalIndex: index }))
+
+  // Distribute capacity types across tanks (no mixing within tanks)
+  const tankDistribution = []
+  let remainingCapacity = [...capacityTypes]
+  let remainingTanks = [...tankInfos]
+
+  // First pass: handle exact matches
+  for (let i = 0; i < remainingTanks.length; i++) {
+    const tankInfo = remainingTanks[i]
+    const tankCapacity = tankInfo.capacity
+    const tankIndex = tankInfo.originalIndex
+
+    // Look for exact matches between tank capacity and capacity type amount
+    const exactMatch = remainingCapacity.find(cap => cap.amount === tankCapacity)
+    if (exactMatch) {
+      tankDistribution.push({
+        tankNumber: tankIndex + 1,
+        capacity: tankCapacity,
+        contents: [{
+          type: exactMatch.type,
+          amount: tankCapacity
+        }]
+      })
+
+      exactMatch.amount -= tankCapacity
+      if (exactMatch.amount <= 0) {
+        remainingCapacity = remainingCapacity.filter(cap => cap.amount > 0)
+      }
+      
+      // Remove this tank from remaining tanks
+      remainingTanks.splice(i, 1)
+      i-- // Adjust index since we removed an element
+    }
   }
 
-  const handleMouseLeave = () => {
-    setPopupAnchor(null)
-    setPopupRoute(null)
+  // Second pass: handle remaining tanks and capacity types (sorted by size)
+  const sortedRemainingTanks = remainingTanks.sort((a, b) => b.capacity - a.capacity)
+  
+  for (const tankInfo of sortedRemainingTanks) {
+    const tankCapacity = tankInfo.capacity
+    const tankIndex = tankInfo.originalIndex
+
+    if (remainingCapacity.length > 0) {
+      // Find the best capacity type for this tank - prefer smaller amounts for smaller tanks
+      let bestCapacityType = null
+      let bestFit = 0
+      
+      for (const cap of remainingCapacity) {
+        const fit = Math.min(cap.amount, tankCapacity)
+        if (fit > bestFit) {
+          bestFit = fit
+          bestCapacityType = cap
+        }
+      }
+      
+      if (bestCapacityType) {
+        const fillAmount = Math.min(bestCapacityType.amount, tankCapacity)
+        
+        tankDistribution.push({
+          tankNumber: tankIndex + 1,
+          capacity: tankCapacity,
+          contents: [{
+            type: bestCapacityType.type,
+            amount: fillAmount
+          }]
+        })
+
+        bestCapacityType.amount -= fillAmount
+        if (bestCapacityType.amount <= 0) {
+          remainingCapacity = remainingCapacity.filter(cap => cap.amount > 0)
+        }
+      }
+    }
+  }
+
+    // Sort back to original tank order
+    return tankDistribution.sort((a, b) => a.tankNumber - b.tankNumber)
   }
 
   return (
@@ -243,8 +356,6 @@ export const RouteSummaryTable: React.FC<RouteSummaryTableProps> = ({
                     cursor: 'pointer',
                     backgroundColor: expandedRoutes.has(routeIndex) ? '#f5f5f5' : 'inherit'
                   }}
-                  onMouseEnter={(e) => handleMouseEnter(e, route)}
-                  onMouseLeave={handleMouseLeave}
                 >
                   {showSelection && (
                     <TableCell onClick={(e) => e.stopPropagation()}>
@@ -324,22 +435,133 @@ export const RouteSummaryTable: React.FC<RouteSummaryTableProps> = ({
                     </Typography>
                   </TableCell>
                   <TableCell onClick={() => handleToggleRoute(routeIndex)}>
-                    {route.delivery && route.delivery.length >= 2 ? (
+                    {route.delivery && route.delivery.length > 0 ? (
                       <Box sx={{ overflow: 'hidden', textOverflow: 'ellipsis' }}>
-                        <Typography variant="body2" sx={{ display: 'block', color: '#666', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', fontSize: '0.75rem' }}>
-                          ULSD Clear: {route.delivery[0]} gal
-                        </Typography>
-                        <Typography variant="body2" sx={{ display: 'block', color: '#666', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', fontSize: '0.75rem' }}>
-                          ULSD Dyed: {route.delivery[1]} gal
-                        </Typography>
+                        {route.delivery.map((delivery: number, index: number) => {
+                          if (delivery > 0) {
+                            let capTypeLabel = `Capacity ${index + 1}`
+                            
+                            // Use environment variables for capacity type labels
+                            switch (index) {
+                              case 0:
+                                capTypeLabel = process.env.NEXT_PUBLIC_CAP_TYPE_1 || capTypeLabel
+                                break
+                              case 1:
+                                capTypeLabel = process.env.NEXT_PUBLIC_CAP_TYPE_2 || capTypeLabel
+                                break
+                              case 2:
+                                capTypeLabel = process.env.NEXT_PUBLIC_CAP_TYPE_3 || capTypeLabel
+                                break
+                              case 3:
+                                capTypeLabel = process.env.NEXT_PUBLIC_CAP_TYPE_4 || capTypeLabel
+                                break
+                              case 4:
+                                capTypeLabel = process.env.NEXT_PUBLIC_CAP_TYPE_5 || capTypeLabel
+                                break
+                              case 5:
+                                capTypeLabel = process.env.NEXT_PUBLIC_CAP_TYPE_6 || capTypeLabel
+                                break
+                            }
+                            
+                            return (
+                              <Typography key={index} variant="body2" sx={{ display: 'block', color: '#666', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', fontSize: '0.75rem' }}>
+                                {capTypeLabel}: {delivery} gal
+                              </Typography>
+                            )
+                          }
+                          return null
+                        })}
                         <Typography variant="body2" sx={{ display: 'block', fontWeight: 'bold', color: companyColor, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', fontSize: '0.75rem' }}>
-                          Total: {route.delivery[0] + route.delivery[1] + route.delivery[2] + route.delivery[3] + route.delivery[4]} gal
+                          Total: {route.delivery.reduce((sum: number, delivery: number) => sum + delivery, 0)} gal
                         </Typography>
+                        
+                        {/* Tank Distribution Details */}
+                        {route.vehicle && route.vehicle.includes('|') && route.delivery && (
+                          <Box sx={{ mt: 1, pt: 1, borderTop: '1px solid #eee' }}>
+                            {(() => {
+                              const tankDistribution = calculateTankCapacityDistribution(route.vehicle, route.delivery)
+                              const firstToken = route.vehicle.split('|')[0]
+                              const tankCapacities = firstToken.split(',').map((cap: string) => parseInt(cap.trim())).filter((cap: number) => !isNaN(cap))
+                              
+                              // Filter to only show tanks that have adopted capacity allocation
+                              const usedTankNumbers = new Set<number>()
+                              tankDistribution.forEach((tank: any) => {
+                                usedTankNumbers.add(tank.tankNumber)
+                              })
+                              
+                              // Create a map of tank distribution for easy lookup
+                              const tankMap = new Map<number, any>()
+                              tankDistribution.forEach((tank: any) => {
+                                tankMap.set(tank.tankNumber, tank)
+                              })
+                              
+                              // Generate colors for capacity types
+                              const capacityColors: { [key: string]: string } = {
+                                'ULSD_CLEAR': '#4CAF50',
+                                'ULSD_DYED': '#2196F3',
+                                'GASOLINE_UNL': '#FF9800',
+                                'GASOLINE_UNL_PRE': '#FF5722',
+                                'REC_90_GASOLINE': '#9C27B0',
+                                'DEF': '#607D8B'
+                              }
+                              
+                              return tankCapacities
+                                .map((capacity: number, index: number) => {
+                                  const tankNumber = index + 1
+                                  return { capacity, tankNumber, index }
+                                })
+                                .filter((tankInfo: any) => usedTankNumbers.has(tankInfo.tankNumber))
+                                .map((tankInfo: any) => {
+                                  const tank = tankMap.get(tankInfo.tankNumber)
+                                  
+                                  return (
+                                    <Box key={tankInfo.index} sx={{ mb: 0.5 }}>
+                                      <Box
+                                        sx={{
+                                          width: '100%',
+                                          height: '16px',
+                                          backgroundColor: '#f5f5f5',
+                                          borderRadius: '2px',
+                                          overflow: 'hidden',
+                                          display: 'flex',
+                                          alignItems: 'center',
+                                          justifyContent: 'flex-start',
+                                          position: 'relative'
+                                        }}
+                                      >
+                                        {tank.contents.map((content: any, contentIndex: number) => (
+                                          <Box
+                                            key={contentIndex}
+                                            sx={{
+                                              width: `${(content.amount / tankInfo.capacity) * 100}%`,
+                                              height: '100%',
+                                              backgroundColor: capacityColors[content.type] || '#666',
+                                              display: 'flex',
+                                              alignItems: 'center',
+                                              justifyContent: 'center',
+                                              color: 'white',
+                                              fontSize: '0.6rem',
+                                              fontWeight: 'bold',
+                                              textAlign: 'center',
+                                              padding: '0 2px',
+                                              boxSizing: 'border-box',
+                                              whiteSpace: 'nowrap',
+                                              overflow: 'hidden',
+                                              textOverflow: 'ellipsis'
+                                            }}
+                                            title={`${content.amount} ${content.type}`}
+                                          >
+                                            {content.amount} {content.type}
+                                          </Box>
+                                        ))}
+                                      </Box>
+                                    </Box>
+                                  )
+                                })
+                            })()}
+                          </Box>
+                        )}
                       </Box>
-                    ) : route.delivery && route.delivery.length > 0 ? (
-                      <Typography variant="body2" sx={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
-                        {route.delivery.join(', ')}
-                      </Typography>
                     ) : (
                       <Typography variant="body2" sx={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
                         -
@@ -395,20 +617,46 @@ export const RouteSummaryTable: React.FC<RouteSummaryTableProps> = ({
                                     {step.service ? formatDuration(step.service) : '-'}
                                   </TableCell>
                                   <TableCell sx={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
-                                    {step.load && step.load.length >= 2 ? (
+                                    {step.load && step.load.length > 0 ? (
                                       <Box>
-                                        <Typography variant="body2" sx={{ display: 'block', color: '#666', fontSize: '0.75rem' }}>
-                                          ULSD Clear: {step.load[0]} gal
-                                        </Typography>
-                                        <Typography variant="body2" sx={{ display: 'block', color: '#666', fontSize: '0.75rem' }}>
-                                          ULSD Dyed: {step.load[1]} gal
-                                        </Typography>
+                                        {step.load.map((load: number, index: number) => {
+                                          if (load > 0) {
+                                            let capTypeLabel = `Capacity ${index + 1}`
+                                            
+                                            // Use environment variables for capacity type labels
+                                            switch (index) {
+                                              case 0:
+                                                capTypeLabel = process.env.NEXT_PUBLIC_CAP_TYPE_1 || capTypeLabel
+                                                break
+                                              case 1:
+                                                capTypeLabel = process.env.NEXT_PUBLIC_CAP_TYPE_2 || capTypeLabel
+                                                break
+                                              case 2:
+                                                capTypeLabel = process.env.NEXT_PUBLIC_CAP_TYPE_3 || capTypeLabel
+                                                break
+                                              case 3:
+                                                capTypeLabel = process.env.NEXT_PUBLIC_CAP_TYPE_4 || capTypeLabel
+                                                break
+                                              case 4:
+                                                capTypeLabel = process.env.NEXT_PUBLIC_CAP_TYPE_5 || capTypeLabel
+                                                break
+                                              case 5:
+                                                capTypeLabel = process.env.NEXT_PUBLIC_CAP_TYPE_6 || capTypeLabel
+                                                break
+                                            }
+                                            
+                                            return (
+                                              <Typography key={index} variant="body2" sx={{ display: 'block', color: '#666', fontSize: '0.75rem' }}>
+                                                {capTypeLabel}: {load} gal
+                                              </Typography>
+                                            )
+                                          }
+                                          return null
+                                        })}
                                         <Typography variant="body2" sx={{ display: 'block', fontWeight: 'bold', color: companyColor, fontSize: '0.75rem' }}>
-                                          Total: {step.load[0] + step.load[1]} gal
+                                          Total: {step.load.reduce((sum: number, load: number) => sum + load, 0)} gal
                                         </Typography>
                                       </Box>
-                                    ) : step.load && step.load.length > 0 ? (
-                                      step.load.join(', ')
                                     ) : (
                                       '-'
                                     )}
@@ -428,51 +676,6 @@ export const RouteSummaryTable: React.FC<RouteSummaryTableProps> = ({
         </Table>
       </TableContainer>
       
-      {/* Adopted Capacity Popup */}
-      {popupAnchor && popupRoute && (
-        <Box
-          sx={{
-            position: 'fixed',
-            left: popupPosition.x + 10,
-            top: popupPosition.y - 10,
-            zIndex: 9999,
-            backgroundColor: 'white',
-            border: '1px solid #ccc',
-            borderRadius: '4px',
-            padding: '8px 12px',
-            boxShadow: '0 2px 8px rgba(0,0,0,0.15)',
-            maxWidth: '300px',
-            pointerEvents: 'none'
-          }}
-        >
-          <Typography variant="body2" sx={{ fontWeight: 'bold', mb: 1 }}>
-            Adopted Capacity:
-          </Typography>
-          {popupRoute.adopted_capacity ? (
-            Array.isArray(popupRoute.adopted_capacity) ? (
-              <Box>
-                {popupRoute.adopted_capacity.map((capacity: number, index: number) => {
-                  const capTypeKey = `NEXT_PUBLIC_CAP_TYPE_${index + 1}` as keyof typeof process.env
-                  const capTypeLabel = process.env[capTypeKey] || `Capacity ${index + 1}`
-                  return (
-                    <Typography key={index} variant="body2" sx={{ fontSize: '0.875rem' }}>
-                      {capTypeLabel}: {capacity}
-                    </Typography>
-                  )
-                })}
-              </Box>
-            ) : (
-              <Typography variant="body2" sx={{ fontSize: '0.875rem' }}>
-                {popupRoute.adopted_capacity}
-              </Typography>
-            )
-          ) : (
-            <Typography variant="body2" sx={{ fontSize: '0.875rem', color: '#666' }}>
-              null
-            </Typography>
-          )}
-        </Box>
-      )}
     </>
   )
 } 
