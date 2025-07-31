@@ -616,20 +616,14 @@ export const RouteSummaryTable: React.FC<RouteSummaryTableProps> = ({
                                         {getStepTypeIcon(step.type)}
                                         {step.type !== 'job' && <span>{step.type?.toUpperCase() || 'N/A'}</span>}
                                       </Box>
-                                      {(step.type === 'pickup' && step.pickup_id) && (
+                                      {(step.type === 'pickup' && step.id) && (
                                         <Typography variant="caption" sx={{ color: '#666', fontSize: '0.7rem', ml: 3 }}>
-                                          ID: {step.pickup_id}
+                                          ID: {step.id}
                                         </Typography>
                                       )}
-                                      {(step.type === 'delivery' && step.delivery_id) && (
+                                      {(step.type === 'delivery' && step.id) && (
                                         <Typography variant="caption" sx={{ color: '#666', fontSize: '0.7rem', ml: 3 }}>
-                                          ID: {step.delivery_id}
-                                        </Typography>
-                                      )}
-                                      {/* Debug: Show all step properties for pickup/delivery */}
-                                      {(step.type === 'pickup' || step.type === 'delivery') && (
-                                        <Typography variant="caption" sx={{ color: 'red', fontSize: '0.6rem', ml: 3 }}>
-                                          Debug: {JSON.stringify(Object.keys(step))}
+                                          ID: {step.id}
                                         </Typography>
                                       )}
                                     </Box>
