@@ -554,14 +554,23 @@ export const RouteSummaryTable: React.FC<RouteSummaryTableProps> = ({
                                             </Box>
                                           ))
                                         ) : (
-                                          // Empty tank - show blank bar
+                                          // Empty tank - show blank bar with "empty" label
                                           <Box
                                             sx={{
                                               width: '100%',
                                               height: '100%',
-                                              backgroundColor: 'transparent'
+                                              backgroundColor: 'transparent',
+                                              display: 'flex',
+                                              alignItems: 'center',
+                                              justifyContent: 'center',
+                                              color: '#999',
+                                              fontSize: '0.6rem',
+                                              fontWeight: 'bold',
+                                              textAlign: 'center'
                                             }}
-                                          />
+                                          >
+                                            empty
+                                          </Box>
                                         )}
                                       </Box>
                                     </Box>
