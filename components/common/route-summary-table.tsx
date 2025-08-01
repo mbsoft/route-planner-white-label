@@ -569,7 +569,7 @@ export const RouteSummaryTable: React.FC<RouteSummaryTableProps> = ({
                                               textAlign: 'center'
                                             }}
                                           >
-                                            empty
+                                            EMPTY
                                           </Box>
                                         )}
                                       </Box>
