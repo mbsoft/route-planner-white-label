@@ -488,12 +488,6 @@ export const RouteSummaryTable: React.FC<RouteSummaryTableProps> = ({
                               const firstToken = route.vehicle.split('|')[0]
                               const tankCapacities = firstToken.split(',').map((cap: string) => parseInt(cap.trim())).filter((cap: number) => !isNaN(cap))
                               
-                              // Filter to only show tanks that have adopted capacity allocation
-                              const usedTankNumbers = new Set<number>()
-                              tankDistribution.forEach((tank: any) => {
-                                usedTankNumbers.add(tank.tankNumber)
-                              })
-                              
                               // Create a map of tank distribution for easy lookup
                               const tankMap = new Map<number, any>()
                               tankDistribution.forEach((tank: any) => {
@@ -515,7 +509,6 @@ export const RouteSummaryTable: React.FC<RouteSummaryTableProps> = ({
                                   const tankNumber = index + 1
                                   return { capacity, tankNumber, index }
                                 })
-                                .filter((tankInfo: any) => usedTankNumbers.has(tankInfo.tankNumber))
                                 .map((tankInfo: any) => {
                                   const tank = tankMap.get(tankInfo.tankNumber)
                                   
@@ -534,31 +527,51 @@ export const RouteSummaryTable: React.FC<RouteSummaryTableProps> = ({
                                           position: 'relative'
                                         }}
                                       >
-                                        {tank.contents.map((content: any, contentIndex: number) => (
+                                        {tank ? (
+                                          tank.contents.map((content: any, contentIndex: number) => (
+                                            <Box
+                                              key={contentIndex}
+                                              sx={{
+                                                width: `${(content.amount / tankInfo.capacity) * 100}%`,
+                                                height: '100%',
+                                                backgroundColor: capacityColors[content.type] || '#666',
+                                                display: 'flex',
+                                                alignItems: 'center',
+                                                justifyContent: 'center',
+                                                color: 'white',
+                                                fontSize: '0.6rem',
+                                                fontWeight: 'bold',
+                                                textAlign: 'center',
+                                                padding: '0 2px',
+                                                boxSizing: 'border-box',
+                                                whiteSpace: 'nowrap',
+                                                overflow: 'hidden',
+                                                textOverflow: 'ellipsis'
+                                              }}
+                                              title={`${content.amount} ${content.type}`}
+                                            >
+                                              {content.amount} {content.type}
+                                            </Box>
+                                          ))
+                                        ) : (
+                                          // Empty tank - show blank bar with "empty" label
                                           <Box
-                                            key={contentIndex}
                                             sx={{
-                                              width: `${(content.amount / tankInfo.capacity) * 100}%`,
+                                              width: '100%',
                                               height: '100%',
-                                              backgroundColor: capacityColors[content.type] || '#666',
+                                              backgroundColor: 'transparent',
                                               display: 'flex',
                                               alignItems: 'center',
                                               justifyContent: 'center',
-                                              color: 'white',
+                                              color: '#999',
                                               fontSize: '0.6rem',
                                               fontWeight: 'bold',
-                                              textAlign: 'center',
-                                              padding: '0 2px',
-                                              boxSizing: 'border-box',
-                                              whiteSpace: 'nowrap',
-                                              overflow: 'hidden',
-                                              textOverflow: 'ellipsis'
+                                              textAlign: 'center'
                                             }}
-                                            title={`${content.amount} ${content.type}`}
                                           >
-                                            {content.amount} {content.type}
+                                            EMPTY
                                           </Box>
-                                        ))}
+                                        )}
                                       </Box>
                                     </Box>
                                   )
