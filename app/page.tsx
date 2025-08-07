@@ -49,8 +49,12 @@ export default function HomePage() {
   const [preferences, setPreferences] = useState<PreferencesInput>({
     routing: {
       mode: 'car',
+      use_depot: false,
+      depot_runs: 1,
     },
-    constraints: {},
+    constraints: {
+      max_working_time: 10,
+    },
     objective: {
       travel_cost: 'duration',
     },
@@ -309,6 +313,7 @@ export default function HomePage() {
   }
 
   const handlePreferencesChange = (newPreferences: PreferencesInput) => {
+    console.log('Preferences changed:', newPreferences)
     setPreferences(newPreferences)
   }
 

@@ -256,6 +256,7 @@ const enTranslations = {
     "maxAllowedDelay": "Max allowed delay",
     "maxPauseBetweenTasks": "Max Pause Between Tasks",
     "driverBreakTime": "Driver Break Time",
+    "maxWorkingTime": "Max Working Time",
     "routingConfiguration": "Routing Configuration",
     "truck": "Truck",
     "car": "Car",
@@ -267,7 +268,8 @@ const enTranslations = {
     "routeAvoidances": "Route Avoidances",
     "hazardousMaterialTypes": "HAZMAT",
     "selectHazardClass": "Select hazard class...",
-    "clearSelection": "Clear selection"
+    "clearSelection": "Clear selection",
+    "useDepot": "Use Depot"
   },
   "hazmatTypes": {
     "explosives": "Explosives",
@@ -645,6 +647,7 @@ const esMxTranslations = {
     "maxAllowedDelay": "Retraso máximo permitido",
     "maxPauseBetweenTasks": "Pausa Máxima Entre Tareas",
     "driverBreakTime": "Tiempo de Descanso del Conductor",
+    "maxWorkingTime": "Tiempo Máximo de Trabajo",
     "routingConfiguration": "Configuración de Enrutamiento",
     "truck": "Camión",
     "car": "Auto",
@@ -656,7 +659,8 @@ const esMxTranslations = {
     "routeAvoidances": "Evitaciones de Ruta",
     "hazardousMaterialTypes": "HAZMAT",
     "selectHazardClass": "Seleccionar clase de peligro...",
-    "clearSelection": "Limpiar selección"
+    "clearSelection": "Limpiar selección",
+    "useDepot": "Usar Depósito"
   },
   "hazmatTypes": {
     "explosives": "Explosivos",
@@ -1034,6 +1038,7 @@ const ptBrTranslations = {
     "maxAllowedDelay": "Atraso máximo permitido",
     "maxPauseBetweenTasks": "Pausa Máxima Entre Tarefas",
     "driverBreakTime": "Tempo de Descanso do Motorista",
+    "maxWorkingTime": "Tempo Máximo de Trabalho",
     "routingConfiguration": "Configuração de Roteamento",
     "truck": "Caminhão",
     "car": "Carro",
@@ -1045,7 +1050,8 @@ const ptBrTranslations = {
     "routeAvoidances": "Evitamentos de Rota",
     "hazardousMaterialTypes": "HAZMAT",
     "selectHazardClass": "Selecionar classe de perigo...",
-    "clearSelection": "Limpar seleção"
+    "clearSelection": "Limpar seleção",
+    "useDepot": "Usar Depósito"
   },
   "hazmatTypes": {
     "explosives": "Explosivos",
@@ -1423,6 +1429,7 @@ const caFrTranslations = {
     "maxAllowedDelay": "Délai maximum autorisé",
     "maxPauseBetweenTasks": "Pause Maximum Entre les Tâches",
     "driverBreakTime": "Temps de Pause du Conducteur",
+    "maxWorkingTime": "Temps Maximum de Travail",
     "routingConfiguration": "Configuration de Routage",
     "truck": "Camion",
     "car": "Voiture",
@@ -1434,7 +1441,8 @@ const caFrTranslations = {
     "routeAvoidances": "Évitements de Route",
     "hazardousMaterialTypes": "HAZMAT",
     "selectHazardClass": "Sélectionner la classe de danger...",
-    "clearSelection": "Effacer la sélection"
+    "clearSelection": "Effacer la sélection",
+    "useDepot": "Utiliser le Dépôt"
   },
   "hazmatTypes": {
     "explosives": "Explosifs",

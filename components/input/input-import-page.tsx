@@ -55,7 +55,7 @@ interface OptimizationMvrpOrderJobV2 {
 
 interface OptimizationMvrpOrderVehicleV2 {
   id: string | number
-  start_index: number
+  start_index?: number
   end_index?: number
   capacity?: number[]
   alternative_capacities?: number[][]
@@ -66,8 +66,12 @@ interface OptimizationMvrpOrderVehicleV2 {
   }
   max_tasks?: number
   max_travel_cost?: number
+  max_depot_runs?: number
+  max_working_time?: number
   description?: string
   depot?: number
+  start_depot_ids?: string[]
+  end_depot_ids?: string[]
   break?: {
     id: number
     service?: number
@@ -116,6 +120,13 @@ interface OptimizationMvrpOrderRequestV2 {
     description: string
     location: string[]
   }
+  depots?: {
+    id: string
+    location_index: number
+    description: string
+    time_windows?: number[][]
+    service?: number
+  }[]
   options?: {
     objective?: {
       travel_cost?: string
@@ -134,6 +145,8 @@ interface OptimizationMvrpOrderRequestV2 {
       traffic_timestamp?: number
       truck_size?: string
       truck_weight?: number
+      avoid?: string[]
+      hazmat_type?: string[]
     }
   }
 }
@@ -934,12 +947,81 @@ export const InputImportPage = ({ currentStep, onStepChange, preferences, onPref
         throw new Error('No locations were found. Please check your location mapping.');
       }
       
+      // Handle depot logic if "Use Depot" is enabled
+      let depots: any[] = [];
+      let updatedVehicles = [...normalizedVehicles];
+      
+      if (preferences?.routing?.use_depot) {
+        // Create depot from first shipment's pickup location
+        if (useCase === 'shipments' && normalizedShipments.length > 0) {
+          const firstShipment = normalizedShipments[0];
+          const depotLocationIndex = firstShipment.pickup.location_index;
+          const depotDescription = firstShipment.pickup.description;
+          const depotService = firstShipment.pickup.service || 0;
+          
+          // Create time window for July 16, 2025 EDT
+          // 06:00-23:00 EDT
+          const july16_2025_06_00 = Math.floor(new Date('2025-07-16T10:00:00Z').getTime() / 1000); // 06:00 EDT = 10:00 UTC
+          const july16_2025_23_00 = Math.floor(new Date('2025-07-17T03:00:00Z').getTime() / 1000); // 23:00 EDT = 03:00 UTC (next day)
+          
+          const depot = {
+            id: depotDescription,
+            location_index: depotLocationIndex,
+            description: depotDescription,
+            time_windows: [
+              [july16_2025_06_00, july16_2025_23_00]
+            ],
+            service: depotService
+          };
+          
+          depots = [depot];
+          
+          // Update all vehicles to use the depot
+          updatedVehicles = normalizedVehicles.map(vehicle => {
+            const { start_index, end_index, ...vehicleWithoutIndices } = vehicle;
+            return {
+              ...vehicleWithoutIndices,
+              start_depot_ids: [depotDescription || 'depot'],
+              end_depot_ids: [depotDescription || 'depot'],
+              max_depot_runs: preferences?.routing?.depot_runs || 1,
+              time_window: [july16_2025_06_00, july16_2025_23_00],
+              ...(preferences?.constraints?.max_working_time && preferences.constraints.max_working_time > 0 && {
+                max_working_time: Math.round(preferences.constraints.max_working_time * 3600) // Convert hours to seconds
+              })
+            };
+          });
+        }
+      }
+      
+      // Add max_working_time to all vehicles if specified (only when depot is not enabled)
+      console.log('🔍 Max working time preference:', preferences?.constraints?.max_working_time);
+      console.log('🔍 Max working time type:', typeof preferences?.constraints?.max_working_time);
+      console.log('🔍 Max working time truthy check:', !!preferences?.constraints?.max_working_time);
+      console.log('🔍 Use depot enabled:', preferences?.routing?.use_depot);
+      
+      if (!preferences?.routing?.use_depot && preferences?.constraints?.max_working_time && preferences.constraints.max_working_time > 0) {
+        console.log('🔍 Adding max_working_time to vehicles (non-depot mode)');
+        updatedVehicles = updatedVehicles.map(vehicle => {
+          const maxWorkingTimeSeconds = Math.round((preferences.constraints.max_working_time || 0) * 3600);
+          console.log('🔍 Converting', preferences.constraints.max_working_time, 'hours to', maxWorkingTimeSeconds, 'seconds');
+          return {
+            ...vehicle,
+            max_working_time: maxWorkingTimeSeconds
+          };
+        });
+      } else if (preferences?.routing?.use_depot) {
+        console.log('🔍 Max working time already applied in depot mode');
+      } else {
+        console.log('🔍 No max_working_time preference found');
+      }
+      
       // Build the optimization request
       const optimizationRequest: OptimizationMvrpOrderRequestV2 = {
         ...(useCase === 'jobs' && { jobs: normalizedJobs }),
         ...(useCase === 'shipments' && { shipments: normalizedShipments }),
-        vehicles: normalizedVehicles,
+        vehicles: updatedVehicles,
         locations: locations,
+        ...(depots.length > 0 && { depots: depots }),
         options: {
           objective: {
             travel_cost: (preferences?.objective?.travel_cost && 
@@ -969,6 +1051,12 @@ export const InputImportPage = ({ currentStep, onStepChange, preferences, onPref
             ...(preferences?.routing?.mode === 'truck' && preferences?.routing?.truck_weight && {
               truck_weight: preferences.routing.truck_weight
             }),
+            ...(preferences?.routing?.avoid && preferences.routing.avoid.length > 0 && {
+              avoid: preferences.routing.avoid
+            }),
+            ...(preferences?.routing?.hazmat_type && preferences.routing.hazmat_type.length > 0 && {
+              hazmat_type: preferences.routing.hazmat_type
+            }),
           },
         },
       };
@@ -986,6 +1074,15 @@ export const InputImportPage = ({ currentStep, onStepChange, preferences, onPref
         locationsCount: optimizationRequest.locations.location.length,
         options: optimizationRequest.options
       })
+      console.log('🚀 Routing options:', optimizationRequest.options?.routing)
+      console.log('🚀 Avoid preferences:', preferences?.routing?.avoid)
+      console.log('🚀 HAZMAT preferences:', preferences?.routing?.hazmat_type)
+      console.log('🚀 Use Depot:', preferences?.routing?.use_depot)
+      console.log('🚀 Depot Runs:', preferences?.routing?.depot_runs)
+      console.log('🚀 Max Working Time:', preferences?.constraints?.max_working_time)
+      console.log('🚀 Depots:', depots)
+      console.log('🚀 Updated vehicles:', updatedVehicles)
+      console.log('🚀 First vehicle max_working_time:', updatedVehicles[0]?.max_working_time)
       
       // Send the optimization request
       const response = await apiClient.createOptimizationRequest(optimizationRequest)
