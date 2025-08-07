@@ -12,6 +12,9 @@ import {
   Select,
   FormControl,
   InputLabel,
+  FormControlLabel,
+  Checkbox,
+  Typography,
 } from '@mui/material'
 import DirectionsIcon from '@mui/icons-material/Directions'
 import {PreferencesPanel} from './preferences-panel'
@@ -61,6 +64,8 @@ export interface RoutingPreferences {
     avoid?: string[]
     hazmat_type?: string[]
     selected_hazmat_class?: string // Store the selected class for UI purposes
+    use_depot?: boolean
+    depot_runs?: number
   }
 }
 
@@ -73,6 +78,11 @@ export function RoutingPanel({ preferences, onPreferencesChange }: RoutingPanelP
   const { routing } = preferences
   const { companyColor } = useWhiteLabelContext()
   const { t } = useLanguage()
+  
+  console.log('RoutingPanel rendered with preferences:', preferences)
+  console.log('Routing preferences:', routing)
+  console.log('Use Depot checkbox value:', routing.use_depot)
+  console.log('🔍 DEPOT CHECKBOX TEST - Component should be visible with red border and yellow background')
 
   const setTransportMode = (value: string) => {
     if (value === 'truck') {
@@ -161,6 +171,26 @@ export function RoutingPanel({ preferences, onPreferencesChange }: RoutingPanelP
     })
   }
 
+  const setUseDepot = (value: boolean) => {
+    onPreferencesChange({
+      ...preferences,
+      routing: {
+        ...routing,
+        use_depot: value,
+      },
+    })
+  }
+
+  const setDepotRuns = (value: number) => {
+    onPreferencesChange({
+      ...preferences,
+      routing: {
+        ...routing,
+        depot_runs: value,
+      },
+    })
+  }
+
   const isTruckSizeValid = !routing.truck_size || validateTruckSize(routing.truck_size)
 
 
@@ -204,6 +234,47 @@ export function RoutingPanel({ preferences, onPreferencesChange }: RoutingPanelP
         </ToggleButtonGroup>
 
         <Grid container spacing={2}>
+          <Grid item xs={6}>
+            <FormControlLabel
+              control={
+                <Checkbox
+                  checked={routing.use_depot || false}
+                  onChange={(e) => setUseDepot(e.target.checked)}
+                  color="primary"
+                  sx={{ 
+                    '& .MuiSvgIcon-root': { 
+                      fontSize: '1.5rem' 
+                    }
+                  }}
+                />
+              }
+              label={t('preferences.useDepot') || 'Use Depot'}
+              sx={{ 
+                fontSize: '1rem',
+                fontWeight: '500',
+                border: '2px solid red',
+                padding: '10px',
+                backgroundColor: 'yellow'
+              }}
+            />
+          </Grid>
+          <Grid item xs={6}>
+            <TextField
+              label="Depot Runs"
+              type="number"
+              value={routing.depot_runs || 1}
+              onChange={(e) => setDepotRuns(Number(e.target.value))}
+              size="small"
+              fullWidth
+              inputProps={{
+                min: 1,
+                max: 10
+              }}
+              disabled={!routing.use_depot}
+              helperText="Max 10 runs"
+              FormHelperTextProps={{ sx: { fontSize: '13px' } }}
+            />
+          </Grid>
           <Grid item xs={4}>
             <TextField
               label={t('preferences.trafficTimestamp')}
