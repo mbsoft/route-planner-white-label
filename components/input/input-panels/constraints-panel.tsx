@@ -16,6 +16,7 @@ export interface ConstraintsPreferences {
     max_visit_lateness?: number
     max_activity_waiting_time?: number
     driver_break_time?: number
+    max_working_time?: number
   }
 }
 
@@ -65,6 +66,16 @@ export function ConstraintsPanel({ preferences, onPreferencesChange }: Constrain
       constraints: {
         ...constraints,
         driver_break_time: value,
+      },
+    })
+  }
+
+  const setMaxWorkingTime = (value: number) => {
+    onPreferencesChange({
+      ...preferences,
+      constraints: {
+        ...constraints,
+        max_working_time: value,
       },
     })
   }
@@ -126,6 +137,23 @@ export function ConstraintsPanel({ preferences, onPreferencesChange }: Constrain
               fullWidth
               InputProps={{
                 endAdornment: <InputAdornment position="end">sec</InputAdornment>,
+              }}
+            />
+          </Grid>
+          <Grid item xs={3}>
+            <TextField
+              label={t('preferences.maxWorkingTime')}
+              type="number"
+              value={constraints.max_working_time || 10}
+              onChange={(e) => setMaxWorkingTime(Number(e.target.value))}
+              size="small"
+              fullWidth
+              inputProps={{
+                min: 1,
+                max: 24
+              }}
+              InputProps={{
+                endAdornment: <InputAdornment position="end">hrs</InputAdornment>,
               }}
             />
           </Grid>
