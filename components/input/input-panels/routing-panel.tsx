@@ -82,7 +82,7 @@ export function RoutingPanel({ preferences, onPreferencesChange }: RoutingPanelP
   console.log('RoutingPanel rendered with preferences:', preferences)
   console.log('Routing preferences:', routing)
   console.log('Use Depot checkbox value:', routing.use_depot)
-  console.log('🔍 DEPOT CHECKBOX TEST - Component should be visible with red border and yellow background')
+
 
   const setTransportMode = (value: string) => {
     if (value === 'truck') {
@@ -251,10 +251,7 @@ export function RoutingPanel({ preferences, onPreferencesChange }: RoutingPanelP
               label={t('preferences.useDepot') || 'Use Depot'}
               sx={{ 
                 fontSize: '1rem',
-                fontWeight: '500',
-                border: '2px solid red',
-                padding: '10px',
-                backgroundColor: 'yellow'
+                fontWeight: '500'
               }}
             />
           </Grid>
