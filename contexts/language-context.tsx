@@ -25,7 +25,8 @@ const enTranslations = {
     "routeAnalysis": "Route Analysis",
     "information": "Information",
     "logout": "Logout",
-    "admin": "ADMIN"
+    "admin": "ADMIN",
+    "dispatcher": "DISPATCHER"
   },
   "header": {
     "planManageMonitor": "Plan, manage and monitor your routes",
@@ -420,7 +421,8 @@ const esMxTranslations = {
     "routeAnalysis": "Análisis de Rutas",
     "information": "Información",
     "logout": "Cerrar Sesión",
-    "admin": "ADMIN"
+    "admin": "ADMIN",
+    "dispatcher": "DISPATCHER"
   },
   "header": {
     "planManageMonitor": "Planifica, gestiona y monitorea tus rutas",
@@ -814,7 +816,8 @@ const ptBrTranslations = {
     "routeAnalysis": "Análise de Rotas",
     "information": "Informações",
     "logout": "Sair",
-    "admin": "ADMIN"
+    "admin": "ADMIN",
+    "dispatcher": "DISPATCHER"
   },
   "header": {
     "planManageMonitor": "Planeje, gerencie e monitore suas rotas",
@@ -1208,7 +1211,8 @@ const caFrTranslations = {
     "routeAnalysis": "Analyse d'Itinéraires",
     "information": "Informations",
     "logout": "Déconnexion",
-    "admin": "ADMIN"
+    "admin": "ADMIN",
+    "dispatcher": "DISPATCHER"
   },
   "header": {
     "planManageMonitor": "Planifiez, gérez et surveillez vos itinéraires",

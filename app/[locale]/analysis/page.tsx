@@ -66,7 +66,7 @@ export default function RouteAnalysisPage() {
   const tFooter = useTranslations('footer')
   
   const router = useRouter()
-  const { isAdmin } = useAuth()
+  const { isAdmin, isDispatcher } = useAuth()
   const { companyName, companyLogo, companyColor } = useWhiteLabelContext()
   const [optimizationResults, setOptimizationResults] = useState<any[]>([])
   const [loading, setLoading] = useState(true)
@@ -694,6 +694,22 @@ export default function RouteAnalysisPage() {
                     }}
                   >
                     {tNavigation('admin')}
+                  </Typography>
+                )}
+                {isDispatcher && (
+                  <Typography
+                    variant="caption"
+                    sx={{
+                      backgroundColor: '#ff9800',
+                      color: 'white',
+                      px: 1,
+                      py: 0.5,
+                      borderRadius: '4px',
+                      fontSize: '0.7rem',
+                      fontWeight: 'bold'
+                    }}
+                  >
+                    {tNavigation('dispatcher')}
                   </Typography>
                 )}
                 <Button

@@ -126,7 +126,7 @@ Base64(username:role:timestamp)
 ```typescript
 interface SessionInfo {
   username: string
-  role: 'admin' | 'user'
+  role: 'admin' | 'user' | 'dispatcher'
   timestamp: number
 }
 ```
@@ -139,7 +139,16 @@ interface SessionInfo {
    - Can view admin-specific UI elements
    - Configured via `ADMIN_USERNAME` and `ADMIN_PASSWORD` environment variables
 
-2. **User Role**
+2. **Dispatcher Role**
+   - Can access Route Planner, Route Analysis, and Information pages
+   - Can view and run optimizations
+   - Can view optimization history (read-only)
+   - Cannot delete optimization results
+   - Cannot save or clear mapping preferences
+   - Ideal for operational staff who need to plan routes but shouldn't have administrative privileges
+   - Configured via `DISPATCHER_USERNAME` and `DISPATCHER_PASSWORD` environment variables
+
+3. **User Role**
    - Standard user access
    - Can create and view optimization results
    - Cannot delete results
@@ -186,7 +195,7 @@ The application uses Next.js middleware to protect routes:
 ```json
 {
   "success": true,
-  "role": "admin" | "user"
+  "role": "admin" | "dispatcher" | "user"
 }
 ```
 
@@ -205,7 +214,7 @@ The application uses Next.js middleware to protect routes:
 {
   "sessionInfo": {
     "username": "string",
-    "role": "admin" | "user",
+    "role": "admin" | "dispatcher" | "user",
     "timestamp": number
   },
   "success": true
@@ -504,6 +513,8 @@ TURSO_AUTH_TOKEN=your-auth-token
 # Authentication
 ADMIN_USERNAME=admin
 ADMIN_PASSWORD=secure-password
+DISPATCHER_USERNAME=dispatcher
+DISPATCHER_PASSWORD=secure-password
 USER_USERNAME=user
 USER_PASSWORD=secure-password
 

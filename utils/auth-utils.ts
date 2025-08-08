@@ -1,6 +1,6 @@
 export interface SessionInfo {
   username: string
-  role: 'admin' | 'user'
+  role: 'admin' | 'user' | 'dispatcher'
   timestamp: number
 }
 
@@ -12,7 +12,7 @@ export function decodeSession(sessionToken: string): SessionInfo | null {
     if (parts.length >= 3) {
       return {
         username: parts[0],
-        role: parts[1] as 'admin' | 'user',
+        role: parts[1] as 'admin' | 'user' | 'dispatcher',
         timestamp: parseInt(parts[2], 10)
       }
     }
@@ -24,13 +24,17 @@ export function decodeSession(sessionToken: string): SessionInfo | null {
   }
 }
 
-export function hasPermission(sessionInfo: SessionInfo | null, requiredRole: 'admin' | 'user'): boolean {
+export function hasPermission(sessionInfo: SessionInfo | null, requiredRole: 'admin' | 'user' | 'dispatcher'): boolean {
   if (!sessionInfo) return false
   
   if (requiredRole === 'admin') {
     return sessionInfo.role === 'admin'
   }
   
+  if (requiredRole === 'dispatcher') {
+    return sessionInfo.role === 'admin' || sessionInfo.role === 'dispatcher'
+  }
+  
   // User role can access user-level features
-  return sessionInfo.role === 'admin' || sessionInfo.role === 'user'
+  return sessionInfo.role === 'admin' || sessionInfo.role === 'dispatcher' || sessionInfo.role === 'user'
 } 

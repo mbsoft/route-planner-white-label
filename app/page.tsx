@@ -62,14 +62,14 @@ export default function HomePage() {
   const store = useInputStore()
   const { job, vehicle } = store.inputCore
   const { status: preferencesStatus, savePreferences, loadPreferences } = usePreferencesPersistence()
-  const { isAdmin, isUser, loading: authLoading } = useAuth()
+  const { isAdmin, isUser, isDispatcher, loading: authLoading } = useAuth()
 
-  // Redirect non-admin users to analysis page
+  // Redirect users who don't have access to Route Planner to analysis page
   useEffect(() => {
-    if (!authLoading && !isAdmin && isUser) {
+    if (!authLoading && !isAdmin && !isDispatcher && isUser) {
       router.push('/analysis')
     }
-  }, [isAdmin, isUser, authLoading, router])
+  }, [isAdmin, isUser, isDispatcher, authLoading, router])
 
   // Initialize store and load persisted mappings on mount
   React.useEffect(() => {
@@ -144,8 +144,8 @@ export default function HomePage() {
     )
   }
 
-  // Show access denied for non-admin users
-  if (!isAdmin && isUser) {
+  // Show access denied for users who don't have access to Route Planner
+  if (!isAdmin && !isDispatcher && isUser) {
     return (
       <WhiteLabelLayout>
         <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh', flexDirection: 'column' }}>
