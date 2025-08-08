@@ -33,7 +33,7 @@ export const HamburgerMenu: React.FC<HamburgerMenuProps> = ({ currentPage = 'hom
   const [isOpen, setIsOpen] = useState(false)
   const router = useRouter()
   const { companyName, companyColor } = useWhiteLabelContext()
-  const { isAdmin } = useAuth()
+  const { isAdmin, isDispatcher } = useAuth()
 
   const handleDrawerToggle = () => {
     setIsOpen(!isOpen)
@@ -51,6 +51,7 @@ export const HamburgerMenu: React.FC<HamburgerMenuProps> = ({ currentPage = 'hom
       path: '/',
       isActive: currentPage === 'home',
       adminOnly: true, // Route Planner is admin-only
+      dispatcherAccess: true, // Dispatchers can also access Route Planner
     },
     {
       text: 'Route Analysis',
@@ -58,6 +59,7 @@ export const HamburgerMenu: React.FC<HamburgerMenuProps> = ({ currentPage = 'hom
       path: '/analysis',
       isActive: currentPage === 'analysis',
       adminOnly: false, // Available to all users
+      dispatcherAccess: true, // Dispatchers can access Route Analysis
     },
     {
       text: 'Information',
@@ -65,9 +67,14 @@ export const HamburgerMenu: React.FC<HamburgerMenuProps> = ({ currentPage = 'hom
       path: '/information',
       isActive: currentPage === 'information',
       adminOnly: false, // Available to all users
+      dispatcherAccess: true, // Dispatchers can access Information
     },
   ].filter(item => {
     if (isAdmin) return true // Admin can see all items
+    if (isDispatcher) {
+      // Dispatchers can see items marked with dispatcherAccess
+      return item.dispatcherAccess || !item.adminOnly
+    }
     return !item.adminOnly // Users can only see non-admin-only items
   })
 

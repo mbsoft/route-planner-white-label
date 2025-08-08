@@ -62,7 +62,7 @@ const DEBUG_ANALYSIS = false;
 
 export default function RouteAnalysisPage() {
   const router = useRouter()
-  const { isAdmin } = useAuth()
+  const { isAdmin, isDispatcher } = useAuth()
   const { companyName, companyLogo, companyColor } = useWhiteLabelContext()
   const { t, isLoading, language, renderKey } = useLanguage()
   const [optimizationResults, setOptimizationResults] = useState<any[]>([])
@@ -739,6 +739,22 @@ export default function RouteAnalysisPage() {
                     }}
                   >
                     ADMIN
+                  </Typography>
+                )}
+                {isDispatcher && (
+                  <Typography
+                    variant="caption"
+                    sx={{
+                      backgroundColor: '#ff9800',
+                      color: 'white',
+                      px: 1,
+                      py: 0.5,
+                      borderRadius: '4px',
+                      fontSize: '0.7rem',
+                      fontWeight: 'bold'
+                    }}
+                  >
+                    DISPATCHER
                   </Typography>
                 )}
                 <LanguageSwitcher />

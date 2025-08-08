@@ -13,7 +13,7 @@ A white-label route planning application for logistics, field service optimizati
 - **Step-by-Step Workflow**: Guided import process with stepper navigation
 - **Responsive Design**: Modern UI built with Material-UI components
 - **White-Label Ready**: Easily customizable for different brands and use cases
-- **Role-Based Authentication**: Admin and User roles with different permission levels
+- **Role-Based Authentication**: Admin, Dispatcher, and User roles with different permission levels
 - **Multi-Language Support**: Internationalization (i18n) with support for multiple languages
 
 ## Internationalization (i18n)
@@ -60,13 +60,21 @@ Translations are organized into logical categories:
 
 ## Authentication & Authorization
 
-The application supports two user roles with different permission levels:
+The application supports three user roles with different permission levels:
 
 ### Admin Role
 - Full access to all features
 - Can delete optimization results
 - Can save and clear mapping preferences
 - Can access all administrative functions
+
+### Dispatcher Role
+- Can access Route Planner, Route Analysis, and Information pages
+- Can view and run optimizations
+- Can view optimization history (read-only)
+- Cannot delete optimization results
+- Cannot save or clear mapping preferences
+- Ideal for operational staff who need to plan routes but shouldn't have administrative privileges
 
 ### User Role
 - Can view and run optimizations
@@ -82,6 +90,8 @@ Set the following environment variables for authentication and configuration:
 # Authentication
 ADMIN_USERNAME=admin
 ADMIN_PASSWORD=your_secure_admin_password_here
+DISPATCHER_USERNAME=dispatcher
+DISPATCHER_PASSWORD=your_secure_dispatcher_password_here
 USER_USERNAME=user
 USER_PASSWORD=your_secure_user_password_here
 
@@ -277,4 +287,4 @@ For support and questions:
 - Built with [Next.js](https://nextjs.org/)
 - UI components from [Material-UI](https://mui.com/)
 - Map visualization powered by [DeckGL](https://deck.gl/) and [NextBillion.ai](https://nextbillion.ai/)
-- Route Optimization, Routing and Map tiles provided by [NextBillion.ai](https://nextbillion.ai/) 
+- Route Optimization, Routing and Map tiles provided by [NextBillion.ai](https://nextbillion.ai/)

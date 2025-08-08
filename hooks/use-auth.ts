@@ -30,6 +30,7 @@ export function useAuth() {
 
   const isAdmin = sessionInfo?.role === 'admin'
   const isUser = sessionInfo?.role === 'user'
+  const isDispatcher = sessionInfo?.role === 'dispatcher'
   const isAuthenticated = !!sessionInfo
 
   return {
@@ -37,6 +38,7 @@ export function useAuth() {
     loading,
     isAdmin,
     isUser,
+    isDispatcher,
     isAuthenticated
   }
 } 

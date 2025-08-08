@@ -5,6 +5,8 @@ const ADMIN_USERNAME = process.env.ADMIN_USERNAME || 'admin'
 const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || 'password'
 const USER_USERNAME = process.env.USER_USERNAME || 'user'
 const USER_PASSWORD = process.env.USER_PASSWORD || 'password'
+const DISPATCHER_USERNAME = process.env.DISPATCHER_USERNAME || 'dispatcher'
+const DISPATCHER_PASSWORD = process.env.DISPATCHER_PASSWORD || 'password'
 
 export async function POST(request: NextRequest) {
   try {
@@ -15,6 +17,10 @@ export async function POST(request: NextRequest) {
     // Check admin credentials
     if (username === ADMIN_USERNAME && password === ADMIN_PASSWORD) {
       role = 'admin'
+    }
+    // Check dispatcher credentials
+    else if (username === DISPATCHER_USERNAME && password === DISPATCHER_PASSWORD) {
+      role = 'dispatcher'
     }
     // Check user credentials
     else if (username === USER_USERNAME && password === USER_PASSWORD) {
