@@ -262,6 +262,10 @@ export const RouteSummaryTable: React.FC<RouteSummaryTableProps> = ({
           return process.env.NEXT_PUBLIC_CAP_TYPE_5 || `Capacity ${index + 1}`
         case 5:
           return process.env.NEXT_PUBLIC_CAP_TYPE_6 || `Capacity ${index + 1}`
+        case 6:
+          return process.env.NEXT_PUBLIC_CAP_TYPE_7 || `Capacity ${index + 1}`
+        case 7:
+          return process.env.NEXT_PUBLIC_CAP_TYPE_8 || `Capacity ${index + 1}`
         default:
           return `Capacity ${index + 1}`
       }
@@ -501,7 +505,9 @@ export const RouteSummaryTable: React.FC<RouteSummaryTableProps> = ({
                                 'GASOLINE_UNL': '#FF9800',
                                 'GASOLINE_UNL_PRE': '#FF5722',
                                 'REC_90_GASOLINE': '#9C27B0',
-                                'DEF': '#607D8B'
+                                'DEF': '#607D8B',
+                                'CLR_RENEWABLE':'#607D8B',
+                                'DYED_RENEWABLE':'#FF9800'
                               }
                               
                               return tankCapacities
@@ -603,6 +609,12 @@ export const RouteSummaryTable: React.FC<RouteSummaryTableProps> = ({
                                 break
                               case 5:
                                 capTypeLabel = process.env.NEXT_PUBLIC_CAP_TYPE_6 || capTypeLabel
+                                break
+                              case 6:
+                                capTypeLabel = process.env.NEXT_PUBLIC_CAP_TYPE_7 || capTypeLabel
+                                break
+                              case 7:
+                                capTypeLabel = process.env.NEXT_PUBLIC_CAP_TYPE_8 || capTypeLabel
                                 break
                             }
                             
@@ -728,6 +740,12 @@ export const RouteSummaryTable: React.FC<RouteSummaryTableProps> = ({
                                                 break
                                               case 5:
                                                 capTypeLabel = process.env.NEXT_PUBLIC_CAP_TYPE_6 || capTypeLabel
+                                                break
+                                              case 6:
+                                                capTypeLabel = process.env.NEXT_PUBLIC_CAP_TYPE_7 || capTypeLabel
+                                                break
+                                              case 7:
+                                                capTypeLabel = process.env.NEXT_PUBLIC_CAP_TYPE_8 || capTypeLabel
                                                 break
                                             }
                                             
