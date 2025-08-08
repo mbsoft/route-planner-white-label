@@ -15,7 +15,6 @@ import { PreferencesInput } from '../components/input/input-panels/preferences-p
 import { usePreferencesPersistence } from '../hooks/use-preferences-persistence'
 import { useAuth } from '../hooks/use-auth'
 import { LanguageSwitcher } from '../components/common/language-switcher'
-import { useLanguage } from '../contexts/language-context'
 import { CompanyLogo } from '../components/common/company-logo'
 
 export interface MapMarker {
@@ -63,8 +62,15 @@ export default function HomePage() {
   const store = useInputStore()
   const { job, vehicle } = store.inputCore
   const { status: preferencesStatus, savePreferences, loadPreferences } = usePreferencesPersistence()
-  const { isAdmin } = useAuth()
-  const { t, isLoading, language, renderKey } = useLanguage()
+  const { isAdmin, isUser, loading: authLoading } = useAuth()
+
+  // Redirect non-admin users to analysis page
+  useEffect(() => {
+    if (!authLoading && !isAdmin && isUser) {
+      router.push('/analysis')
+    }
+  }, [isAdmin, isUser, authLoading, router])
+
   // Initialize store and load persisted mappings on mount
   React.useEffect(() => {
     const initializeApp = async () => {
@@ -119,6 +125,47 @@ export default function HomePage() {
       savePreferencesToStorage()
     }
   }, [preferences, savePreferences, preferencesStatus.hasPreferences])
+
+  // Update markers whenever selection or data changes
+  React.useEffect(() => {
+    const jobMarkers = extractJobMarkers()
+    const vehicleMarkers = extractVehicleMarkers()
+    setMarkers([...jobMarkers, ...vehicleMarkers])
+  }, [job.rawData, job.selection, vehicle.rawData, vehicle.selection])
+
+  // Show loading while checking authentication
+  if (authLoading) {
+    return (
+      <WhiteLabelLayout>
+        <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
+          <Typography>Loading...</Typography>
+        </Box>
+      </WhiteLabelLayout>
+    )
+  }
+
+  // Show access denied for non-admin users
+  if (!isAdmin && isUser) {
+    return (
+      <WhiteLabelLayout>
+        <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh', flexDirection: 'column' }}>
+          <Typography variant="h4" sx={{ mb: 2, color: 'error.main' }}>
+            Access Denied
+          </Typography>
+          <Typography variant="body1" sx={{ mb: 2 }}>
+            You don't have permission to access the Route Planner page.
+          </Typography>
+          <Button 
+            variant="contained" 
+            onClick={() => router.push('/analysis')}
+            sx={{ backgroundColor: companyColor }}
+          >
+            Go to Route Analysis
+          </Button>
+        </Box>
+      </WhiteLabelLayout>
+    )
+  }
 
   // Helper to extract lat/lng from mapped jobs data, only for selected rows
   function extractJobMarkers() {
@@ -301,13 +348,6 @@ export default function HomePage() {
       .filter(Boolean) as MapMarker[]
   }
 
-  // Update markers whenever selection or data changes
-  React.useEffect(() => {
-    const jobMarkers = extractJobMarkers()
-    const vehicleMarkers = extractVehicleMarkers()
-    setMarkers([...jobMarkers, ...vehicleMarkers])
-  }, [job.rawData, job.selection, vehicle.rawData, vehicle.selection])
-
   const handleNextStep = (step: number) => {
     setCurrentStep(step)
   }
@@ -363,7 +403,7 @@ export default function HomePage() {
                   component="h1"
                   sx={{ color: '#333', fontWeight: 'bold', fontSize: '1.1rem' }}
                 >
-                  {t('routePlanner.pageTitle')}
+                  Plan, manage and monitor your routes
                 </Typography>
               </Box>
               <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
@@ -380,7 +420,7 @@ export default function HomePage() {
                       fontWeight: 'bold'
                     }}
                   >
-                    {t('routePlanner.admin')}
+                    ADMIN
                   </Typography>
                 )}
                 <LanguageSwitcher />
@@ -395,7 +435,7 @@ export default function HomePage() {
                     textTransform: 'none'
                   }}
                 >
-                  {t('routePlanner.logout')}
+                                      Logout
                 </Button>
               </Box>
             </Box>
@@ -439,7 +479,7 @@ export default function HomePage() {
             <Box sx={{ mt: 0, pt: 0, display: 'flex', alignItems: 'center', gap: 1 }}>
               <CompanyLogo height={40} variant="footer" />
               <Typography variant="body2" sx={{ color: '#999', fontSize: '14px' }}>
-                {t('routePlanner.poweredBy')} | {t('routePlanner.version')} | {t('routePlanner.lastUpdated')}: {new Date().toLocaleDateString()}
+                powered by NextBillion.ai | Version 1.0.0 | Last updated: {new Date().toLocaleDateString()}
               </Typography>
             </Box>
           </Box>

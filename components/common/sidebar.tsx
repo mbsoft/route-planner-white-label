@@ -27,6 +27,7 @@ import { useRouter } from 'next/navigation'
 
 import { useWhiteLabelContext } from '../../app/white-label-layout'
 import { useLanguage } from '../../contexts/language-context'
+import { useAuth } from '../../hooks/use-auth'
 
 interface SidebarProps {
   currentPage?: string
@@ -44,6 +45,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ currentPage = 'home' }) => {
   const router = useRouter()
   const { companyName, companyColor } = useWhiteLabelContext()
   const { t } = useLanguage()
+  const { isAdmin, isUser } = useAuth()
 
   // Save state to localStorage whenever it changes
   React.useEffect(() => {
@@ -66,26 +68,37 @@ export const Sidebar: React.FC<SidebarProps> = ({ currentPage = 'home' }) => {
     setIsExpanded(!isExpanded)
   }
 
-  const menuItems = useMemo(() => [
-    {
-      text: t('navigation.routePlanner'),
-      icon: <RouteIcon />,
-      path: '/',
-      isActive: currentPage === 'home',
-    },
-    {
-      text: t('navigation.routeAnalysis'),
-      icon: <AnalyticsIcon />,
-      path: '/analysis',
-      isActive: currentPage === 'analysis',
-    },
-    {
-      text: t('navigation.information'),
-      icon: <InfoIcon />,
-      path: '/information',
-      isActive: currentPage === 'information',
-    },
-  ], [t, currentPage])
+  const menuItems = useMemo(() => {
+    const items = [
+      {
+        text: t('navigation.routePlanner'),
+        icon: <RouteIcon />,
+        path: '/',
+        isActive: currentPage === 'home',
+        adminOnly: true, // Route Planner is admin-only
+      },
+      {
+        text: t('navigation.routeAnalysis'),
+        icon: <AnalyticsIcon />,
+        path: '/analysis',
+        isActive: currentPage === 'analysis',
+        adminOnly: false, // Available to all users
+      },
+      {
+        text: t('navigation.information'),
+        icon: <InfoIcon />,
+        path: '/information',
+        isActive: currentPage === 'information',
+        adminOnly: false, // Available to all users
+      },
+    ]
+
+    // Filter menu items based on user role
+    return items.filter(item => {
+      if (isAdmin) return true // Admin can see all items
+      return !item.adminOnly // Users can only see non-admin-only items
+    })
+  }, [t, currentPage, isAdmin])
 
   return (
     <Box

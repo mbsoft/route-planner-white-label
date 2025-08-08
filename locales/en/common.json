@@ -1,0 +1,65 @@
+{
+  "navigation": {
+    "routePlanner": "Route Planner",
+    "routeAnalysis": "Route Analysis",
+    "information": "Information",
+    "logout": "Logout",
+    "admin": "ADMIN"
+  },
+  "header": {
+    "planManageMonitor": "Plan, manage and monitor your routes",
+    "routePlanAnalysis": "Route Plan Analysis",
+    "informationDocumentation": "Information & Documentation",
+    "editRoute": "Edit Route"
+  },
+  "sidebar": {
+    "collapseSidebar": "Collapse sidebar",
+    "expandSidebar": "Expand sidebar"
+  },
+  "footer": {
+    "poweredBy": "powered by NextBillion.ai",
+    "version": "Version 1.0.0",
+    "lastUpdated": "Last updated"
+  },
+  "loading": {
+    "loadingRoutePlanner": "Loading Route Planner...",
+    "checkingApiConfig": "Checking API configuration..."
+  },
+  "buttons": {
+    "import": "Import",
+    "save": "Save",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "edit": "Edit",
+    "close": "Close",
+    "confirm": "Confirm",
+    "back": "Back",
+    "next": "Next",
+    "reset": "Reset",
+    "add": "Add",
+    "clear": "Clear"
+  },
+  "errors": {
+    "failedToFetch": "Failed to fetch data",
+    "failedToSave": "Failed to save changes",
+    "failedToDelete": "Failed to delete",
+    "unknownError": "Unknown error occurred",
+    "networkError": "Network error",
+    "validationError": "Validation error",
+    "accessDenied": "Access Denied",
+    "routePlannerAccessDenied": "You don't have permission to access the Route Planner page.",
+    "goToRouteAnalysis": "Go to Route Analysis"
+  },
+  "success": {
+    "changesSaved": "Changes saved successfully",
+    "dataDeleted": "Data deleted successfully",
+    "optimizationComplete": "Optimization completed successfully"
+  },
+  "language": {
+    "english": "English",
+    "spanish": "Español",
+    "portuguese": "Português",
+    "frenchCanadian": "Français Canadien",
+    "selectLanguage": "Select Language"
+  }
+}

@@ -23,6 +23,7 @@ import {
 } from '@mui/icons-material'
 import { useRouter } from 'next/navigation'
 import { useWhiteLabelContext } from '../../app/white-label-layout'
+import { useAuth } from '../../hooks/use-auth'
 
 interface HamburgerMenuProps {
   currentPage?: string
@@ -32,6 +33,7 @@ export const HamburgerMenu: React.FC<HamburgerMenuProps> = ({ currentPage = 'hom
   const [isOpen, setIsOpen] = useState(false)
   const router = useRouter()
   const { companyName, companyColor } = useWhiteLabelContext()
+  const { isAdmin } = useAuth()
 
   const handleDrawerToggle = () => {
     setIsOpen(!isOpen)
@@ -48,20 +50,26 @@ export const HamburgerMenu: React.FC<HamburgerMenuProps> = ({ currentPage = 'hom
       icon: <RouteIcon />,
       path: '/',
       isActive: currentPage === 'home',
+      adminOnly: true, // Route Planner is admin-only
     },
     {
       text: 'Route Analysis',
       icon: <AnalyticsIcon />,
       path: '/analysis',
       isActive: currentPage === 'analysis',
+      adminOnly: false, // Available to all users
     },
     {
       text: 'Information',
       icon: <InfoIcon />,
       path: '/information',
       isActive: currentPage === 'information',
+      adminOnly: false, // Available to all users
     },
-  ]
+  ].filter(item => {
+    if (isAdmin) return true // Admin can see all items
+    return !item.adminOnly // Users can only see non-admin-only items
+  })
 
   return (
     <>

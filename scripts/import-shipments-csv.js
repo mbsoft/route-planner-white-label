@@ -51,45 +51,10 @@ async function importShipmentsFromCSV() {
     
     // Ensure shipments table exists
     console.log('🔧 Ensuring shipments table exists...');
-    await turso.execute('DROP TABLE IF EXISTS shipments');
-    await turso.execute(`
-      CREATE TABLE shipments (
-        id TEXT PRIMARY KEY,
-        -- Pickup step fields
-        pickup_id TEXT,
-        pickup_description TEXT,
-        pickup_location TEXT,
-        pickup_location_index INTEGER,
-        pickup_service INTEGER,
-        pickup_setup INTEGER,
-        pickup_time_windows TEXT,
-        -- Delivery step fields
-        delivery_id TEXT,
-        delivery_description TEXT,
-        delivery_location TEXT,
-        delivery_location_index INTEGER,
-        delivery_service INTEGER,
-        delivery_setup INTEGER,
-        delivery_time_start TEXT,
-        delivery_time_end TEXT,
-        -- Shipment level fields
-        amount TEXT,
-        skills TEXT,
-        priority INTEGER,
-        zones TEXT,
-        load_types TEXT,
-        incompatible_load_types TEXT,
-        max_time_in_vehicle INTEGER,
-        revenue INTEGER,
-        outsourcing_cost INTEGER,
-        follow_lifo_order INTEGER,
-        volume TEXT,
-        joint_order INTEGER
-      )
-    `);
+    //await turso.execute('DROP TABLE IF EXISTS shipments');
     
     // Read CSV file
-    const csvPath = path.join(process.cwd(), 'shipments_phoenix_iso.csv');
+    const csvPath = path.join(process.cwd(), 'shipments_tampa.csv');
     console.log('📖 Reading CSV file:', csvPath);
     
     if (!fs.existsSync(csvPath)) {
@@ -107,7 +72,7 @@ async function importShipmentsFromCSV() {
     
     // Delete all existing shipments
     console.log('🗑️  Deleting all existing shipments...');
-    const deleteResult = await turso.execute('DELETE FROM shipments');
+    //const deleteResult = await turso.execute('DELETE FROM shipments');
     console.log(`✅ Deleted ${deleteResult.rowsAffected} existing shipments`);
     
     let importedCount = 0;
