@@ -349,6 +349,12 @@ export default function RouteAnalysisPage() {
         case 5:
           capTypeLabel = process.env.NEXT_PUBLIC_CAP_TYPE_6 || capTypeLabel
           break
+        case 6:
+          capTypeLabel = process.env.NEXT_PUBLIC_CAP_TYPE_7 || capTypeLabel
+          break
+        case 7:
+          capTypeLabel = process.env.NEXT_PUBLIC_CAP_TYPE_8 || capTypeLabel
+          break
       }
       
       return {
@@ -1397,6 +1403,8 @@ export default function RouteAnalysisPage() {
                                           if (label.includes('GASOLINE_UNL_PRE')) return '#FF5722'
                                           if (label.includes('REC_90_GASOLINE')) return '#9C27B0'
                                           if (label.includes('DEF')) return '#607D8B'
+                                          if (label.includes('CLR_RENEWABLE')) return '#607D8B'
+                                          if (label.includes('DYED_RENEWABLE')) return '#FF9800'
                                           return companyColor // fallback to company color
                                         }
                                         
