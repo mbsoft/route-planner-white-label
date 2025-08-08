@@ -65,3 +65,4 @@ generateAltCapacities.js
 .gitignore
 shipments_richmond_geocode.csv
 generalized_fuel_combinations.json
+shipments_phoenix.csv
