@@ -1,6 +1,7 @@
 const fs = require('fs')
 const child_process = require('child_process')
 const pkg = require('./package.json')
+const createNextIntlPlugin = require('next-intl/plugin')
 
 function getLastCommitDate() {
   try {
@@ -17,6 +18,8 @@ function getGitCommit() {
     return ''
   }
 }
+
+const withNextIntl = createNextIntlPlugin('./i18n.ts')
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
@@ -55,4 +58,4 @@ const nextConfig = {
   },
 }
 
-module.exports = nextConfig 
+module.exports = withNextIntl(nextConfig) 

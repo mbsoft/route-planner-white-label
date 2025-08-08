@@ -68,7 +68,7 @@ async function importShipments() {
     console.log('Starting shipments import via API...');
     
     // Read CSV file
-    const csvPath = path.join(process.cwd(), 'shipments_phoenix.csv');
+    const csvPath = path.join(process.cwd(), 'shipments_richmond.csv');
     console.log('Reading CSV file:', csvPath);
     
     if (!fs.existsSync(csvPath)) {
@@ -108,18 +108,18 @@ async function importShipments() {
             pickup_id: shipment.pickup_id?.replace(/"/g, ''),
             pickup_description: shipment.pickup_description?.replace(/"/g, ''),
             pickup_location_index: null, // Will be set during optimization
+            pickup_location: shipment.pickup_location,
             pickup_service: 0, // Default service time
             pickup_setup: parseInt(shipment.pickup_setup) || 0,
             pickup_time_windows: null, // No pickup time windows in CSV
             delivery_id: shipment.delivery_id?.replace(/"/g, ''),
             delivery_description: shipment.delivery_description?.replace(/"/g, ''),
             delivery_location_index: null, // Will be set during optimization
+            delivery_location: shipment.delivery_location,
             delivery_service: parseInt(shipment.delivery_service) || 0,
             delivery_setup: 0, // No delivery setup in CSV
-            delivery_time_windows: JSON.stringify([
-              datetimeToUnix(shipment.delivery_time_start),
-              datetimeToUnix(shipment.delivery_time_end)
-            ]),
+            delivery_time_start: shipment.delivery_time_start,
+            delivery_time_end: shipment.delivery_time_end,
             amount: shipment.amount?.replace(/"/g, ''),
             skills: null,
             priority: 0,

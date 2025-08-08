@@ -51,3 +51,17 @@ vehicles*.csv
 
 # Default logo files
 company_logo.svg
+shipments_tampa.csv
+.gitignore
+.gitignore
+generalized_fuel_combinations_deduped.json
+.gitignore
+jobs_richmond.json
+shipments_michigan.csv
+scripts/*
+vehicles_tampa.json
+shipments_richmond.csv
+generateAltCapacities.js
+.gitignore
+shipments_richmond_geocode.csv
+generalized_fuel_combinations.json

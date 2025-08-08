@@ -295,7 +295,10 @@ const enTranslations = {
     "failedToDelete": "Failed to delete",
     "unknownError": "Unknown error occurred",
     "networkError": "Network error",
-    "validationError": "Validation error"
+    "validationError": "Validation error",
+    "accessDenied": "Access Denied",
+    "routePlannerAccessDenied": "You don't have permission to access the Route Planner page.",
+    "goToRouteAnalysis": "Go to Route Analysis"
   },
   "success": {
     "changesSaved": "Changes saved successfully",
@@ -686,7 +689,10 @@ const esMxTranslations = {
     "failedToDelete": "Error al eliminar",
     "unknownError": "Error desconocido",
     "networkError": "Error de red",
-    "validationError": "Error de validación"
+    "validationError": "Error de validación",
+    "accessDenied": "Acceso Denegado",
+    "routePlannerAccessDenied": "No tienes permiso para acceder a la página del Planificador de Rutas.",
+    "goToRouteAnalysis": "Ir al Análisis de Rutas"
   },
   "success": {
     "changesSaved": "Cambios guardados exitosamente",
@@ -1077,7 +1083,10 @@ const ptBrTranslations = {
     "failedToDelete": "Falha ao excluir",
     "unknownError": "Erro desconhecido",
     "networkError": "Erro de rede",
-    "validationError": "Erro de validação"
+    "validationError": "Erro de validação",
+    "accessDenied": "Acesso Negado",
+    "routePlannerAccessDenied": "Você não tem permissão para acessar a página do Planejador de Rotas.",
+    "goToRouteAnalysis": "Ir para Análise de Rotas"
   },
   "success": {
     "changesSaved": "Alterações salvas com sucesso",
@@ -1468,7 +1477,10 @@ const caFrTranslations = {
     "failedToDelete": "Échec de la suppression",
     "unknownError": "Erreur inconnue",
     "networkError": "Erreur de réseau",
-    "validationError": "Erreur de validation"
+    "validationError": "Erreur de validation",
+    "accessDenied": "Accès Refusé",
+    "routePlannerAccessDenied": "Vous n'avez pas la permission d'accéder à la page du Planificateur d'Itinéraires.",
+    "goToRouteAnalysis": "Aller à l'Analyse d'Itinéraires"
   },
   "success": {
     "changesSaved": "Modifications enregistrées avec succès",

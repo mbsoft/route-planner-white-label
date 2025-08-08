@@ -14,6 +14,7 @@ import { useInputStore } from '../../models/input/store'
 import { PreferencesInput } from '../../components/input/input-panels/preferences-page'
 import { usePreferencesPersistence } from '../../hooks/use-preferences-persistence'
 import { useAuth } from '../../hooks/use-auth'
+import { useLanguage } from '../../contexts/language-context'
 
 export interface MapMarker {
   id: string
@@ -60,7 +61,15 @@ export default function HomePage() {
   const store = useInputStore()
   const { job, vehicle } = store.inputCore
   const { status: preferencesStatus, savePreferences, loadPreferences } = usePreferencesPersistence()
-  const { isAdmin } = useAuth()
+  const { isAdmin, isUser, loading: authLoading } = useAuth()
+  const { t } = useLanguage()
+
+  // Redirect non-admin users to analysis page
+  useEffect(() => {
+    if (!authLoading && !isAdmin && isUser) {
+      router.push('/analysis')
+    }
+  }, [isAdmin, isUser, authLoading, router])
 
   // Initialize store and load persisted mappings on mount
   React.useEffect(() => {
@@ -116,6 +125,82 @@ export default function HomePage() {
       savePreferencesToStorage()
     }
   }, [preferences, savePreferences, preferencesStatus.hasPreferences])
+
+  // Show loading while checking authentication
+  if (authLoading) {
+    return (
+      <WhiteLabelLayout>
+        <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
+          <Typography>Loading...</Typography>
+        </Box>
+      </WhiteLabelLayout>
+    )
+  }
+
+  // Show access denied for non-admin users
+  if (!isAdmin && isUser) {
+    return (
+      <WhiteLabelLayout>
+        <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh', flexDirection: 'column' }}>
+          <Typography variant="h4" sx={{ mb: 2, color: 'error.main' }}>
+            {t('errors.accessDenied')}
+          </Typography>
+          <Typography variant="body1" sx={{ mb: 2 }}>
+            {t('errors.routePlannerAccessDenied')}
+          </Typography>
+          <Button 
+            variant="contained" 
+            onClick={() => router.push('/analysis')}
+            sx={{ backgroundColor: companyColor }}
+          >
+            {t('errors.goToRouteAnalysis')}
+          </Button>
+        </Box>
+      </WhiteLabelLayout>
+    )
+  }
+
+  // Load persisted preferences on mount
+  useEffect(() => {
+    const loadPersistedPreferences = async () => {
+      try {
+        const persistedPreferences = await loadPreferences()
+        if (persistedPreferences) {
+          // Remove the timestamp from the loaded preferences
+          const { _timestamp, ...cleanPreferences } = persistedPreferences as PreferencesInput & { _timestamp?: string }
+          setPreferences(cleanPreferences)
+          console.log('Loaded persisted preferences')
+        }
+      } catch (error) {
+        console.error('Failed to load persisted preferences:', error)
+      }
+    }
+
+    loadPersistedPreferences()
+  }, [loadPreferences])
+
+  // Auto-save preferences when they change
+  useEffect(() => {
+    const savePreferencesToStorage = async () => {
+      try {
+        await savePreferences(preferences)
+      } catch (error) {
+        console.error('Failed to auto-save preferences:', error)
+      }
+    }
+
+    // Don't save on initial load (when preferences are being loaded from storage)
+    if (preferencesStatus.hasPreferences) {
+      savePreferencesToStorage()
+    }
+  }, [preferences, savePreferences, preferencesStatus.hasPreferences])
+
+  // Update markers whenever selection or data changes
+  React.useEffect(() => {
+    const jobMarkers = extractJobMarkers()
+    const vehicleMarkers = extractVehicleMarkers()
+    setMarkers([...jobMarkers, ...vehicleMarkers])
+  }, [job.rawData, job.selection, vehicle.rawData, vehicle.selection])
 
   // Helper to extract lat/lng from mapped jobs data, only for selected rows
   function extractJobMarkers() {
