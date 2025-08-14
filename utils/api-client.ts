@@ -78,20 +78,23 @@ export class ApiClient {
   }
 
   // Route optimization API
-  async createOptimizationRequest(payload: any) {
-    return this.request('/optimization/v2', {
+  async createOptimizationRequest(payload: any, region?: string) {
+    const regionParam = region === 'americas' ? '&region=america' : '';
+    return this.request(`/optimization/v2?${regionParam}`, {
       method: 'POST',
       body: JSON.stringify(payload),
     })
   }
 
-  async getOptimizationResult(id: string) {
-    return this.request(`/optimization/v2/result?id=${id}`)
+  async getOptimizationResult(id: string, region?: string) {
+    const regionParam = region === 'americas' ? '&region=america' : '';
+    return this.request(`/optimization/v2/result?id=${id}${regionParam}`)
   }
 
   // Create shared optimization result
-  async createSharedResult(id: string) {
-    return this.request(`/optimization/v2/create_shared_result?id=${id}`)
+  async createSharedResult(id: string, region?: string) {
+    const regionParam = region === 'americas' ? '&region=america' : '';
+    return this.request(`/optimization/v2/create_shared_result?id=${id}${regionParam}`)
   }
 
   // Directions API

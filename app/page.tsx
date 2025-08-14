@@ -50,6 +50,7 @@ export default function HomePage() {
       mode: 'car',
       use_depot: false,
       depot_runs: 1,
+      region: 'global', // Default to global region
     },
     constraints: {
       max_working_time: 10,

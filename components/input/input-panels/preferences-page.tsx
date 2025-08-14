@@ -14,6 +14,7 @@ export interface PreferencesInput {
     hazmat_type?: string[]
     use_depot?: boolean
     depot_runs?: number
+    region?: string // Added region field for optimization API
   }
   constraints: {
     max_vehicle_overtime?: number
