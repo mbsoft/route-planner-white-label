@@ -49,6 +49,7 @@ export default function HomePage() {
       mode: 'car',
       use_depot: false,
       depot_runs: 1,
+      region: 'global', // Default to global region
     },
     constraints: {
       max_working_time: 10,
@@ -470,6 +471,22 @@ export default function HomePage() {
                     }}
                   >
                     ADMIN
+                  </Typography>
+                )}
+                {isDispatcher && (
+                  <Typography
+                    variant="caption"
+                    sx={{
+                      backgroundColor: '#ff9800',
+                      color: 'white',
+                      px: 1,
+                      py: 0.5,
+                      borderRadius: '4px',
+                      fontSize: '0.7rem',
+                      fontWeight: 'bold'
+                    }}
+                  >
+                    DISPATCHER
                   </Typography>
                 )}
                 <Button

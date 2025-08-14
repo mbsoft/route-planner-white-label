@@ -66,6 +66,7 @@ export interface RoutingPreferences {
     selected_hazmat_class?: string // Store the selected class for UI purposes
     use_depot?: boolean
     depot_runs?: number
+    region?: string // Added region field for optimization API
   }
 }
 
@@ -232,6 +233,30 @@ export function RoutingPanel({ preferences, onPreferencesChange }: RoutingPanelP
             </ToggleButton>
           ))}
         </ToggleButtonGroup>
+
+        {/* Region Selector */}
+        <Box sx={{ mb: 3 }}>
+          <TextField
+            label={t('preferences.optimizationRegion')}
+            value={routing.region || 'global'}
+            onChange={(e) => onPreferencesChange({
+              ...preferences,
+              routing: {
+                ...routing,
+                region: e.target.value,
+              },
+            })}
+            variant="outlined"
+            select
+            size="small"
+            sx={{ width: 200 }}
+            helperText="Select the region for route optimization"
+            FormHelperTextProps={{ sx: { fontSize: '13px' } }}
+          >
+            <MenuItem value="global">{t('preferences.regionGlobal')}</MenuItem>
+            <MenuItem value="americas">{t('preferences.regionAmericas')}</MenuItem>
+          </TextField>
+        </Box>
 
         <Grid container spacing={2}>
           <Grid item xs={6}>

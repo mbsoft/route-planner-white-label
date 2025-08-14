@@ -53,7 +53,7 @@ interface OptimizationMvrpOrderJobV2 {
   setup?: number
 }
 
-interface OptimizationMvrpOrderVehicleV2 {
+interface OptimizationMvrpOrderOrderVehicleV2 {
   id: string | number
   start_index?: number
   end_index?: number
@@ -80,7 +80,7 @@ interface OptimizationMvrpOrderVehicleV2 {
   }
 }
 
-type VehicleType = OptimizationMvrpOrderVehicleV2;
+type VehicleType = OptimizationMvrpOrderOrderVehicleV2;
 
 interface OptimizationMvrpOrderShipmentV2 {
   id?: number | string
@@ -608,7 +608,7 @@ function normalizeVehicles(vehicleData: any, mapConfig: any, locMap: Map<string,
       return;
     }
     
-    const vehicle: OptimizationMvrpOrderVehicleV2 = {
+    const vehicle: OptimizationMvrpOrderOrderVehicleV2 = {
       id: (index + 1).toString(),
       start_index: -1,
     };
@@ -1085,7 +1085,7 @@ export const InputImportPage = ({ currentStep, onStepChange, preferences, onPref
       console.log('🚀 First vehicle max_working_time:', updatedVehicles[0]?.max_working_time)
       
       // Send the optimization request
-      const response = await apiClient.createOptimizationRequest(optimizationRequest)
+      const response = await apiClient.createOptimizationRequest(optimizationRequest, preferences?.routing?.region)
       const responseData = response.data as any
       
       const requestId = responseData.id
@@ -1101,7 +1101,7 @@ export const InputImportPage = ({ currentStep, onStepChange, preferences, onPref
         // Poll every 5 seconds
         const interval = setInterval(async () => {
           try {
-            const resultResponse = await apiClient.getOptimizationResult(requestId)
+            const resultResponse = await apiClient.getOptimizationResult(requestId, preferences?.routing?.region)
             const resultData = resultResponse.data as any
             
             if (DEBUG_OPTIMIZATION) {
@@ -1166,7 +1166,7 @@ export const InputImportPage = ({ currentStep, onStepChange, preferences, onPref
                   // Create shared URL for the optimization result
                   let sharedUrl = null;
                   try {
-                    const sharedResponse = await apiClient.createSharedResult(requestId);
+                    const sharedResponse = await apiClient.createSharedResult(requestId, preferences?.routing?.region);
                     
                     // If the shared result was created successfully, construct the shared URL
                     if ((sharedResponse.data as any)?.message === "Create shared result successfully") {

@@ -270,7 +270,10 @@ const enTranslations = {
     "hazardousMaterialTypes": "HAZMAT",
     "selectHazardClass": "Select hazard class...",
     "clearSelection": "Clear selection",
-    "useDepot": "Use Depot"
+    "useDepot": "Use Depot",
+    "optimizationRegion": "Optimization Region",
+    "regionGlobal": "Global",
+    "regionAmericas": "Americas"
   },
   "hazmatTypes": {
     "explosives": "Explosives",
@@ -665,7 +668,10 @@ const esMxTranslations = {
     "hazardousMaterialTypes": "HAZMAT",
     "selectHazardClass": "Seleccionar clase de peligro...",
     "clearSelection": "Limpiar selección",
-    "useDepot": "Usar Depósito"
+    "useDepot": "Usar Depósito",
+    "optimizationRegion": "Región de Optimización",
+    "regionGlobal": "Global",
+    "regionAmericas": "Américas"
   },
   "hazmatTypes": {
     "explosives": "Explosivos",
@@ -784,7 +790,7 @@ const esMxTranslations = {
     "optimizationCategory": "optimization - Términos de optimización de rutas",
     "optimizationDesc": "algoritmos, restricciones, preferencias",
     "messagesCategory": "errors/success - Mensajes de retroalimentación del usuario",
-    "messagesDesc": "mensajes de validación, red, finalización",
+    "messagesDesc": "mensagens de validación, red, finalización",
     "languageCategory": "language - UI de selección de idioma",
     "languageDesc": "nombres de idiomas e interfaz de selección",
     "implementationConfig": "Implementación y Configuración",
@@ -797,7 +803,7 @@ const esMxTranslations = {
     "addLanguageSelector": "Agregar selector de idioma",
     "addLanguageSelectorDesc": "Implementar componente UI para que los usuarios cambien idiomas",
     "testImplementation": "Probar implementación",
-    "testImplementationDesc": "Verificar que las traducciones se cargan correctamente y las URLs funcionan correctamente",
+    "testImplementationDesc": "Verificar que las traducciones se cargan correctamente y las URLs funcionan adequadamente",
     "translationBestPractices": "Mejores Prácticas de Traducción:",
     "useNestedKeys": "Usar claves anidadas para organización",
     "useNestedKeysDesc": "Agrupar traducciones relacionadas bajo claves padre comunes",
@@ -1060,7 +1066,10 @@ const ptBrTranslations = {
     "hazardousMaterialTypes": "HAZMAT",
     "selectHazardClass": "Selecionar classe de perigo...",
     "clearSelection": "Limpar seleção",
-    "useDepot": "Usar Depósito"
+    "useDepot": "Usar Depósito",
+    "optimizationRegion": "Região de Otimização",
+    "regionGlobal": "Global",
+    "regionAmericas": "Américas"
   },
   "hazmatTypes": {
     "explosives": "Explosivos",
@@ -1146,7 +1155,7 @@ const ptBrTranslations = {
     "otherPlatforms": "Outras Plataformas:",
     "otherPlatformsDesc": "Configuração similar de variáveis de ambiente se aplica a outras plataformas de implantação",
     "i18nGuide": "Guia de Internacionalização (i18n)",
-    "i18nDescription": "A plataforma suporta múltiplos idiomas usando next-intl. Atualmente, inglês, espanhol (mexicano) e português (brasileiro) são suportados, e você pode facilmente adicionar idiomas adicionais para acomodar sua base de usuários global.",
+    "i18nDescription": "A plataforma suporta múltiplos idiomas usando next-intl. Atualmente, inglês, espanhol (mexicain), le portugais (brésilien) e o francês canadien são suportados, e você pode facilmente adicionar idiomas adicionais para acomodar sua base de usuários mondiale.",
     "addingNewLanguages": "Adicionando Novos Idiomas",
     "currentLanguages": "Idiomas Atuais:",
     "englishDefault": "Inglês (en) - Idioma padrão",
@@ -1455,7 +1464,10 @@ const caFrTranslations = {
     "hazardousMaterialTypes": "HAZMAT",
     "selectHazardClass": "Sélectionner la classe de danger...",
     "clearSelection": "Effacer la sélection",
-    "useDepot": "Utiliser le Dépôt"
+    "useDepot": "Utiliser le Dépôt",
+    "optimizationRegion": "Región de Optimización",
+    "regionGlobal": "Global",
+    "regionAmericas": "Américas"
   },
   "hazmatTypes": {
     "explosives": "Explosifs",
