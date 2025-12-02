@@ -1,10 +1,32 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@libsql/client';
 
-const tursoUrl = process.env.TURSO_DATABASE_URL!;
-const tursoAuthToken = process.env.TURSO_AUTH_TOKEN!;
+// Database configuration
+const tursoUrl = process.env.TURSO_DATABASE_URL;
+const tursoAuthToken = process.env.TURSO_AUTH_TOKEN;
+const localSqliteUrl = process.env.LOCAL_SQLITE_DB_URL || 'file:./local.db';
 
-const turso = createClient({ url: tursoUrl, authToken: tursoAuthToken });
+let turso: any;
+
+// Prefer an explicit local SQLite URL if provided, otherwise fall back to Turso
+if (localSqliteUrl && !localSqliteUrl.includes('your_local_sqlite_db_url_here')) {
+  console.log(`Using local SQLite database at ${localSqliteUrl} for map configs`);
+  turso = createClient({
+    url: localSqliteUrl,
+    syncUrl: undefined,
+    authToken: undefined,
+  });
+} else if (tursoUrl && tursoAuthToken && !tursoUrl.includes('your_turso_database_url_here')) {
+  console.log('Using Turso database for map configs');
+  turso = createClient({ url: tursoUrl, authToken: tursoAuthToken });
+} else {
+  console.warn('No valid database URL configured, falling back to file:./local.db for map configs');
+  turso = createClient({
+    url: 'file:./local.db',
+    syncUrl: undefined,
+    authToken: undefined,
+  });
+}
 
 async function ensureTable() {
   await turso.execute(`
