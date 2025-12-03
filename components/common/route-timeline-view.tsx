@@ -6,7 +6,7 @@ import { Box, Typography, Paper } from '@mui/material'
 import { styled } from '@mui/material/styles'
 import dayjs from 'dayjs'
 import DirectionsCarIcon from '@mui/icons-material/DirectionsCar';
-import LocalGasStationIcon from '@mui/icons-material/LocalGasStation';
+import BuildIcon from '@mui/icons-material/Build';
 import DownloadIcon from '@mui/icons-material/Download';
 import UploadIcon from '@mui/icons-material/Upload';
 import FlagIcon from '@mui/icons-material/Flag';
@@ -63,7 +63,7 @@ const getStepTypeIcon = (type: string) => {
     case 'start':
       return <LocalShippingIcon sx={iconStyle} />;
     case 'job':
-      return <LocalGasStationIcon sx={iconStyle} />;
+      return <BuildIcon sx={iconStyle} />;
     case 'pickup':
       return <DownloadIcon sx={iconStyle} />;
     case 'delivery':
@@ -77,10 +77,11 @@ const getStepTypeIcon = (type: string) => {
 
 export const RouteTimelineView: React.FC<RouteTimelineViewProps> = ({ 
   routes, 
+  width = 1200,
   height = 400 
 }) => {
   const containerRef = useRef<HTMLDivElement>(null);
-  const [containerWidth, setContainerWidth] = useState(1200);
+  const [containerWidth, setContainerWidth] = useState(width);
   const svgRef = useRef<SVGSVGElement | null>(null)
   const [hoveredStep, setHoveredStep] = useState<TimelineStep | null>(null)
   const [zoomTransform, setZoomTransform] = useState<d3.ZoomTransform>(d3.zoomIdentity)
@@ -101,16 +102,18 @@ export const RouteTimelineView: React.FC<RouteTimelineViewProps> = ({
     const data = routes.map((route, index) => {
       const color = `hsl(${(index * 137.5) % 360}, 70%, 50%)`
       
-      const steps: TimelineStep[] = route.steps?.map((step: any) => ({
-        taskId: step.id || step.taskId || `step-${Math.random()}`,
-        type: step.type || 'job',
-        description: step.description || 'No description',
-        location: step.location || null,
-        arrival: step.arrival || 0,
-        departure: step.departure || step.arrival || 0,
-        service: step.service || 0,
-        load: step.load || []
-      })) || []
+      const steps: TimelineStep[] = route.steps?.map((step: any) => {
+        return {
+          taskId: step.id || step.taskId || `step-${Math.random()}`,
+          type: step.type || 'job',
+          description: step.description || 'No description',
+          location: step.location || null,
+          arrival: step.arrival || 0,
+          departure: step.departure || step.arrival || 0,
+          service: step.service || 0,
+          load: step.load || [],
+        };
+      }) || []
 
       const minTime = d3.min(steps, d => d.arrival) || 0
       const maxTime = d3.max(steps, d => d.departure) || 0
