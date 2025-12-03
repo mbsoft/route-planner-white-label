@@ -60,9 +60,10 @@ const VEHICLE_FIELD_TYPES: { [key: string]: 'string' | 'integer' | 'real' | 'boo
   created_at: 'string'
 };
 
-// Check if Turso environment variables are set
+// Database configuration
 const tursoUrl = process.env.TURSO_DATABASE_URL;
 const tursoAuthToken = process.env.TURSO_AUTH_TOKEN;
+const localSqliteUrl = process.env.LOCAL_SQLITE_DB_URL || 'file:./local.db';
 
 let turso: any;
 
@@ -91,16 +92,25 @@ function convertValueToSchemaType(fieldName: string, value: any): any {
   }
 }
 
-if (tursoUrl && tursoAuthToken && !tursoUrl.includes('your_turso_database_url_here')) {
+// Prefer an explicit local SQLite URL if provided, otherwise fall back to Turso
+if (localSqliteUrl && !localSqliteUrl.includes('your_local_sqlite_db_url_here')) {
+  console.log(`Using local SQLite database at ${localSqliteUrl}`);
+  turso = createClient({
+    url: localSqliteUrl,
+    syncUrl: undefined,
+    authToken: undefined,
+  });
+} else if (tursoUrl && tursoAuthToken && !tursoUrl.includes('your_turso_database_url_here')) {
   // Use Turso if environment variables are properly set
+  console.log('Using Turso database');
   turso = createClient({ url: tursoUrl, authToken: tursoAuthToken });
 } else {
-  // Fallback to local SQLite for development
-  console.log('Turso environment variables not set, using local SQLite database');
-  turso = createClient({ 
+  // Final fallback to default local SQLite path
+  console.warn('No valid database URL configured, falling back to file:./local.db');
+  turso = createClient({
     url: 'file:./local.db',
     syncUrl: undefined,
-    authToken: undefined
+    authToken: undefined,
   });
 }
 
