@@ -54,6 +54,7 @@ import { RouteSummaryTable } from '../../../components/common/route-summary-tabl
 import { useRouter } from 'next/navigation'
 import { useAuth } from '../../../hooks/use-auth'
 import { useWhiteLabelContext } from '../../white-label-layout'
+import { useUseCase } from '../../../utils/use-case'
 
 export default function RouteAnalysisPage() {
   const t = useTranslations('analysis')
@@ -68,6 +69,7 @@ export default function RouteAnalysisPage() {
   const router = useRouter()
   const { isAdmin, isDispatcher } = useAuth()
   const { companyName, companyLogo, companyColor } = useWhiteLabelContext()
+  const useCase = useUseCase()
   const [optimizationResults, setOptimizationResults] = useState<any[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
@@ -208,7 +210,7 @@ export default function RouteAnalysisPage() {
           if (kpis) {
             totalRoutes += kpis.routesCount
             totalSpeed += kpis.avgSpeed
-            totalGallons += kpis.totalFuel
+            totalGallons += kpis.totalDelivery
             totalUnassigned += kpis.unassignedCount
             totalStops += kpis.totalStops
             totalDistance += kpis.totalDistance
@@ -309,15 +311,34 @@ export default function RouteAnalysisPage() {
     if (!resultData?.result) return null
 
     const { summary, routes, unassigned } = resultData.result
+
+    // Delivery metrics - different handling for jobs vs shipments
+    const totalDelivered = summary?.delivery || [0, 0, 0, 0, 0]
     
-    // Fuel delivery metrics
-    const totalFuelDelivered = summary?.delivery || [0, 0, 0, 0, 0]
-    const ulsdClearDelivered = totalFuelDelivered[0] || 0
-    const ulsdDyedDelivered = totalFuelDelivered[1] || 0
-    const unlDelivered = totalFuelDelivered[2] || 0
-    const gasUnlPreDelivered = totalFuelDelivered[3] || 0
-    const rec90Delivered = totalFuelDelivered[4] || 0
-    const totalFuel = ulsdClearDelivered + ulsdDyedDelivered + unlDelivered + gasUnlPreDelivered + rec90Delivered
+    let deliveryMetrics: any = {}
+    let totalDelivery = 0
+    
+    if (useCase === 'shipments') {
+      // Fuel delivery metrics for shipments
+      deliveryMetrics = {
+        ulsdClearDelivered: totalDelivered[0] || 0,
+        ulsdDyedDelivered: totalDelivered[1] || 0,
+        unlDelivered: totalDelivered[2] || 0,
+        gasUnlPreDelivered: totalDelivered[3] || 0,
+        rec90Delivered: totalDelivered[4] || 0,
+      }
+      totalDelivery = totalDelivered.reduce((sum: number, delivery: number) => sum + delivery, 0)
+    } else {
+      // Generic delivery metrics for jobs
+      deliveryMetrics = {
+        deliveryCapacity1: totalDelivered[0] || 0,
+        deliveryCapacity2: totalDelivered[1] || 0,
+        deliveryCapacity3: totalDelivered[2] || 0,
+        deliveryCapacity4: totalDelivered[3] || 0,
+        deliveryCapacity5: totalDelivered[4] || 0,
+      }
+      totalDelivery = totalDelivered.reduce((sum: number, delivery: number) => sum + delivery, 0)
+    }
     
     // Operational metrics
     const totalDistance = summary?.distance || 0
@@ -338,25 +359,21 @@ export default function RouteAnalysisPage() {
     
     // Vehicle metrics
     const routesCount = routes?.length || 0
-    const avgFuelPerRoute = routesCount > 0 ? totalFuel / routesCount : 0
+    const avgDeliveryPerRoute = routesCount > 0 ? totalDelivery / routesCount : 0
     const avgDistancePerRoute = routesCount > 0 ? totalDistance / routesCount : 0
     const avgDurationPerRoute = routesCount > 0 ? totalDuration / routesCount : 0
     
     // Efficiency metrics
     const avgSpeed = totalDuration > 0 ? (totalDistance / 1000) / (totalDuration / 3600) : 0 // km/h
-    const fuelEfficiency = totalFuel > 0 ? totalDistance / totalFuel : 0 // meters per gallon
-    const costPerGallon = totalFuel > 0 ? totalCost / totalFuel : 0
+    const deliveryEfficiency = totalDelivery > 0 ? totalDistance / totalDelivery : 0 // meters per unit
+    const costPerUnit = totalDelivery > 0 ? totalCost / totalDelivery : 0
     const costPerKm = totalDistance > 0 ? totalCost / (totalDistance / 1000) : 0
     
     return {
-      // Fuel metrics
-      ulsdClearDelivered,
-      ulsdDyedDelivered,
-      unlDelivered,
-      gasUnlPreDelivered,
-      rec90Delivered,
-      totalFuel,
-      avgFuelPerRoute,
+      // Delivery metrics (fuel-specific for shipments, generic for jobs)
+      ...deliveryMetrics,
+      totalDelivery,
+      avgDeliveryPerRoute,
       
       // Operational metrics
       totalDistance,
@@ -372,7 +389,6 @@ export default function RouteAnalysisPage() {
       totalCost,
       totalRevenue,
       profit,
-      costPerGallon,
       costPerKm,
       
       // Service quality
@@ -381,7 +397,8 @@ export default function RouteAnalysisPage() {
       lateVisits,
       
       // Efficiency
-      fuelEfficiency,
+      deliveryEfficiency,
+      costPerUnit,
       routesCount,
       
       // Additional metrics for summary tiles
@@ -1362,7 +1379,7 @@ export default function RouteAnalysisPage() {
                                   {t('fuelDeliveryMetrics')}
                                 </Typography>
                                 <Grid container spacing={2} sx={{ mb: 3 }}>
-                                  {kpis.ulsdClearDelivered > 0 && (
+                                  {useCase === 'shipments' && kpis.ulsdClearDelivered > 0 && (
                                     <Grid item xs={12} md={2}>
                                       <Box sx={{ p: 2, bgcolor: '#4CAF50', borderRadius: 1, textAlign: 'center' }}>
                                         <Typography variant="h6" sx={{ color: 'white', fontWeight: 'bold' }}>
@@ -1374,7 +1391,7 @@ export default function RouteAnalysisPage() {
                                       </Box>
                                     </Grid>
                                   )}
-                                  {kpis.ulsdDyedDelivered > 0 && (
+                                  {useCase === 'shipments' && kpis.ulsdDyedDelivered > 0 && (
                                     <Grid item xs={12} md={2}>
                                       <Box sx={{ p: 2, bgcolor: '#2196F3', borderRadius: 1, textAlign: 'center' }}>
                                         <Typography variant="h6" sx={{ color: 'white', fontWeight: 'bold' }}>
@@ -1425,10 +1442,10 @@ export default function RouteAnalysisPage() {
                                   <Grid item xs={12} md={2}>
                                     <Box sx={{ p: 2, bgcolor: '#f8f9fa', borderRadius: 1, textAlign: 'center' }}>
                                       <Typography variant="h6" sx={{ color: companyColor, fontWeight: 'bold' }}>
-                                        {kpis.totalFuel.toLocaleString()}
+                                        {kpis.totalDelivery.toLocaleString()}
                                       </Typography>
                                       <Typography variant="body1" sx={{ color: '#666' }}>
-                                        {t('totalFuel')} ({t('gallons')})
+                                        {useCase === 'shipments' ? t('totalFuel') + ' (' + t('gallons') + ')' : t('totalDelivery')}
                                       </Typography>
                                     </Box>
                                   </Grid>

@@ -53,6 +53,7 @@ import { RouteSummaryTable } from '../../components/common/route-summary-table'
 import { useRouter } from 'next/navigation'
 import { useAuth } from '../../hooks/use-auth'
 import { useWhiteLabelContext } from '../white-label-layout'
+import { useUseCase } from '../../utils/use-case'
 import { LanguageSwitcher } from '../../components/common/language-switcher'
 import { useLanguage } from '../../contexts/language-context'
 import { CompanyLogo } from '../../components/common/company-logo'
@@ -65,6 +66,7 @@ export default function RouteAnalysisPage() {
   const { isAdmin, isDispatcher } = useAuth()
   const { companyName, companyLogo, companyColor } = useWhiteLabelContext()
   const { t, isLoading, language, renderKey } = useLanguage()
+  const useCase = useUseCase()
   const [optimizationResults, setOptimizationResults] = useState<any[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
@@ -205,7 +207,7 @@ export default function RouteAnalysisPage() {
           if (kpis) {
             totalRoutes += kpis.routesCount
             totalSpeed += kpis.avgSpeed
-            totalGallons += kpis.totalFuel
+            totalGallons += kpis.totalDelivery
             totalUnassigned += kpis.unassignedCount
             totalStops += kpis.totalStops
             totalDistance += kpis.totalDistance
@@ -322,54 +324,72 @@ export default function RouteAnalysisPage() {
 
     const { summary, routes, unassigned } = resultData.result
 
-    // Fuel delivery metrics
-    const totalFuelDelivered = summary?.delivery || [0, 0, 0, 0, 0]
+    // Delivery metrics - different handling for jobs vs shipments
+    const totalDelivered = summary?.delivery || [0, 0, 0, 0, 0]
     
-    // Calculate individual fuel type deliveries using environment variables for labels
-    const fuelDeliveries = totalFuelDelivered.map((delivery: number, index: number) => {
-      let capTypeLabel = `Capacity ${index + 1}`
-      
-      // Use environment variables for capacity type labels
-      switch (index) {
-        case 0:
-          capTypeLabel = process.env.NEXT_PUBLIC_CAP_TYPE_1 || capTypeLabel
-          break
-        case 1:
-          capTypeLabel = process.env.NEXT_PUBLIC_CAP_TYPE_2 || capTypeLabel
-          break
-        case 2:
-          capTypeLabel = process.env.NEXT_PUBLIC_CAP_TYPE_3 || capTypeLabel
-          break
-        case 3:
-          capTypeLabel = process.env.NEXT_PUBLIC_CAP_TYPE_4 || capTypeLabel
-          break
-        case 4:
-          capTypeLabel = process.env.NEXT_PUBLIC_CAP_TYPE_5 || capTypeLabel
-          break
-        case 5:
-          capTypeLabel = process.env.NEXT_PUBLIC_CAP_TYPE_6 || capTypeLabel
-          break
-        case 6:
-          capTypeLabel = process.env.NEXT_PUBLIC_CAP_TYPE_7 || capTypeLabel
-          break
-        case 7:
-          capTypeLabel = process.env.NEXT_PUBLIC_CAP_TYPE_8 || capTypeLabel
-          break
-      }
-      
-      return {
-        amount: delivery || 0,
-        label: capTypeLabel
-      }
-    })
+    let deliveryMetrics: any = {}
+    let totalDelivery = 0
     
-    // Keep backward compatibility for existing code
-    const ulsdClearDelivered = totalFuelDelivered[0] || 0
-    const ulsdDyedDelivered = totalFuelDelivered[1] || 0
-    const unlDelivered = totalFuelDelivered[2] || 0
-    const gasUnlPreDelivered = totalFuelDelivered[3] || 0
-    const rec90Delivered = totalFuelDelivered[4] || 0
-    const totalFuel = totalFuelDelivered.reduce((sum: number, delivery: number) => sum + delivery, 0)
+    if (useCase === 'shipments') {
+      // Fuel delivery metrics for shipments
+      const fuelDeliveries = totalDelivered.map((delivery: number, index: number) => {
+        let capTypeLabel = `Capacity ${index + 1}`
+        
+        // Use environment variables for capacity type labels
+        switch (index) {
+          case 0:
+            capTypeLabel = process.env.NEXT_PUBLIC_CAP_TYPE_1 || capTypeLabel
+            break
+          case 1:
+            capTypeLabel = process.env.NEXT_PUBLIC_CAP_TYPE_2 || capTypeLabel
+            break
+          case 2:
+            capTypeLabel = process.env.NEXT_PUBLIC_CAP_TYPE_3 || capTypeLabel
+            break
+          case 3:
+            capTypeLabel = process.env.NEXT_PUBLIC_CAP_TYPE_4 || capTypeLabel
+            break
+          case 4:
+            capTypeLabel = process.env.NEXT_PUBLIC_CAP_TYPE_5 || capTypeLabel
+            break
+          case 5:
+            capTypeLabel = process.env.NEXT_PUBLIC_CAP_TYPE_6 || capTypeLabel
+            break
+          case 6:
+            capTypeLabel = process.env.NEXT_PUBLIC_CAP_TYPE_7 || capTypeLabel
+            break
+          case 7:
+            capTypeLabel = process.env.NEXT_PUBLIC_CAP_TYPE_8 || capTypeLabel
+            break
+        }
+        
+        return {
+          amount: delivery || 0,
+          label: capTypeLabel
+        }
+      })
+      
+      // Keep backward compatibility for existing code
+      deliveryMetrics = {
+        ulsdClearDelivered: totalDelivered[0] || 0,
+        ulsdDyedDelivered: totalDelivered[1] || 0,
+        unlDelivered: totalDelivered[2] || 0,
+        gasUnlPreDelivered: totalDelivered[3] || 0,
+        rec90Delivered: totalDelivered[4] || 0,
+        fuelDeliveries
+      }
+      totalDelivery = totalDelivered.reduce((sum: number, delivery: number) => sum + delivery, 0)
+    } else {
+      // Generic delivery metrics for jobs
+      deliveryMetrics = {
+        deliveryCapacity1: totalDelivered[0] || 0,
+        deliveryCapacity2: totalDelivered[1] || 0,
+        deliveryCapacity3: totalDelivered[2] || 0,
+        deliveryCapacity4: totalDelivered[3] || 0,
+        deliveryCapacity5: totalDelivered[4] || 0,
+      }
+      totalDelivery = totalDelivered.reduce((sum: number, delivery: number) => sum + delivery, 0)
+    }
 
     // Operational metrics
     const totalDistance = summary?.distance || 0
@@ -390,26 +410,21 @@ export default function RouteAnalysisPage() {
 
     // Vehicle metrics
     const routesCount = routes?.length || 0
-    const avgFuelPerRoute = routesCount > 0 ? totalFuel / routesCount : 0
+    const avgDeliveryPerRoute = routesCount > 0 ? totalDelivery / routesCount : 0
     const avgDistancePerRoute = routesCount > 0 ? totalDistance / routesCount : 0
     const avgDurationPerRoute = routesCount > 0 ? totalDuration / routesCount : 0
 
     // Efficiency metrics
     const avgSpeed = totalDuration > 0 ? (totalDistance / 1000) / (totalDuration / 3600) : 0 // km/h
-    const fuelEfficiency = totalFuel > 0 ? totalDistance / totalFuel : 0 // meters per gallon
-    const costPerGallon = totalFuel > 0 ? totalCost / totalFuel : 0
+    const deliveryEfficiency = totalDelivery > 0 ? totalDistance / totalDelivery : 0 // meters per unit
+    const costPerUnit = totalDelivery > 0 ? totalCost / totalDelivery : 0
     const costPerKm = totalDistance > 0 ? totalCost / (totalDistance / 1000) : 0
 
     return {
-      // Fuel metrics
-      fuelDeliveries,
-      ulsdClearDelivered,
-      ulsdDyedDelivered,
-      unlDelivered,
-      gasUnlPreDelivered,
-      rec90Delivered,
-      totalFuel,
-      avgFuelPerRoute,
+      // Delivery metrics (fuel-specific for shipments, generic for jobs)
+      ...deliveryMetrics,
+      totalDelivery,
+      avgDeliveryPerRoute: routesCount > 0 ? totalDelivery / routesCount : 0,
 
       // Operational metrics
       totalDistance,
@@ -425,7 +440,6 @@ export default function RouteAnalysisPage() {
       totalCost,
       totalRevenue,
       profit,
-      costPerGallon,
       costPerKm,
 
       // Service quality
@@ -434,7 +448,8 @@ export default function RouteAnalysisPage() {
       lateVisits,
 
       // Efficiency
-      fuelEfficiency,
+      deliveryEfficiency,
+      costPerUnit,
       routesCount,
 
       // Additional metrics for summary tiles
@@ -1442,10 +1457,10 @@ export default function RouteAnalysisPage() {
                                       <Grid item xs={12} md={2}>
                                         <Box sx={{ p: 2, bgcolor: '#f8f9fa', borderRadius: 1, textAlign: 'center' }}>
                                           <Typography variant="h6" sx={{ color: companyColor, fontWeight: 'bold' }}>
-                                            {kpis.totalFuel.toLocaleString()}
+                                            {kpis.totalDelivery.toLocaleString()}
                                           </Typography>
                                           <Typography variant="body1" sx={{ color: '#666' }}>
-                                            {t('analysis.totalFuel')}
+                                            {useCase === 'shipments' ? t('analysis.totalFuel') : t('analysis.totalDelivery')}
                                           </Typography>
                                         </Box>
                                       </Grid>

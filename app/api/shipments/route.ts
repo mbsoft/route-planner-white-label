@@ -85,10 +85,6 @@ export async function GET(request: NextRequest) {
     const searchParam = searchParams.get('search');
     const idParam = searchParams.get('id');
 
-    // Debug: Check current table schema
-    const schemaResult = await turso.execute("PRAGMA table_info(shipments)");
-    console.log('Current shipments table schema:', schemaResult.rows);
-
     let query = 'SELECT * FROM shipments';
     let params: any[] = [];
     let whereConditions: string[] = [];
@@ -151,12 +147,7 @@ export async function GET(request: NextRequest) {
       query = 'SELECT * FROM shipments ORDER BY pickup_time_windows ASC LIMIT 1000';
     }
 
-    console.log('Executing query:', query);
-    console.log('Query parameters:', params);
-
     const result = await turso.execute(query, params);
-    
-    console.log('Raw database result:', result.rows);
     
     if (!result.rows || result.rows.length === 0) {
       return NextResponse.json({ shipments: [] });
@@ -168,11 +159,8 @@ export async function GET(request: NextRequest) {
       for (const [key, value] of Object.entries(row)) {
         shipment[key] = value;
       }
-      console.log('Processed shipment:', shipment);
       return shipment;
     });
-
-    console.log('Final shipments array:', shipments);
 
     return NextResponse.json({ shipments });
 

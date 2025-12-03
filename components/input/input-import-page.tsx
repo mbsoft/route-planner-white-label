@@ -5,7 +5,6 @@ import { Box, Button, Typography, IconButton, LinearProgress, Table, TableBody, 
 import DirectionsCarIcon from '@mui/icons-material/DirectionsCar'
 import LocalShippingIcon from '@mui/icons-material/LocalShipping'
 import FlagIcon from '@mui/icons-material/Flag'
-import LocalGasStationIcon from '@mui/icons-material/LocalGasStation'
 import DownloadIcon from '@mui/icons-material/Download'
 import UploadIcon from '@mui/icons-material/Upload'
 import { InputOrderPanel } from './input-panels/input-order'
@@ -147,6 +146,11 @@ interface OptimizationMvrpOrderRequestV2 {
       truck_weight?: number
       avoid?: string[]
       hazmat_type?: string[]
+    }
+    webhook?: {
+      url: string
+      events: string[]
+      timeout?: number
     }
   }
 }
@@ -365,11 +369,11 @@ function normalizeJobs(jobData: any, mapConfig: any, locMap: Map<string, number>
             job.time_windows.push([timeInMinutes, timeInMinutes + 60]);
           }
           break;
-        case 'pickup_capacity_1':
-        case 'pickup_capacity_2':
-        case 'pickup_capacity_3':
+        case 'pickup capacity 1':
+        case 'pickup capacity 2':
+        case 'pickup capacity 3':
           if (!job.pickup) job.pickup = [];
-          const pickupIndex = parseInt(mapping.value.split('_').pop()) - 1;
+          const pickupIndex = parseInt(mapping.value.split(' ').pop()) - 1;
           job.pickup[pickupIndex] = parseInt(value);
           break;
         case 'pickup':
@@ -390,11 +394,11 @@ function normalizeJobs(jobData: any, mapConfig: any, locMap: Map<string, number>
             console.warn('Failed to parse pickup array:', value);
           }
           break;
-        case 'delivery_capacity_1':
-        case 'delivery_capacity_2':
-        case 'delivery_capacity_3':
+        case 'delivery capacity 1':
+        case 'delivery capacity 2':
+        case 'delivery capacity 3':
           if (!job.delivery) job.delivery = [];
-          const deliveryIndex = parseInt(mapping.value.split('_').pop()) - 1;
+          const deliveryIndex = parseInt(mapping.value.split(' ').pop()) - 1;
           job.delivery[deliveryIndex] = parseInt(value);
           break;
         case 'delivery':
@@ -622,11 +626,11 @@ function normalizeVehicles(vehicleData: any, mapConfig: any, locMap: Map<string,
         case 'description':
           vehicle.description = value;
           break;
-        case 'capacity_1':
-        case 'capacity_2':
-        case 'capacity_3':
+        case 'capacity 1':
+        case 'capacity 2':
+        case 'capacity 3':
           if (!vehicle.capacity) vehicle.capacity = [];
-          const capacityIndex = parseInt(mapping.value.split('_').pop()) - 1;
+          const capacityIndex = parseInt(mapping.value.split(' ').pop()) - 1;
           vehicle.capacity[capacityIndex] = parseInt(value);
           break;
         case 'capacity':
@@ -744,7 +748,7 @@ export const InputImportPage = ({ currentStep, onStepChange, preferences, onPref
   const [isPolling, setIsPolling] = React.useState(false);
   const [pollingMessage, setPollingMessage] = React.useState('');
   const [routeResults, setRouteResults] = React.useState<any>(null);
-  const [pollInterval, setPollInterval] = React.useState<NodeJS.Timeout | null>(null);
+  const [pollInterval, setPollInterval] = React.useState<NodeJS.Timeout | EventSource | null>(null);
   const { savePreferences } = usePreferencesPersistence();
   const [isSavingPreferences, setIsSavingPreferences] = React.useState(false);
   const [saveError, setSaveError] = React.useState<string | null>(null);
@@ -753,11 +757,16 @@ export const InputImportPage = ({ currentStep, onStepChange, preferences, onPref
   const [expandedRoutes, setExpandedRoutes] = React.useState<Set<number>>(new Set());
   const [selectedRoutes, setSelectedRoutes] = React.useState<Set<number>>(new Set());
 
-  // Cleanup polling interval on unmount
+  // Cleanup polling interval/SSE connection on unmount
   React.useEffect(() => {
     return () => {
       if (pollInterval) {
-        clearInterval(pollInterval);
+        // Check if it's an EventSource (SSE) or interval
+        if (pollInterval instanceof EventSource) {
+          pollInterval.close();
+        } else {
+          clearInterval(pollInterval);
+        }
       }
     };
   }, [pollInterval]);
@@ -851,15 +860,147 @@ export const InputImportPage = ({ currentStep, onStepChange, preferences, onPref
   };
   const handleDeleteCancel = () => setDeleteDialogOpen(false);
 
-  // Handler for canceling polling
+  // Handler for canceling polling/SSE
   const handleCancelPolling = () => {
     if (pollInterval) {
-      clearInterval(pollInterval);
+      // Check if it's an EventSource (SSE) or interval
+      if (pollInterval instanceof EventSource) {
+        pollInterval.close();
+      } else {
+        clearInterval(pollInterval);
+      }
       setPollInterval(null);
     }
     setIsPolling(false);
     setRouteResults(null); // Clear any partial results
-    setPollingMessage('Polling cancelled by user.');
+    setPollingMessage('Connection cancelled by user.');
+  };
+
+  // Shared function to process completed optimization results
+  const processOptimizationResult = async (
+    resultData: any, 
+    requestId: string, 
+    startTime: number | null,
+    normalizedJobs: any[],
+    normalizedShipments: any[],
+    apiClient: ApiClient
+  ) => {
+    setRouteResults(resultData)
+    // Reset expanded routes when new results come in
+    setExpandedRoutes(new Set())
+    
+    if (DEBUG_OPTIMIZATION) {
+      console.log('✅ Optimization completed successfully')
+      console.log('✅ Final routes count:', resultData?.result?.routes?.length || 0)
+    }
+    
+    // Save optimization results to Turso storage
+    try {
+      // Generate a unique job/shipment ID based on the current data
+      const orderIds = useCase === 'jobs' 
+        ? normalizedJobs.map(job => job.id).join(',')
+        : normalizedShipments.map(shipment => shipment.id).join(',');
+      
+      // Create a hash of the order IDs to ensure consistent, shorter job_id
+      const hashString = orderIds + Date.now().toString();
+      let hash = 0;
+      for (let i = 0; i < hashString.length; i++) {
+        const char = hashString.charCodeAt(i);
+        hash = ((hash << 5) - hash) + char;
+        hash = hash & hash; // Convert to 32-bit integer
+      }
+      const jobId = Math.abs(hash).toString(36); // Convert to base36 for shorter string
+      
+      if (DEBUG_OPTIMIZATION) {
+        console.log('💾 Generating job_id:');
+        console.log('💾 Order IDs:', orderIds);
+        console.log('💾 Hash string:', hashString);
+        console.log('💾 Final job_id:', jobId);
+        console.log('💾 job_id length:', jobId.length);
+      }
+      
+      // Generate title from optimization results
+      const dateTime = new Date().toLocaleString();
+      const routes = resultData.result?.routes?.length || 0;
+      const unassigned = resultData.result?.summary?.unassigned || 0;
+      const duration = resultData.result?.summary?.duration || 0;
+      const title = `${dateTime}|Routes: ${routes}|Unassigned: ${unassigned}|Duration: ${duration}`;
+      
+      if (DEBUG_OPTIMIZATION) {
+        console.log('💾 Saving optimization result to database:')
+        console.log('💾 Routes count:', routes)
+      }
+      
+      // Create shared URL for the optimization result
+      let sharedUrl = null;
+      try {
+        const sharedResponse = await apiClient.createSharedResult(requestId, preferences?.routing?.region);
+        
+        // If the shared result was created successfully, construct the shared URL
+        if ((sharedResponse.data as any)?.message === "Create shared result successfully") {
+          const sharedResultId = (sharedResponse.data as any)?.id || requestId;
+          sharedUrl = `https://console.nextbillion.ai/route-planner-viewer?id=${sharedResultId}&host=api.nextbillion.io`;
+        } else {
+          // Don't fail the optimization if shared URL creation fails
+        }
+      } catch (sharedError) {
+        console.error('Failed to create shared URL:', sharedError);
+        console.error('Shared URL error details:', sharedError);
+        // Don't fail the optimization if shared URL creation fails
+      }
+      
+      // Calculate solution_time
+      let solutionTime = null;
+      if (startTime) {
+        solutionTime = (Date.now() - startTime) / 1000;
+      }
+      await fetch('/api/optimization-results', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          id: requestId,
+          job_id: jobId,
+          title: title,
+          response_data: resultData,
+          shared_url: sharedUrl,
+          status: 'completed',
+          solution_time: solutionTime
+        }),
+      });
+      // Optimization results saved to Turso storage
+      
+      // Navigate to analysis page with the completed optimization
+      if (onOptimizationComplete) {
+        if (DEBUG_OPTIMIZATION) {
+          console.log('🚀 Navigating to analysis page with job_id:', jobId);
+          console.log('🚀 Request ID:', requestId);
+        }
+        onOptimizationComplete(jobId);
+      }
+    } catch (error) {
+      console.error('Failed to save optimization results:', error);
+      // Don't fail the optimization if storage fails
+    }
+    
+    // Convert route results to RouteData format and pass to parent
+    if (resultData.result?.routes && onRouteResultsChange) {
+      const routeData = resultData.result.routes.map((route: any) => ({
+        vehicle: route.vehicle,
+        // Exclude geometry fields to reduce data size
+        // geometry: route.geometry, // Removed
+        cost: route.cost,
+        distance: route.distance,
+        duration: route.duration,
+        steps: route.steps,
+        delivery: route.delivery,
+        pickup: route.pickup
+      }))
+      onRouteResultsChange(routeData)
+      // Initialize all routes as selected by default
+      setSelectedRoutes(new Set(routeData.map((_: any, i: number) => i)))
+    }
   };
 
   // Handler for optimization request
@@ -1058,6 +1199,13 @@ export const InputImportPage = ({ currentStep, onStepChange, preferences, onPref
               hazmat_type: preferences.routing.hazmat_type
             }),
           },
+          // Add webhook configuration if webhook URL is available
+          ...(process.env.NEXT_PUBLIC_WEBHOOK_URL && {
+            webhook: {
+              url: process.env.NEXT_PUBLIC_WEBHOOK_URL,
+              events: ['JOB_COMPLETED', 'JOB_FAILED']
+            }
+          }),
         },
       };
       
@@ -1091,171 +1239,140 @@ export const InputImportPage = ({ currentStep, onStepChange, preferences, onPref
       const requestId = responseData.id
       
       if (requestId) {
-        // Start polling for results
-        setIsPolling(true)
-        setPollingMessage('Optimization request submitted successfully! Polling for results...')
+        // Check if webhook is configured
+        const useWebhook = !!process.env.NEXT_PUBLIC_WEBHOOK_URL;
         
-        // Track optimization start time
-        optimizationStartTime = Date.now();
-        
-        // Poll every 5 seconds
-        const interval = setInterval(async () => {
-          try {
-            const resultResponse = await apiClient.getOptimizationResult(requestId, preferences?.routing?.region)
-            const resultData = resultResponse.data as any
-            
-            if (DEBUG_OPTIMIZATION) {
-              console.log('🔍 Optimization result data:', resultData)
-              console.log('🔍 Routes length:', resultData?.result?.routes?.length)
+        if (useWebhook) {
+          // Use Server-Sent Events (SSE) for real-time webhook notifications
+          setIsPolling(true)
+          setPollingMessage('Optimization request submitted successfully! Waiting for webhook notification...')
+          
+          // Track optimization start time
+          optimizationStartTime = Date.now();
+          
+          // Open SSE connection to receive webhook notifications
+          // Include region parameter if specified
+          const regionParam = preferences?.routing?.region ? `&region=${preferences.routing.region}` : '';
+          const eventSource = new EventSource(`/api/webhook/optimization/stream?request_id=${requestId}${regionParam}`)
+          
+          eventSource.onmessage = async (event) => {
+            try {
+              const data = JSON.parse(event.data)
+              
+              if (DEBUG_OPTIMIZATION) {
+                console.log('📡 SSE message received:', data)
+              }
+              
+              if (data.type === 'status') {
+                if (data.status === 'completed') {
+                  // Optimization completed via webhook
+                  eventSource.close()
+                  setPollInterval(null)
+                  setIsPolling(false)
+                  setPollingMessage('')
+                  
+                  // Fetch the full result from the optimization API
+                  const resultResponse = await apiClient.getOptimizationResult(requestId, preferences?.routing?.region)
+                  const resultData = resultResponse.data as any
+                  
+                  if (DEBUG_OPTIMIZATION) {
+                    console.log('✅ Optimization completed via webhook')
+                    console.log('✅ Final routes count:', resultData?.result?.routes?.length || 0)
+                  }
+                  
+                  // Process the completed result
+                  await processOptimizationResult(resultData, requestId, optimizationStartTime, normalizedJobs, normalizedShipments, apiClient)
+                } else if (data.status === 'failed') {
+                  // Optimization failed
+                  eventSource.close()
+                  setPollInterval(null)
+                  setIsPolling(false)
+                  setPollingMessage('')
+                  alert(`Optimization failed: ${data.error_message || 'Unknown error'}`)
+                }
+                // If status is 'pending', just continue waiting (no action needed)
+              } else if (data.type === 'error') {
+                console.error('SSE error:', data.error)
+              }
+            } catch (error) {
+              console.error('Error processing SSE message:', error)
             }
-            
-            if (resultData) {
-              // Check if optimization is complete (empty message) or still processing
-              if (resultData.message === "" || resultData.message === undefined) {
-                // Optimization completed
-                clearInterval(interval)
-                setPollInterval(null)
+          }
+          
+          eventSource.onerror = (error) => {
+            console.error('SSE connection error:', error)
+            // Don't close on error - connection might recover
+            // But set a timeout to close after 10 minutes
+          }
+          
+          // Store the event source for cleanup
+          setPollInterval(eventSource as any)
+          
+          // Close connection after 10 minutes as fallback
+          setTimeout(() => {
+            if (eventSource.readyState !== EventSource.CLOSED) {
+              eventSource.close()
+              setPollInterval(null)
+              if (isPolling) {
                 setIsPolling(false)
-                setRouteResults(resultData)
-                // Reset expanded routes when new results come in
-                setExpandedRoutes(new Set())
-                setPollingMessage(`Optimization completed! Found ${resultData.result?.routes?.length || 0} routes.`)
-                
-                if (DEBUG_OPTIMIZATION) {
-                  console.log('✅ Optimization completed successfully')
-                  console.log('✅ Final routes count:', resultData.result?.routes?.length || 0)
-                }
-                
-                // Save optimization results to Turso storage
-                try {
-                  // Generate a unique job/shipment ID based on the current data
-                  const orderIds = useCase === 'jobs' 
-                    ? normalizedJobs.map(job => job.id).join(',')
-                    : normalizedShipments.map(shipment => shipment.id).join(',');
-                  
-                  // Create a hash of the order IDs to ensure consistent, shorter job_id
-                  const hashString = orderIds + Date.now().toString();
-                  let hash = 0;
-                  for (let i = 0; i < hashString.length; i++) {
-                    const char = hashString.charCodeAt(i);
-                    hash = ((hash << 5) - hash) + char;
-                    hash = hash & hash; // Convert to 32-bit integer
-                  }
-                  const jobId = Math.abs(hash).toString(36); // Convert to base36 for shorter string
-                  
-                  if (DEBUG_OPTIMIZATION) {
-                    console.log('💾 Generating job_id:');
-                    console.log('💾 Order IDs:', orderIds);
-                    console.log('💾 Hash string:', hashString);
-                    console.log('💾 Final job_id:', jobId);
-                    console.log('💾 job_id length:', jobId.length);
-                  }
-                  
-                  // Generate title from optimization results
-                  const dateTime = new Date().toLocaleString();
-                  const routes = resultData.result?.routes?.length || 0;
-                  const unassigned = resultData.result?.summary?.unassigned || 0;
-                  const duration = resultData.result?.summary?.duration || 0;
-                  const title = `${dateTime}|Routes: ${routes}|Unassigned: ${unassigned}|Duration: ${duration}`;
-                  
-                  if (DEBUG_OPTIMIZATION) {
-                    console.log('💾 Saving optimization result to database:')
-                    console.log('💾 Routes count:', routes)
-                  }
-                  
-                  // Create shared URL for the optimization result
-                  let sharedUrl = null;
-                  try {
-                    const sharedResponse = await apiClient.createSharedResult(requestId, preferences?.routing?.region);
-                    
-                    // If the shared result was created successfully, construct the shared URL
-                    if ((sharedResponse.data as any)?.message === "Create shared result successfully") {
-                      const sharedResultId = (sharedResponse.data as any)?.id || requestId;
-                      sharedUrl = `https://console.nextbillion.ai/route-planner-viewer?id=${sharedResultId}&host=api.nextbillion.io`;
-                    } else {
-                      // Don't fail the optimization if shared URL creation fails
-                    }
-                  } catch (sharedError) {
-                    console.error('Failed to create shared URL:', sharedError);
-                    console.error('Shared URL error details:', sharedError);
-                    // Don't fail the optimization if shared URL creation fails
-                  }
-                  
-                  // Calculate solution_time
-                  let solutionTime = null;
-                  if (optimizationStartTime) {
-                    solutionTime = (Date.now() - optimizationStartTime) / 1000;
-                  }
-                  await fetch('/api/optimization-results', {
-                    method: 'POST',
-                    headers: {
-                      'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({
-                      id: requestId,
-                      job_id: jobId,
-                      title: title,
-                      response_data: resultData,
-                      shared_url: sharedUrl,
-                      status: 'completed',
-                      solution_time: solutionTime
-                    }),
-                  });
-                  // Optimization results saved to Turso storage
-                  
-                  // Navigate to analysis page with the completed optimization
-                  if (onOptimizationComplete) {
-                    if (DEBUG_OPTIMIZATION) {
-                      console.log('🚀 Navigating to analysis page with job_id:', jobId);
-                      console.log('🚀 Request ID:', requestId);
-                    }
-                    onOptimizationComplete(jobId);
-                  }
-                } catch (error) {
-                  console.error('Failed to save optimization results:', error);
-                  // Don't fail the optimization if storage fails
-                }
-                
-                // Convert route results to RouteData format and pass to parent
-                if (resultData.result?.routes && onRouteResultsChange) {
-                  const routeData = resultData.result.routes.map((route: any) => ({
-                    vehicle: route.vehicle,
-                    // Exclude geometry fields to reduce data size
-                    // geometry: route.geometry, // Removed
-                    cost: route.cost,
-                    distance: route.distance,
-                    duration: route.duration,
-                    steps: route.steps,
-                    delivery: route.delivery,
-                    pickup: route.pickup
-                  }))
-                  onRouteResultsChange(routeData)
-                  // Initialize all routes as selected by default
-                  setSelectedRoutes(new Set(routeData.map((_: any, i: number) => i)))
-                }
-              } else if (resultData.message === "Still processing") {
-                // Continue polling - optimization still in progress
-              } else {
-                // Other status - might be an error or different state
+                setPollingMessage('Connection timeout - optimization may still be in progress.')
               }
             }
-          } catch (error) {
-            console.error('Polling error:', error)
-            // Continue polling on error (optimization might still be in progress)
-          }
-        }, 5000)
-        
-        setPollInterval(interval)
-        
-        // Stop polling after 10 minutes (120 polls)
-        setTimeout(() => {
-          clearInterval(interval)
-          setPollInterval(null)
-          if (isPolling) {
-            setIsPolling(false)
-            setPollingMessage('Polling timeout - optimization may still be in progress.')
-          }
-        }, 600000) // 10 minutes
+          }, 600000) // 10 minutes
+        } else {
+          // Fallback to polling if webhook is not configured
+          setIsPolling(true)
+          setPollingMessage('Optimization request submitted successfully! Polling for results...')
+          
+          // Track optimization start time
+          optimizationStartTime = Date.now();
+          
+          // Poll every 5 seconds
+          const interval = setInterval(async () => {
+            try {
+              const resultResponse = await apiClient.getOptimizationResult(requestId, preferences?.routing?.region)
+              const resultData = resultResponse.data as any
+              
+              if (DEBUG_OPTIMIZATION) {
+                console.log('🔍 Optimization result data:', resultData)
+                console.log('🔍 Routes length:', resultData?.result?.routes?.length)
+              }
+              
+              if (resultData) {
+                // Check if optimization is complete (empty message) or still processing
+                if (resultData.message === "" || resultData.message === undefined) {
+                  // Optimization completed
+                  clearInterval(interval)
+                  setPollInterval(null)
+                  setIsPolling(false)
+                  setPollingMessage('')
+                  
+                  // Process the completed result
+                  await processOptimizationResult(resultData, requestId, optimizationStartTime, normalizedJobs, normalizedShipments, apiClient)
+                } else if (resultData.message === "Still processing") {
+                  // Continue polling - optimization still in progress
+                } else {
+                  // Other status - might be an error or different state
+                }
+              }
+            } catch (error) {
+              console.error('Polling error:', error)
+              // Continue polling on error (optimization might still be in progress)
+            }
+          }, 5000)
+          
+          setPollInterval(interval)
+          
+          // Stop polling after 10 minutes (120 polls)
+          setTimeout(() => {
+            clearInterval(interval)
+            setPollInterval(null)
+            if (isPolling) {
+              setIsPolling(false)
+              setPollingMessage('Polling timeout - optimization may still be in progress.')
+            }
+          }, 600000) // 10 minutes
+        }
       } else {
         alert('Optimization request submitted successfully!')
       }

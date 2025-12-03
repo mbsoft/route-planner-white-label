@@ -18,7 +18,7 @@ import {
 import DirectionsCarIcon from '@mui/icons-material/DirectionsCar'
 import LocalShippingIcon from '@mui/icons-material/LocalShipping'
 import FlagIcon from '@mui/icons-material/Flag'
-import LocalGasStationIcon from '@mui/icons-material/LocalGasStation'
+import BuildIcon from '@mui/icons-material/Build'
 import DownloadIcon from '@mui/icons-material/Download'
 import UploadIcon from '@mui/icons-material/Upload'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
@@ -97,7 +97,7 @@ export const RouteSummaryTable: React.FC<RouteSummaryTableProps> = ({
       case 'start': 
         return <LocalShippingIcon sx={iconStyle} />
       case 'job': 
-        return <LocalGasStationIcon sx={iconStyle} />
+        return <BuildIcon sx={iconStyle} />
       case 'pickup': 
         return <DownloadIcon sx={iconStyle} />
       case 'delivery': 
@@ -391,7 +391,7 @@ export const RouteSummaryTable: React.FC<RouteSummaryTableProps> = ({
               <TableCell sx={{ width: 80, minWidth: 80 }}><strong>Stops</strong></TableCell>
               <TableCell sx={{ width: 100, minWidth: 100 }}><strong>Distance</strong></TableCell>
               <TableCell sx={{ width: 100, minWidth: 100 }}><strong>Drive</strong></TableCell>
-              <TableCell sx={{ width: 180, minWidth: 180 }}><strong>Fuel Delivery</strong></TableCell>
+              <TableCell sx={{ width: 180, minWidth: 180 }}><strong>Delivery</strong></TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -654,7 +654,7 @@ export const RouteSummaryTable: React.FC<RouteSummaryTableProps> = ({
                                 <TableCell sx={{ width: '250px', minWidth: '250px' }}><strong>Location</strong></TableCell>
                                 <TableCell sx={{ width: '80px', minWidth: '80px' }}><strong>Arrival</strong></TableCell>
                                 <TableCell sx={{ width: '80px', minWidth: '80px' }}><strong>Service</strong></TableCell>
-                                <TableCell sx={{ width: '150px', minWidth: '150px' }}><strong>Fuel Delivery</strong></TableCell>
+                                <TableCell sx={{ width: '150px', minWidth: '150px' }}><strong>Delivery</strong></TableCell>
                               </TableRow>
                             </TableHead>
                             <TableBody>
