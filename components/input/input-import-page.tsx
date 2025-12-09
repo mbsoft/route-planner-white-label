@@ -564,11 +564,26 @@ function normalizeShipments(shipmentData: any, mapConfig: any, locMap: Map<strin
             shipment.delivery.time_windows = [[0, convertTimeToMinutes(value)]];
           }
           break;
+        case 'amount capacity 1':
+        case 'amount capacity 2':
+        case 'amount capacity 3':
+          if (!shipment.amount) shipment.amount = [];
+          const amountIndex = parseInt(mapping.value.split(' ').pop()) - 1;
+          shipment.amount[amountIndex] = parseInt(value);
+          break;
         case 'amount':
           try {
-            const parsedAmount = JSON.parse(value);
-            if (Array.isArray(parsedAmount)) {
-              shipment.amount = parsedAmount;
+            // Handle both JSON array format and comma-separated string
+            let amountArray: number[];
+            if (value.startsWith('[') && value.endsWith(']')) {
+              // JSON array format
+              amountArray = JSON.parse(value);
+            } else {
+              // Comma-separated string format
+              amountArray = value.split(',').map(v => parseInt(v.trim())).filter(n => !isNaN(n));
+            }
+            if (Array.isArray(amountArray) && amountArray.length > 0) {
+              shipment.amount = amountArray;
             }
           } catch (error) {
             console.warn('Failed to parse amount array:', value);
@@ -583,12 +598,34 @@ function normalizeShipments(shipmentData: any, mapConfig: any, locMap: Map<strin
       }
     });
     
-    // Ensure location indices are set
+    // Ensure location indices are set - try to get from locMap if not already set
     if (shipment.pickup.location_index === -1) {
-      shipment.pickup.location_index = 0;
+      const pickupLocStr = getLocationString(row, mapConfig, 'pickup.location');
+      if (pickupLocStr) {
+        const parsed = parseLatLng(pickupLocStr);
+        if (parsed) {
+          const key = parsed.join(',');
+          shipment.pickup.location_index = locMap.get(key) ?? -1;
+        }
+      }
+      // Only default to 0 if we still couldn't find it
+      if (shipment.pickup.location_index === -1) {
+        shipment.pickup.location_index = 0;
+      }
     }
     if (shipment.delivery.location_index === -1) {
-      shipment.delivery.location_index = 0;
+      const deliveryLocStr = getLocationString(row, mapConfig, 'delivery.location');
+      if (deliveryLocStr) {
+        const parsed = parseLatLng(deliveryLocStr);
+        if (parsed) {
+          const key = parsed.join(',');
+          shipment.delivery.location_index = locMap.get(key) ?? -1;
+        }
+      }
+      // Only default to 0 if we still couldn't find it
+      if (shipment.delivery.location_index === -1) {
+        shipment.delivery.location_index = 0;
+      }
     }
     
     selectedShipments.push(shipment);
