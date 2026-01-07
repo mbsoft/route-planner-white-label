@@ -1,0 +1,3452 @@
+{
+  "locations": {
+    "location": [
+      "33.807970,-84.436960",
+      "33.770907,-84.389418",
+      "33.756742,-84.346517",
+      "33.765067,-84.333655",
+      "33.772874,-84.354451",
+      "33.764540,-84.349561",
+      "33.763803,-84.349520",
+      "33.759599,-84.346593",
+      "33.750965,-84.322789",
+      "33.747587,-84.326676",
+      "33.754100,-84.269170",
+      "33.800756,-84.372839",
+      "33.780240,-84.388207",
+      "33.771618,-84.363351",
+      "33.813236,-84.311839",
+      "33.828498,-84.325115",
+      "33.841400,-84.325900",
+      "33.841343,-84.326512",
+      "33.796081,-84.387428",
+      "33.757345,-84.371769",
+      "33.772707,-84.414928",
+      "33.851640,-84.359627",
+      "33.846733,-84.373747",
+      "33.848417,-84.365091",
+      "33.853966,-84.357787",
+      "33.834147,-84.382842",
+      "33.833902,-84.382469",
+      "33.841642,-84.372933",
+      "33.854294,-84.360316",
+      "33.836629,-84.368354",
+      "33.836670,-84.376705",
+      "33.871221,-84.379296",
+      "33.934928,-84.377779",
+      "33.904547,-84.428738",
+      "33.898568,-84.465858",
+      "33.905816,-84.379218",
+      "33.911271,-84.362669",
+      "33.866807,-84.336354",
+      "33.857098,-84.343072",
+      "33.968754,-84.488488",
+      "33.985341,-84.425993",
+      "34.023269,-84.422462",
+      "34.027689,-84.420310",
+      "33.976997,-84.414969",
+      "33.923059,-84.466814",
+      "33.918680,-84.466449",
+      "33.900836,-84.490517",
+      "33.903312,-84.487095",
+      "33.900337,-84.476029",
+      "34.039083,-84.529755",
+      "34.037273,-84.463605",
+      "34.015410,-84.551703",
+      "33.951758,-84.551461",
+      "33.967314,-84.536492",
+      "33.973582,-84.529397",
+      "33.943633,-84.533728",
+      "34.084144,-84.481292",
+      "34.087088,-84.485835",
+      "34.141464,-84.503702",
+      "34.057474,-84.557106",
+      "34.084285,-84.554441",
+      "34.105390,-84.542368",
+      "34.110045,-84.553504",
+      "34.048181,-84.601218",
+      "34.088169,-84.583548",
+      "34.110780,-84.582370",
+      "34.111621,-84.581335",
+      "34.120318,-84.586389",
+      "34.139817,-84.587199",
+      "34.153869,-84.583508",
+      "34.128107,-84.585591",
+      "34.126917,-84.571862",
+      "34.113224,-84.580689",
+      "34.090504,-84.611925",
+      "34.062636,-84.591647",
+      "34.061513,-84.590530",
+      "34.028566,-84.657884",
+      "34.064151,-84.726495",
+      "34.008532,-84.607088",
+      "34.055627,-84.593179",
+      "34.064647,-84.625196",
+      "33.995874,-84.704941",
+      "33.996833,-84.707064",
+      "33.997210,-84.706190",
+      "34.050405,-84.579843",
+      "34.046785,-84.581525",
+      "34.033910,-84.580590",
+      "34.031775,-84.580353",
+      "34.034986,-84.574461",
+      "34.022669,-84.568839",
+      "33.952458,-84.577855",
+      "33.952223,-84.570795",
+      "33.938164,-84.554405",
+      "33.952810,-84.571995",
+      "34.010720,-84.565175",
+      "34.008602,-84.570661",
+      "34.012169,-84.572660",
+      "34.007910,-84.570870",
+      "33.903027,-84.675045",
+      "33.935705,-84.723038",
+      "33.873452,-84.676597",
+      "33.873001,-84.675591",
+      "33.858574,-84.674468",
+      "33.859028,-84.674810",
+      "33.856220,-84.670760",
+      "33.853346,-84.670060",
+      "33.867448,-84.636304",
+      "33.835378,-84.574952",
+      "33.832957,-84.575279",
+      "33.841764,-84.503046",
+      "33.847406,-84.504414",
+      "33.883953,-84.484530",
+      "33.861128,-84.667037",
+      "33.842841,-84.500875",
+      "33.820350,-84.451028",
+      "33.844353,-84.500670",
+      "33.827846,-84.499328",
+      "33.826644,-84.491573",
+      "33.801580,-84.436700",
+      "33.818970,-84.461527",
+      "33.805155,-84.470995",
+      "33.811493,-84.475770",
+      "33.810460,-84.475695",
+      "33.909961,-84.488622",
+      "33.942742,-84.534447",
+      "33.936048,-84.554993",
+      "33.936152,-84.556949",
+      "33.936941,-84.557020",
+      "33.969493,-84.525798",
+      "33.891004,-84.505108",
+      "33.922539,-84.472653",
+      "33.890238,-84.478486",
+      "33.612331,-84.610021",
+      "33.573182,-84.541713",
+      "33.654164,-84.504357",
+      "33.693376,-84.489034",
+      "33.688995,-84.495101",
+      "33.689841,-84.505696",
+      "33.690841,-84.511134",
+      "33.691107,-84.510944",
+      "33.587011,-84.472062",
+      "33.591475,-84.470260",
+      "33.608582,-84.435626",
+      "33.591884,-84.428855",
+      "33.597524,-84.428378",
+      "33.601255,-84.427073",
+      "33.601481,-84.431134",
+      "33.599873,-84.428544",
+      "33.682427,-84.409376",
+      "33.644286,-84.455333",
+      "33.681713,-84.410407",
+      "33.660938,-84.448090",
+      "33.658405,-84.442460",
+      "33.616413,-84.450207",
+      "33.613188,-84.449480",
+      "33.608336,-84.445983",
+      "33.615963,-84.461806",
+      "33.741506,-84.361136",
+      "33.739741,-84.309331",
+      "33.740103,-84.326676",
+      "33.746846,-84.327253",
+      "33.680555,-84.408173",
+      "33.681648,-84.407288",
+      "33.681396,-84.396746",
+      "33.681361,-84.394037",
+      "33.679958,-84.395761",
+      "33.809638,-84.413789",
+      "33.754084,-84.497392",
+      "33.741118,-84.510187",
+      "33.751060,-84.486163",
+      "33.753214,-84.493840",
+      "33.695813,-84.534640",
+      "33.697044,-84.534423",
+      "33.708856,-84.559447",
+      "33.755570,-84.468087",
+      "33.753985,-84.476141",
+      "33.753239,-84.473367",
+      "33.753760,-84.472554",
+      "33.751627,-84.468659",
+      "33.752615,-84.468372",
+      "33.751532,-84.467908",
+      "33.748473,-84.442476",
+      "33.689112,-84.714739",
+      "33.668904,-84.805460",
+      "33.672078,-84.805798",
+      "33.673359,-84.804502",
+      "33.624196,-84.860519",
+      "33.618806,-84.850364",
+      "33.619186,-84.849585",
+      "33.734933,-84.669070",
+      "33.732043,-84.669193",
+      "33.706477,-84.778313",
+      "33.679080,-84.775760",
+      "33.680107,-84.804563",
+      "33.679140,-84.775529",
+      "33.706963,-84.778226",
+      "33.705448,-84.771212",
+      "33.858151,-84.673104",
+      "33.875891,-84.702981",
+      "33.843185,-84.699411",
+      "33.843574,-84.698611",
+      "33.728130,-84.823479",
+      "33.822243,-84.723322",
+      "33.849096,-84.373064",
+      "33.830760,-84.344120",
+      "33.845722,-84.359746",
+      "33.854888,-84.314839",
+      "33.858894,-84.342031",
+      "33.858976,-84.341387",
+      "33.858128,-84.382747",
+      "33.857194,-84.343559",
+      "33.842042,-84.328957",
+      "33.825592,-84.363714",
+      "33.818318,-84.388528",
+      "33.819053,-84.461881",
+      "33.706200,-84.379000",
+      "33.680907,-84.384733",
+      "33.663981,-84.408190",
+      "33.686084,-84.492973",
+      "33.680947,-84.401440",
+      "33.679855,-84.417662",
+      "33.739441,-84.326507",
+      "33.758247,-84.348063",
+      "33.660174,-84.431626",
+      "33.762349,-84.357840",
+      "33.758699,-84.391471",
+      "34.112806,-84.584609",
+      "33.946053,-84.521324",
+      "33.855736,-84.587064",
+      "33.732552,-84.756461",
+      "33.908215,-84.602446",
+      "33.948194,-84.626360",
+      "33.807982,-84.435763",
+      "34.089872,-84.585299"
+    ]
+  },
+  "vehicles": [
+    {
+      "id": "301 -",
+      "description": "301 --Jamille Talley",
+      "time_window": [
+        1760603400,
+        1760639400
+      ],
+      "start_index": 0,
+      "end_index": 0,
+      "max_working_time": 36000,
+      "layover_config": {
+        "max_continuous_time": 18000,
+        "layover_duration": 1800,
+        "include_service_time": true
+      },
+      "capacity": [
+        200000,
+        18
+      ]
+    },
+    {
+      "id": "302 - Geo",
+      "description": "302 - Geo-Phillip Smith",
+      "time_window": [
+        1760603400,
+        1760639400
+      ],
+      "start_index": 0,
+      "end_index": 0,
+      "max_working_time": 36000,
+      "layover_config": {
+        "max_continuous_time": 18000,
+        "layover_duration": 1800,
+        "include_service_time": true
+      },
+      "capacity": [
+        250000,
+        18
+      ]
+    },
+    {
+      "id": "303 - Geo",
+      "description": "303 - Geo-Warren Lee",
+      "time_window": [
+        1760603400,
+        1760639400
+      ],
+      "start_index": 0,
+      "end_index": 0,
+      "max_working_time": 36000,
+      "layover_config": {
+        "max_continuous_time": 18000,
+        "layover_duration": 1800,
+        "include_service_time": true
+      },
+      "capacity": [
+        250000,
+        18
+      ]
+    },
+    {
+      "id": "304 - Geo",
+      "description": "304 - Geo-Keith Edwin",
+      "time_window": [
+        1760603400,
+        1760639400
+      ],
+      "start_index": 0,
+      "end_index": 0,
+      "max_working_time": 36000,
+      "layover_config": {
+        "max_continuous_time": 18000,
+        "layover_duration": 1800,
+        "include_service_time": true
+      },
+      "capacity": [
+        290000,
+        22
+      ]
+    },
+    {
+      "id": "305 - Geo",
+      "description": "305 - Geo-Sharif Esa",
+      "time_window": [
+        1760603400,
+        1760639400
+      ],
+      "start_index": 0,
+      "end_index": 0,
+      "max_working_time": 36000,
+      "layover_config": {
+        "max_continuous_time": 18000,
+        "layover_duration": 1800,
+        "include_service_time": true
+      },
+      "capacity": [
+        290000,
+        22
+      ]
+    },
+    {
+      "id": "306 - Geo",
+      "description": "306 - Geo-Damion Coran",
+      "time_window": [
+        1760599800,
+        1760635800
+      ],
+      "start_index": 0,
+      "end_index": 0,
+      "max_working_time": 36000,
+      "layover_config": {
+        "max_continuous_time": 18000,
+        "layover_duration": 1800,
+        "include_service_time": true
+      },
+      "capacity": [
+        290000,
+        22
+      ]
+    },
+    {
+      "id": "307 - Geo",
+      "description": "307 - Geo-Michael Reed",
+      "time_window": [
+        1760599800,
+        1760635800
+      ],
+      "start_index": 0,
+      "end_index": 0,
+      "max_working_time": 36000,
+      "layover_config": {
+        "max_continuous_time": 18000,
+        "layover_duration": 1800,
+        "include_service_time": true
+      },
+      "capacity": [
+        290000,
+        22
+      ]
+    },
+    {
+      "id": "308 - Geo",
+      "description": "308 - Geo-David Mcnair",
+      "time_window": [
+        1760601600,
+        1760637600
+      ],
+      "start_index": 0,
+      "end_index": 0,
+      "max_working_time": 36000,
+      "layover_config": {
+        "max_continuous_time": 18000,
+        "layover_duration": 1800,
+        "include_service_time": true
+      },
+      "capacity": [
+        290000,
+        22
+      ]
+    },
+    {
+      "id": "309 - Geo",
+      "description": "309 - Geo-Jermario Smiley",
+      "time_window": [
+        1760599800,
+        1760635800
+      ],
+      "start_index": 0,
+      "end_index": 0,
+      "max_working_time": 36000,
+      "layover_config": {
+        "max_continuous_time": 18000,
+        "layover_duration": 1800,
+        "include_service_time": true
+      },
+      "capacity": [
+        290000,
+        22
+      ]
+    },
+    {
+      "id": "310 - Geo",
+      "description": "310 - Geo-Tyreek Miller",
+      "time_window": [
+        1760601600,
+        1760637600
+      ],
+      "start_index": 0,
+      "end_index": 0,
+      "max_working_time": 36000,
+      "layover_config": {
+        "max_continuous_time": 18000,
+        "layover_duration": 1800,
+        "include_service_time": true
+      },
+      "capacity": [
+        290000,
+        22
+      ]
+    },
+    {
+      "id": "311 -",
+      "description": "311 --Daniel Mcroberts Jr",
+      "time_window": [
+        1760601600,
+        1760637600
+      ],
+      "start_index": 0,
+      "end_index": 0,
+      "max_working_time": 36000,
+      "layover_config": {
+        "max_continuous_time": 18000,
+        "layover_duration": 1800,
+        "include_service_time": true
+      },
+      "capacity": [
+        290000,
+        22
+      ]
+    },
+    {
+      "id": "312 - Geo",
+      "description": "312 - Geo-Keyshawn Early",
+      "time_window": [
+        1760603400,
+        1760639400
+      ],
+      "start_index": 0,
+      "end_index": 0,
+      "max_working_time": 36000,
+      "layover_config": {
+        "max_continuous_time": 18000,
+        "layover_duration": 1800,
+        "include_service_time": true
+      },
+      "capacity": [
+        290000,
+        22
+      ]
+    },
+    {
+      "id": "313 - Geo",
+      "description": "313 - Geo-Eddie Nixon",
+      "time_window": [
+        1760599800,
+        1760635800
+      ],
+      "start_index": 0,
+      "end_index": 0,
+      "max_working_time": 36000,
+      "layover_config": {
+        "max_continuous_time": 18000,
+        "layover_duration": 1800,
+        "include_service_time": true
+      },
+      "capacity": [
+        290000,
+        22
+      ]
+    },
+    {
+      "id": "314 - Geo",
+      "description": "314 - Geo-Ron Galbreth",
+      "time_window": [
+        1760603400,
+        1760639400
+      ],
+      "start_index": 0,
+      "end_index": 0,
+      "max_working_time": 36000,
+      "layover_config": {
+        "max_continuous_time": 18000,
+        "layover_duration": 1800,
+        "include_service_time": true
+      },
+      "capacity": [
+        290000,
+        22
+      ]
+    },
+    {
+      "id": "315 - Geo",
+      "description": "315 - Geo-Huy Nguyen",
+      "time_window": [
+        1760599800,
+        1760635800
+      ],
+      "start_index": 0,
+      "end_index": 0,
+      "max_working_time": 36000,
+      "layover_config": {
+        "max_continuous_time": 18000,
+        "layover_duration": 1800,
+        "include_service_time": true
+      },
+      "capacity": [
+        290000,
+        22
+      ]
+    },
+    {
+      "id": "316 - Geo",
+      "description": "316 - Geo-Kamian Vaughn",
+      "time_window": [
+        1760603400,
+        1760639400
+      ],
+      "start_index": 0,
+      "end_index": 0,
+      "max_working_time": 36000,
+      "layover_config": {
+        "max_continuous_time": 18000,
+        "layover_duration": 1800,
+        "include_service_time": true
+      },
+      "capacity": [
+        290000,
+        22
+      ]
+    },
+    {
+      "id": "317 - Geo",
+      "description": "317 - Geo-Charlie Rogers",
+      "time_window": [
+        1760599800,
+        1760635800
+      ],
+      "start_index": 0,
+      "end_index": 0,
+      "max_working_time": 36000,
+      "layover_config": {
+        "max_continuous_time": 18000,
+        "layover_duration": 1800,
+        "include_service_time": true
+      },
+      "capacity": [
+        290000,
+        22
+      ]
+    },
+    {
+      "id": "318 - Geo",
+      "description": "318 - Geo-Javonte Nash",
+      "time_window": [
+        1760599800,
+        1760635800
+      ],
+      "start_index": 0,
+      "end_index": 0,
+      "max_working_time": 36000,
+      "layover_config": {
+        "max_continuous_time": 18000,
+        "layover_duration": 1800,
+        "include_service_time": true
+      },
+      "capacity": [
+        290000,
+        22
+      ]
+    },
+    {
+      "id": "319 - Geo",
+      "description": "319 - Geo-Darrell Jones",
+      "time_window": [
+        1760603400,
+        1760639400
+      ],
+      "start_index": 0,
+      "end_index": 0,
+      "max_working_time": 36000,
+      "layover_config": {
+        "max_continuous_time": 18000,
+        "layover_duration": 1800,
+        "include_service_time": true
+      },
+      "capacity": [
+        290000,
+        22
+      ]
+    },
+    {
+      "id": "320 -",
+      "description": "320 --Samuel Wilcox",
+      "time_window": [
+        1760603400,
+        1760639400
+      ],
+      "start_index": 0,
+      "end_index": 0,
+      "max_working_time": 36000,
+      "layover_config": {
+        "max_continuous_time": 18000,
+        "layover_duration": 1800,
+        "include_service_time": true
+      },
+      "capacity": [
+        290000,
+        22
+      ]
+    },
+    {
+      "id": "321 - Geo",
+      "description": "321 - Geo-Nyzhae Ray",
+      "time_window": [
+        1760603400,
+        1760639400
+      ],
+      "start_index": 0,
+      "end_index": 0,
+      "max_working_time": 36000,
+      "layover_config": {
+        "max_continuous_time": 18000,
+        "layover_duration": 1800,
+        "include_service_time": true
+      },
+      "capacity": [
+        290000,
+        22
+      ]
+    },
+    {
+      "id": "324 - ATLANTA",
+      "description": "324 - ATLANTA-Robert Sturgis",
+      "time_window": [
+        1760603400,
+        1760639400
+      ],
+      "start_index": 0,
+      "end_index": 0,
+      "max_working_time": 36000,
+      "layover_config": {
+        "max_continuous_time": 18000,
+        "layover_duration": 1800,
+        "include_service_time": true
+      },
+      "capacity": [
+        290000,
+        22
+      ]
+    },
+    {
+      "id": "325 - MARIETTA",
+      "description": "325 - MARIETTA-Bryant Askew",
+      "time_window": [
+        1760603400,
+        1760639400
+      ],
+      "start_index": 0,
+      "end_index": 0,
+      "max_working_time": 36000,
+      "layover_config": {
+        "max_continuous_time": 18000,
+        "layover_duration": 1800,
+        "include_service_time": true
+      },
+      "capacity": [
+        290000,
+        22
+      ]
+    },
+    {
+      "id": "326 - WINSTON",
+      "description": "326 - WINSTON-Thaddeus Williams",
+      "time_window": [
+        1760602500,
+        1760638500
+      ],
+      "start_index": 0,
+      "end_index": 0,
+      "max_working_time": 36000,
+      "layover_config": {
+        "max_continuous_time": 18000,
+        "layover_duration": 1800,
+        "include_service_time": true
+      },
+      "capacity": [
+        290000,
+        22
+      ]
+    },
+    {
+      "id": "8600 - Box",
+      "description": "8600 - Box-Brian Nelson",
+      "time_window": [
+        1760608800,
+        1760644800
+      ],
+      "start_index": 0,
+      "end_index": 0,
+      "max_working_time": 36000,
+      "layover_config": {
+        "max_continuous_time": 18000,
+        "layover_duration": 1800,
+        "include_service_time": true
+      },
+      "capacity": [
+        120000,
+        12
+      ]
+    },
+    {
+      "id": "8601 - Box",
+      "description": "8601 - Box-Siite Murphy",
+      "time_window": [
+        1760608800,
+        1760644800
+      ],
+      "start_index": 0,
+      "end_index": 0,
+      "max_working_time": 36000,
+      "layover_config": {
+        "max_continuous_time": 18000,
+        "layover_duration": 1800,
+        "include_service_time": true
+      },
+      "capacity": [
+        120000,
+        12
+      ]
+    },
+    {
+      "id": "900 - WOODSTOCK",
+      "description": "900 - WOODSTOCK-Jomika Craddock",
+      "time_window": [
+        1760652000,
+        1760688000
+      ],
+      "start_index": 0,
+      "end_index": 0,
+      "max_working_time": 36000,
+      "layover_config": {
+        "max_continuous_time": 18000,
+        "layover_duration": 1800,
+        "include_service_time": true
+      },
+      "capacity": [
+        410000,
+        32
+      ]
+    },
+    {
+      "id": "903 -",
+      "description": "903 --Quincy Hooks",
+      "time_window": [
+        1760599800,
+        1760635800
+      ],
+      "start_index": 0,
+      "end_index": 0,
+      "max_working_time": 36000,
+      "layover_config": {
+        "max_continuous_time": 18000,
+        "layover_duration": 1800,
+        "include_service_time": true
+      },
+      "capacity": [
+        410000,
+        32
+      ]
+    }
+  ],
+  "jobs": [
+    {
+      "id": "2004891379-301 --0",
+      "location_index": 1,
+      "service": 4772,
+      "sequence_order": 99,
+      "description": "HRA@BP FOOD MART|610 SPRING ST NW ATLANTA GA 30308|05:00-09:00|2370.1|1.756|S",
+      "delivery": [
+        23701,
+        2
+      ]
+    },
+    {
+      "id": "2000637687-301 --1",
+      "location_index": 2,
+      "service": 1833,
+      "sequence_order": 2,
+      "description": "KROGER 00461|1275 CAROLINE ST NE ATLANTA GA 30307-2705|06:00-12:00|3859.6|2|B",
+      "delivery": [
+        38596,
+        2
+      ]
+    },
+    {
+      "id": "2000814972-301 --2",
+      "location_index": 3,
+      "service": 3331,
+      "sequence_order": 99,
+      "description": "HRA@ KGA @ CANDLER PARK #1837|1642 MCLENDON AVE NE ATLANTA GA 30307-2153|06:00-10:30|1321.6|1.172|S",
+      "delivery": [
+        13216,
+        2
+      ]
+    },
+    {
+      "id": "2000926261-301 --3",
+      "location_index": 4,
+      "service": 1833,
+      "sequence_order": 2,
+      "description": "PUBLIX 0724 PUBLIX|1001 PONCE DE LEON AVE NE ATLANTA GA 30306-4215|07:00-11:00|2008.2|2|B",
+      "delivery": [
+        20082,
+        2
+      ]
+    },
+    {
+      "id": "2004143482-301 --4",
+      "location_index": 5,
+      "service": 2274,
+      "sequence_order": 99,
+      "description": "PBA @ GAS 76|372 MORELAND AVE NE ATLANTA GA 30307-1927|06:00-18:00|655.0|0.517|S",
+      "delivery": [
+        6550,
+        1
+      ]
+    },
+    {
+      "id": "2003925881-301 --6",
+      "location_index": 6,
+      "service": 2833,
+      "sequence_order": 99,
+      "description": "PBA@SHELL CIRCLE K|350 MORELAND AVE NE ATLANTA GA 30307-1927|06:00-18:00|1132.3|1.012|S",
+      "delivery": [
+        11323,
+        2
+      ]
+    },
+    {
+      "id": "2000589660-301 --7",
+      "location_index": 7,
+      "service": 1041,
+      "sequence_order": 2,
+      "description": "LOWE'S HOME IMP # 1875|1280 CAROLINE ST NE ATLANTA GA 30307-2706|06:45-16:00|788.7|1|B",
+      "delivery": [
+        7887,
+        1
+      ]
+    },
+    {
+      "id": "2000371795-301 --8",
+      "location_index": 8,
+      "service": 3532,
+      "sequence_order": 99,
+      "description": "HRA@ BP GAS STATION SAILEELA INC|1989 HOSEA L WILLIAMS DR SE ATLANTA GA 30317-2229|06:00-14:00|1335.3|1.065|S",
+      "delivery": [
+        13353,
+        2
+      ]
+    },
+    {
+      "id": "2001049241-301 --9",
+      "location_index": 9,
+      "service": 4042,
+      "sequence_order": 99,
+      "description": "ATL RETAILERS @ CHEVRON FOOD MART|1860 MEMORIAL DR SE ATLANTA GA 30317-2159|07:00-18:00|1762.8|1.604|S",
+      "delivery": [
+        17628,
+        2
+      ]
+    },
+    {
+      "id": "2000367762-301 --10",
+      "location_index": 10,
+      "service": 2106,
+      "sequence_order": 99,
+      "description": "PLANET FITNESS 1563 PLANET FITNESS 15|1599 MEMORIAL DR SE ATLANTA GA 30317-1801|09:00-17:00|898.4|1|S",
+      "delivery": [
+        8984,
+        1
+      ]
+    },
+    {
+      "id": "2000819277-302 - Geo-0",
+      "location_index": 11,
+      "service": 2350,
+      "sequence_order": 2,
+      "description": "KROGER 00298|1700 MONROE DR NE ATLANTA GA 30324-5033|04:00-10:00|4884.2|3|B",
+      "delivery": [
+        48842,
+        3
+      ]
+    },
+    {
+      "id": "2000654093-302 - Geo-1",
+      "location_index": 12,
+      "service": 1833,
+      "sequence_order": 2,
+      "description": "PUBLIX 1061 PUBLIX SUPERMKTS|950 W PEACHTREE ST NW ATLANTA GA 30309-3846|05:00-12:00|3005.1|2|B",
+      "delivery": [
+        30051,
+        2
+      ]
+    },
+    {
+      "id": "2001225209-302 - Geo-2",
+      "location_index": 13,
+      "service": 1833,
+      "sequence_order": 2,
+      "description": "KROGER 00695|725 PONCE DE LEON AVE NE ATLANTA GA 30306-4329|06:00-12:00|3869.0|2|B",
+      "delivery": [
+        38690,
+        2
+      ]
+    },
+    {
+      "id": "2001163340-302 - Geo-3",
+      "location_index": 14,
+      "service": 1316,
+      "sequence_order": 2,
+      "description": "PUBLIX 0773 PUBLIX|2969 N DRUID HILLS RD NE ATLANTA GA 30329-3909|05:00-13:00|1684.4|1|B",
+      "delivery": [
+        16844,
+        1
+      ]
+    },
+    {
+      "id": "2001251190-302 - Geo-4",
+      "location_index": 15,
+      "service": 1648,
+      "sequence_order": 2,
+      "description": "TARGET 1486 - VEND 1137590 TARGET CORP|2400 N DRUID HILLS RD NE ATLANTA GA 30329-3211|07:00-12:00|3905.3|2|B",
+      "delivery": [
+        39053,
+        2
+      ]
+    },
+    {
+      "id": "2001261358-302 - Geo-5",
+      "location_index": 16,
+      "service": 1947,
+      "sequence_order": 2,
+      "description": "CITY FARMERS MARKET #2 CITY FARMERS MKT2|3317 BUFORD HWY NE BROOKHAVEN GA 30329-3740|08:00-15:00|2547.1|2|B",
+      "delivery": [
+        25471,
+        2
+      ]
+    },
+    {
+      "id": "2001209478-302 - Geo-7",
+      "location_index": 17,
+      "service": 1959,
+      "sequence_order": 2,
+      "description": "HIBACHI BUFFET|3303 BUFORD HWY NE BROOKHAVEN GA 30329-3721|10:00-14:00|1454.9|1|B",
+      "delivery": [
+        14549,
+        1
+      ]
+    },
+    {
+      "id": "2001178358-302 - Geo-8",
+      "location_index": 18,
+      "service": 2848,
+      "sequence_order": 99,
+      "description": "ATL RETAILERS @ UPTOWN STATION UPTOWN STATION IN|1521 PEACHTREE ST NE ATLANTA GA 30309-2915|04:30-12:00|1015.2|1.159|S",
+      "delivery": [
+        10152,
+        2
+      ]
+    },
+    {
+      "id": "2001029835-302 - Geo-9",
+      "location_index": 19,
+      "service": 3336,
+      "sequence_order": 99,
+      "description": "ATL RETAILERS @ CIRCLE K 144 111 BOULEVARD IN|111 BOULEVARD DR ATLANTA GA 30312|05:00-18:00|1297.1|1.067|S",
+      "delivery": [
+        12971,
+        2
+      ]
+    },
+    {
+      "id": "2000535606-302 - Geo-10",
+      "location_index": 20,
+      "service": 1276,
+      "sequence_order": 99,
+      "description": "FAMILY DOLLAR 6501|824 DONALD LEE HOLLOWELL PKWY NW ATLANTA GA 30318-8402|08:00-20:00|||S",
+      "delivery": [
+        0,
+        0
+      ]
+    },
+    {
+      "id": "2000475705-303 - Geo-0",
+      "location_index": 21,
+      "service": 1833,
+      "sequence_order": 2,
+      "description": "PUBLIX 0664 PUBLIX|3535 PEACHTREE RD NE ATLANTA GA 30326-3287|05:00-11:00|2100.9|2|B",
+      "delivery": [
+        21009,
+        2
+      ]
+    },
+    {
+      "id": "2004506354-303 - Geo-1",
+      "location_index": 22,
+      "service": 1947,
+      "sequence_order": 2,
+      "description": "PUBLIX 1867 PUBLIX|3330 STE 16 PIEDMONT RD NE ATLANTA GA 30305|05:00-13:00|2023.3|2|B",
+      "delivery": [
+        20233,
+        2
+      ]
+    },
+    {
+      "id": "2000756833-303 - Geo-2",
+      "location_index": 23,
+      "service": 1585,
+      "sequence_order": 99,
+      "description": "WESTIN BUCKHEAD ATLANTA CCSH ATLANTA LLC|3391 PEACHTREE RD NE ATLANTA GA 30326-1083|05:00-12:00|928.0|1|S",
+      "delivery": [
+        9280,
+        1
+      ]
+    },
+    {
+      "id": "2004258689-303 - Geo-3",
+      "location_index": 24,
+      "service": 2847,
+      "sequence_order": 99,
+      "description": "HRA@BP FOOD MART|3639 PEACHTREE RD NE ATLANTA GA 30319-1207|05:00-11:00|1039.2|1.112|S",
+      "delivery": [
+        10392,
+        2
+      ]
+    },
+    {
+      "id": "2000796153-303 - Geo-4",
+      "location_index": 25,
+      "service": 1833,
+      "sequence_order": 2,
+      "description": "PUBLIX 0282|2900 PEACHTREE RD NW ATLANTA GA 30305-4915|06:30-13:00|1923.2|2|B",
+      "delivery": [
+        19232,
+        2
+      ]
+    },
+    {
+      "id": "2001004877-303 - Geo-5",
+      "location_index": 26,
+      "service": 3870,
+      "sequence_order": 99,
+      "description": "WALGREENS 9303 WALGREEN|2893 PEACHTREE RD NE ATLANTA GA 30305-2929|08:00-13:00|1170.3|1.03|S",
+      "delivery": [
+        11703,
+        2
+      ]
+    },
+    {
+      "id": "2000911452-303 - Geo-7",
+      "location_index": 27,
+      "service": 3886,
+      "sequence_order": 99,
+      "description": "CVS 5731|3221 PEACHTREE RD NE ATLANTA GA 30305-2414|08:00-18:00|1058.6|1|S",
+      "delivery": [
+        10586,
+        1
+      ]
+    },
+    {
+      "id": "2001259006-303 - Geo-8",
+      "location_index": 28,
+      "service": 1814,
+      "sequence_order": 99,
+      "description": "AC HOTEL ATLANTA BUCKHEAD 2835|3600 WIEUCA RD NE ATLANTA GA 30342-4344|09:00-18:00|1533.1|1.535|S",
+      "delivery": [
+        15331,
+        2
+      ]
+    },
+    {
+      "id": "2000360235-303 - Geo-9",
+      "location_index": 29,
+      "service": 2612,
+      "sequence_order": 99,
+      "description": "ATL RETAILERS @ BP PIEDMONT DILSHAD PROPERTIE|3004 PIEDMONT RD NE ATLANTA GA 30305-2606|06:30-16:00|923.1|1.035|S",
+      "delivery": [
+        9231,
+        2
+      ]
+    },
+    {
+      "id": "2001200901-303 - Geo-10",
+      "location_index": 30,
+      "service": 3491,
+      "sequence_order": 99,
+      "description": "HRA@ PHARR ROAD AND GAS MARKS INVESTMENT|345 PHARR RD NE ATLANTA GA 30305-2303|07:45-17:30|1347.8|1.065|S",
+      "delivery": [
+        13478,
+        2
+      ]
+    },
+    {
+      "id": "2000309018-304 - Geo-0",
+      "location_index": 31,
+      "service": 2350,
+      "sequence_order": 2,
+      "description": "PUBLIX 0718|4279 ROSWELL RD NE ATLANTA GA 30342-3769|05:00-11:00|2463.3|3|B",
+      "delivery": [
+        24633,
+        3
+      ]
+    },
+    {
+      "id": "2000700621-304 - Geo-1",
+      "location_index": 32,
+      "service": 1833,
+      "sequence_order": 2,
+      "description": "PUBLIX 0468|6615 ROSWELL RD ATLANTA GA 30328-3190|05:00-13:00|2638.6|2|B",
+      "delivery": [
+        26386,
+        2
+      ]
+    },
+    {
+      "id": "2000681632-304 - Geo-2",
+      "location_index": 33,
+      "service": 1833,
+      "sequence_order": 2,
+      "description": "PUBLIX 0541|6300 POWERS FERRY RD ATLANTA GA 30339-2919|05:00-11:00|3695.6|2|B",
+      "delivery": [
+        36956,
+        2
+      ]
+    },
+    {
+      "id": "2000336914-304 - Geo-3",
+      "location_index": 34,
+      "service": 1104,
+      "sequence_order": 99,
+      "description": "SPRINGHILL SUITES ATLANTA NORTHWEST|230 INTERSTATE N PKWY ATLANTA GA 30339|07:00-17:00|437.6|0.5|S",
+      "delivery": [
+        4376,
+        1
+      ]
+    },
+    {
+      "id": "2000501533-304 - Geo-4",
+      "location_index": 35,
+      "service": 1648,
+      "sequence_order": 2,
+      "description": "TARGET 2333 - VEND 1137590|5610 ROSWELL RD ATLANTA GA 30342-1163|08:00-14:00|2335.8|2|B",
+      "delivery": [
+        23358,
+        2
+      ]
+    },
+    {
+      "id": "2000946789-304 - Geo-6",
+      "location_index": 36,
+      "service": 3664,
+      "sequence_order": 99,
+      "description": "MORRISON@NORTHSIDE HOSPITAL CAMPASS GROUP USA|1000 JOHNSON FERRY RD ATLANTA GA 30342-1606|05:00-15:00|2241.3|1.842|S",
+      "delivery": [
+        22413,
+        2
+      ]
+    },
+    {
+      "id": "2000371169-304 - Geo-7",
+      "location_index": 37,
+      "service": 2917,
+      "sequence_order": 99,
+      "description": "ATL RETAILERS @ CHEVRON FOOD MART BROOKHAVEN BRO|4234 PEACHTREE RD NE BROOKHAVEN GA 30319-3009|06:00-18:00|1011.3|1.06|S",
+      "delivery": [
+        10113,
+        2
+      ]
+    },
+    {
+      "id": "2001212848-304 - Geo-8",
+      "location_index": 38,
+      "service": 3294,
+      "sequence_order": 99,
+      "description": "WALGREENS 11757|3925 PEACHTREE RD NE BROOKHAVEN GA 30319-5256|08:00-17:00|996.3|1|S",
+      "delivery": [
+        9963,
+        1
+      ]
+    },
+    {
+      "id": "2000819351-305 - Geo-0",
+      "location_index": 39,
+      "service": 2867,
+      "sequence_order": 2,
+      "description": "KROGER 00454 @ EAST LAKE|2100 ROSWELL RD MARIETTA GA 30062-0810|04:00-08:00|6092.1|4|B",
+      "delivery": [
+        60921,
+        4
+      ]
+    },
+    {
+      "id": "2000602692-305 - Geo-1",
+      "location_index": 40,
+      "service": 1833,
+      "sequence_order": 2,
+      "description": "PUBLIX 1745|4269 ROSWELL RD MARIETTA GA 30062-6488|05:00-13:00|1891.5|2|B",
+      "delivery": [
+        18915,
+        2
+      ]
+    },
+    {
+      "id": "2001215939-305 - Geo-2",
+      "location_index": 41,
+      "service": 2277,
+      "sequence_order": 1,
+      "description": "WALMART 1766|3100 JOHNSON FERRY RD MARIETTA GA 30062-5657|07:00-12:00|4297.0|3|S",
+      "delivery": [
+        42970,
+        3
+      ]
+    },
+    {
+      "id": "2000650898-305 - Geo-3",
+      "location_index": 42,
+      "service": 1833,
+      "sequence_order": 2,
+      "description": "PUBLIX 0086 PUBLIX|4401 SHALLOWFORD RD ROSWELL GA 30075-3193|07:00-13:00|2566.7|2|B",
+      "delivery": [
+        25667,
+        2
+      ]
+    },
+    {
+      "id": "2000699484-305 - Geo-4",
+      "location_index": 43,
+      "service": 1833,
+      "sequence_order": 2,
+      "description": "PUBLIX 0155|1100 JOHNSON FERRY RD MARIETTA GA 30068-2794|06:30-11:30|3210.4|2|B",
+      "delivery": [
+        32104,
+        2
+      ]
+    },
+    {
+      "id": "2001199284-305 - Geo-6",
+      "location_index": 44,
+      "service": 2350,
+      "sequence_order": 2,
+      "description": "PUBLIX 0725 PUBLIX|2900 DELK RD SE MARIETTA GA 30067-5320|04:00-13:00|2617.9|3|B",
+      "delivery": [
+        26179,
+        3
+      ]
+    },
+    {
+      "id": "2000903934-305 - Geo-7",
+      "location_index": 45,
+      "service": 2111,
+      "sequence_order": 99,
+      "description": "HRA@ SANEEY B P|1365 POWERS FERRY RD SE MARIETTA GA 30067-5409|06:00-16:00|632.9|0.512|S",
+      "delivery": [
+        6329,
+        1
+      ]
+    },
+    {
+      "id": "2000399164-305 - Geo-8",
+      "location_index": 46,
+      "service": 3199,
+      "sequence_order": 99,
+      "description": "QUIKTRIP 768|2180 WINDY HILL RD SE SMYRNA GA 30080-2263|06:00-14:00|1087.3|1|S",
+      "delivery": [
+        10873,
+        1
+      ]
+    },
+    {
+      "id": "2000771664-305 - Geo-9",
+      "location_index": 47,
+      "service": 3886,
+      "sequence_order": 99,
+      "description": "PBA @ GOODS FOOD MART|2041 COBB PKWY S MARIETTA GA 30060-9260|07:00-17:00|1944.0|1.635|S",
+      "delivery": [
+        19440,
+        2
+      ]
+    },
+    {
+      "id": "2001274262-305 - Geo-10",
+      "location_index": 48,
+      "service": 2416,
+      "sequence_order": 99,
+      "description": "ATL RETAILERS @ CIRCLE K 212 GAS EXPRESS LLC|2678 WINDY HILL RD SE MARIETTA GA 30067-8609|05:00-17:00|829.2|0.552|S",
+      "delivery": [
+        8292,
+        1
+      ]
+    },
+    {
+      "id": "2000819179-306 - Geo-0",
+      "location_index": 49,
+      "service": 5523,
+      "sequence_order": 2,
+      "description": "KROGER 00365|3595 CANTON RD MARIETTA GA 30066-2658|04:00-10:00|11092.6|7|B",
+      "delivery": [
+        110926,
+        7
+      ]
+    },
+    {
+      "id": "2000699465-306 - Geo-1",
+      "location_index": 50,
+      "service": 2291,
+      "sequence_order": 2,
+      "description": "PUBLIX 0033|3605 SANDY PLAINS RD MARIETTA GA 30066-3068|05:00-13:00|2539.5|2|B",
+      "delivery": [
+        25395,
+        2
+      ]
+    },
+    {
+      "id": "2000685559-306 - Geo-2",
+      "location_index": 51,
+      "service": 2292,
+      "sequence_order": 2,
+      "description": "PUBLIX 0548|50 ERNEST BARRETT PKWY MARIETTA GA 30066-3300|04:00-11:00|2591.1|2|B",
+      "delivery": [
+        25911,
+        2
+      ]
+    },
+    {
+      "id": "2001073883-306 - Geo-4",
+      "location_index": 52,
+      "service": 4998,
+      "sequence_order": 99,
+      "description": "WALGREENS 1646|23 S MARIETTA PKWY SW MARIETTA GA 30064-3288|07:00-17:00|1353.2|1|S",
+      "delivery": [
+        13532,
+        1
+      ]
+    },
+    {
+      "id": "2001020318-306 - Geo-5",
+      "location_index": 53,
+      "service": 4505,
+      "sequence_order": 99,
+      "description": "QUIKTRIP 815|671 COBB PKWY N MARIETTA GA 30062-2405|00:00-12:00|1095.0|1|S",
+      "delivery": [
+        10950,
+        1
+      ]
+    },
+    {
+      "id": "2004219841-306 - Geo-6",
+      "location_index": 54,
+      "service": 3150,
+      "sequence_order": 99,
+      "description": "ARA@CHEVRON FOOD MART|915 ALLGOOD RD MARIETTA GA 30062-2303|06:00-18:00|870.9|1.035|S",
+      "delivery": [
+        8709,
+        2
+      ]
+    },
+    {
+      "id": "2000406258-306 - Geo-7",
+      "location_index": 55,
+      "service": 2071,
+      "sequence_order": 99,
+      "description": "LITTLE CAESARS #1629-0008|603 S MARIETTA PKWY SE MARIETTA GA 30060-2737|10:00-20:00|936.4|1|S",
+      "delivery": [
+        9364,
+        1
+      ]
+    },
+    {
+      "id": "2001198645-307 - Geo-0",
+      "location_index": 56,
+      "service": 2923,
+      "sequence_order": 1,
+      "description": "WALMART SC 0575 WAL MART|12182 GEORGIA 92 WOODSTOCK GA 30188|03:00-08:00|8604.3|5|S",
+      "delivery": [
+        86043,
+        5
+      ]
+    },
+    {
+      "id": "2000347243-307 - Geo-1",
+      "location_index": 57,
+      "service": 3384,
+      "sequence_order": 2,
+      "description": "KROGER 00419 @ TRICKUM|12050 GA 92 WOODSTOCK GA 30188|04:00-10:00|8794.8|5|B",
+      "delivery": [
+        87948,
+        5
+      ]
+    },
+    {
+      "id": "2000839415-307 - Geo-2",
+      "location_index": 58,
+      "service": 2867,
+      "sequence_order": 2,
+      "description": "KROGER 00430 KROGER COMP|5339 OLD HIGHWAY 5 WOODSTOCK GA 30188-2431|04:00-08:00|7071.2|4|B",
+      "delivery": [
+        70712,
+        4
+      ]
+    },
+    {
+      "id": "2000939679-307 - Geo-3",
+      "location_index": 59,
+      "service": 2266,
+      "sequence_order": 99,
+      "description": "QUIKTRIP 752 QUIK TRIP|4340 BELLS FERRY RD NW KENNESAW GA 30144-1304|00:00-12:00|711.8|0.5|S",
+      "delivery": [
+        7118,
+        1
+      ]
+    },
+    {
+      "id": "2000312279-307 - Geo-5",
+      "location_index": 60,
+      "service": 4097,
+      "sequence_order": 99,
+      "description": "RACETRAC 80|7499 HIGHWAY 92 WOODSTOCK GA 30189-5378|00:00-14:00|1749.7|1.542|S",
+      "delivery": [
+        17497,
+        2
+      ]
+    },
+    {
+      "id": "2000305790-307 - Geo-6",
+      "location_index": 61,
+      "service": 2799,
+      "sequence_order": 99,
+      "description": "QUIKTRIP 779|1470 TOWNE LAKE PKWY WOODSTOCK GA 30189-7070|00:00-12:00|881.0|1|S",
+      "delivery": [
+        8810,
+        1
+      ]
+    },
+    {
+      "id": "2000408501-307 - Geo-7",
+      "location_index": 62,
+      "service": 2398,
+      "sequence_order": 99,
+      "description": "TOWNE LAKE BP|2229 TOWNE LAKE PKWY WOODSTOCK GA 30189-8177|05:00-16:00|594.3|0.517|S",
+      "delivery": [
+        5943,
+        1
+      ]
+    },
+    {
+      "id": "2000826309-308 - Geo-0",
+      "location_index": 63,
+      "service": 3901,
+      "sequence_order": 2,
+      "description": "KROGER 00446|3895 CHEROKEE ST NW KENNESAW GA 30144-6727|04:00-10:00|10286.6|6|B",
+      "delivery": [
+        102866,
+        6
+      ]
+    },
+    {
+      "id": "2000795594-308 - Geo-1",
+      "location_index": 64,
+      "service": 2225,
+      "sequence_order": 99,
+      "description": "QUIKTRIP 793|6090 HIGHWAY 92 ACWORTH GA 30102-2312|00:00-12:00|649.7|0.5|S",
+      "delivery": [
+        6497,
+        1
+      ]
+    },
+    {
+      "id": "2001067447-308 - Geo-2",
+      "location_index": 65,
+      "service": 1631,
+      "sequence_order": 2,
+      "description": "LIDL #1415|6421 BELLS FERRY RD WOODSTOCK GA 30189-2317|07:00-15:00|319.1|1|B",
+      "delivery": [
+        3191,
+        1
+      ]
+    },
+    {
+      "id": "2000851501-308 - Geo-3",
+      "location_index": 66,
+      "service": 1774,
+      "sequence_order": 99,
+      "description": "HRA@ CORNER STORE OMSHIV 171 LLC|6410 BELLS FERRY RD WOODSTOCK GA 30189-8175|06:00-18:00|598.7|0.5|S",
+      "delivery": [
+        5987,
+        1
+      ]
+    },
+    {
+      "id": "2001084142-308 - Geo-4",
+      "location_index": 67,
+      "service": 3004,
+      "sequence_order": 99,
+      "description": "MAPCO 3509 (FFF 172) MAPCO|1430 KELLOGG CREEK RD ACWORTH GA 30102-1405|05:00-15:00|1434.5|1|S",
+      "delivery": [
+        14345,
+        1
+      ]
+    },
+    {
+      "id": "2000841569-308 - Geo-6",
+      "location_index": 68,
+      "service": 2656,
+      "sequence_order": 99,
+      "description": "DOLLAR GENERAL 22718|6719 BELLS FERRY RD WOODSTOCK GA 30189-1410|08:00-17:00|769.8|0.5|S",
+      "delivery": [
+        7698,
+        1
+      ]
+    },
+    {
+      "id": "2000581886-308 - Geo-7",
+      "location_index": 69,
+      "service": 1641,
+      "sequence_order": 99,
+      "description": "HRA@ CITGO FOOD MART|6790 BELLS FERRY RD WOODSTOCK GA 30189-1414|06:00-18:00|637.1|0.5|S",
+      "delivery": [
+        6371,
+        1
+      ]
+    },
+    {
+      "id": "2001174662-308 - Geo-8",
+      "location_index": 70,
+      "service": 1906,
+      "sequence_order": 99,
+      "description": "ATL RETAILERS@ CHEVRON FOOD MART TWP 1 USA LLC|5195 TOWNE LAKE PKWY WOODSTOCK GA 30189-8179|07:00-17:00|631.6|0.542|S",
+      "delivery": [
+        6316,
+        1
+      ]
+    },
+    {
+      "id": "2000866841-308 - Geo-9",
+      "location_index": 71,
+      "service": 949,
+      "sequence_order": 99,
+      "description": "PIZZA HUT #039392|4451 TOWNE LAKE PKWY WOODSTOCK GA 30189-8232|09:00-17:00|441.7|0.5|S",
+      "delivery": [
+        4417,
+        1
+      ]
+    },
+    {
+      "id": "2000805552-308 - Geo-10",
+      "location_index": 72,
+      "service": 2242,
+      "sequence_order": 99,
+      "description": "DOLLAR TREE 1309|6424 BELLS FERRY RD WOODSTOCK GA 30189-8268|09:00-18:00|518.3|0.5|S",
+      "delivery": [
+        5183,
+        1
+      ]
+    },
+    {
+      "id": "2004830079-308 - Geo-11",
+      "location_index": 73,
+      "service": 2176,
+      "sequence_order": 99,
+      "description": "SHELL FOOD MART|4620 HIGHWAY 92 ACWORTH GA 30102|06:00-18:00|887.8|1.03|S",
+      "delivery": [
+        8878,
+        2
+      ]
+    },
+    {
+      "id": "2000686603-309 - Geo-0",
+      "location_index": 74,
+      "service": 2917,
+      "sequence_order": 99,
+      "description": "QUIKTRIP 835|4456 WADE GREEN RD NW KENNESAW GA 30144-1254|00:00-12:00|925.5|1|S",
+      "delivery": [
+        9255,
+        1
+      ]
+    },
+    {
+      "id": "2000314728-309 - Geo-1",
+      "location_index": 75,
+      "service": 1833,
+      "sequence_order": 2,
+      "description": "PUBLIX 0146|4430 WADE GREEN RD NW KENNESAW GA 30144-1267|05:00-10:00|2123.0|2|B",
+      "delivery": [
+        21230,
+        2
+      ]
+    },
+    {
+      "id": "2000358389-309 - Geo-2",
+      "location_index": 76,
+      "service": 2600,
+      "sequence_order": 1,
+      "description": "WALMART SC 3471 WALMART STORES|3105 N COBB PKWY ACWORTH GA 30101|06:00-11:00|7473.9|4|S",
+      "delivery": [
+        74739,
+        4
+      ]
+    },
+    {
+      "id": "2001045809-309 - Geo-3",
+      "location_index": 77,
+      "service": 1316,
+      "sequence_order": 2,
+      "description": "PUBLIX 1096|6110 CEDARCREST RD NW ACWORTH GA 30101-9539|05:00-11:00|1805.7|1|B",
+      "delivery": [
+        18057,
+        1
+      ]
+    },
+    {
+      "id": "2000886142-309 - Geo-4",
+      "location_index": 78,
+      "service": 1833,
+      "sequence_order": 2,
+      "description": "PUBLIX 0559|2274 COBB PKWY NW KENNESAW GA 30152-3630|07:00-17:00|2177.7|2|B",
+      "delivery": [
+        21777,
+        2
+      ]
+    },
+    {
+      "id": "2000884183-309 - Geo-6",
+      "location_index": 79,
+      "service": 4753,
+      "sequence_order": 99,
+      "description": "RACETRAC 0434|4350 WADE GREEN RD NW KENNESAW GA 30144-1247|00:00-14:00|2112.9|1.537|S",
+      "delivery": [
+        21129,
+        2
+      ]
+    },
+    {
+      "id": "2001063226-309 - Geo-7",
+      "location_index": 80,
+      "service": 2719,
+      "sequence_order": 99,
+      "description": "LITTLE CAESARS #1568-0001|2639 HICKORY GROVE RD NW ACWORTH GA 30101-3629|10:00-20:00|1625.2|1|S",
+      "delivery": [
+        16252,
+        1
+      ]
+    },
+    {
+      "id": "2000738543-310 - Geo-0",
+      "location_index": 81,
+      "service": 3901,
+      "sequence_order": 2,
+      "description": "KROGER 00442 KROGER|1720 MARS HILL RD NW ACWORTH GA 30101-7127|04:00-10:00|10870.5|6|B",
+      "delivery": [
+        108705,
+        6
+      ]
+    },
+    {
+      "id": "2000306600-310 - Geo-1",
+      "location_index": 82,
+      "service": 1833,
+      "sequence_order": 2,
+      "description": "PUBLIX 0566|1727 MARS HILL RD NW ACWORTH GA 30101-8090|05:00-11:00|1946.6|2|B",
+      "delivery": [
+        19466,
+        2
+      ]
+    },
+    {
+      "id": "2001003603-310 - Geo-2",
+      "location_index": 83,
+      "service": 1744,
+      "sequence_order": 99,
+      "description": "EUREST@BANK OF AMERICA 22532 COMPASS GROUP USA|210 TOWNPARK DR NW KENNESAW GA 30144-5514|07:00-11:00|479.4|0.522|S",
+      "delivery": [
+        4794,
+        1
+      ]
+    },
+    {
+      "id": "2000472693-310 - Geo-3",
+      "location_index": 84,
+      "service": 2200,
+      "sequence_order": 99,
+      "description": "DOLLAR GENERAL 19469 DOLGENCORP|925 SHILOH RD NW KENNESAW GA 30144-1423|08:00-18:00|620.7|0.5|S",
+      "delivery": [
+        6207,
+        1
+      ]
+    },
+    {
+      "id": "2000343175-310 - Geo-5",
+      "location_index": 85,
+      "service": 3377,
+      "sequence_order": 99,
+      "description": "IBC@CITGO FOOD MART|3930 GEORGE BUSBEE PKWY NW KENNESAW GA 30144-6657|08:00-18:00|1454.4|1.572|S",
+      "delivery": [
+        14544,
+        2
+      ]
+    },
+    {
+      "id": "2000615349-310 - Geo-6",
+      "location_index": 86,
+      "service": 3219,
+      "sequence_order": 99,
+      "description": "HRA@ FREY RD SHELL|4000 FREY RD NW KENNESAW GA 30144-6701|06:00-18:00|1071.5|1.017|S",
+      "delivery": [
+        10715,
+        2
+      ]
+    },
+    {
+      "id": "2000815083-310 - Geo-7",
+      "location_index": 87,
+      "service": 2303,
+      "sequence_order": 99,
+      "description": "HRA @ SWIFTY SAVE|1025 CHASTAIN RD NW KENNESAW GA 30144-5583|05:30-17:00|832.6|1.035|S",
+      "delivery": [
+        8326,
+        2
+      ]
+    },
+    {
+      "id": "2000464954-310 - Geo-8",
+      "location_index": 88,
+      "service": 3605,
+      "sequence_order": 99,
+      "description": "ATL RETAILERS @ CIRCLE K 150 GAS EXPRESS LLC|3400 BUSBEE DR NW KENNESAW GA 30144-5596|05:00-17:00|1290.9|1.037|S",
+      "delivery": [
+        12909,
+        2
+      ]
+    },
+    {
+      "id": "2004932947-310 - Geo-9",
+      "location_index": 89,
+      "service": 1852,
+      "sequence_order": 99,
+      "description": "AT HOME 20|2875 GEORGE BUSBEE PKWY NW KENNESAW GA 30144|09:00-17:00|1386.8|1|S",
+      "delivery": [
+        13868,
+        1
+      ]
+    },
+    {
+      "id": "2000464026-311 --0",
+      "location_index": 90,
+      "service": 4853,
+      "sequence_order": 99,
+      "description": "RACETRAC 2460 RACE TRAC PETROLE|900 WHITLOCK AVE NW MARIETTA GA 30064-1906|00:00-12:00|2183.4|1.572|S",
+      "delivery": [
+        21834,
+        2
+      ]
+    },
+    {
+      "id": "2001177390-311 --1",
+      "location_index": 91,
+      "service": 2853,
+      "sequence_order": 99,
+      "description": "HRA @ CHEVRON FOOD MART REHANA PETROLUEM|630 WHITLOCK AVE NW MARIETTA GA 30064-3120|06:00-17:00|1150.4|1.104|S",
+      "delivery": [
+        11504,
+        2
+      ]
+    },
+    {
+      "id": "2000742822-311 --2",
+      "location_index": 92,
+      "service": 2635,
+      "sequence_order": 99,
+      "description": "ATL RETAILERS@ PS FOOD MART|600 POWDER SPRINGS ST MARIETTA GA 30064-3684|06:00-16:00|1148.5|1|S",
+      "delivery": [
+        11485,
+        1
+      ]
+    },
+    {
+      "id": "2000801418-311 --3",
+      "location_index": 93,
+      "service": 1954,
+      "sequence_order": 2,
+      "description": "LIDL #1430|670 WHITLOCK AVE SW ATLANTA GA 30064|07:00-15:00|2118.5|2|B",
+      "delivery": [
+        21185,
+        2
+      ]
+    },
+    {
+      "id": "2000481530-311 --5",
+      "location_index": 94,
+      "service": 2389,
+      "sequence_order": 99,
+      "description": "ATL RETAILERS@ SHELL FOOD MART BARRETT COM PRO|465 ERNEST W BARRETT PKWY MARIETTA GA 30144|06:00-16:00|617.7|0.5|S",
+      "delivery": [
+        6177,
+        1
+      ]
+    },
+    {
+      "id": "2001152845-311 --6",
+      "location_index": 95,
+      "service": 2926,
+      "sequence_order": 99,
+      "description": "ATLRETAILERS@CIRCLE K BARRETT PKWY|550 ERNEST W BARRETT PKWY NW KENNESAW GA 30144-4919|06:00-16:00|1080.1|1.06|S",
+      "delivery": [
+        10801,
+        2
+      ]
+    },
+    {
+      "id": "2001047500-311 --7",
+      "location_index": 96,
+      "service": 4714,
+      "sequence_order": 2,
+      "description": "TOTAL WINE & MORE|740 ERNEST W BARRETT PKWY NW KENNESAW GA 30144-6860|09:00-14:00|2108.9|2|B",
+      "delivery": [
+        21089,
+        2
+      ]
+    },
+    {
+      "id": "2000785202-311 --8",
+      "location_index": 97,
+      "service": 2618,
+      "sequence_order": 99,
+      "description": "ATL RETAILERS @ BP FOOD MART|575 ERNEST W BARRETT PKWY NW KENNESAW GA 30144-4920|07:00-17:00|1071.5|1.017|S",
+      "delivery": [
+        10715,
+        2
+      ]
+    },
+    {
+      "id": "2000893924-312 - Geo-0",
+      "location_index": 98,
+      "service": 3384,
+      "sequence_order": 2,
+      "description": "KROGER 00453|4150 MACLAND RD POWDER SPRINGS GA 30127-1202|04:00-10:00|9611.9|5|B",
+      "delivery": [
+        96119,
+        5
+      ]
+    },
+    {
+      "id": "2000410032-312 - Geo-1",
+      "location_index": 99,
+      "service": 3259,
+      "sequence_order": 99,
+      "description": "RACETRAC 2498|5410 DALLAS HWY POWDER SPRINGS GA 30127|00:00-12:00|1459.8|1.517|S",
+      "delivery": [
+        14598,
+        2
+      ]
+    },
+    {
+      "id": "2000396659-312 - Geo-2",
+      "location_index": 100,
+      "service": 2639,
+      "sequence_order": 99,
+      "description": "HRA@ CHEVRON FOOD MART|3290 NEW MACLAND RD POWDER SPRINGS GA 30127-1741|05:00-18:00|1030.8|1.077|S",
+      "delivery": [
+        10308,
+        2
+      ]
+    },
+    {
+      "id": "2004190455-312 - Geo-3",
+      "location_index": 101,
+      "service": 3622,
+      "sequence_order": 99,
+      "description": "DOLLAR GENERAL 30442 DOLLAR GENERAL 30442|4179 MACEDONIA RD POWDER SPRINGS GA 30127-1904|08:00-20:00|1207.7|1|S",
+      "delivery": [
+        12077,
+        1
+      ]
+    },
+    {
+      "id": "2000860168-312 - Geo-5",
+      "location_index": 102,
+      "service": 1303,
+      "sequence_order": 99,
+      "description": "LITTLE CAESARS #1629-0009|4131 MARIETTA ST POWDER SPRINGS GA 30127-2642|09:00-18:00|642.5|0.5|S",
+      "delivery": [
+        6425,
+        1
+      ]
+    },
+    {
+      "id": "2000742724-312 - Geo-6",
+      "location_index": 103,
+      "service": 2471,
+      "sequence_order": 99,
+      "description": "HRA@ GAS STATION 76|4148 MARIETTA ST POWDER SPRINGS GA 30127-2641|06:00-18:00|880.1|1|S",
+      "delivery": [
+        8801,
+        1
+      ]
+    },
+    {
+      "id": "2004336858-312 - Geo-7",
+      "location_index": 104,
+      "service": 1690,
+      "sequence_order": 99,
+      "description": "NASHVILLE HOT CHICKEN (FOOD TRUCK) NASHVILLE HOT CHICKEN POWDER SPRING|3982 AUSTELL POWDER SPRINGS RD POWDER SPRINGS GA 30127-2941|09:00-18:00|478.8|0.5|S",
+      "delivery": [
+        4788,
+        1
+      ]
+    },
+    {
+      "id": "2001091454-312 - Geo-8",
+      "location_index": 105,
+      "service": 5308,
+      "sequence_order": 99,
+      "description": "DOLLAR GENERAL 00613|4110 AUSTELL POWDER SPRINGS RD POWDER SPRINGS GA 30127-2953|08:00-17:00|2693.1|2|S",
+      "delivery": [
+        26931,
+        2
+      ]
+    },
+    {
+      "id": "2000804422-313 - Geo-0",
+      "location_index": 106,
+      "service": 2600,
+      "sequence_order": 1,
+      "description": "WALMART SC 3611|6520 ERNEST W BARRETT PKWY SW MARIETTA GA 30064-4571|03:00-08:00|7962.4|4|S",
+      "delivery": [
+        79624,
+        4
+      ]
+    },
+    {
+      "id": "2004246754-313 - Geo-1",
+      "location_index": 106,
+      "service": 1667,
+      "sequence_order": 1,
+      "description": "WALMART SC 3611 DEPT 96|6520 ERNEST BARRETT PKWY MARIETTA GA 30064-4571|03:00-08:00|126.7|1|B",
+      "delivery": [
+        1267,
+        1
+      ]
+    },
+    {
+      "id": "2001187927-313 - Geo-2",
+      "location_index": 107,
+      "service": 1316,
+      "sequence_order": 2,
+      "description": "KROGER 00464|4875 FLOYD RD SW MABLETON GA 30126-1379|04:00-09:00|1822.0|1|B",
+      "delivery": [
+        18220,
+        1
+      ]
+    },
+    {
+      "id": "2000762180-313 - Geo-3",
+      "location_index": 108,
+      "service": 1316,
+      "sequence_order": 2,
+      "description": "PUBLIX 0464 PUBLIX SUPERMARKE|5015 FLOYD RD SW MABLETON GA 30126-1673|05:00-11:00|1758.2|1|B",
+      "delivery": [
+        17582,
+        1
+      ]
+    },
+    {
+      "id": "2000486339-313 - Geo-4",
+      "location_index": 109,
+      "service": 3022,
+      "sequence_order": 99,
+      "description": "RACETRAC 579|4290 EAST WEST CONNECTOR SE SMYRNA GA 30082-4804|00:00-14:00|1048.3|1.03|S",
+      "delivery": [
+        10483,
+        2
+      ]
+    },
+    {
+      "id": "2000695704-313 - Geo-5",
+      "location_index": 110,
+      "service": 3074,
+      "sequence_order": 99,
+      "description": "WALGREENS 5758|4371 S COBB DR SE SMYRNA GA 30080-6330|08:00-17:00|761.5|1|S",
+      "delivery": [
+        7615,
+        1
+      ]
+    },
+    {
+      "id": "2001170393-313 - Geo-7",
+      "location_index": 111,
+      "service": 3838,
+      "sequence_order": 99,
+      "description": "FAMILY DOLLAR 10151 FAMILY DOLLAR SER|3824 POWDER SPRINGS RD POWDER SPRINGS GA 30127-2736|08:30-20:00|1857.8|1.5|S",
+      "delivery": [
+        18578,
+        2
+      ]
+    },
+    {
+      "id": "2000936546-313 - Geo-8",
+      "location_index": 112,
+      "service": 2389,
+      "sequence_order": 99,
+      "description": "ATL RETAILERS @ SHELL POWDER SPRING POWDER SPG SH INC|1390 RICHARD D SAILORS PKWY POWDER SPRINGS GA 30127-5223|05:00-18:00|904.6|1|S",
+      "delivery": [
+        9046,
+        1
+      ]
+    },
+    {
+      "id": "2005016471-313 - Geo-9",
+      "location_index": 113,
+      "service": 1926,
+      "sequence_order": 99,
+      "description": "BONCHON #3228 FISCHER HOSPITALITY CONSULTING LLC|4340 EAST-WEST CONNECTOR STE 200 SMYRNA GA 30082|09:01-18:01|426.0|0.5|S",
+      "delivery": [
+        4260,
+        1
+      ]
+    },
+    {
+      "id": "2000687785-314 - Geo-0",
+      "location_index": 114,
+      "service": 1833,
+      "sequence_order": 2,
+      "description": "PUBLIX 1226|2275 MARIETTA BLVD NW ATLANTA GA 30318-2004|05:00-12:00|2523.5|2|B",
+      "delivery": [
+        25235,
+        2
+      ]
+    },
+    {
+      "id": "2000477652-314 - Geo-1",
+      "location_index": 115,
+      "service": 4111,
+      "sequence_order": 99,
+      "description": "QUIKTRIP 1702 QUIK TRIP CORP|4495 S COBB DR SE SMYRNA GA 30080-6957|00:00-18:00|1538.7|1.5|S",
+      "delivery": [
+        15387,
+        2
+      ]
+    },
+    {
+      "id": "2000616774-314 - Geo-2",
+      "location_index": 116,
+      "service": 2594,
+      "sequence_order": 99,
+      "description": "HRA@ E-Z TRIP|3100 Ste 2 HIGHLANDS PKWY SE SMYRNA GA 30082-5241|05:00-16:00|913.5|1|S",
+      "delivery": [
+        9135,
+        1
+      ]
+    },
+    {
+      "id": "2001280135-314 - Geo-3",
+      "location_index": 117,
+      "service": 4771,
+      "sequence_order": 99,
+      "description": "CLIPPER PETROLEUM 77 CIRCLE M|5220 S COBB DR SE SMYRNA GA 30080-7180|06:00-14:00|2041.9|1.612|S",
+      "delivery": [
+        20419,
+        2
+      ]
+    },
+    {
+      "id": "2001013326-314 - Geo-5",
+      "location_index": 118,
+      "service": 2615,
+      "sequence_order": 99,
+      "description": "ATL RETAILERS @ CIRCLE K 164 164 MARIETTA LLC|1720 MARIETTA BLVD NW ATLANTA GA 30318-3647|04:00-13:00|819.7|1.042|S",
+      "delivery": [
+        8197,
+        2
+      ]
+    },
+    {
+      "id": "2001277764-314 - Geo-6",
+      "location_index": 119,
+      "service": 2557,
+      "sequence_order": 99,
+      "description": "HRA@ EXPRESS FOOD GA EXPRESS COMM P|2331 BOLTON RD NW ATLANTA GA 30318-1201|06:00-18:00|967.9|1.067|S",
+      "delivery": [
+        9679,
+        2
+      ]
+    },
+    {
+      "id": "2004161645-314 - Geo-7",
+      "location_index": 120,
+      "service": 2527,
+      "sequence_order": 99,
+      "description": "PBA@GAS76|1820 HOLLYWOOD RD NW ATLANTA GA 30318-3412|06:00-18:00|1320.9|1.077|S",
+      "delivery": [
+        13209,
+        2
+      ]
+    },
+    {
+      "id": "2001120880-314 - Geo-8",
+      "location_index": 121,
+      "service": 1185,
+      "sequence_order": 99,
+      "description": "PIZZA HUT #039451|2020 BOLTON RD NW ATLANTA GA 30318-1106|09:00-17:00|594.5|0.5|S",
+      "delivery": [
+        5945,
+        1
+      ]
+    },
+    {
+      "id": "2000361732-314 - Geo-9",
+      "location_index": 122,
+      "service": 3376,
+      "sequence_order": 99,
+      "description": "FAMILY DOLLAR 10676|2001 JAMES JACKSON PKWY NW ATLANTA GA 30318-1012|08:00-20:00|1538.4|1.5|S",
+      "delivery": [
+        15384,
+        2
+      ]
+    },
+    {
+      "id": "2000317558-315 - Geo-0",
+      "location_index": 123,
+      "service": 2600,
+      "sequence_order": 1,
+      "description": "WALMART SC 1181|1785 COBB PKWY S MARIETTA GA 30060-9288|00:00-23:59|6392.2|4|S",
+      "delivery": [
+        63922,
+        4
+      ]
+    },
+    {
+      "id": "2001031668-315 - Geo-1",
+      "location_index": 124,
+      "service": 2625,
+      "sequence_order": 99,
+      "description": "QUIKTRIP 845|600 S MARIETTA PKWY SE MARIETTA GA 30060-2720|00:00-12:00|782.5|0.5|S",
+      "delivery": [
+        7825,
+        1
+      ]
+    },
+    {
+      "id": "2000504776-315 - Geo-2",
+      "location_index": 125,
+      "service": 3013,
+      "sequence_order": 99,
+      "description": "RACETRAC 2596|695 POWDER SPRINGS ST MARIETTA GA 30064-3629|00:00-12:00|1283.2|1.012|S",
+      "delivery": [
+        12832,
+        2
+      ]
+    },
+    {
+      "id": "2001254021-315 - Geo-3",
+      "location_index": 126,
+      "service": 3114,
+      "sequence_order": 99,
+      "description": "QUIKTRIP 727 QUIK TRIP CORP|692 POWDER SPRINGS ST MARIETTA GA 30064-3643|00:00-12:00|1009.2|1|S",
+      "delivery": [
+        10092,
+        1
+      ]
+    },
+    {
+      "id": "2000475900-315 - Geo-4",
+      "location_index": 127,
+      "service": 2391,
+      "sequence_order": 99,
+      "description": "HRA@ SHELL FOOD MART RALLIES FOOD MART|2001 WINDY HILL RD SE SMYRNA GA 30080-2264|05:00-18:00|781.6|1.035|S",
+      "delivery": [
+        7816,
+        2
+      ]
+    },
+    {
+      "id": "2000341518-315 - Geo-6",
+      "location_index": 128,
+      "service": 1886,
+      "sequence_order": 2,
+      "description": "ATLANTA FOOD & BEVERAGE 001|829 PICKENS INDUSTRIAL DR MARIETTA GA 30062-3160|07:00-15:00|6906.6|4|B",
+      "delivery": [
+        69066,
+        4
+      ]
+    },
+    {
+      "id": "2000925121-315 - Geo-7",
+      "location_index": 129,
+      "service": 2471,
+      "sequence_order": 99,
+      "description": "HRA@ FIVE POINT MART|1649 ROSWELL ST SE SMYRNA GA 30080-2221|08:00-14:00|1077.6|1|S",
+      "delivery": [
+        10776,
+        1
+      ]
+    },
+    {
+      "id": "2000386487-315 - Geo-8",
+      "location_index": 130,
+      "service": 2648,
+      "sequence_order": 99,
+      "description": "HRA@ JJ LAND FOOD MART JJ LAND GROUP|3601 ATLANTA RD SE SMYRNA GA 30080-5931|06:00-16:00|906.9|1.104|S",
+      "delivery": [
+        9069,
+        2
+      ]
+    },
+    {
+      "id": "2004925397-315 - Geo-9",
+      "location_index": 131,
+      "service": 3576,
+      "sequence_order": 99,
+      "description": "DOLLAR TREE 11011 DOLLAR TREE 11011|2955 COBB PKWY ATLANTA GA 30339|06:00-15:00|1119.0|1|S",
+      "delivery": [
+        11190,
+        1
+      ]
+    },
+    {
+      "id": "2000587706-316 - Geo-0",
+      "location_index": 132,
+      "service": 2350,
+      "sequence_order": 2,
+      "description": "PUBLIX 1183|5370 HIGHWAY 92 FAIRBURN GA 30213-2296|05:00-12:00|4196.4|3|B",
+      "delivery": [
+        41964,
+        3
+      ]
+    },
+    {
+      "id": "2000641731-316 - Geo-1",
+      "location_index": 133,
+      "service": 2923,
+      "sequence_order": 1,
+      "description": "WALMART SC 0855 WALMART|4735 JONESBORO RD UNION CITY GA 30291-1915|06:00-10:00|9408.4|5|S",
+      "delivery": [
+        94084,
+        5
+      ]
+    },
+    {
+      "id": "2000652483-316 - Geo-2",
+      "location_index": 134,
+      "service": 3550,
+      "sequence_order": 99,
+      "description": "RACETRAC 0587 RACETRAC PETROLEU|3503 CAMP CREEK PKWY EAST POINT GA 30344-8144|00:00-12:00|1583.8|1.59|S",
+      "delivery": [
+        15838,
+        2
+      ]
+    },
+    {
+      "id": "2001237906-316 - Geo-3",
+      "location_index": 135,
+      "service": 2589,
+      "sequence_order": 99,
+      "description": "HRA@ CAMPBELLTON EXXON|3090 CAMPBELLTON RD SW ATLANTA GA 30311-5410|06:00-18:00|964.9|1.07|S",
+      "delivery": [
+        9649,
+        2
+      ]
+    },
+    {
+      "id": "2000466708-316 - Geo-5",
+      "location_index": 136,
+      "service": 3898,
+      "sequence_order": 99,
+      "description": "DOLLAR TREE 4527|2841 GREENBRIAR PKWY SW ATLANTA GA 30331-2620|09:00-18:00|1301.9|1.5|S",
+      "delivery": [
+        13019,
+        2
+      ]
+    },
+    {
+      "id": "2000298009-316 - Geo-6",
+      "location_index": 137,
+      "service": 3869,
+      "sequence_order": 99,
+      "description": "HRA@RACEWAY|3580 CAMPBELLTON RD SW ATLANTA GA 30331-5218|07:00-16:00|1848.9|1.577|S",
+      "delivery": [
+        18489,
+        2
+      ]
+    },
+    {
+      "id": "2000535068-316 - Geo-7",
+      "location_index": 138,
+      "service": 3376,
+      "sequence_order": 99,
+      "description": "FAMILY DOLLAR 2349|3721A CAMPBELLTON RD SW ATLANTA GA 30331-5221|08:00-18:00|1370.0|1|S",
+      "delivery": [
+        13700,
+        1
+      ]
+    },
+    {
+      "id": "2003844172-316 - Geo-8",
+      "location_index": 139,
+      "service": 3067,
+      "sequence_order": 99,
+      "description": "ARA@TEXACO|3749 CAMPBELLTON RD SW ATLANTA GA 30331-5221|06:00-18:00|1377.0|1.102|S",
+      "delivery": [
+        13770,
+        2
+      ]
+    },
+    {
+      "id": "2001066569-317 - Geo-0",
+      "location_index": 140,
+      "service": 2923,
+      "sequence_order": 1,
+      "description": "WALMART SC 3401|6149 OLD NATIONAL HWY COLLEGE PARK GA 30349-4479|04:00-12:00|8754.6|5|S",
+      "delivery": [
+        87546,
+        5
+      ]
+    },
+    {
+      "id": "2001241384-317 - Geo-1",
+      "location_index": 141,
+      "service": 3384,
+      "sequence_order": 2,
+      "description": "KROGER 00471|6055 OLD NATIONAL HWY COLLEGE PARK GA 30349-4325|04:00-10:00|7573.7|5|B",
+      "delivery": [
+        75737,
+        5
+      ]
+    },
+    {
+      "id": "2000682249-317 - Geo-2",
+      "location_index": 142,
+      "service": 4250,
+      "sequence_order": 99,
+      "description": "QUIKTRIP 724|5390 RIVERDALE RD COLLEGE PARK GA 30349-5710|00:00-12:00|1530.7|1|S",
+      "delivery": [
+        15307,
+        1
+      ]
+    },
+    {
+      "id": "2001212163-317 - Geo-3",
+      "location_index": 143,
+      "service": 1983,
+      "sequence_order": 99,
+      "description": "HRA@ GET N GO FOURSTAR 2014 INC|5995 RIVERDALE RD RIVERDALE GA 30296-3231|07:00-18:00|659.8|0.587|S",
+      "delivery": [
+        6598,
+        1
+      ]
+    },
+    {
+      "id": "2004376610-317 - Geo-5",
+      "location_index": 144,
+      "service": 1641,
+      "sequence_order": 99,
+      "description": "PBA@BP FOOD MART|5780 RIVERDALE RD ATLANTA GA 30349-6364|09:00-18:00|600.6|0.5|S",
+      "delivery": [
+        6006,
+        1
+      ]
+    },
+    {
+      "id": "2000535087-317 - Geo-6",
+      "location_index": 145,
+      "service": 2116,
+      "sequence_order": 99,
+      "description": "FAMILY DOLLAR 4220|5638 RIVERDALE RD ATLANTA GA 30349-7315|08:00-18:00|566.1|0.5|S",
+      "delivery": [
+        5661,
+        1
+      ]
+    },
+    {
+      "id": "2000450404-317 - Geo-7",
+      "location_index": 146,
+      "service": 2662,
+      "sequence_order": 99,
+      "description": "DOLLAR GENERAL 08090|5611 RIVERDALE RD COLLEGE PARK GA 30349-7381|08:00-17:00|1028.1|1|S",
+      "delivery": [
+        10281,
+        1
+      ]
+    },
+    {
+      "id": "2004271075-317 - Geo-8",
+      "location_index": 147,
+      "service": 2152,
+      "sequence_order": 99,
+      "description": "HRA@CHEVRON FOOD MART|5690 RIVERDALE RD ATLANTA GA 30349-6442|06:00-18:00|774.0|1.07|S",
+      "delivery": [
+        7740,
+        2
+      ]
+    },
+    {
+      "id": "2000774288-318 - Geo-0",
+      "location_index": 148,
+      "service": 4418,
+      "sequence_order": 2,
+      "description": "KROGER 00364|2685 METROPOLITAN PKWY SW ATLANTA GA 30315-7900|04:00-10:00|12129.3|7|B",
+      "delivery": [
+        121293,
+        7
+      ]
+    },
+    {
+      "id": "2001240394-318 - Geo-1",
+      "location_index": 149,
+      "service": 2019,
+      "sequence_order": 99,
+      "description": "MARRIOTT GATEWAY FRONT DESK MARRIOTT INTL|2020 CONVENTION CENTER CONCOURSE ATLANTA GA 30337-4200|03:00-18:00|1411.9|1.07|S",
+      "delivery": [
+        14119,
+        2
+      ]
+    },
+    {
+      "id": "2000873133-318 - Geo-2",
+      "location_index": 150,
+      "service": 3058,
+      "sequence_order": 99,
+      "description": "ATL RETAILERS @ CITGO FOOD MART|655 CLEVELAND AVE SW ATLANTA GA 30315-7903|06:00-18:00|1583.2|1.535|S",
+      "delivery": [
+        15832,
+        2
+      ]
+    },
+    {
+      "id": "2000322717-318 - Geo-3",
+      "location_index": 151,
+      "service": 1947,
+      "sequence_order": 2,
+      "description": "WAYFIELD FOODS 11|3465 MAIN ST COLLEGE PARK GA 30337-1910|07:00-12:00|2198.5|2|B",
+      "delivery": [
+        21985,
+        2
+      ]
+    },
+    {
+      "id": "2000841342-318 - Geo-5",
+      "location_index": 152,
+      "service": 4090,
+      "sequence_order": 99,
+      "description": "FAMILY DOLLAR 7189|1616 VIRGINIA AVE ATLANTA GA 30337-2824|08:45-20:00|1708.2|1.5|S",
+      "delivery": [
+        17082,
+        2
+      ]
+    },
+    {
+      "id": "2000720423-318 - Geo-6",
+      "location_index": 153,
+      "service": 1865,
+      "sequence_order": 99,
+      "description": "ATL RETAILERS @ US AMOCO|5097 W FAYETTEVILLE RD COLLEGE PARK GA 30349-5409|09:00-18:00|601.4|0.517|S",
+      "delivery": [
+        6014,
+        1
+      ]
+    },
+    {
+      "id": "2000927105-318 - Geo-7",
+      "location_index": 154,
+      "service": 1792,
+      "sequence_order": 99,
+      "description": "HRA@ TEXACO KELETE, INC|5209 W FAYETTEVILLE RD COLLEGE PARK GA 30349-5580|06:00-18:00|491.1|0.525|S",
+      "delivery": [
+        4911,
+        1
+      ]
+    },
+    {
+      "id": "2000839307-318 - Geo-8",
+      "location_index": 155,
+      "service": 2416,
+      "sequence_order": 99,
+      "description": "ATL RETAILERS @ CIRCLE K 127 GAS EXPRESS LLC|1697 NORMAN DR COLLEGE PARK GA 30349-5405|06:00-17:00|840.6|0.552|S",
+      "delivery": [
+        8406,
+        1
+      ]
+    },
+    {
+      "id": "2000580626-318 - Geo-9",
+      "location_index": 156,
+      "service": 1475,
+      "sequence_order": 99,
+      "description": "HRA@CHEVRON FOOD MART|2216 GODBY RD COLLEGE PARK GA 30349-5002|08:00-20:00|536.7|0.535|S",
+      "delivery": [
+        5367,
+        1
+      ]
+    },
+    {
+      "id": "2000747619-319 - Geo-0",
+      "location_index": 157,
+      "service": 2350,
+      "sequence_order": 2,
+      "description": "KROGER 00672|800 GLENWOOD AVE SE ATLANTA GA 30316-1814|04:00-10:00|5182.0|3|B",
+      "delivery": [
+        51820,
+        3
+      ]
+    },
+    {
+      "id": "2004290779-319 - Geo-1",
+      "location_index": 158,
+      "service": 3172,
+      "sequence_order": 99,
+      "description": "ARA@BP FOOD MART|2371 GLENWOOD AVE SE ATLANTA GA 30317-3265|06:00-18:00|1220.2|1.072|S",
+      "delivery": [
+        12202,
+        2
+      ]
+    },
+    {
+      "id": "2000953639-319 - Geo-2",
+      "location_index": 159,
+      "service": 2603,
+      "sequence_order": 99,
+      "description": "ATL RETAILERS @ TEXACO FOOD MART|1870 GLENWOOD AVE SE ATLANTA GA 30316-2312|06:45-18:00|811.0|0.512|S",
+      "delivery": [
+        8110,
+        1
+      ]
+    },
+    {
+      "id": "2004130425-319 - Geo-3",
+      "location_index": 160,
+      "service": 1947,
+      "sequence_order": 2,
+      "description": "LIDL #1453 LIDL|1855 MEMORIAL DR SE ATLANTA GA 30317-2103|08:00-13:00|3497.4|2|B",
+      "delivery": [
+        34974,
+        2
+      ]
+    },
+    {
+      "id": "2001052174-319 - Geo-4",
+      "location_index": 161,
+      "service": 4044,
+      "sequence_order": 99,
+      "description": "WALGREENS 11488|2711 METROPOLITAN PKWY SW ATLANTA GA 30315-7913|08:00-17:00|1388.3|1.012|S",
+      "delivery": [
+        13883,
+        2
+      ]
+    },
+    {
+      "id": "2000455348-319 - Geo-6",
+      "location_index": 162,
+      "service": 3796,
+      "sequence_order": 99,
+      "description": "DOLLAR GENERAL 19011 DOLGENCORP|2690 METROPOLITAN PKWY SW ATLANTA GA 30315-7902|09:00-18:00|1801.0|1.5|S",
+      "delivery": [
+        18010,
+        2
+      ]
+    },
+    {
+      "id": "2004830074-319 - Geo-7",
+      "location_index": 163,
+      "service": 3148,
+      "sequence_order": 99,
+      "description": "HRA 8505 @ BP FOOD MART|221 CLEVELAND AVE SW ATLANTA GA 30315|07:00-18:00|1344.6|1.122|S",
+      "delivery": [
+        13446,
+        2
+      ]
+    },
+    {
+      "id": "2004376863-319 - Geo-8",
+      "location_index": 164,
+      "service": 2594,
+      "sequence_order": 99,
+      "description": "PBA@EXXON FOOD MART|151 CLEVELAND AVE SW ATLANTA GA 30315-8258|09:00-18:00|1163.3|1.052|S",
+      "delivery": [
+        11633,
+        2
+      ]
+    },
+    {
+      "id": "2000586727-319 - Geo-9",
+      "location_index": 165,
+      "service": 1373,
+      "sequence_order": 2,
+      "description": "PIGGLY WIGGLY 2|230 CLEVELAND AVE SW ATLANTA GA 30315-8208|08:30-17:00|961.4|1|B",
+      "delivery": [
+        9614,
+        1
+      ]
+    },
+    {
+      "id": "2000492080-320 --0",
+      "location_index": 166,
+      "service": 1833,
+      "sequence_order": 2,
+      "description": "PUBLIX 1119|2020 HOWELL MILL RD NW ATLANTA GA 30318-1732|05:00-11:00|2454.2|2|B",
+      "delivery": [
+        24542,
+        2
+      ]
+    },
+    {
+      "id": "2001066761-320 --1",
+      "location_index": 167,
+      "service": 2612,
+      "sequence_order": 99,
+      "description": "MLK TEXACO|3330 MARTIN LUTHER KING JR DR SW ATLANTA GA 30331-1712|05:30-17:00|1066.4|1.035|S",
+      "delivery": [
+        10664,
+        2
+      ]
+    },
+    {
+      "id": "2000889267-320 --2",
+      "location_index": 168,
+      "service": 2425,
+      "sequence_order": 99,
+      "description": "ATL RETAILERS @ FAIRBURN FOOD MART|490 FAIRBURN RD SW ATLANTA GA 30331-8650|06:00-18:00|928.9|1.07|S",
+      "delivery": [
+        9289,
+        2
+      ]
+    },
+    {
+      "id": "2000856696-320 --3",
+      "location_index": 169,
+      "service": 4243,
+      "sequence_order": 2,
+      "description": "WAYFIELD FOODS 19 WAYFIELD FOOD INC|3050 MARTIN LUTHER KING JR DR SW ATLANTA GA 30311-1500|07:00-12:00|10939.2|6|B",
+      "delivery": [
+        109392,
+        6
+      ]
+    },
+    {
+      "id": "2003829881-320 --4",
+      "location_index": 170,
+      "service": 2603,
+      "sequence_order": 99,
+      "description": "ARA @ CIRCLE K #104|3255 MARTIN LUTHER KING JR DR SW ATLANTA GA 30311-1316|06:00-18:00|1160.3|1.017|S",
+      "delivery": [
+        11603,
+        2
+      ]
+    },
+    {
+      "id": "2000916245-320 --6",
+      "location_index": 171,
+      "service": 4090,
+      "sequence_order": 99,
+      "description": "FAMILY DOLLAR #10677|4472 CAMPBELLTON RD SW ATLANTA GA 30331-6504|08:30-20:00|2070.8|1.5|S",
+      "delivery": [
+        20708,
+        2
+      ]
+    },
+    {
+      "id": "2000352820-320 --7",
+      "location_index": 172,
+      "service": 5602,
+      "sequence_order": 99,
+      "description": "DOLLAR GENERAL 08143|4465 CAMPBELLTON RD SW ATLANTA GA 30331-6500|08:00-19:00|2741.9|2|S",
+      "delivery": [
+        27419,
+        2
+      ]
+    },
+    {
+      "id": "2000486535-320 --8",
+      "location_index": 173,
+      "service": 2405,
+      "sequence_order": 99,
+      "description": "CITGO FOOD MART|5225 CAMPBELLTON RD SW ATLANTA GA 30331-7702|06:00-17:00|1151.4|1.072|S",
+      "delivery": [
+        11514,
+        2
+      ]
+    },
+    {
+      "id": "2003993121-321 - Geo-0",
+      "location_index": 174,
+      "service": 3535,
+      "sequence_order": 99,
+      "description": "HRA@TEXACO FOOD MART|101 HAMILTON E HOLMES DR NW ATLANTA GA 30311-1211|05:00-18:00|1921.2|1.622|S",
+      "delivery": [
+        19212,
+        2
+      ]
+    },
+    {
+      "id": "2000834199-321 - Geo-1",
+      "location_index": 175,
+      "service": 3318,
+      "sequence_order": 99,
+      "description": "HRA 7646 @ LUCKY 7 TEXACO|2716 MARTIN LUTHER KING JR DR SW ATLANTA GA 30311-1607|06:30-18:00|1608.5|1.552|S",
+      "delivery": [
+        16085,
+        2
+      ]
+    },
+    {
+      "id": "2000535665-321 - Geo-2",
+      "location_index": 169,
+      "service": 3502,
+      "sequence_order": 99,
+      "description": "FAMILY DOLLAR 634|3050 MARTIN LUTHER KING JR DR SW ATLANTA GA 30311-1500|07:00-17:00|1542.1|1.5|S",
+      "delivery": [
+        15421,
+        2
+      ]
+    },
+    {
+      "id": "2001243538-321 - Geo-3",
+      "location_index": 176,
+      "service": 4266,
+      "sequence_order": 99,
+      "description": "DOLLAR TREE 5779|2630 MARTIN LUTHER KING JR DR SW ATLANTA GA 30311-1605|08:00-18:00|1600.9|1.5|S",
+      "delivery": [
+        16009,
+        2
+      ]
+    },
+    {
+      "id": "2000292832-321 - Geo-5",
+      "location_index": 177,
+      "service": 2407,
+      "sequence_order": 99,
+      "description": "HRA@ BP FOOD MART|2595 MARTIN LUTHER KING JR DR SW ATLANTA GA 30311-1715|06:00-18:00|867.9|1.025|S",
+      "delivery": [
+        8679,
+        2
+      ]
+    },
+    {
+      "id": "2003925562-321 - Geo-6",
+      "location_index": 178,
+      "service": 2422,
+      "sequence_order": 99,
+      "description": "HRA@MLK FOOD MART|2460 MARTIN LUTHER KING JR DR SW ATLANTA GA 30311-1743|06:00-18:00|1032.7|1.052|S",
+      "delivery": [
+        10327,
+        2
+      ]
+    },
+    {
+      "id": "2004731583-321 - Geo-7",
+      "location_index": 179,
+      "service": 2601,
+      "sequence_order": 99,
+      "description": "LITTLE CAESARS #3608-0003|2457 MARTIN LUTHER KING JR SW DR ATLANTA GA 30311|10:00-18:00|1518.2|1|S",
+      "delivery": [
+        15182,
+        1
+      ]
+    },
+    {
+      "id": "2000882467-321 - Geo-8",
+      "location_index": 180,
+      "service": 2716,
+      "sequence_order": 99,
+      "description": "PBA@ MLK CHEVRON|2456 MARTIN LUTHER KING JR DR SW ATLANTA GA 30311-1714|07:00-17:00|1202.7|1|S",
+      "delivery": [
+        12027,
+        1
+      ]
+    },
+    {
+      "id": "2004036524-321 - Geo-9",
+      "location_index": 181,
+      "service": 3165,
+      "sequence_order": 99,
+      "description": "HRA@WF-BP|1685 RALPH DAVID ABERNATHY BLVD SW ATLANTA GA 30310-1248|06:00-18:00|1255.9|1.025|S",
+      "delivery": [
+        12559,
+        2
+      ]
+    },
+    {
+      "id": "2000842060-324 - ATLANTA-0",
+      "location_index": 182,
+      "service": 2291,
+      "sequence_order": 2,
+      "description": "PUBLIX 1139 NONG2DSD PUBLIX SUPERMKTS|4300 CHAPEL HILL RD DOUGLASVILLE GA 30135-4200|06:00-12:00|1874.2|2|B",
+      "delivery": [
+        18742,
+        2
+      ]
+    },
+    {
+      "id": "2000292111-324 - ATLANTA-1",
+      "location_index": 183,
+      "service": 3083,
+      "sequence_order": 99,
+      "description": "ATL RETAILERS@ EXXON FOOD MART|5040 HIGHWAY 5 DOUGLASVILLE GA 30135-5320|06:00-18:00|1076.8|1.065|S",
+      "delivery": [
+        10768,
+        2
+      ]
+    },
+    {
+      "id": "2001091676-324 - ATLANTA-2",
+      "location_index": 184,
+      "service": 4062,
+      "sequence_order": 99,
+      "description": "HRA@ BILL ARP MARATHON SAMAN BROTHERS IN|4917 HIGHWAY 5 DOUGLASVILLE GA 30135-4537|06:00-15:00|1543.8|1.5|S",
+      "delivery": [
+        15438,
+        2
+      ]
+    },
+    {
+      "id": "2001053155-324 - ATLANTA-3",
+      "location_index": 185,
+      "service": 4220,
+      "sequence_order": 99,
+      "description": "DOLLAR GENERAL 09332|4870 HIGHWAY 5 DOUGLASVILLE GA 30135-4536|07:30-17:00|1374.4|1|S",
+      "delivery": [
+        13744,
+        1
+      ]
+    },
+    {
+      "id": "2000918291-324 - ATLANTA-5",
+      "location_index": 186,
+      "service": 3294,
+      "sequence_order": 99,
+      "description": "HRA@ POPS CORNER FOOD MART|8726 HIGHWAY 166 WINSTON GA 30187-1214|06:00-16:00|1031.1|1|S",
+      "delivery": [
+        10311,
+        1
+      ]
+    },
+    {
+      "id": "2000539617-324 - ATLANTA-6",
+      "location_index": 187,
+      "service": 5795,
+      "sequence_order": 99,
+      "description": "DOLLAR GENERAL 13653 DOLLAR GENERAL CO|8427 GA-166 DOUGLASVILLE GA 30135|08:00-17:00|2066.5|1.5|S",
+      "delivery": [
+        20665,
+        2
+      ]
+    },
+    {
+      "id": "2001274975-324 - ATLANTA-7",
+      "location_index": 188,
+      "service": 3686,
+      "sequence_order": 99,
+      "description": "DIAMOND CHEVRON SANUR ENTERP LLC|8391 HIGHWAY 166 DOUGLASVILLE GA 30135-6219|06:00-16:00|1365.2|1.037|S",
+      "delivery": [
+        13652,
+        2
+      ]
+    },
+    {
+      "id": "2000403233-325 - MARIETTA-0",
+      "location_index": 189,
+      "service": 1833,
+      "sequence_order": 2,
+      "description": "PUBLIX 0730 NONG2DSD|2675 Lee Rd Lithia Springs GA 30122-3356|05:00-11:00|1986.7|2|B",
+      "delivery": [
+        19867,
+        2
+      ]
+    },
+    {
+      "id": "2001060395-325 - MARIETTA-1",
+      "location_index": 190,
+      "service": 5231,
+      "sequence_order": 99,
+      "description": "RACETRAC 2454.|2703 FAIRBURN RD DOUGLASVILLE GA 30135-2941|00:00-12:00|2570.2|2.099|S",
+      "delivery": [
+        25702,
+        3
+      ]
+    },
+    {
+      "id": "2000646715-325 - MARIETTA-2",
+      "location_index": 191,
+      "service": 3095,
+      "sequence_order": 2,
+      "description": "FOOD DEPOT 40|3696 HIGHWAY 5 DOUGLASVILLE GA 30135-2302|06:45-14:30|6273.5|4|B",
+      "delivery": [
+        62735,
+        4
+      ]
+    },
+    {
+      "id": "2001272397-325 - MARIETTA-4",
+      "location_index": 192,
+      "service": 5473,
+      "sequence_order": 99,
+      "description": "HRA @ SHELL FOOD MART JALARAM FOOD & GA|3300 POST RD WINSTON GA 30187-1004|06:00-16:00|2626.4|2.017|S",
+      "delivery": [
+        26264,
+        3
+      ]
+    },
+    {
+      "id": "2001079952-325 - MARIETTA-5",
+      "location_index": 193,
+      "service": 3245,
+      "sequence_order": 99,
+      "description": "ATL RETAILERS @ KOUNTRY KORNER|4634 HIGHWAY 5 DOUGLASVILLE GA 30135-4534|06:00-16:00|1410.7|1.055|S",
+      "delivery": [
+        14107,
+        2
+      ]
+    },
+    {
+      "id": "2001275687-325 - MARIETTA-6",
+      "location_index": 194,
+      "service": 1938,
+      "sequence_order": 99,
+      "description": "ATL RETAILERS @ EXXON FOOD MART RHA CONV|4661 KINGS HWY DOUGLASVILLE GA 30135-4607|06:00-18:00|765.3|1|S",
+      "delivery": [
+        7653,
+        1
+      ]
+    },
+    {
+      "id": "2001062176-325 - MARIETTA-7",
+      "location_index": 195,
+      "service": 2247,
+      "sequence_order": 99,
+      "description": "PIZZA HUT #039391|3697 HIGHWAY 5 DOUGLASVILLE GA 30135-6901|09:00-17:00|1297.1|1|S",
+      "delivery": [
+        12971,
+        1
+      ]
+    },
+    {
+      "id": "2000873138-325 - MARIETTA-8",
+      "location_index": 196,
+      "service": 1979,
+      "sequence_order": 99,
+      "description": "ATL RETAILERS @ SHELL FOOD MART|3638 HIGHWAY 5 DOUGLASVILLE GA 30135-2364|11:00-18:00|705.5|1|S",
+      "delivery": [
+        7055,
+        1
+      ]
+    },
+    {
+      "id": "2001250840-326 - WINSTON-0",
+      "location_index": 197,
+      "service": 3641,
+      "sequence_order": 99,
+      "description": "ATL RETAILERS @ BP- KK FOOD MART KK SONS USA INC|3930 AUSTELL POWDER SPRINGS RD POWDER SPRINGS GA 30127-2906|05:00-18:00|1964.3|1.602|S",
+      "delivery": [
+        19643,
+        2
+      ]
+    },
+    {
+      "id": "2000398675-326 - WINSTON-1",
+      "location_index": 198,
+      "service": 2630,
+      "sequence_order": 99,
+      "description": "HRA@ TEXACO FOOD MART|3265 FLORENCE RD POWDER SPRINGS GA 30127-3832|06:00-17:00|1131.7|1.055|S",
+      "delivery": [
+        11317,
+        2
+      ]
+    },
+    {
+      "id": "2001276059-326 - WINSTON-2",
+      "location_index": 199,
+      "service": 2425,
+      "sequence_order": 99,
+      "description": "HRA@ SUNOCO FOOD MART RIAAN INC|4551 BROWNSVILLE RD POWDER SPRINGS GA 30127-3004|06:00-19:00|935.5|1.07|S",
+      "delivery": [
+        9355,
+        2
+      ]
+    },
+    {
+      "id": "2000910160-326 - WINSTON-3",
+      "location_index": 200,
+      "service": 5308,
+      "sequence_order": 99,
+      "description": "DOLLAR GENERAL 16756|4511 BROWNSVILLE RD POWDER SPRINGS GA 30127-3004|08:00-19:00|2625.4|2|S",
+      "delivery": [
+        26254,
+        2
+      ]
+    },
+    {
+      "id": "2000369330-326 - WINSTON-5",
+      "location_index": 201,
+      "service": 6428,
+      "sequence_order": 99,
+      "description": "DOLLAR GENERAL #22602|13780 VETERANS MEMORIAL HWY WINSTON GA 30187-1691|08:00-15:00|2816.7|2.5|S",
+      "delivery": [
+        28167,
+        3
+      ]
+    },
+    {
+      "id": "2001199430-326 - WINSTON-6",
+      "location_index": 202,
+      "service": 3502,
+      "sequence_order": 99,
+      "description": "FAMILY DOLLAR 11748 FAMILY DOLLAR SER|5380 BROWNSVILLE RD POWDER SPRINGS GA 30127-3051|08:00-18:00|1494.6|1.5|S",
+      "delivery": [
+        14946,
+        2
+      ]
+    },
+    {
+      "id": "2001058577-8600 - Box-0",
+      "location_index": 203,
+      "service": 1237,
+      "sequence_order": 99,
+      "description": "MARRIOTT SPRINGHILL SUITE|3459 BUCKHEAD LOOP NE ATLANTA GA 30326-1532|03:00-12:00|650.8|0.5|S",
+      "delivery": [
+        6508,
+        1
+      ]
+    },
+    {
+      "id": "2004275481-8600 - Box-1",
+      "location_index": 204,
+      "service": 2250,
+      "sequence_order": 99,
+      "description": "ATLANTA RETAILERS ASSOC@BP FOOD MART|2193 PEACHTREE RD NE ATLANTA GA 30309-1373|06:00-18:00|953.9|1.052|S",
+      "delivery": [
+        9539,
+        2
+      ]
+    },
+    {
+      "id": "2001203460-8600 - Box-2",
+      "location_index": 205,
+      "service": 1467,
+      "sequence_order": 99,
+      "description": "MARRIOTT/JW MARRIOTT LENOX MARRIOTT CORP|3300 LENOX RD NE ATLANTA GA 30326-1333|06:00-14:00|902.3|1|S",
+      "delivery": [
+        9023,
+        1
+      ]
+    },
+    {
+      "id": "2000349801-8600 - Box-3",
+      "location_index": 206,
+      "service": 2250,
+      "sequence_order": 99,
+      "description": "ATL RETAILERS@ BUFORD HWY SHELL|3799 BUFORD HWY NE BROOKHAVEN GA 30329-1099|07:00-17:00|915.1|1.047|S",
+      "delivery": [
+        9151,
+        2
+      ]
+    },
+    {
+      "id": "2000698963-8600 - Box-4",
+      "location_index": 207,
+      "service": 3160,
+      "sequence_order": 2,
+      "description": "TOTAL WINE & MORE 804|3954 PEACHTREE RD NE BROOKHAVEN GA 30319-3788|09:00-14:00|877.2|1|B",
+      "delivery": [
+        8772,
+        1
+      ]
+    },
+    {
+      "id": "2001105771-8600 - Box-5",
+      "location_index": 208,
+      "service": 1590,
+      "sequence_order": 99,
+      "description": "PLANET FITNESS 4178|3974 PEACHTREE RD NE BROOKHAVEN GA 30319-5253|08:00-18:00|655.5|0.5|S",
+      "delivery": [
+        6555,
+        1
+      ]
+    },
+    {
+      "id": "2004799851-8600 - Box-7",
+      "location_index": 209,
+      "service": 1297,
+      "sequence_order": 99,
+      "description": "PETCO 1567|3756B ROSWELL RD ATLANTA GA 30342|09:00-13:00|476.4|0.5|S",
+      "delivery": [
+        4764,
+        1
+      ]
+    },
+    {
+      "id": "2001270452-8600 - Box-8",
+      "location_index": 210,
+      "service": 1147,
+      "sequence_order": 99,
+      "description": "JERSEY MIKE'S SUBS 5011A|3895 PEACHTREE RD NE ATLANTA GA 30319-3388|10:00-18:00|440.0|0.5|S",
+      "delivery": [
+        4400,
+        1
+      ]
+    },
+    {
+      "id": "2001062398-8600 - Box-9",
+      "location_index": 211,
+      "service": 1598,
+      "sequence_order": 99,
+      "description": "PIZZA HUT #037765|3255 BUFORD HWY NE BROOKHAVEN GA 30329-1707|09:00-17:00|885.8|1|S",
+      "delivery": [
+        8858,
+        1
+      ]
+    },
+    {
+      "id": "2000638887-8600 - Box-10",
+      "location_index": 212,
+      "service": 1185,
+      "sequence_order": 99,
+      "description": "JERSEY MIKE'S SUBS 5110|2555 PIEDMONT RD NE ATLANTA GA 30324-3028|09:00-17:00|442.7|0.5|S",
+      "delivery": [
+        4427,
+        1
+      ]
+    },
+    {
+      "id": "2000783851-8600 - Box-11",
+      "location_index": 213,
+      "service": 1907,
+      "sequence_order": 99,
+      "description": "CHEVRON FOOD MART|2331 PEACHTREE RD NE ATLANTA GA 30305-4101|06:00-18:00|724.9|0.535|S",
+      "delivery": [
+        7249,
+        1
+      ]
+    },
+    {
+      "id": "2000699526-8600 - Box-12",
+      "location_index": 214,
+      "service": 1598,
+      "sequence_order": 99,
+      "description": "MARCOS PIZZA 8339|2331 BOLTON RD NW ATLANTA GA 30318-1202|10:00-20:00|861.3|1|S",
+      "delivery": [
+        8613,
+        1
+      ]
+    },
+    {
+      "id": "2000760468-8601 - Box-0",
+      "location_index": 215,
+      "service": 2111,
+      "sequence_order": 99,
+      "description": "HRA@ CITGO FOOD MART FAMILY STORE|2989 CAMPBELLTON RD SW ATLANTA GA 30311-4501|06:00-17:00|826.6|1.017|S",
+      "delivery": [
+        8266,
+        2
+      ]
+    },
+    {
+      "id": "2000347405-8601 - Box-1",
+      "location_index": 216,
+      "service": 2489,
+      "sequence_order": 99,
+      "description": "HRA@A FOOD MART|121 CLEVELAND AVE ATLANTA GA 30315-8445|07:00-19:00|1149.2|1.025|S",
+      "delivery": [
+        11492,
+        2
+      ]
+    },
+    {
+      "id": "2000832539-8601 - Box-2",
+      "location_index": 217,
+      "service": 2536,
+      "sequence_order": 99,
+      "description": "FAMILY DOLLAR 11696 FAMILY DOLLAR SER|3031 MAIN ST EAST POINT GA 30344-4211|08:00-19:00|858.8|1|S",
+      "delivery": [
+        8588,
+        1
+      ]
+    },
+    {
+      "id": "2000635875-8601 - Box-3",
+      "location_index": 218,
+      "service": 2398,
+      "sequence_order": 99,
+      "description": "ATL RETAILERS @ GREEN APPLE FOOD MT|3160 GREENBRIAR PKWY SW ATLANTA GA 30331-2609|09:00-20:00|901.7|1.012|S",
+      "delivery": [
+        9017,
+        2
+      ]
+    },
+    {
+      "id": "2001189348-8601 - Box-4",
+      "location_index": 136,
+      "service": 1848,
+      "sequence_order": 99,
+      "description": "PLANET FITNESS GREENBRIAR|2841 GREENBRIAR PKWY SW ATLANTA GA 30331-2620|09:00-19:00|764.7|0.5|S",
+      "delivery": [
+        7647,
+        1
+      ]
+    },
+    {
+      "id": "2000443879-8601 - Box-6",
+      "location_index": 219,
+      "service": 2029,
+      "sequence_order": 99,
+      "description": "ATL RETAILERS @ SHELL QUICK SAVE|374 CLEVELAND AVE SW ATLANTA GA 30315-8142|08:00-20:00|714.8|1.017|S",
+      "delivery": [
+        7148,
+        2
+      ]
+    },
+    {
+      "id": "2004392360-8601 - Box-7",
+      "location_index": 220,
+      "service": 1893,
+      "sequence_order": 99,
+      "description": "LITTLE CAESARS #1618-0100|854 CLEVELAND AVE EAST POINT GA 30344|10:00-18:00|1073.0|1|S",
+      "delivery": [
+        10730,
+        1
+      ]
+    },
+    {
+      "id": "2004873938-8601 - Box-8",
+      "location_index": 221,
+      "service": 2145,
+      "sequence_order": 99,
+      "description": "HRA 7960 @ CHEVRON FOOD MART|1865 GLENWOOD AVE SE ATLANTA GA 30316|08:00-19:00|696.5|0.512|S",
+      "delivery": [
+        6965,
+        1
+      ]
+    },
+    {
+      "id": "2000891357-8601 - Box-9",
+      "location_index": 222,
+      "service": 1345,
+      "sequence_order": 99,
+      "description": "JERSEY MIKE'S SUBS 5087|1245 CAROLINE ST NE ATLANTA GA 30307-2772|09:00-18:00|488.1|0.5|S",
+      "delivery": [
+        4881,
+        1
+      ]
+    },
+    {
+      "id": "2000992042-8601 - Box-10",
+      "location_index": 223,
+      "service": 1275,
+      "sequence_order": 99,
+      "description": "SONESTA ATL AIRPORT NORTH|1325 VIRGINIA AVE EAST POINT GA 30344-5213|08:00-17:00|640.6|0.5|S",
+      "delivery": [
+        6406,
+        1
+      ]
+    },
+    {
+      "id": "2003133735-8601 - Box-11",
+      "location_index": 224,
+      "service": 1584,
+      "sequence_order": 2,
+      "description": "SAVI PROVISIONS|287 ELIZABETH ST NE ATLANTA GA 30307-5621|08:00-17:00|1206.7|1|B",
+      "delivery": [
+        12067,
+        1
+      ]
+    },
+    {
+      "id": "2000867204-8601 - Box-12",
+      "location_index": 225,
+      "service": 1461,
+      "sequence_order": 99,
+      "description": "RA@THE TABERNACLE|152 LUCKIE ST NW ATLANTA GA 30303-2006|10:00-18:00|625.5|0.5|S",
+      "delivery": [
+        6255,
+        1
+      ]
+    },
+    {
+      "id": "2000587045-900 - WOODSTOCK-0",
+      "location_index": 226,
+      "service": 2277,
+      "sequence_order": 1,
+      "description": "WALMART 5275|6435 BELLS FERRY RD WOODSTOCK GA 30189-2317|00:00-23:59|5725.2|3|S",
+      "delivery": [
+        57252,
+        3
+      ]
+    },
+    {
+      "id": "2004246634-900 - WOODSTOCK-1",
+      "location_index": 226,
+      "service": 1667,
+      "sequence_order": 1,
+      "description": "WALMART 5275 DEPT 96|6435 BELLS FERRY RD WOODSTOCK GA 30189-2317|00:00-23:59|171.6|1|B",
+      "delivery": [
+        1716,
+        1
+      ]
+    },
+    {
+      "id": "2000851159-900 - WOODSTOCK-2",
+      "location_index": 227,
+      "service": 2600,
+      "sequence_order": 1,
+      "description": "WALMART 5390 WAL-MART|210 COBB PKWY S MARIETTA GA 30060-6509|00:00-23:59|7031.0|4|S",
+      "delivery": [
+        70310,
+        4
+      ]
+    },
+    {
+      "id": "2000831662-900 - WOODSTOCK-3",
+      "location_index": 228,
+      "service": 2923,
+      "sequence_order": 1,
+      "description": "WALMART SC 1586 WAL MART|1133 E WEST CONNECTOR AUSTELL GA 30106-1779|03:00-23:59|8003.3|5|S",
+      "delivery": [
+        80033,
+        5
+      ]
+    },
+    {
+      "id": "2000418939-903 --0",
+      "location_index": 229,
+      "service": 4215,
+      "sequence_order": 1,
+      "description": "WALMART 1488|7001 CONCOURSE PKWY DOUGLASVILLE GA 30134-4549|03:00-08:00|15884.0|9|S",
+      "delivery": [
+        158840,
+        9
+      ]
+    },
+    {
+      "id": "2004249226-903 --1",
+      "location_index": 229,
+      "service": 359,
+      "sequence_order": 1,
+      "description": "WALMART 1488 DEPT 96|7001 CONCOURSE PKWY DOUGLASVILLE GA 30134-4549|03:00-08:00|75.4|1|B",
+      "delivery": [
+        754,
+        1
+      ]
+    },
+    {
+      "id": "2000462754-903 --2",
+      "location_index": 230,
+      "service": 3384,
+      "sequence_order": 2,
+      "description": "KROGER 00498 @BATTLE RIDGE|1690 POWDER SPRINGS RD SW MARIETTA GA 30064-4844|04:00-10:00|8780.7|5|B",
+      "delivery": [
+        87807,
+        5
+      ]
+    },
+    {
+      "id": "2000886125-903 --3",
+      "location_index": 231,
+      "service": 1316,
+      "sequence_order": 2,
+      "description": "PUBLIX 0561|2500 DALLAS HWY SW MARIETTA GA 30064-2567|03:00-11:00|1665.8|1|B",
+      "delivery": [
+        16658,
+        1
+      ]
+    },
+    {
+      "id": "1368-903 --5",
+      "location_index": 232,
+      "service": 1800,
+      "sequence_order": 99,
+      "description": "ATLANTA-GA-CBM|1480 CHATTAHOOCHEE AVE NW ATLANTA GA 30318-2832||39380|24|S",
+      "pickup": [
+        393800,
+        24
+      ]
+    }
+  ],
+  "shipments": [
+    {
+      "id": "2004704998-S",
+      "description": "PAPA JOHNS QCC B&C @ ACWORTH|1389 STE 100 HWY 92 ACWORTH GA 30102|06:00-16:00|9380.0|24|B",
+      "pickup": {
+        "id": "2004704998P",
+        "location_index": 0,
+        "service": 0,
+        "time_windows": [
+          [
+            1760599800,
+            1760643000
+          ]
+        ]
+      },
+      "delivery": {
+        "id": "2004704998D",
+        "location_index": 233,
+        "service": 9540,
+        "time_windows": [
+          [
+            1760608800,
+            1760644800
+          ]
+        ]
+      },
+      "amount": [
+        393800,
+        24
+      ]
+    }
+  ],
+  "options": {
+    "routing": {
+      "mode": "truck"
+    },
+    "objective": {
+      "travel_cost": "duration"
+    }
+  },
+  "description": "Full Optimization (selected vehicles and deliveries)"
+}
